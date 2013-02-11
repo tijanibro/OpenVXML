@@ -53,6 +53,7 @@ public class ScriptedPrimitiveInformationProvider extends PrimitiveInformationPr
 	boolean canDelete = true;
 	boolean hasConnectors = false;
 	List<VarRecord> varRecords = new ArrayList<VarRecord>();
+	List<VarPropertySet> varPropertySets = new ArrayList<VarPropertySet>();
 	
 	public ScriptedPrimitiveInformationProvider(PrimitiveElement element)
 	{
@@ -68,6 +69,7 @@ public class ScriptedPrimitiveInformationProvider extends PrimitiveInformationPr
 		}
 		typeId = configurationElement.getAttribute("typeid");
 		typeName = configurationElement.getAttribute("typename");
+		
 		IConfigurationElement exitPointsElement = configurationElement.getChildren("exit_points")[0];
 		IConfigurationElement[] exitPointElements = exitPointsElement.getChildren("exit_point");
 		for(int i = 0; i < exitPointElements.length; i++)
@@ -94,31 +96,34 @@ public class ScriptedPrimitiveInformationProvider extends PrimitiveInformationPr
 				if(prim != null)
 				{
 					if(array)
-						varRecords.add(new VarRecord(variableName, new FieldType(Primitive.ARRAY, prim)));
+						varPropertySets.add(new VarPropertySet(variableName, Primitive.ARRAY.getName(), variableType));
 					else
-						varRecords.add(new VarRecord(variableName, new FieldType(prim)));
+						varPropertySets.add(new VarPropertySet(variableName,variableType, null));
 				}
 				else
 				{
-					IBusinessObject bo = this.getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(variableType);
 					if(array)
-						varRecords.add(new VarRecord(variableName, new FieldType(Primitive.ARRAY, bo)));
+						varPropertySets.add(new VarPropertySet(variableName, Primitive.ARRAY.getName(), variableType));
 					else
-						varRecords.add(new VarRecord(variableName, new FieldType(bo)));
+						varPropertySets.add(new VarPropertySet(variableName, variableType, null));
 				}
 			}
 			else
 			{
+				String ftTypeName;
+				String ftBaseTypeName = null;
 				int precision = 1;
+				
 				IConfigurationElement[] typeElements = actionElements[i].getChildren("data-type");
 				if(typeElements.length > 0)
 				{
 					IConfigurationElement element = typeElements[0];
-					FieldType ret = null;
 					String typeName = element.getAttribute("type");
+					ftTypeName = typeName;
 					if(typeName.startsWith("primitive:"))
 					{
 						typeName = typeName.substring(10);
+						ftTypeName = typeName;
 						Primitive type = Primitive.find(typeName);
 						if(type.hasBaseType())
 						{
@@ -126,8 +131,8 @@ public class ScriptedPrimitiveInformationProvider extends PrimitiveInformationPr
 							if(baseTypeName.startsWith("primitive:"))
 							{
 								baseTypeName = baseTypeName.substring(10);
+								ftBaseTypeName = baseTypeName;
 								Primitive baseType = Primitive.find(baseTypeName);
-								ret = new FieldType(type, baseType);
 								if(baseType.hasPrecision())
 								{
 									try
@@ -136,22 +141,15 @@ public class ScriptedPrimitiveInformationProvider extends PrimitiveInformationPr
 									}
 									catch(NumberFormatException nfe)
 									{}
-									ret.setPrecision(precision);
 								}
 							}
 							else //business object type
 							{
 								baseTypeName = baseTypeName.substring(7);
-								IBusinessObject bo = getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(baseTypeName);
-								if(bo == null)
-									throw new RuntimeException("Missing business object definition: " + baseTypeName);
-								ret = new FieldType(type, bo);
+								ftBaseTypeName = baseTypeName;
 							}
 						}
-						else
-						{
-							ret = new FieldType(type);
-						}
+
 						if(type.hasPrecision())
 						{
 							try
@@ -160,10 +158,10 @@ public class ScriptedPrimitiveInformationProvider extends PrimitiveInformationPr
 							}
 							catch(NumberFormatException nfe)
 							{}
-							ret.setPrecision(precision);
 						}
 					}
-					varRecords.add(new VarRecord(variableName, ret));
+					
+					varPropertySets.add(new VarPropertySet(variableName, ftTypeName, ftBaseTypeName, precision));
 				}
 			}
 		}
@@ -237,6 +235,12 @@ public class ScriptedPrimitiveInformationProvider extends PrimitiveInformationPr
 	
 	public List<Variable> getOutgoingVariables(String exitPoint, boolean localOnly)
     {
+		varRecords.clear();
+		for(VarPropertySet vps : varPropertySets)
+		{
+			varRecords.add(createVarRecord(vps));
+		}
+		
 		if(variables.size() == 0 && varRecords.size() != 0)
 		{
 			for(VarRecord vr : varRecords)
@@ -466,6 +470,49 @@ public class ScriptedPrimitiveInformationProvider extends PrimitiveInformationPr
 		}
 	}
 	
+	
+	private VarRecord createVarRecord(VarPropertySet vps)
+	{
+		FieldType ft;
+
+		Primitive type = Primitive.find(vps.typeName);
+		
+		if(type.hasBaseType())
+		{
+			String baseTypeName = vps.baseTypeName;
+			Primitive baseType = Primitive.find(baseTypeName);
+			if(baseType != null) //Should return primitive type if it's not an object; Otherwise null
+			{
+				ft = new FieldType(type, baseType);
+				if(baseType.hasPrecision())
+				{
+					ft.setPrecision(vps.precision);
+				}
+			}
+			else //business object type
+			{
+				IBusinessObject bo = getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(baseTypeName);
+				if(bo == null)
+					throw new RuntimeException("Missing business object definition: " + baseTypeName);
+				ft = new FieldType(type, bo);
+			}
+		}
+		else
+		{
+			ft = new FieldType(type);
+		}
+		
+		if(type.hasPrecision())
+		{
+			ft.setPrecision(vps.precision);
+		}
+		
+		return new VarRecord(vps.variableName, ft);
+	}
+	
+	
+	
+	
 	private class BusinessObjectFieldDefinition
 	{
 		private String name;
@@ -512,6 +559,27 @@ public class ScriptedPrimitiveInformationProvider extends PrimitiveInformationPr
 			super();
 			this.name = name;
 			this.type = type;
+		}
+	}
+	
+	private class VarPropertySet{
+		
+		String variableName; //name of the variable
+		String typeName; //String,Date,Number,Array,Map, ObjectName, etc
+		String baseTypeName; //if typeName is Array or Map, then this parameterizes with String,Date,Number,ObjectName, etc
+		int precision = 1; //Set 1 as the default
+		
+		public VarPropertySet(String variableName, String typeName, String baseTypeName){
+			this.variableName = variableName;
+			this.typeName = typeName;
+			this.baseTypeName = baseTypeName;
+		}
+		
+		public VarPropertySet(String variableName, String typeName, String baseTypeName, int precision){
+			this.variableName = variableName;
+			this.typeName = typeName;
+			this.baseTypeName = baseTypeName;
+			this.precision = precision;
 		}
 	}
 }
