@@ -1,8 +1,11 @@
 package org.eclipse.vtp.desktop.export.internal.main;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -24,6 +27,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -555,8 +559,32 @@ public class WebApplicationExporter {
 				getClass()
 						.getResource(
 								"/org/eclipse/vtp/framework/webapp/HttpSessionListenerManager.class"));
-		// Copy the static web configuration file.
-		output.writeURL("WEB-INF/web.xml", getClass().getResource("/web.xml"));
+		StringBuilder builder = new StringBuilder();
+		IConfigurationElement[] packageEntries = Platform.getExtensionRegistry().getConfigurationElementsFor("org.eclipse.vtp.framework.engine.externalPackageEntries");
+		for(IConfigurationElement entry : packageEntries)
+		{
+			if(builder.length() != 0)
+				builder.append(", ");
+			builder.append(entry.getAttribute("package"));
+			builder.append("; version=");
+			builder.append(entry.getAttribute("version"));
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		InputStream webIn = getClass().getResourceAsStream("/web.xml");
+		byte[] buf = new byte[1024];
+		int len = webIn.read(buf);
+		while(len != -1)
+		{
+			baos.write(buf, 0, len);
+			len = webIn.read(buf);
+		}
+		baos.close();
+		webIn.close();
+		String webText = baos.toString();
+		webText = webText.replace("[[extendedFrameworkExports]]", builder.toString());
+		ByteArrayInputStream bais = new ByteArrayInputStream(webText.getBytes());
+		output.writeStream("WEB-INF/web.xml", bais);
+		bais.close();
 		// Export the WAR libraries.
 		output.writeURL("WEB-INF/lib/servletbridge.jar", getClass()
 				.getResource("/servletbridge.jar"));

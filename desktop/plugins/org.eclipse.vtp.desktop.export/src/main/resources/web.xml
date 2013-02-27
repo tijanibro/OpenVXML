@@ -29,7 +29,7 @@
 		  -->
 		<init-param>
 			<param-name>extendedFrameworkExports</param-name>
-			<param-value></param-value>			
+			<param-value>[[extendedFrameworkExports]]</param-value>			
 		</init-param>
 
 		<!-- 

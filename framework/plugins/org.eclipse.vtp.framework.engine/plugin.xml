@@ -3,6 +3,7 @@
 <plugin>
    <extension-point id="resources" name="VTP Framework Resources" schema="schema/resources.exsd"/>
    <extension-point id="definitions" name="VTP Framework Process Definitions" schema="schema/definitions.exsd"/>
+   <extension-point id="externalPackageEntries" name="External Package Entries" schema="schema/externalPackageEntries.exsd"/>
    <extension
          point="org.eclipse.vtp.framework.common.dataTypes">
       <object-type
