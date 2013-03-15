@@ -685,6 +685,7 @@ public class HttpConnector
 						}
 					}
 				}
+				deployment.end(httpSession, prefix, depth.intValue());
 				for (@SuppressWarnings("rawtypes")
 					Enumeration e = httpSession.getAttributeNames(); e
 						.hasMoreElements();)
@@ -693,7 +694,6 @@ public class HttpConnector
 					if (name.startsWith(oldFullPrefix))
 						httpSession.removeAttribute(name);
 				}
-				deployment.end(httpSession);
 				invokeProcessEngine(req, res, httpSession, NEXT_PATH, variables,
 						parameterValues, newDepth > 0);
 				return;

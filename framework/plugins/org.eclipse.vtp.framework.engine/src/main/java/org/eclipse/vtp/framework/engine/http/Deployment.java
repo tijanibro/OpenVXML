@@ -217,7 +217,13 @@ public class Deployment implements IProcessDescriptor, IResourceManagerRegistry,
 			session.unlock();
 		}
 		IDocument document = null;
-		if (result == null || result.isTerminated())
+		System.out.println("Result: " + result);
+		if(result != null)
+		{
+			System.out.println("Is Finished: " + result.isTerminated());
+			System.out.println("Document: " + result.getDocument());
+		}
+		if (result == null)
 			document = abort(httpSession, httpRequest, httpReesponse, prefix, depth,
 					variableValues, parameterValues);
 		if (result != null && result.getDocument() != null)
@@ -225,12 +231,15 @@ public class Deployment implements IProcessDescriptor, IResourceManagerRegistry,
 		return document;
 	}
 	
-	public void end(HttpSession httpSession)
+	public void end(HttpSession httpSession, String prefix, int depth)
 	{
 		String sessionID = httpSession.getId();
 		synchronized (sessions)
 		{
-			sessions.remove(sessionID);
+			DeploymentSession session = sessions.remove(sessionID);
+			System.out.println("Ending Session: " + session);
+			if(session != null)
+				session.end(httpSession, prefix, depth);
 		}
 	}
 
@@ -246,6 +255,7 @@ public class Deployment implements IProcessDescriptor, IResourceManagerRegistry,
 			HttpServletRequest httpRequest, HttpServletResponse httpReesponse,
 			String prefix, int depth, Map<Object, Object> variableValues, Map parameterValues)
 	{
+		new Exception().printStackTrace();
 		String sessionID = httpSession.getId();
 		DeploymentSession session = null; 
 		synchronized (sessions) {

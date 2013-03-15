@@ -344,6 +344,21 @@ public class DeploymentSession implements ISessionDescriptor
 		}
 	}
 
+	public void end(HttpSession httpSession, String prefix, int depth)
+	{
+		this.httpSession = httpSession;
+		this.depth = depth;
+		this.qualifier = new String[depth + 1];
+		for(int i = 0; i <= depth; i++)
+		{
+			qualifier[i] = prefix + i + ".";
+		}
+		fireDisposedEvent(httpSession);
+		httpSession.setAttribute("vtp.supressSessionDisposedEvent", Boolean.TRUE);
+		if (!"true".equals(getAttribute("fragment")))
+			httpSession.invalidate();
+	}
+
 	public void fireDisposedEvent(HttpSession httpSession) {
 		if (httpSession.getAttribute("vtp.supressSessionDisposedEvent") == Boolean.TRUE)
 			return;
