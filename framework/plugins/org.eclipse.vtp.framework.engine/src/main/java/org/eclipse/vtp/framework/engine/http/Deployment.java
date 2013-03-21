@@ -255,7 +255,6 @@ public class Deployment implements IProcessDescriptor, IResourceManagerRegistry,
 			HttpServletRequest httpRequest, HttpServletResponse httpReesponse,
 			String prefix, int depth, Map<Object, Object> variableValues, Map parameterValues)
 	{
-		new Exception().printStackTrace();
 		String sessionID = httpSession.getId();
 		DeploymentSession session = null; 
 		synchronized (sessions) {
