@@ -507,21 +507,27 @@ public class HttpConnector
 		boolean subdialog = false;
 		if (!pathInfo.startsWith(PATH_PREFIX))
 		{
+			System.out.println("invoking process engine for new session: " + pathInfo);
 			newSession = true;
 			synchronized (this)
 			{
 				for (String path : deploymentsByPath.keySet())
 				{
+					System.out.println("Comparing to deployment: " + path);
 					if (pathInfo.equals(path) || pathInfo.startsWith(path)
 							&& pathInfo.length() > path.length()
 							&& pathInfo.charAt(path.length()) == '/')
 					{
 						deployment = deploymentsByPath.get(path);
+						System.out.println("Matching deployment found: " + deployment);
 						brand = req.getParameter("BRAND");
 						if(req.getParameter("SUBDIALOG") != null)
 							subdialog = Boolean.parseBoolean(req.getParameter("SUBDIALOG"));
 						if (pathInfo.length() > path.length() + 1)
+						{
 							entryName = pathInfo.substring(path.length() + 1);
+							System.out.println("Entry point name: " + entryName);
+						}
 						break;
 					}
 				}

@@ -365,6 +365,7 @@ public class Blueprint
 		index.put("Default", (Executable)targetsByActionID.get(startActionIds[0]));
 		for(String startActionId : startActionIds)
 		{
+			System.out.println("Indexing start action: " + definition.getActionName(startActionId) + "[" + startActionId + "]");
 			index.put(definition.getActionName(startActionId), (Executable)targetsByActionID.get(startActionId));
 		}
 		return index;
