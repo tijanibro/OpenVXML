@@ -67,14 +67,14 @@ public class Deployment implements IProcessDescriptor, IResourceManagerRegistry,
 	public Deployment(IProcessEngine engine, IProcessDefinition definition,
 			Dictionary properties, Bundle contributor, IReporter reporter)
 	{
-		process = engine.createProcess(definition, this);
 		this.properties = properties;
+		this.contributor = contributor;
+		this.reporter = reporter;
+		process = engine.createProcess(definition, this);
 		String[] resourceManagerIDs = (String[])properties.get("resources"); //$NON-NLS-1$
 		if (resourceManagerIDs != null)
 			for (int i = 0; i < resourceManagerIDs.length; ++i)
 				resources.put(resourceManagerIDs[i], null);
-		this.contributor = contributor;
-		this.reporter = reporter;
 		if(reporter.isReportingEnabled())
 		{
 			Dictionary report = new Hashtable();
