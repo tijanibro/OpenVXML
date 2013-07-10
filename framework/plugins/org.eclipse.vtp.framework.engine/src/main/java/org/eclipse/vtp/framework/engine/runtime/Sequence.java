@@ -52,8 +52,8 @@ public class Sequence extends Scope
 			String entry = (String)context.getAttribute(SEQUENCE_ENTRY);
 			if(entry == null || entry.equals(""))
 				entry = "Default";
-			context.info("Sequence position is null, starting at entry point: " + entry);
 			this.next = execution.session.process.blueprint.getEntryPoint(entry);
+			context.info("Sequence position is null, starting at entry point: " + entry);
 		}
 		else if (position instanceof String)
 			this.next = execution.session.process.blueprint

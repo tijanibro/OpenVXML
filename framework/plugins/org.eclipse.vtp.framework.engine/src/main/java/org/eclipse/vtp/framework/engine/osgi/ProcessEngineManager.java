@@ -309,6 +309,7 @@ public final class ProcessEngineManager extends SingletonTracker
 		ActionDescriptor loadAction(Bundle contributor,
 				IConfigurationElement element)
 		{
+			System.out.println("Loading action class: " + element.getAttribute("type"));
 			return new ActionDescriptor(element.getAttribute("id"), //$NON-NLS-1$
 					element.getAttribute("name"), //$NON-NLS-1$
 					loadClass(contributor, element.getAttribute("type")), //$NON-NLS-1$
