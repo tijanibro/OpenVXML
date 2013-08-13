@@ -137,7 +137,7 @@ public abstract class Dialog extends Widget implements VXMLConstants
 	 * 
 	 * @return The list of event handlers for this dialog.
 	 */
-	EventHandler[] getEventHandlers()
+	public EventHandler[] getEventHandlers()
 	{
 		return eventHandlers.toArray(new EventHandler[eventHandlers
 				.size()]);

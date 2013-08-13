@@ -82,7 +82,7 @@ public class VXMLDocument extends WidgetDocument implements VXMLConstants
 	 */
 	public String getApplicationURI()
 	{
-		return version;
+		return applicationURI;
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class VXMLDocument extends WidgetDocument implements VXMLConstants
 	 * 
 	 * @return The list of variables in this document's scope.
 	 */
-	Variable[] getVariables()
+	public Variable[] getVariables()
 	{
 		return variables.toArray(new Variable[variables.size()]);
 	}
@@ -126,7 +126,7 @@ public class VXMLDocument extends WidgetDocument implements VXMLConstants
 	 * 
 	 * @return The list of script blocks in this document.
 	 */
-	Script[] getScripts()
+	public Script[] getScripts()
 	{
 		return scripts.toArray(new Script[scripts.size()]);
 	}
@@ -136,7 +136,7 @@ public class VXMLDocument extends WidgetDocument implements VXMLConstants
 	 * 
 	 * @return The list of dialogs in this document.
 	 */
-	Dialog[] getDialogs()
+	public Dialog[] getDialogs()
 	{
 		return dialogs.toArray(new Dialog[dialogs.size()]);
 	}
@@ -146,7 +146,7 @@ public class VXMLDocument extends WidgetDocument implements VXMLConstants
 	 * 
 	 * @return The list of event handlers for this document.
 	 */
-	EventHandler[] getEventHandlers()
+	public EventHandler[] getEventHandlers()
 	{
 		return eventHandlers.toArray(new EventHandler[eventHandlers.size()]);
 	}

@@ -142,7 +142,7 @@ public class Subdialog extends FormElement
 	 * 
 	 * @return The list of parameters for this subdialog.
 	 */
-	Parameter[] getParameters()
+	public Parameter[] getParameters()
 	{
 		return parameters.toArray(new Parameter[parameters.size()]);
 	}
@@ -152,7 +152,7 @@ public class Subdialog extends FormElement
 	 * 
 	 * @return The list of filled handlers for this subdialog.
 	 */
-	Filled[] getFilledHandlers()
+	public Filled[] getFilledHandlers()
 	{
 		return filledHandlers.toArray(new Filled[filledHandlers.size()]);
 	}
@@ -162,7 +162,7 @@ public class Subdialog extends FormElement
 	 * 
 	 * @return The list of event handlers for this subdialog.
 	 */
-	EventHandler[] getEventHandlers()
+	public EventHandler[] getEventHandlers()
 	{
 		return eventHandlers.toArray(new EventHandler[eventHandlers
 				.size()]);

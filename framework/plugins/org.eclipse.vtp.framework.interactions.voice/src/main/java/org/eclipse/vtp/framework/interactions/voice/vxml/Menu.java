@@ -90,7 +90,7 @@ public class Menu extends Dialog
 	 * 
 	 * @return The list of choices for this menu.
 	 */
-	Choice[] getChoices()
+	public Choice[] getChoices()
 	{
 		return choices.toArray(new Choice[choices.size()]);
 	}

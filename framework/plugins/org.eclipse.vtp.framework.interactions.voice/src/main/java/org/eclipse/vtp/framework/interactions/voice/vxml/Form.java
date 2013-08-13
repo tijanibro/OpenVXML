@@ -81,7 +81,7 @@ public class Form extends Dialog
 	 * 
 	 * @return The list of variables for this form.
 	 */
-	Variable[] getVariables()
+	public Variable[] getVariables()
 	{
 		return variables.toArray(new Variable[variables.size()]);
 	}
@@ -91,7 +91,7 @@ public class Form extends Dialog
 	 * 
 	 * @return The list of elements for this form.
 	 */
-	FormElement[] getFormElements()
+	public FormElement[] getFormElements()
 	{
 		return formElements.toArray(new FormElement[formElements
 				.size()]);
@@ -102,7 +102,7 @@ public class Form extends Dialog
 	 * 
 	 * @return The list of filled handlers for this form.
 	 */
-	Filled[] getFilledHandlers()
+	public Filled[] getFilledHandlers()
 	{
 		return filledHandlers.toArray(new Filled[filledHandlers.size()]);
 	}
