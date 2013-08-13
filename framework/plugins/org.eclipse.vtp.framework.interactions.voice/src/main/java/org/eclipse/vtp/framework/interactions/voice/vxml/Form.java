@@ -27,7 +27,7 @@ import org.xml.sax.helpers.AttributesImpl;
  * handlers can be added to the form. This provides flexibility in the way a
  * form is completed or progresses during processing.<br>
  * <br>
- * Variables can be added at the form level. These variables are then accessable
+ * Variables can be added at the form level. These variables are then accessible
  * to all child elements and are a convenient way to pass data from one child to
  * another.
  * 

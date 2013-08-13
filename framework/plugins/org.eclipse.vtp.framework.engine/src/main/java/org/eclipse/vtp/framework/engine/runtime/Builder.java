@@ -64,7 +64,7 @@ public abstract class Builder
 					Object value = resolveDependency(parameterTypes[j]);
 					if (value == null)
 					{
-						System.err.println("Could not locate: " + parameterTypes[j].getName() + " while resolveing " + constructors[0].getDeclaringClass().getName());
+						System.err.println("Could not locate: " + parameterTypes[j].getName() + " while resolving " + constructors[0].getDeclaringClass().getName());
 						arguments.clear();
 						break;
 					}
