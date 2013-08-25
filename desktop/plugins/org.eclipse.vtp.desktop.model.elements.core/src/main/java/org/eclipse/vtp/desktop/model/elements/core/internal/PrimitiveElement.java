@@ -19,16 +19,17 @@ import java.util.Properties;
 
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.design.IExitBroadcastReceiver;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.design.DesignElement;
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveBroadcastReceiverProvider;
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveInformationProvider;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElementManager.PrimitiveElementTemplate;
 import org.eclipse.vtp.desktop.model.elements.core.internal.views.PalletItemFilter;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.IExitBroadcastReceiver;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.DesignElement;
 
 public class PrimitiveElement extends DesignElement
 {

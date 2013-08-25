@@ -9,16 +9,17 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.eclipse.vtp.desktop.model.core.branding.BrandManager;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationException;
-import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationManager;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.MenuChoice;
 import org.eclipse.vtp.framework.util.XMLUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import com.openmethods.openvxml.desktop.model.branding.BrandManager;
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationException;
+import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationManager;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
 public class MenuChoiceBindingManager implements ConfigurationManager
 {

@@ -22,13 +22,14 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.dialogs.PropertyPage;
-import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.InteractiveWorkflowProject;
 import org.eclipse.vtp.desktop.projects.core.util.BrandConfigurationScreen;
 import org.eclipse.vtp.desktop.projects.core.util.ConfigurationBrandManager;
 import org.eclipse.vtp.desktop.projects.interactive.core.util.InteractionSupportManager;
 import org.eclipse.vtp.desktop.projects.interactive.core.util.InteractionTypeConfigurationScreen;
 import org.eclipse.vtp.desktop.projects.interactive.core.util.LanguageConfigurationScreen;
+
+import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 public class ApplicationProjectConfigurationPropertyPage extends PropertyPage
 {

@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationContext;
 import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationContextRegistry;
 
@@ -45,7 +45,7 @@ public class ConfigurationContextSelector
 	/**
 	 * @param brandManager
 	 */
-	public ConfigurationContextSelector(IWorkflowProject workflowProject)
+	public ConfigurationContextSelector(IOpenVXMLProject workflowProject)
 	{
 		super();
 		List<ConfigurationContext> contexts = ConfigurationContextRegistry.getInstance().getConfigurationContextsFor(workflowProject);

@@ -1,6 +1,6 @@
 package org.eclipse.vtp.desktop.editors.core.actions;
 
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 public interface DesignElementActionFilter
 {

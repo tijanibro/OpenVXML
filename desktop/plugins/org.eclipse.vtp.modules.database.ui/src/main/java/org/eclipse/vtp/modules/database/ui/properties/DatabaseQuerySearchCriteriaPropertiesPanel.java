@@ -58,16 +58,21 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.vtp.desktop.core.dialogs.FramedDialog;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.IBusinessObjectSet;
-import org.eclipse.vtp.desktop.model.core.IDatabase;
-import org.eclipse.vtp.desktop.model.core.IDatabaseTable;
-import org.eclipse.vtp.desktop.model.core.IDatabaseTableColumn;
-import org.eclipse.vtp.desktop.model.core.FieldType.Primitive;
-import org.eclipse.vtp.desktop.model.core.design.ObjectDefinition;
-import org.eclipse.vtp.desktop.model.core.design.ObjectField;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.modules.database.ui.DatabaseQueryInformationProvider;
+
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType.Primitive;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectSet;
+import com.openmethods.openvxml.desktop.model.databases.IDatabase;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseProjectAspect;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseSet;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseTable;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseTableColumn;
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectDefinition;
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectField;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
 
 /**
  * @author Trip
@@ -90,6 +95,7 @@ public class DatabaseQuerySearchCriteriaPropertiesPanel
 	ComboBoxCellEditor comparisonEditor;
 	ValueCellEditor valueEditor;
 	IBusinessObjectSet businessObjectSet = null;
+	IDatabaseSet databaseSet = null;
 
 	public DatabaseQuerySearchCriteriaPropertiesPanel(
 		PrimitiveElement dqe, DatabaseQuerySettingsStructure settings)
@@ -97,7 +103,11 @@ public class DatabaseQuerySearchCriteriaPropertiesPanel
 		super("Search Criteria", dqe);
 		this.queryElement = (DatabaseQueryInformationProvider)dqe.getInformationProvider();
 		this.settings = settings;
-		businessObjectSet = dqe.getDesign().getDocument().getProject().getBusinessObjectSet();
+		IOpenVXMLProject project = dqe.getDesign().getDocument().getProject();
+		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
+		IDatabaseProjectAspect databaseAspect = (IDatabaseProjectAspect)project.getProjectAspect(IDatabaseProjectAspect.ASPECT_ID);
+		databaseSet = databaseAspect.getDatabaseSet();
 	}
 
 	public void createControls(Composite parent)
@@ -288,8 +298,7 @@ public class DatabaseQuerySearchCriteriaPropertiesPanel
 				&& !settings.sourceDatabase.equals("")
 				&& !settings.sourceDatabaseTable.equals(""))
 		{
-			List<IDatabase> databases =
-				getElement().getDesign().getDocument().getProject().getDatabaseSet().getDatabases();
+			List<IDatabase> databases =	databaseSet.getDatabases();
 
 			for(int i = 0; i < databases.size(); i++)
 			{

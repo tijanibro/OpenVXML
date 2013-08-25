@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.PromptBindingCase;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.PromptBindingEntry;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.PromptBindingItem;
@@ -55,6 +54,8 @@ import org.eclipse.vtp.framework.interactions.core.media.IMediaProvider;
 import org.eclipse.vtp.framework.interactions.core.media.PlaceholderContent;
 import org.eclipse.vtp.framework.interactions.core.media.ReferencedContent;
 import org.eclipse.vtp.framework.interactions.core.media.TextContent;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
 
 /**
  * A dialog for editing a list of content objects.

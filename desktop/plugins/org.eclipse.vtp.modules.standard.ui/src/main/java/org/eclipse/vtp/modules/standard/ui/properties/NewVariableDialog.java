@@ -21,11 +21,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.vtp.desktop.core.dialogs.FramedDialog;
-import org.eclipse.vtp.desktop.model.core.FieldType;
-import org.eclipse.vtp.desktop.model.core.FieldType.Primitive;
-import org.eclipse.vtp.desktop.model.core.IBusinessObject;
-import org.eclipse.vtp.desktop.model.core.IBusinessObjectSet;
 import org.eclipse.vtp.framework.util.VariableNameValidator;
+
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObject;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectSet;
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType.Primitive;
 
 public class NewVariableDialog extends FramedDialog
 {

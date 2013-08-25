@@ -27,18 +27,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.vtp.desktop.model.core.FieldType;
-import org.eclipse.vtp.desktop.model.core.FieldType.Primitive;
-import org.eclipse.vtp.desktop.model.core.IBusinessObject;
-import org.eclipse.vtp.desktop.model.core.IBusinessObjectField;
-import org.eclipse.vtp.desktop.model.core.IBusinessObjectSet;
-import org.eclipse.vtp.desktop.model.core.IWorkflowEntry;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.BusinessObject;
-import org.eclipse.vtp.desktop.model.core.internal.VariableHelper;
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveInformationProvider;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.framework.util.XMLUtilities;
@@ -47,8 +36,23 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObject;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectField;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectSet;
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType.Primitive;
+import com.openmethods.openvxml.desktop.model.businessobjects.internal.BusinessObject;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowEntry;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.VariableHelper;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
+
 public class BeginInformationProvider extends PrimitiveInformationProvider implements IWorkflowEntry
 {
+	private IBusinessObjectSet businessObjectSet = null;
 	List<ConnectorRecord> connectorRecords = new ArrayList<ConnectorRecord>();
 	private List<VariableDeclaration> variableDeclarations;
 	private String defaultBrandId;
@@ -57,6 +61,9 @@ public class BeginInformationProvider extends PrimitiveInformationProvider imple
 	public BeginInformationProvider(PrimitiveElement element)
 	{
 		super(element);
+		IOpenVXMLProject project = element.getDesign().getDocument().getProject();
+		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 		connectorRecords.add(new ConnectorRecord(element, "error.disconnect.hangup", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
 		variableDeclarations = new ArrayList<VariableDeclaration>();
@@ -161,7 +168,7 @@ public class BeginInformationProvider extends PrimitiveInformationProvider imple
 					if(prim != null)
 						type = new FieldType(Primitive.ARRAY, prim);
 					else
-						type = new FieldType(Primitive.ARRAY, getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(vtype));
+						type = new FieldType(Primitive.ARRAY, businessObjectSet.getBusinessObject(vtype));
 				}
 				else
 				{
@@ -169,7 +176,7 @@ public class BeginInformationProvider extends PrimitiveInformationProvider imple
 					if(prim != null)
 						type = new FieldType(prim);
 					else
-						type = new FieldType(getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(vtype));
+						type = new FieldType(businessObjectSet.getBusinessObject(vtype));
 				}
 			}
 			else
@@ -177,7 +184,7 @@ public class BeginInformationProvider extends PrimitiveInformationProvider imple
 				List<org.w3c.dom.Element> typeElements = XMLUtilities.getElementsByTagName(varElement, "data-type", true);
 				if(typeElements.size() > 0)
 				{
-					type = FieldType.load(getElement().getDesign().getDocument().getProject().getBusinessObjectSet(), typeElements.get(0));
+					type = FieldType.load(businessObjectSet, typeElements.get(0));
 				}
 			}
 			int vvaluetype =
@@ -231,7 +238,7 @@ public class BeginInformationProvider extends PrimitiveInformationProvider imple
 	public List<Variable> getOutgoingVariables(String exitPoint, boolean localOnly)
     {
 		List<Variable> variables = new ArrayList<Variable>();
-		Variable platform = VariableHelper.constructVariable("Platform", getElement().getDesign().getDocument().getProject().getBusinessObjectSet(), new FieldType(getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject("Platform")));
+		Variable platform = VariableHelper.constructVariable("Platform", businessObjectSet, new FieldType(businessObjectSet.getBusinessObject("Platform")));
 		variables.add(platform);
 		HashMap<String, Variable> map = new HashMap<String, Variable>();
 
@@ -244,7 +251,7 @@ public class BeginInformationProvider extends PrimitiveInformationProvider imple
 			VariableDeclaration vd = variableDeclarations.get(i);
 			if(map.get(vd.name) == null)
 			{
-				Variable v = VariableHelper.constructVariable(vd.name, getElement().getDesign().getDocument().getProject().getBusinessObjectSet(), vd.getType());
+				Variable v = VariableHelper.constructVariable(vd.name, businessObjectSet, vd.getType());
 				if(v != null)
 				{
 					v.setSecure(vd.isSecure());
@@ -259,7 +266,6 @@ public class BeginInformationProvider extends PrimitiveInformationProvider imple
 	public void declareBusinessObjects()
 	{
 		boolean foundPlatform = false;
-		IBusinessObjectSet businessObjectSet = this.getElement().getDesign().getDocument().getProject().getBusinessObjectSet();
 		List<IBusinessObject> currentObjects = businessObjectSet.getBusinessObjects();
 ex:		for(IBusinessObject businessObject : currentObjects)
 		{

@@ -25,14 +25,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
-import org.eclipse.vtp.desktop.model.core.IDesignFolder;
-import org.eclipse.vtp.desktop.model.core.IDesignItemContainer;
-import org.eclipse.vtp.desktop.model.core.IDesignRootFolder;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignEntryPoint;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.modules.standard.ui.PortalExitInformationProvider;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignFolder;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignItemContainer;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignRootFolder;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignEntryPoint;
 
 /**
  * LanguageSelectionGeneralPropertiesPanel.

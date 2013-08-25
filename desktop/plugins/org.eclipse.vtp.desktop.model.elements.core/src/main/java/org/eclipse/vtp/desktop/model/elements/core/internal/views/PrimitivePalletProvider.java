@@ -19,13 +19,14 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.vtp.desktop.core.Activator;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElementFactory;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElementManager;
 import org.eclipse.vtp.desktop.views.pallet.PalletItem;
 import org.eclipse.vtp.desktop.views.pallet.PalletItemObserver;
 import org.eclipse.vtp.desktop.views.pallet.PalletItemProvider;
 import org.osgi.framework.Bundle;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
 public class PrimitivePalletProvider implements PalletItemProvider
 {

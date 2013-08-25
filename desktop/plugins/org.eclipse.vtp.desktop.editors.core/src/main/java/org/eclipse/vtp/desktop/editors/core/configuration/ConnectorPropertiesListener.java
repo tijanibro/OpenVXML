@@ -13,7 +13,7 @@ package org.eclipse.vtp.desktop.editors.core.configuration;
 
 import java.util.List;
 
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
 
 public interface ConnectorPropertiesListener
 {

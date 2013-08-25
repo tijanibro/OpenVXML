@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.vtp.desktop.model.core.branding.BrandManager;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
 import org.eclipse.vtp.desktop.model.core.internal.WorkflowProject;
 import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProject;
@@ -21,6 +19,9 @@ import org.eclipse.vtp.framework.interactions.core.media.IMediaProvider;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import com.openmethods.openvxml.desktop.model.branding.BrandManager;
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
 
 public class InteractiveWorkflowProject extends WorkflowProject implements IInteractiveWorkflowProject, IMediaProviderManager
 {

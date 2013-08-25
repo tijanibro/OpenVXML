@@ -31,14 +31,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
-import org.eclipse.vtp.desktop.model.core.IWorkflowEntry;
-import org.eclipse.vtp.desktop.model.core.IWorkflowExit;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.WorkflowTraversalHelper;
-import org.eclipse.vtp.desktop.model.core.internal.branding.BrandContext;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.configuration.ExitBinding;
 import org.eclipse.vtp.desktop.model.elements.core.configuration.FragmentConfigurationListener;
 import org.eclipse.vtp.desktop.model.elements.core.configuration.FragmentConfigurationManager;
@@ -46,6 +39,16 @@ import org.eclipse.vtp.desktop.model.elements.core.configuration.OutputBinding;
 import org.eclipse.vtp.desktop.model.elements.core.configuration.OutputBrandBinding;
 import org.eclipse.vtp.desktop.model.elements.core.configuration.OutputItem;
 import org.eclipse.vtp.desktop.model.elements.core.internal.ApplicationFragmentElement;
+
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.internal.BrandContext;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowEntry;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowExit;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowProjectAspect;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.WorkflowTraversalHelper;
 
 public class FragmentOutputMappingPanel extends DesignElementPropertiesPanel implements FragmentConfigurationListener
 {
@@ -362,11 +365,13 @@ outer:	for(Variable var : inc)
 			String entryId = manager.getEntryId();
 			if(entryId != null && !entryId.equals(""))
 			{
-				IWorkflowEntry entry = applicationFragmentElement.getReferencedModel().getWorkflowEntry(entryId);
+				IOpenVXMLProject referencedModel = applicationFragmentElement.getReferencedModel();
+				IWorkflowProjectAspect workflowAspect = (IWorkflowProjectAspect)referencedModel.getProjectAspect(IWorkflowProjectAspect.ASPECT_ID);
+				IWorkflowEntry entry = workflowAspect.getWorkflowEntry(entryId);
 				if(entry != null)
 				{
 					List<IDesignDocument> workingCopies = new ArrayList<IDesignDocument>();
-					WorkflowTraversalHelper wth = new WorkflowTraversalHelper(applicationFragmentElement.getReferencedModel(), workingCopies);
+					WorkflowTraversalHelper wth = new WorkflowTraversalHelper(workflowAspect, workingCopies);
 					returnElements = wth.getDownStreamWorkflowExits(entry);
 				}
 			}

@@ -23,13 +23,14 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.WorkflowCore;
-import org.eclipse.vtp.desktop.model.core.internal.design.Design;
 import org.eclipse.vtp.desktop.model.elements.core.internal.ApplicationFragmentElementFactory;
 import org.eclipse.vtp.desktop.views.pallet.PalletItem;
 import org.eclipse.vtp.desktop.views.pallet.PalletItemObserver;
 import org.eclipse.vtp.desktop.views.pallet.PalletItemProvider;
+
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.Design;
 
 public class ApplicationFragmentPalletProvider implements PalletItemProvider, IResourceChangeListener
 {
@@ -46,8 +47,8 @@ public class ApplicationFragmentPalletProvider implements PalletItemProvider, IR
 	private void loadProjects()
 	{
 		primitiveItems.clear();
-		List<IWorkflowProject> projects = WorkflowCore.getDefault().getWorkflowModel().listWorkflowProjects();
-		for (IWorkflowProject project : projects)
+		List<IOpenVXMLProject> projects = WorkflowCore.getDefault().getWorkflowModel().listWorkflowProjects();
+		for (IOpenVXMLProject project : projects)
 		{
 			PalletItem item = new PalletItem(project.getName(), null,
 				new ApplicationFragmentElementFactory(), project.getId())

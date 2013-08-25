@@ -3,13 +3,14 @@ package org.eclipse.vtp.modules.standard.ui;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint.ConnectionPointType;
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
 import org.eclipse.vtp.desktop.model.elements.core.IDialogExit;
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveInformationProvider;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint.ConnectionPointType;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
 
 public class ExitInformationProvider extends PrimitiveInformationProvider implements IDialogExit
 {

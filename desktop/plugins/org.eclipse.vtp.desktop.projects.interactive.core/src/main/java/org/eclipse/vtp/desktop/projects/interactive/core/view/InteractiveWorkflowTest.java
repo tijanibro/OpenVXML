@@ -3,8 +3,9 @@ package org.eclipse.vtp.desktop.projects.interactive.core.view;
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
+
+import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 public class InteractiveWorkflowTest extends PropertyTester
 {

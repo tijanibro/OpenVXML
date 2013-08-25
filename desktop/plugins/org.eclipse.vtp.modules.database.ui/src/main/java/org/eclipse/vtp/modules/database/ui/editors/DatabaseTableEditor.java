@@ -63,13 +63,14 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.vtp.desktop.model.core.ColumnType;
-import org.eclipse.vtp.desktop.model.core.IDatabaseTable;
-import org.eclipse.vtp.desktop.model.core.IDatabaseTableColumn;
 import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.framework.util.XMLWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.openmethods.openvxml.desktop.model.databases.ColumnType;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseTable;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseTableColumn;
 
 /**
  * @author Trip

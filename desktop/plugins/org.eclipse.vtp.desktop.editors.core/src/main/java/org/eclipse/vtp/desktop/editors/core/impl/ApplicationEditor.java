@@ -104,23 +104,25 @@ import org.eclipse.vtp.desktop.editors.themes.core.ConnectorFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.ElementFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.Theme;
 import org.eclipse.vtp.desktop.editors.themes.core.ThemeManager;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
-import org.eclipse.vtp.desktop.model.core.IDesignDocumentListener;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.WorkflowCore;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
-import org.eclipse.vtp.desktop.model.core.design.IDesignComponent;
-import org.eclipse.vtp.desktop.model.core.design.IDesignConstants;
-import org.eclipse.vtp.desktop.model.core.design.IDesignViewer;
-import org.eclipse.vtp.desktop.model.core.internal.DesignDocument;
-import org.eclipse.vtp.desktop.model.core.internal.DesignWriter;
-import org.eclipse.vtp.desktop.model.core.internal.IDesignFilter;
-import org.eclipse.vtp.desktop.model.core.internal.PartialDesignDocument;
-import org.eclipse.vtp.desktop.model.core.internal.design.Design;
 import org.eclipse.vtp.desktop.views.pallet.PalletFocusListener;
 import org.eclipse.vtp.desktop.views.pallet.PalletFocusProvider;
 import org.eclipse.vtp.framework.util.XMLWriter;
 import org.w3c.dom.Document;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocumentListener;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowProjectAspect;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignComponent;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConstants;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignViewer;
+import com.openmethods.openvxml.desktop.model.workflow.internal.DesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.internal.DesignWriter;
+import com.openmethods.openvxml.desktop.model.workflow.internal.IDesignFilter;
+import com.openmethods.openvxml.desktop.model.workflow.internal.PartialDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.Design;
 
 public class ApplicationEditor extends EditorPart implements ControllerListener, ModelNavigationListener, PalletFocusProvider, IDesignDocumentListener, IDesignViewer, UndoSystem
 {
@@ -128,7 +130,8 @@ public class ApplicationEditor extends EditorPart implements ControllerListener,
 	List<CanvasRecord> designs = new ArrayList<CanvasRecord>();
 	Map<String, Object> resourceMap = new HashMap<String, Object>();
 	CanvasRecord currentCanvas = null;
-	IWorkflowProject project = null;
+	IOpenVXMLProject project = null;
+	IWorkflowProjectAspect workflowAspect = null;
 	IDesignDocument designDocument = null;
 	CTabFolder canvasTabs = null;
 	private List<PalletFocusListener> palletListeners = new LinkedList<PalletFocusListener>();
@@ -156,6 +159,7 @@ public class ApplicationEditor extends EditorPart implements ControllerListener,
 		try
 		{
 			project = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject(fileInput.getFile().getProject());
+			workflowAspect = (IWorkflowProjectAspect)project.getProjectAspect(IWorkflowProjectAspect.ASPECT_ID);
 			this.setPartName(fileInput.getName());
 			designDocument = (IDesignDocument)WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowResource(fileInput.getFile());
 			designDocument.becomeWorkingCopy();
@@ -804,7 +808,7 @@ public class ApplicationEditor extends EditorPart implements ControllerListener,
 
 	public void navigateToElement(String elementId)
     {
-		designDocument.getProject().navigateToElement(elementId);
+		workflowAspect.navigateToElement(elementId);
     }
 	
 	public void displayElement(String elementId)

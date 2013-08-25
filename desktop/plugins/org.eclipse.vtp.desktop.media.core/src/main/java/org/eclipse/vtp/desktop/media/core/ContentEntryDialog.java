@@ -28,11 +28,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
 import org.eclipse.vtp.desktop.model.interactive.core.content.ContentType;
 import org.eclipse.vtp.framework.interactions.core.media.Content;
 import org.eclipse.vtp.framework.interactions.core.media.IContentType;
 import org.eclipse.vtp.framework.interactions.core.media.IMediaProvider;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
 
 /**
  * A dialog for editing an individual content object.

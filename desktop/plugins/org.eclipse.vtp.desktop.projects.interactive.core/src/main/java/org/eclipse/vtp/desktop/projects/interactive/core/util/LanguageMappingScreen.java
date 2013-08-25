@@ -49,10 +49,6 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.vtp.desktop.model.core.branding.BrandManager;
-import org.eclipse.vtp.desktop.model.core.branding.BrandManagerListener;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.internal.branding.Brand;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProject;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractiveWorkflowCore;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.InteractionTypeSupport;
@@ -61,6 +57,11 @@ import org.eclipse.vtp.desktop.projects.core.dialogs.BrandDialog;
 import org.eclipse.vtp.desktop.projects.interactive.core.dialogs.LanguageConfigurationDialog;
 import org.eclipse.vtp.desktop.projects.interactive.core.util.InteractionSupportManager.SupportRecord;
 import org.eclipse.vtp.framework.util.Guid;
+
+import com.openmethods.openvxml.desktop.model.branding.BrandManager;
+import com.openmethods.openvxml.desktop.model.branding.BrandManagerListener;
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.internal.Brand;
 
 /**
  * A configuration UI for an application's build path.

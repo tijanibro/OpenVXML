@@ -82,6 +82,6 @@ public interface IWorkflowResource extends IAdaptable
 	 *
 	 * @return The containing project
 	 */
-	public IWorkflowProject getProject();
+	public IOpenVXMLProject getProject();
 	
 }

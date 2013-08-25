@@ -15,10 +15,11 @@ import java.util.List;
 
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.PromptBindingItem;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.PromptBindingNode;
 import org.eclipse.vtp.framework.interactions.core.media.IMediaProvider;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
 
 public class PromptBindingDialog extends ContentTreeDialog {
 	PromptBindingItem promptBinding;

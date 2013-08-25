@@ -42,8 +42,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.vtp.desktop.model.core.design.IDesignConnector;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnector;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
 
 public class ConnectorPropertiesPanel extends ComponentPropertiesPanel
 {

@@ -19,7 +19,7 @@
             template="dialogs/Blank.dialog"/>
    </extension>
    <extension
-         point="org.eclipse.vtp.desktop.model.core.elementType">
+         point="com.openmethods.openvxml.desktop.model.workflow.elementType">
       <element_type
             class="org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement"
             id="org.eclipse.vtp.desktop.model.elements.core.basic"/>
@@ -46,7 +46,7 @@
       </configuration-exporter>
    </extension>
    <extension
-         point="org.eclipse.vtp.desktop.model.core.configurationManagers">
+         point="com.openmethods.openvxml.desktop.model.workflow.configurationManagers">
       <configuration-manager
             class="org.eclipse.vtp.desktop.model.elements.core.configuration.FragmentConfigurationManager"
             id="org.eclipse.vtp.configuration.include">

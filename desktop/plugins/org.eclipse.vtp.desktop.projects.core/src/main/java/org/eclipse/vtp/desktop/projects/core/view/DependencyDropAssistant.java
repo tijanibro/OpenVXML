@@ -21,8 +21,9 @@ import org.eclipse.swt.dnd.TransferData;
 import org.eclipse.ui.actions.CopyFilesAndFoldersOperation;
 import org.eclipse.ui.navigator.CommonDropAdapter;
 import org.eclipse.ui.navigator.CommonDropAdapterAssistant;
-import org.eclipse.vtp.desktop.model.core.IDependency;
-import org.eclipse.vtp.desktop.model.core.IDependencySet;
+
+import com.openmethods.openvxml.desktop.model.dependencies.IDependency;
+import com.openmethods.openvxml.desktop.model.dependencies.IDependencySet;
 
 public class DependencyDropAssistant extends CommonDropAdapterAssistant
 {

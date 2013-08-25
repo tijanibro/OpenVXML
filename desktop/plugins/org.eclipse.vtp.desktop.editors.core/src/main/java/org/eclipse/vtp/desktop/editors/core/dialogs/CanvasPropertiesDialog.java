@@ -30,9 +30,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.vtp.desktop.editors.core.model.RenderedModel;
-import org.eclipse.vtp.desktop.model.core.design.IDesignConstants;
-import org.eclipse.vtp.desktop.model.core.design.PaperSize;
-import org.eclipse.vtp.desktop.model.core.design.PaperSizeManager;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConstants;
+import com.openmethods.openvxml.desktop.model.workflow.design.PaperSize;
+import com.openmethods.openvxml.desktop.model.workflow.design.PaperSizeManager;
 
 public class CanvasPropertiesDialog extends Dialog
 {
@@ -41,11 +42,11 @@ public class CanvasPropertiesDialog extends Dialog
  	/** A text field used for displaying and changing the name of the canvas */
  	Text canvasName = null;
  	/** A combo box used to select the paper size of the canvas 
- 	 * @see org.eclipse.vtp.desktop.editors.core.model.PaperSize
+ 	 * @see com.openmethods.openvxml.desktop.model.workflow.design.PaperSize
  	 */
 	Combo paperSizeCombo = null;
 	/** The list of available paper sizes
-	 * @see org.eclipse.vtp.desktop.editors.core.model.PaperSize
+	 * @see com.openmethods.openvxml.desktop.model.workflow.design.PaperSize
 	 */
 	List<PaperSize> paperSizes = PaperSizeManager.getDefault().getPaperSizes();
 	/** A radio button used to select a portrait orientation of the canvas */

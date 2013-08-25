@@ -33,7 +33,8 @@ import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.actions.DeleteResourceAction;
 import org.eclipse.ui.actions.TextActionHandler;
 import org.eclipse.ui.navigator.ICommonMenuConstants;
-import org.eclipse.vtp.desktop.model.core.IDesignRootFolder;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignRootFolder;
 
 /**
  * @since 3.2

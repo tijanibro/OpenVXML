@@ -13,11 +13,12 @@ package org.eclipse.vtp.desktop.model.elements.core.configuration;
 
 import java.io.PrintStream;
 
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationManager;
 import org.eclipse.vtp.framework.util.XMLUtilities;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationManager;
 
 /**
  * This class represents the binding of a binding item to a specific brand.

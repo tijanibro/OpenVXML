@@ -20,7 +20,8 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.vtp.desktop.core.dialogs.ContentPage;
-import org.eclipse.vtp.desktop.model.core.internal.branding.BrandContext;
+
+import com.openmethods.openvxml.desktop.model.branding.internal.BrandContext;
 
 /**
  * @author Trip

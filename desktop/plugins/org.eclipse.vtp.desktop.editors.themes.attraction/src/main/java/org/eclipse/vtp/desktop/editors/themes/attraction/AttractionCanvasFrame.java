@@ -18,7 +18,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.vtp.desktop.editors.themes.core.CanvasFrame;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
 /**
  * This is the Attraction theme's implementation of the canvas frame interface.

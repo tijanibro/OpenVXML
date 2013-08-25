@@ -6,8 +6,9 @@ import java.util.List;
 import org.eclipse.vtp.desktop.editors.core.configuration.ComponentPropertiesPanel;
 import org.eclipse.vtp.desktop.editors.core.configuration.ComponentPropertiesPanelProvider;
 import org.eclipse.vtp.desktop.editors.core.configuration.ConnectorPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.design.IDesignComponent;
-import org.eclipse.vtp.desktop.model.core.design.IDesignConnector;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignComponent;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnector;
 
 public class ConnectorPropertiesPanelProvider implements
 	ComponentPropertiesPanelProvider

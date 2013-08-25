@@ -55,10 +55,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.vtp.desktop.core.dialogs.FramedDialog;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.ObjectDefinition;
-import org.eclipse.vtp.desktop.model.core.design.ObjectField;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.framework.util.QuickSort;
 import org.eclipse.vtp.framework.util.VariableNameValidator;
@@ -66,6 +62,11 @@ import org.eclipse.vtp.modules.interactive.ui.SubdialogInformationProvider;
 import org.eclipse.vtp.modules.interactive.ui.SubdialogInformationProvider.SubdialogInput;
 import org.eclipse.vtp.modules.interactive.ui.SubdialogInformationProvider.SubdialogOutput;
 import org.eclipse.vtp.modules.interactive.ui.SubdialogInformationProvider.SubdialogParameter;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectDefinition;
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectField;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
 
 /**
  * The UI used to configure a Subdialog module.

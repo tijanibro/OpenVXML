@@ -14,9 +14,10 @@ package org.eclipse.vtp.modules.attacheddata.ui.configuration.request;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
 
 /**
  * This is the base class for all bindings contained by this configuration

@@ -49,12 +49,16 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.vtp.desktop.core.Activator;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.VariableHelper;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.modules.standard.ui.VariableAssignmentInformationProvider;
 import org.eclipse.vtp.modules.standard.ui.VariableDeclaration;
+
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectSet;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.VariableHelper;
 
 /**
  * The graphical user interface used to configure the Variable Assignment module.
@@ -64,6 +68,7 @@ import org.eclipse.vtp.modules.standard.ui.VariableDeclaration;
  */
 public class AssignmentVariablesPropertyPanel extends DesignElementPropertiesPanel
 {
+	IBusinessObjectSet businessObjectSet = null;
 	List<VariableDeclaration> declarations;
 	List<Variable> variables;
 	TableViewer variableViewer;
@@ -85,6 +90,9 @@ public class AssignmentVariablesPropertyPanel extends DesignElementPropertiesPan
 	public AssignmentVariablesPropertyPanel(String name, IDesignElement element)
 	{
 		super(name, element);
+		IOpenVXMLProject wp = getElement().getDesign().getDocument().getProject();
+		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)wp.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		declarations = ((VariableAssignmentInformationProvider)((PrimitiveElement)element).getInformationProvider()).getDeclarations();
 		populateVariables();
 	}
@@ -98,8 +106,7 @@ public class AssignmentVariablesPropertyPanel extends DesignElementPropertiesPan
 			lookup.put(v.getName(), v);
 		for(VariableDeclaration vd : declarations)
 		{
-			Variable v = VariableHelper.constructVariable(vd.getName(), getElement().getDesign()
-				 .getDocument().getProject().getBusinessObjectSet(), vd.getType());
+			Variable v = VariableHelper.constructVariable(vd.getName(), businessObjectSet, vd.getType());
 			if(v != null)
 			{
 				v.setSecure(vd.isSecure());
@@ -276,8 +283,7 @@ public class AssignmentVariablesPropertyPanel extends DesignElementPropertiesPan
 							reservedNames.add(vd.getName());
 						}
 						NewVariableDialog nvd =
-							new NewVariableDialog(addButton.getShell(), reservedNames, getElement().getDesign()
-									 .getDocument().getProject().getBusinessObjectSet());
+							new NewVariableDialog(addButton.getShell(), reservedNames, businessObjectSet);
 
 	                    if(nvd.open() == SWT.OK)
 	                    {

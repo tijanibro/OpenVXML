@@ -7,10 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.vtp.desktop.model.core.branding.BrandManager;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.internal.branding.Brand;
-import org.eclipse.vtp.desktop.model.core.internal.branding.DefaultBrandManager;
+
+import com.openmethods.openvxml.desktop.model.branding.BrandManager;
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.internal.Brand;
+import com.openmethods.openvxml.desktop.model.branding.internal.DefaultBrandManager;
 
 /**
  * @author trip

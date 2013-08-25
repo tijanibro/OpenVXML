@@ -11,10 +11,11 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.desktop.model.elements.core.internal;
 
-import org.eclipse.vtp.desktop.model.core.internal.design.Design;
-import org.eclipse.vtp.desktop.model.core.internal.design.DesignElement;
-import org.eclipse.vtp.desktop.model.core.internal.design.ElementFactory;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElementManager.PrimitiveElementTemplate;
+
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.Design;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.DesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ElementFactory;
 
 public class PrimitiveElementFactory implements ElementFactory
 {

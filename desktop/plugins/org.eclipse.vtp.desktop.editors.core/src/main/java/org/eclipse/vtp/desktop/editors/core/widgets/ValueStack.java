@@ -13,11 +13,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.vtp.desktop.core.custom.ToggleButton;
-import org.eclipse.vtp.desktop.model.core.design.ObjectDefinition;
-import org.eclipse.vtp.desktop.model.core.design.ObjectField;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.BrandBinding;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.PropertyBindingItem;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectDefinition;
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectField;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
 
 public class ValueStack implements ToggleButton.ToggleButtonListener
 {

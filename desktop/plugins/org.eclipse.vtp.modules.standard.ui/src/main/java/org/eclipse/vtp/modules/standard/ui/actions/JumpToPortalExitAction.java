@@ -14,9 +14,10 @@ package org.eclipse.vtp.modules.standard.ui.actions;
 import org.eclipse.vtp.desktop.editors.core.actions.DesignElementAction;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.CommandListener;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.LocateElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.modules.standard.ui.PortalEntryInformationProvider;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 public class JumpToPortalExitAction extends DesignElementAction
 {

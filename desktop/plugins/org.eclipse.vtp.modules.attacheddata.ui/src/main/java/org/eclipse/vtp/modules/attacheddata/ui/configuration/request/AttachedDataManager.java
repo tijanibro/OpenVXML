@@ -20,13 +20,16 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.eclipse.vtp.desktop.model.core.branding.BrandManager;
-import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationException;
-import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationManager;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import com.openmethods.openvxml.desktop.model.branding.BrandManager;
+import com.openmethods.openvxml.desktop.model.branding.IBrandingProjectAspect;
+import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationException;
+import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationManager;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
 /**
  * This implementation of <code>ConfigurationManager</code> records configuration
@@ -68,7 +71,9 @@ public class AttachedDataManager implements ConfigurationManager
 		bindings = new HashMap<String, AttachedDataBinding>();
 		dataBindings = new ArrayList<AttachedDataBinding>();
 		this.design = design;
-		this.brandManager = design.getDocument().getProject().getBrandManager();
+		IOpenVXMLProject project = design.getDocument().getProject();
+		IBrandingProjectAspect brandingAspect = (IBrandingProjectAspect)project.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
+		this.brandManager = brandingAspect.getBrandManager();
 	}
 
 	/**

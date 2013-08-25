@@ -30,10 +30,11 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
-import org.eclipse.vtp.desktop.model.core.IDesignItemContainer;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResource;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignItemContainer;
 
 /**
  * This wizard walks the user through the steps required to create a

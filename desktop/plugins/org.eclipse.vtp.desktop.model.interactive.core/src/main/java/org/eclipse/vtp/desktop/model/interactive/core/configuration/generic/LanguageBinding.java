@@ -17,11 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.eclipse.vtp.desktop.model.core.branding.BrandManager;
-import org.eclipse.vtp.desktop.model.core.branding.BrandManagerListener;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import com.openmethods.openvxml.desktop.model.branding.BrandManager;
+import com.openmethods.openvxml.desktop.model.branding.BrandManagerListener;
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
 
 /**
  * This class binds the brand structure to a specific language.  The brand

@@ -15,27 +15,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.vtp.desktop.model.core.FieldType;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.design.IExitBroadcastReceiver;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.VariableHelper;
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
-import org.eclipse.vtp.desktop.model.core.internal.design.ExitBroadcastReceiver;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveBroadcastReceiverProvider;
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveInformationProvider;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.w3c.dom.NodeList;
 
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectSet;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.IExitBroadcastReceiver;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.VariableHelper;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ExitBroadcastReceiver;
+
 public class BroadcastReceiverInformationProvider extends PrimitiveInformationProvider implements PrimitiveBroadcastReceiverProvider
 {
+	private IBusinessObjectSet businessObjectSet = null;
 	List<ConnectorRecord> connectorRecords = new ArrayList<ConnectorRecord>();
 	private List<IExitBroadcastReceiver> receivers = new ArrayList<IExitBroadcastReceiver>();
 	
 	public BroadcastReceiverInformationProvider(PrimitiveElement element)
 	{
 		super(element);
+		IOpenVXMLProject project = element.getDesign().getDocument().getProject();
+		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 	}
 	
@@ -125,7 +133,7 @@ public class BroadcastReceiverInformationProvider extends PrimitiveInformationPr
 	public List<Variable> getOutgoingVariables(String exitPoint, boolean localOnly)
     {
 		List<Variable> variables = new ArrayList<Variable>();
-		Variable platform = VariableHelper.constructVariable("receivedExit", getElement().getDesign().getDocument().getProject().getBusinessObjectSet(), FieldType.STRING);
+		Variable platform = VariableHelper.constructVariable("receivedExit", businessObjectSet, FieldType.STRING);
 		variables.add(platform);
 	    return variables;
     }

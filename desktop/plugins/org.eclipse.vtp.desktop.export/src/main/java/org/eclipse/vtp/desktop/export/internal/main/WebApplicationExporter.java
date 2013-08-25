@@ -37,7 +37,6 @@ import org.eclipse.vtp.desktop.export.internal.ExportCore;
 import org.eclipse.vtp.desktop.export.internal.MediaExporter;
 import org.eclipse.vtp.desktop.export.internal.ProjectExporter;
 import org.eclipse.vtp.desktop.export.internal.WorkflowExporter;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
 import org.eclipse.vtp.framework.util.ConfigurationDictionary;
 import org.eclipse.vtp.framework.util.Guid;
 import org.eclipse.vtp.framework.util.StaticConfigurationAdmin;
@@ -47,6 +46,8 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.Version;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
 
 public class WebApplicationExporter {
 

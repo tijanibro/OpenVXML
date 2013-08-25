@@ -37,9 +37,6 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.WorkflowCore;
-import org.eclipse.vtp.desktop.model.core.internal.branding.Brand;
-import org.eclipse.vtp.desktop.model.core.internal.branding.DefaultBrandManager;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionTypeManager;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.InteractionTypeSupport;
@@ -51,6 +48,10 @@ import org.eclipse.vtp.desktop.projects.interactive.core.util.InteractionSupport
 import org.eclipse.vtp.desktop.projects.interactive.core.util.InteractionTypeConfigurationScreen;
 import org.eclipse.vtp.desktop.projects.interactive.core.util.LanguageConfigurationScreen;
 import org.eclipse.vtp.framework.util.Guid;
+
+import com.openmethods.openvxml.desktop.model.branding.internal.Brand;
+import com.openmethods.openvxml.desktop.model.branding.internal.DefaultBrandManager;
+import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 /**
  * This wizard walks the user through the steps required to create

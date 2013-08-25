@@ -16,17 +16,18 @@ import javax.xml.parsers.SAXParser;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.vtp.desktop.export.IWorkflowExporter;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
-import org.eclipse.vtp.desktop.model.core.IDesignFolder;
-import org.eclipse.vtp.desktop.model.core.IDesignItemContainer;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
 import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProject;
 import org.eclipse.vtp.framework.util.ConfigurationDictionary;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignFolder;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignItemContainer;
 
 public final class WorkflowExporter extends ProjectExporter implements
 		IWorkflowExporter {

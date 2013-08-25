@@ -8,9 +8,10 @@ import java.util.List;
 
 import org.eclipse.vtp.desktop.editors.core.configuration.ComponentPropertiesPanel;
 import org.eclipse.vtp.desktop.editors.core.configuration.ComponentPropertiesPanelProvider;
-import org.eclipse.vtp.desktop.model.core.design.IDesignComponent;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.modules.database.ui.DatabaseQueryInformationProvider;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignComponent;
 
 /**
  * @author trip

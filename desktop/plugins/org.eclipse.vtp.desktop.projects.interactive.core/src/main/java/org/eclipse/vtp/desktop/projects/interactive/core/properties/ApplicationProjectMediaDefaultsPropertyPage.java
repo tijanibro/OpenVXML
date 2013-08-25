@@ -22,11 +22,12 @@ import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.vtp.desktop.media.core.IMediaDefaultPanel;
 import org.eclipse.vtp.desktop.media.core.MediaDefaultsPanelManager;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionTypeManager;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.InteractiveWorkflowProject;
 import org.eclipse.vtp.desktop.model.interactive.core.mediadefaults.IMediaDefaultSettings;
+
+import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 public class ApplicationProjectMediaDefaultsPropertyPage extends PropertyPage
 {

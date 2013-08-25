@@ -19,8 +19,9 @@ import java.util.List;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.CommandListener;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
 import org.osgi.framework.Bundle;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 public class DesignElementActionManager
 {

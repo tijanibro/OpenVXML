@@ -16,12 +16,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.w3c.dom.Element;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
 
 
 public abstract class PrimitiveInformationProvider implements IAdaptable

@@ -18,13 +18,14 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.dialogs.PropertyPage;
-import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.core.internal.WorkflowProject;
-import org.eclipse.vtp.desktop.model.core.internal.branding.Brand;
-import org.eclipse.vtp.desktop.model.core.internal.branding.DefaultBrandManager;
 import org.eclipse.vtp.desktop.projects.core.util.BrandConfigurationScreen;
 import org.eclipse.vtp.desktop.projects.core.util.ConfigurationBrandManager;
 import org.eclipse.vtp.framework.util.Guid;
+
+import com.openmethods.openvxml.desktop.model.branding.internal.Brand;
+import com.openmethods.openvxml.desktop.model.branding.internal.DefaultBrandManager;
+import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 public class WorkflowProjectConfigurationPropertyPage extends PropertyPage
 {

@@ -20,8 +20,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.part.IPage;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
 import org.eclipse.vtp.desktop.views.Activator;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
 public class PalletPage implements IPage, IPropertyChangeListener, PalletFocusListener
 {

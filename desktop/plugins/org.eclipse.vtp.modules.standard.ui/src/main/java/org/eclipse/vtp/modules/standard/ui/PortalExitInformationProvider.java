@@ -17,18 +17,19 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
-import org.eclipse.vtp.desktop.model.core.IDesignFolder;
-import org.eclipse.vtp.desktop.model.core.IDesignItemContainer;
-import org.eclipse.vtp.desktop.model.core.IDesignRootFolder;
-import org.eclipse.vtp.desktop.model.core.design.IDesignConstants;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.design.IDesignEntryPoint;
-import org.eclipse.vtp.desktop.model.core.design.IDesignExitPoint;
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveInformationProvider;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignFolder;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignItemContainer;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignRootFolder;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConstants;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignEntryPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignExitPoint;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
 
 public class PortalExitInformationProvider extends PrimitiveInformationProvider implements PropertyChangeListener, IDesignEntryPoint
 {

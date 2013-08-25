@@ -11,9 +11,9 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.desktop.editors.themes.core;
 
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
-import org.eclipse.vtp.desktop.model.core.design.IDesignConnector;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnector;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 /**
  * This interface provides the basic functions that each theme has to implement.

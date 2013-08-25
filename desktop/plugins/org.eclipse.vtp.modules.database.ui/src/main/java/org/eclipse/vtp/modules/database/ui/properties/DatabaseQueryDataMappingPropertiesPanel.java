@@ -47,17 +47,21 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.vtp.desktop.core.dialogs.FramedDialog;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.IBusinessObject;
-import org.eclipse.vtp.desktop.model.core.IBusinessObjectField;
-import org.eclipse.vtp.desktop.model.core.IDatabase;
-import org.eclipse.vtp.desktop.model.core.IDatabaseTable;
-import org.eclipse.vtp.desktop.model.core.IDatabaseTableColumn;
-import org.eclipse.vtp.desktop.model.core.design.ObjectDefinition;
-import org.eclipse.vtp.desktop.model.core.design.ObjectField;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.VariableHelper;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.modules.database.ui.DatabaseQueryInformationProvider;
+
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObject;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectField;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.databases.IDatabase;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseProjectAspect;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseTable;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseTableColumn;
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectDefinition;
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectField;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.VariableHelper;
 
 /**
  * @author Trip
@@ -66,6 +70,8 @@ import org.eclipse.vtp.modules.database.ui.DatabaseQueryInformationProvider;
 public class DatabaseQueryDataMappingPropertiesPanel
 	extends DesignElementPropertiesPanel implements DatabaseQuerySettingsListener
 {
+	IBusinessObjectProjectAspect businessObjectAspect = null;
+	IDatabaseProjectAspect databaseAspect = null;
 	DatabaseQueryInformationProvider queryElement;
 	DatabaseQuerySettingsStructure settings;
 	TableViewer mappingTableViewer;
@@ -79,6 +85,9 @@ public class DatabaseQueryDataMappingPropertiesPanel
 		super("Fields", dqe);
 		this.queryElement = (DatabaseQueryInformationProvider)dqe.getInformationProvider();
 		this.settings = settings;
+		IOpenVXMLProject project = dqe.getDesign().getDocument().getProject();
+		businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		databaseAspect = (IDatabaseProjectAspect)project.getProjectAspect(IDatabaseProjectAspect.ASPECT_ID);
 		settings.addSettingsListener(this);
 		incomingVariables = dqe.getDesign().getVariablesFor(dqe);
 	}
@@ -140,8 +149,7 @@ public class DatabaseQueryDataMappingPropertiesPanel
 						else
 						{
 							List<IBusinessObject> businessObjects =
-								getElement().getDesign().getDocument().getProject().getBusinessObjectSet()
-								 .getBusinessObjects();
+									businessObjectAspect.getBusinessObjectSet().getBusinessObjects();
 
 							for(int i = 0; i < businessObjects.size(); i++)
 							{
@@ -187,7 +195,7 @@ public class DatabaseQueryDataMappingPropertiesPanel
 			}
 			else
 			{
-				currentObject = VariableHelper.constructVariable(settings.targetVariableName, getElement().getDesign().getDocument().getProject().getBusinessObjectSet(), settings.targetVariableType);
+				currentObject = VariableHelper.constructVariable(settings.targetVariableName, businessObjectAspect.getBusinessObjectSet(), settings.targetVariableType);
 			}
 		}
 
@@ -269,7 +277,7 @@ public class DatabaseQueryDataMappingPropertiesPanel
 			}
 			else
 			{
-				currentObject = VariableHelper.constructVariable(settings.targetVariableName, getElement().getDesign().getDocument().getProject().getBusinessObjectSet(), settings.targetVariableType);
+				currentObject = VariableHelper.constructVariable(settings.targetVariableName, businessObjectAspect.getBusinessObjectSet(), settings.targetVariableType);
 			}
 
 			settings.dataMapping.clear();
@@ -284,8 +292,7 @@ public class DatabaseQueryDataMappingPropertiesPanel
 				else
 				{
 					List<IBusinessObject> businessObjects =
-						getElement().getDesign().getDocument().getProject().getBusinessObjectSet()
-						 .getBusinessObjects();
+							businessObjectAspect.getBusinessObjectSet().getBusinessObjects();
 
 					for(int i = 0; i < businessObjects.size(); i++)
 					{
@@ -347,8 +354,7 @@ public class DatabaseQueryDataMappingPropertiesPanel
 			else
 			{
 				List<IBusinessObject> businessObjects =
-					getElement().getDesign().getDocument().getProject().getBusinessObjectSet()
-					 .getBusinessObjects();
+						businessObjectAspect.getBusinessObjectSet().getBusinessObjects();
 
 				for(int i = 0; i < businessObjects.size(); i++)
 				{
@@ -737,7 +743,7 @@ public class DatabaseQueryDataMappingPropertiesPanel
 
 			int columnSel = 0;
 			List<IDatabase> databases =
-				getElement().getDesign().getDocument().getProject().getDatabaseSet().getDatabases();
+					databaseAspect.getDatabaseSet().getDatabases();
 
 			for(int i = 0; i < databases.size(); i++)
 			{

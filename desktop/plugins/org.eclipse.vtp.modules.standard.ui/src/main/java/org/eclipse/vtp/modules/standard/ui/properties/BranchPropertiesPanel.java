@@ -35,9 +35,10 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.vtp.desktop.core.Activator;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.modules.standard.ui.BranchInformationProvider;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 public class BranchPropertiesPanel extends DesignElementPropertiesPanel
 {

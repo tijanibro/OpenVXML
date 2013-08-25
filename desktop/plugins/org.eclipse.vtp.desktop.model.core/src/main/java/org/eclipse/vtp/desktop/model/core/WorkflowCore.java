@@ -11,9 +11,6 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.desktop.model.core;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -241,29 +238,5 @@ public class WorkflowCore extends AbstractUIPlugin
 			deferredObjects.remove(objectId);
 			postObjectEvent(new ObjectRefreshEvent(objectId));
 		}
-	}
-
-	public String getTemplate(String name)
-	{
-		try
-		{
-			InputStream templateIn = this.getClass().getClassLoader().getResourceAsStream(name);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			byte[] buf = new byte[10240];
-			int len = templateIn.read(buf);
-			while(len != -1)
-			{
-				baos.write(buf, 0, len);
-				len = templateIn.read(buf);
-			}
-			templateIn.close();
-			return baos.toString();
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
 	}
 }

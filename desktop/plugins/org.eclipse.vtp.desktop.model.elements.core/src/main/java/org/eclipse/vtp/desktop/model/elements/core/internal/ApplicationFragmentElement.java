@@ -17,21 +17,23 @@ import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
-import org.eclipse.vtp.desktop.model.core.IWorkflowEntry;
-import org.eclipse.vtp.desktop.model.core.IWorkflowExit;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.IWorkflowReference;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.WorkflowCore;
-import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationManager;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.internal.WorkflowTraversalHelper;
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
-import org.eclipse.vtp.desktop.model.core.internal.design.DesignElement;
-import org.eclipse.vtp.desktop.model.core.internal.design.ElementResolutionVisitor;
 import org.eclipse.vtp.desktop.model.elements.core.configuration.FragmentConfigurationManager;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowEntry;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowExit;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowProjectAspect;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowReference;
+import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationManager;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.internal.WorkflowTraversalHelper;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.DesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ElementResolutionVisitor;
 
 public class ApplicationFragmentElement extends DesignElement implements IWorkflowReference
 {
@@ -41,7 +43,8 @@ public class ApplicationFragmentElement extends DesignElement implements IWorkfl
 	private String fragmentId;
 	private String entryId;
 	private boolean missingModelMode = true;
-	private IWorkflowProject workflowProject = null;
+	private IOpenVXMLProject workflowProject = null;
+	private IWorkflowProjectAspect workflowAspect = null;
 
 	public ApplicationFragmentElement(String fragmentId, String name)
 	{
@@ -70,6 +73,7 @@ public class ApplicationFragmentElement extends DesignElement implements IWorkfl
 			if(workflowProject != null)
 			{
 				missingModelMode = false;
+				workflowAspect = (IWorkflowProjectAspect)workflowProject.getProjectAspect(IWorkflowProjectAspect.ASPECT_ID);
 			}
 		}
 	}
@@ -84,17 +88,17 @@ public class ApplicationFragmentElement extends DesignElement implements IWorkfl
 			IWorkflowEntry entry = null;
 			if(entryId == null || entryId.equals(""))
 			{
-				entry = workflowProject.getWorkflowEntryByName("Begin");
+				entry = workflowAspect.getWorkflowEntryByName("Begin");
 			}
 			else
 			{
-				entry = workflowProject.getWorkflowEntry(entryId);
+				entry = workflowAspect.getWorkflowEntry(entryId);
 			}
 			if(entry != null)
 			{
 				List<IDesignDocument> workingCopies = new ArrayList<IDesignDocument>();
 				workingCopies.add(getDesign().getDocument());
-				WorkflowTraversalHelper wth = new WorkflowTraversalHelper(workflowProject, workingCopies);
+				WorkflowTraversalHelper wth = new WorkflowTraversalHelper(workflowAspect, workingCopies);
 				List<IWorkflowExit> exitPoints = wth.getDownStreamWorkflowExits(entry);
 outer:			for(IWorkflowExit exit : exitPoints)
 				{
@@ -137,7 +141,7 @@ outer:			for(IWorkflowExit exit : exitPoints)
 		return !missingModelMode;
 	}
 	
-	public IWorkflowProject getReferencedModel()
+	public IOpenVXMLProject getReferencedModel()
 	{
 		return workflowProject;
 	}
@@ -190,7 +194,7 @@ outer:			for(IWorkflowExit exit : exitPoints)
 			String currentEntry = fragmentConfigurationManager.getEntryId();
 			if(currentEntry == null || currentEntry.equals(""))
 			{
-				IWorkflowEntry entry = workflowProject.getWorkflowEntryByName("Begin Fragment");
+				IWorkflowEntry entry = workflowAspect.getWorkflowEntryByName("Begin Fragment");
 				if(entry != null)
 				{
 					currentEntry = entry.getId();

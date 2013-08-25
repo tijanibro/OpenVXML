@@ -1,8 +1,9 @@
 package org.eclipse.vtp.modules.standard.ui.actions;
 
 import org.eclipse.vtp.desktop.editors.core.actions.DesignElementActionFilter;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 public class JumpToPortalExitActionFilter implements DesignElementActionFilter
 {

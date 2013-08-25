@@ -5,13 +5,16 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.eclipse.vtp.desktop.model.core.branding.BrandManager;
-import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationException;
-import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationManager;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.framework.util.XMLUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.openmethods.openvxml.desktop.model.branding.BrandManager;
+import com.openmethods.openvxml.desktop.model.branding.IBrandingProjectAspect;
+import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationException;
+import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationManager;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
 public class WebserviceBindingManager implements ConfigurationManager
 {
@@ -24,11 +27,15 @@ public class WebserviceBindingManager implements ConfigurationManager
 	private WebserviceServiceBinding serviceBinding = null;
 	private InputDocumentStructure documentStructure = null;
 	private OutputBinding outputBinding = null;
+	private BrandManager brandManager = null;
 
 	public WebserviceBindingManager(IDesign design)
 	{
 		super();
 		this.design = design;
+		IOpenVXMLProject project = design.getDocument().getProject();
+		IBrandingProjectAspect brandingAspect = (IBrandingProjectAspect)project.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
+		brandManager = brandingAspect.getBrandManager();
 		serviceBinding = new WebserviceServiceBinding();
 		documentStructure = new InputDocumentStructure(this);
 		outputBinding = new OutputBinding();
@@ -46,7 +53,7 @@ public class WebserviceBindingManager implements ConfigurationManager
 	
 	public BrandManager getBrandManager()
 	{
-		return design.getDocument().getProject().getBrandManager();
+		return brandManager;
 	}
 	
 	public WebserviceServiceBinding getServiceBinding()

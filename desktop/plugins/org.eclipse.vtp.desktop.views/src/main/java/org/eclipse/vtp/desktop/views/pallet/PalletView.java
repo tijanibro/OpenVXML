@@ -18,7 +18,8 @@ import org.eclipse.ui.part.IPage;
 import org.eclipse.ui.part.MessagePage;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.PageBookView;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
 public class PalletView extends PageBookView
 {

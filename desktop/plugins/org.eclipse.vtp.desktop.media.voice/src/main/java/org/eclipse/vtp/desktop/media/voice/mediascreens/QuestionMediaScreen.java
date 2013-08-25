@@ -49,13 +49,14 @@ import org.eclipse.vtp.desktop.media.core.PromptBindingViewerListener;
 import org.eclipse.vtp.desktop.media.core.ValueControl;
 import org.eclipse.vtp.desktop.media.core.ValueStack;
 import org.eclipse.vtp.desktop.media.core.ValueStackListener;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.BrandBinding;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.GenericBindingManager;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.InteractionBinding;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.LanguageBinding;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.NamedBinding;
+
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 public class QuestionMediaScreen extends MediaConfigurationScreen implements PromptBindingViewerListener
 {

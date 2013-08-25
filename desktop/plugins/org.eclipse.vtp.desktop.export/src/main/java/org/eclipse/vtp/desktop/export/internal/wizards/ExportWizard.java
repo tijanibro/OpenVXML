@@ -51,9 +51,10 @@ import org.eclipse.vtp.desktop.export.internal.main.WebApplicationExporter;
 import org.eclipse.vtp.desktop.export.internal.pages.ArchiveSelectionPage;
 import org.eclipse.vtp.desktop.export.internal.pages.ProjectSelectionPage;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProject;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractiveWorkflowCore;
+
+import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 /**
  * The wizard that exports projects as web applications.

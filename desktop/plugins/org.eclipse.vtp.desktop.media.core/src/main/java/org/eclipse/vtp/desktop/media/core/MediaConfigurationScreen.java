@@ -13,8 +13,9 @@ package org.eclipse.vtp.desktop.media.core;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
+
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 
 public abstract class MediaConfigurationScreen

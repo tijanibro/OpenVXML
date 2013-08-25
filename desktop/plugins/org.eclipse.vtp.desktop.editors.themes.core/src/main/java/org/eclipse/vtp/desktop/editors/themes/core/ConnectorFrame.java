@@ -11,7 +11,7 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.desktop.editors.themes.core;
 
-import org.eclipse.vtp.desktop.model.core.design.IDesignConnector;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnector;
 
 /**
  * Defines the basic functions available from themed frames that represent

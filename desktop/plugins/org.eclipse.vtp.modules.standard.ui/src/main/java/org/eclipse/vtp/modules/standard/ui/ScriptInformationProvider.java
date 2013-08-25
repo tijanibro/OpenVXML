@@ -14,14 +14,15 @@ package org.eclipse.vtp.modules.standard.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.design.ISecurableElement;
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveInformationProvider;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.framework.util.XMLUtilities;
 import org.w3c.dom.NodeList;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.ISecurableElement;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
 
 public class ScriptInformationProvider extends PrimitiveInformationProvider implements ISecurableElement
 {

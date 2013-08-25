@@ -32,11 +32,12 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.vtp.desktop.editors.themes.core.ComponentFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.ConnectorFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.ElementFrame;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.internal.PartialDesignDocument;
-import org.eclipse.vtp.desktop.model.core.internal.design.Design;
 import org.w3c.dom.Document;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.internal.PartialDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.Design;
 
 public class SelectionStructure
 {

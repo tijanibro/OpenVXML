@@ -19,13 +19,14 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
 import org.eclipse.vtp.desktop.model.elements.core.Activator;
 import org.eclipse.vtp.desktop.model.elements.core.internal.DialogElementFactory;
 import org.eclipse.vtp.desktop.model.elements.core.internal.DialogElementManager;
 import org.eclipse.vtp.desktop.views.pallet.PalletItem;
 import org.eclipse.vtp.desktop.views.pallet.PalletItemObserver;
 import org.eclipse.vtp.desktop.views.pallet.PalletItemProvider;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
 public class DialogPalletProvider implements PalletItemProvider, Activator.LocalDialogListener
 {

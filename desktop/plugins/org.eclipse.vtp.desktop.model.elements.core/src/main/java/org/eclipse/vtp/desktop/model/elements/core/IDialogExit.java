@@ -1,6 +1,6 @@
 package org.eclipse.vtp.desktop.model.elements.core;
 
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
 
 public interface IDialogExit
 {

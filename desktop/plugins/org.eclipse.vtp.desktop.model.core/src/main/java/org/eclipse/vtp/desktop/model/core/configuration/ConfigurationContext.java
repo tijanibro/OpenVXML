@@ -3,7 +3,7 @@ package org.eclipse.vtp.desktop.model.core.configuration;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 
 public interface ConfigurationContext
 {
@@ -11,7 +11,7 @@ public interface ConfigurationContext
 	
 	public String getName();
 	
-	public void setProject(IWorkflowProject project);
+	public void setProject(IOpenVXMLProject project);
 	
 	public boolean setConfigurationContext(Map<String, Object> values);
 	

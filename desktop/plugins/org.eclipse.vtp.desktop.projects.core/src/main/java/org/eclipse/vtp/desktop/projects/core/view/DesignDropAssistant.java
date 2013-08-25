@@ -18,9 +18,10 @@ import org.eclipse.ui.actions.CopyFilesAndFoldersOperation;
 import org.eclipse.ui.actions.MoveFilesAndFoldersOperation;
 import org.eclipse.ui.navigator.CommonDropAdapter;
 import org.eclipse.ui.navigator.CommonDropAdapterAssistant;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
-import org.eclipse.vtp.desktop.model.core.IDesignFolder;
-import org.eclipse.vtp.desktop.model.core.IDesignItemContainer;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignFolder;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignItemContainer;
 
 public class DesignDropAssistant extends CommonDropAdapterAssistant
 {

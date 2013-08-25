@@ -14,18 +14,22 @@ package org.eclipse.vtp.modules.database.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.VariableHelper;
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveInformationProvider;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.modules.database.ui.properties.DatabaseQuerySettingsStructure;
 import org.w3c.dom.NodeList;
 
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.VariableHelper;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
+
 public class DatabaseQueryInformationProvider extends PrimitiveInformationProvider
 {
+	IBusinessObjectProjectAspect businessObjectAspect = null;
 	List<ConnectorRecord> connectorRecords = new ArrayList<ConnectorRecord>();
 	DatabaseQuerySettingsStructure settings = null;;
 	
@@ -34,6 +38,8 @@ public class DatabaseQueryInformationProvider extends PrimitiveInformationProvid
 		super(element);
 		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 		connectorRecords.add(new ConnectorRecord(element, "error.database.connection", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
+		IOpenVXMLProject project = element.getDesign().getDocument().getProject();
+		businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
 	}
 
 	public boolean acceptsConnector(IDesignElement origin)
@@ -90,7 +96,7 @@ public class DatabaseQueryInformationProvider extends PrimitiveInformationProvid
 	public DatabaseQuerySettingsStructure getSettings()
 	{
 		if(settings == null)
-			settings = new DatabaseQuerySettingsStructure(getElement().getDesign().getDocument().getProject().getBusinessObjectSet());
+			settings = new DatabaseQuerySettingsStructure(businessObjectAspect.getBusinessObjectSet());
 		return settings;
 	}
 
@@ -105,7 +111,7 @@ public class DatabaseQueryInformationProvider extends PrimitiveInformationProvid
 		if(exitPoint.equals("Continue") && !settings.isTargetVariableExists() && !settings.getTargetVariableName().equals(""))
 		{
 			Variable v = new Variable(settings.getTargetVariableName(), settings.getTargetVariableType());
-			VariableHelper.buildObjectFields(v, getElement().getDesign().getDocument().getProject().getBusinessObjectSet());
+			VariableHelper.buildObjectFields(v, businessObjectAspect.getBusinessObjectSet());
 			ret.add(v);
 		}
 		return ret;

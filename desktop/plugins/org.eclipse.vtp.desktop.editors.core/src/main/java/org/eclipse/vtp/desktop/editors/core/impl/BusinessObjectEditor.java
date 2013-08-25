@@ -76,16 +76,18 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.vtp.desktop.core.Activator;
-import org.eclipse.vtp.desktop.model.core.FieldType;
-import org.eclipse.vtp.desktop.model.core.IBusinessObject;
-import org.eclipse.vtp.desktop.model.core.IBusinessObjectField;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.WorkflowCore;
-import org.eclipse.vtp.desktop.model.core.FieldType.Primitive;
-import org.eclipse.vtp.desktop.model.core.internal.BusinessObject;
 import org.eclipse.vtp.framework.util.XMLWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType;
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType.Primitive;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObject;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectField;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.businessobjects.internal.BusinessObject;
 
 /**
  * @author Trip
@@ -185,8 +187,9 @@ public class BusinessObjectEditor extends EditorPart
 		IProject project = file.getProject();
 		try
 		{
-			IWorkflowProject workflowProject = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject(project);
-			List<IBusinessObject> dbs = workflowProject.getBusinessObjectSet().getBusinessObjects();
+			IOpenVXMLProject workflowProject = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject(project);
+			IBusinessObjectProjectAspect businessObjectProjectAspect = (IBusinessObjectProjectAspect)workflowProject.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+			List<IBusinessObject> dbs = businessObjectProjectAspect.getBusinessObjectSet().getBusinessObjects();
 			for(IBusinessObject bus : dbs)
 			{
 				if(bus.getUnderlyingFile().equals(file))

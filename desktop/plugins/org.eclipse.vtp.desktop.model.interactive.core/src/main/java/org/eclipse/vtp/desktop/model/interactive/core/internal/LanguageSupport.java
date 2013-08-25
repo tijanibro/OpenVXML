@@ -3,7 +3,7 @@ package org.eclipse.vtp.desktop.model.interactive.core.internal;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
 
 public class LanguageSupport implements Cloneable
 {

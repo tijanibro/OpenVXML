@@ -16,12 +16,13 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.IWorkflowModel;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProjectFactory;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResource;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResourceContainer;
 import org.osgi.framework.Bundle;
+
 
 /**
  * @author trip
@@ -63,7 +64,7 @@ public class WorkflowModel implements IWorkflowModel
 	/* (non-Javadoc)
 	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#convertToWorkflowProject(org.eclipse.core.resources.IProject)
 	 */
-	public IWorkflowProject convertToWorkflowProject(IProject project)
+	public IOpenVXMLProject convertToWorkflowProject(IProject project)
 	{
 		try
 		{
@@ -87,7 +88,7 @@ public class WorkflowModel implements IWorkflowModel
 	/* (non-Javadoc)
 	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#createWorkflowProject(java.lang.String)
 	 */
-	public IWorkflowProject createWorkflowProject(String natureId, String name)
+	public IOpenVXMLProject createWorkflowProject(String natureId, String name)
 	{
 		IWorkflowProjectFactory factory = projectFactories.get(natureId);
 		if(factory != null)
@@ -100,10 +101,10 @@ public class WorkflowModel implements IWorkflowModel
 	/* (non-Javadoc)
 	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#getWorkflowProject(java.lang.String)
 	 */
-	public IWorkflowProject getWorkflowProject(String id)
+	public IOpenVXMLProject getWorkflowProject(String id)
 	{
-		List<IWorkflowProject> projects = this.listWorkflowProjects();
-		for(IWorkflowProject workflowProject : projects)
+		List<IOpenVXMLProject> projects = this.listWorkflowProjects();
+		for(IOpenVXMLProject workflowProject : projects)
 		{
 			if(workflowProject.getId().equals(id))
 			{
@@ -142,9 +143,9 @@ public class WorkflowModel implements IWorkflowModel
 	/* (non-Javadoc)
 	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#listWorkflowProjects()
 	 */
-	public List<IWorkflowProject> listWorkflowProjects()
+	public List<IOpenVXMLProject> listWorkflowProjects()
 	{
-		List<IWorkflowProject> projects = new ArrayList<IWorkflowProject>();
+		List<IOpenVXMLProject> projects = new ArrayList<IOpenVXMLProject>();
 		IProject[] rawProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		for(IProject project : rawProjects)
 		{
@@ -176,7 +177,7 @@ public class WorkflowModel implements IWorkflowModel
 		IProject project = resource.getProject();
 		if(project != null && isWorkflowProject(project))
 		{
-			IWorkflowProject workflowProject = convertToWorkflowProject(project);
+			IOpenVXMLProject workflowProject = convertToWorkflowProject(project);
 			List<IResource> containers = new LinkedList<IResource>();
 			containers.add(resource);
 			IContainer container = resource.getParent();

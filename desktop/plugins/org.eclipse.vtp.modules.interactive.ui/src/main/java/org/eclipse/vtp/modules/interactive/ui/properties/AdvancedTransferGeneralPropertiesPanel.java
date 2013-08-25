@@ -45,12 +45,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.dialogs.PropertyDialog;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.ObjectDefinition;
-import org.eclipse.vtp.desktop.model.core.design.ObjectField;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.branding.BrandContext;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.BrandBinding;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.GenericBindingManager;
@@ -60,6 +54,13 @@ import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.Name
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.PropertyBindingItem;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.context.InteractionTypeContext;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.context.LanguageContext;
+
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.internal.BrandContext;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectDefinition;
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectField;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
 
 /**
  * The graphical user interface used to configure an advanced transfer module

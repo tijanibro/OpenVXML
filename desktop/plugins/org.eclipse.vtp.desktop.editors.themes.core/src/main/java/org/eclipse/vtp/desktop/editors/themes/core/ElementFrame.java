@@ -13,7 +13,8 @@ package org.eclipse.vtp.desktop.editors.themes.core;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 /**
  * This interface represents a themed graphical frame for a design element.  It

@@ -47,14 +47,18 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.FieldType;
-import org.eclipse.vtp.desktop.model.core.IBusinessObject;
-import org.eclipse.vtp.desktop.model.core.FieldType.Primitive;
-import org.eclipse.vtp.desktop.model.core.design.ObjectDefinition;
-import org.eclipse.vtp.desktop.model.core.design.ObjectField;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
+import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.framework.util.VariableNameValidator;
 import org.eclipse.vtp.modules.database.ui.DatabaseQueryInformationProvider;
+
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType.Primitive;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObject;
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectDefinition;
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectField;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
 
 /**
  * @author Trip
@@ -63,6 +67,7 @@ import org.eclipse.vtp.modules.database.ui.DatabaseQueryInformationProvider;
 public class DatabaseQueryTargetVariablePropertiesPanel
 	extends DesignElementPropertiesPanel
 {
+	IBusinessObjectProjectAspect businessObjectAspect = null;
 	DatabaseQueryInformationProvider queryElement;
 	DatabaseQuerySettingsStructure settings;
 	Button existingVariableButton;
@@ -78,10 +83,11 @@ public class DatabaseQueryTargetVariablePropertiesPanel
 	/**
 	 * @param name
 	 */
-	public DatabaseQueryTargetVariablePropertiesPanel(
-		org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement dqe, DatabaseQuerySettingsStructure settings)
+	public DatabaseQueryTargetVariablePropertiesPanel(PrimitiveElement dqe, DatabaseQuerySettingsStructure settings)
 	{
 		super("Target Variable", dqe);
+		IOpenVXMLProject project = dqe.getDesign().getDocument().getProject();
+		businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
 		this.queryElement = (DatabaseQueryInformationProvider)dqe.getInformationProvider();
 		this.settings = settings;
 		incomingVariables = dqe.getDesign().getVariablesFor(dqe);
@@ -230,7 +236,7 @@ public class DatabaseQueryTargetVariablePropertiesPanel
 							settings.targetVariableType = new FieldType(prim);
 						}
 						else
-							settings.targetVariableType = new FieldType(getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(typeList.get(typeCombo.getSelectionIndex())));
+							settings.targetVariableType = new FieldType(businessObjectAspect.getBusinessObjectSet().getBusinessObject(typeList.get(typeCombo.getSelectionIndex())));
 					}
 					else
 					{
@@ -240,7 +246,7 @@ public class DatabaseQueryTargetVariablePropertiesPanel
 							settings.targetVariableType = new FieldType(Primitive.ARRAY, prim);
 						}
 						else
-							settings.targetVariableType = new FieldType(Primitive.ARRAY, getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(typeList.get(typeCombo.getSelectionIndex())));
+							settings.targetVariableType = new FieldType(Primitive.ARRAY, businessObjectAspect.getBusinessObjectSet().getBusinessObject(typeList.get(typeCombo.getSelectionIndex())));
 					}
 					settings.fireTargetChanged();
 				}
@@ -258,7 +264,7 @@ public class DatabaseQueryTargetVariablePropertiesPanel
 		typeList.add("DateTime");
 
 		List<IBusinessObject> bol =
-			getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObjects();
+				businessObjectAspect.getBusinessObjectSet().getBusinessObjects();
 
 		for(int i = 0; i < bol.size(); i++)
 		{
@@ -294,7 +300,7 @@ public class DatabaseQueryTargetVariablePropertiesPanel
 							settings.targetVariableType = new FieldType(prim);
 						}
 						else
-							settings.targetVariableType = new FieldType(getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(typeList.get(typeCombo.getSelectionIndex())));
+							settings.targetVariableType = new FieldType(businessObjectAspect.getBusinessObjectSet().getBusinessObject(typeList.get(typeCombo.getSelectionIndex())));
 					}
 					else
 					{
@@ -304,7 +310,7 @@ public class DatabaseQueryTargetVariablePropertiesPanel
 							settings.targetVariableType = new FieldType(Primitive.ARRAY, prim);
 						}
 						else
-							settings.targetVariableType = new FieldType(Primitive.ARRAY, getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(typeList.get(typeCombo.getSelectionIndex())));
+							settings.targetVariableType = new FieldType(Primitive.ARRAY, businessObjectAspect.getBusinessObjectSet().getBusinessObject(typeList.get(typeCombo.getSelectionIndex())));
 					}
 					settings.fireTargetChanged();
 				}
@@ -481,7 +487,7 @@ public class DatabaseQueryTargetVariablePropertiesPanel
 								settings.targetVariableType = new FieldType(prim);
 							}
 							else
-								settings.targetVariableType = new FieldType(getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(typeList.get(typeCombo.getSelectionIndex())));
+								settings.targetVariableType = new FieldType(businessObjectAspect.getBusinessObjectSet().getBusinessObject(typeList.get(typeCombo.getSelectionIndex())));
 						}
 						else
 						{
@@ -491,7 +497,7 @@ public class DatabaseQueryTargetVariablePropertiesPanel
 								settings.targetVariableType = new FieldType(Primitive.ARRAY, prim);
 							}
 							else
-								settings.targetVariableType = new FieldType(Primitive.ARRAY, getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(typeList.get(typeCombo.getSelectionIndex())));
+								settings.targetVariableType = new FieldType(Primitive.ARRAY, businessObjectAspect.getBusinessObjectSet().getBusinessObject(typeList.get(typeCombo.getSelectionIndex())));
 						}
 						settings.setTargetVariableSecure(newVariableSecureButton.getSelection());
 						if(VariableNameValidator.followsVtpNamingRules(newVariableNameField.getText()) || newVariableNameField.getText().equals(""))

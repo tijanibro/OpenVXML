@@ -32,15 +32,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
-import org.eclipse.vtp.desktop.model.core.IDesignFolder;
-import org.eclipse.vtp.desktop.model.core.IDesignItemContainer;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
 import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.GenericBindingManager;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.InteractionBinding;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.NamedBinding;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignFolder;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignItemContainer;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 public class ReplicateLanguageDialog extends Dialog
 {

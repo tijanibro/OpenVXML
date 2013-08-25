@@ -25,9 +25,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.modules.standard.ui.ScriptInformationProvider;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 /**
  * The graphical user interface used to configure a script module

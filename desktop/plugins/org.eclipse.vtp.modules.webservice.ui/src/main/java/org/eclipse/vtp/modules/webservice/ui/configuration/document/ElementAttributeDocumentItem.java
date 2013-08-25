@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.eclipse.vtp.desktop.model.core.branding.BrandManager;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
 import org.eclipse.vtp.modules.webservice.ui.configuration.BrandBinding;
 import org.eclipse.vtp.modules.webservice.ui.configuration.BrandedBinding;
 import org.eclipse.vtp.modules.webservice.ui.configuration.WebserviceBindingManager;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import com.openmethods.openvxml.desktop.model.branding.BrandManager;
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
 
 public class ElementAttributeDocumentItem implements BrandedBinding
 {

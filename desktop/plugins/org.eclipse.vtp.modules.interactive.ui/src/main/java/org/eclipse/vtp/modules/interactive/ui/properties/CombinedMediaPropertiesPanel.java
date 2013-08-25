@@ -24,14 +24,15 @@ import org.eclipse.vtp.desktop.media.core.MediaConfigurationScreen;
 import org.eclipse.vtp.desktop.media.core.MediaConfigurationScreenContainer;
 import org.eclipse.vtp.desktop.media.core.MediaConfigurationScreenManager;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.ISecurableElement;
-import org.eclipse.vtp.desktop.model.core.internal.branding.BrandContext;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.context.InteractionTypeContext;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.context.LanguageContext;
+
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.internal.BrandContext;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.ISecurableElement;
 
 @SuppressWarnings("restriction")
 public class CombinedMediaPropertiesPanel extends DesignElementPropertiesPanel implements MediaConfigurationScreenContainer

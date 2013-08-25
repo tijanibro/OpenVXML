@@ -27,10 +27,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.vtp.desktop.core.custom.ToggleButton;
 import org.eclipse.vtp.desktop.editors.core.widgets.ValueControl;
-import org.eclipse.vtp.desktop.model.core.design.ObjectDefinition;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
 import org.eclipse.vtp.modules.webservice.ui.configuration.BindingValue;
 import org.eclipse.vtp.modules.webservice.ui.configuration.BrandBinding;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectDefinition;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
 
 /**
  * This class provides a UI widget that supports editing a configuration item.

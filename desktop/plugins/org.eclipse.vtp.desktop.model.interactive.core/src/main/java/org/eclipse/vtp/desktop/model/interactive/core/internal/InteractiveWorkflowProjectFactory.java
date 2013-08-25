@@ -12,9 +12,10 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProjectFactory;
-import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.interactive.core.natures.InteractiveWorkflowProjectNature;
 import org.eclipse.vtp.framework.util.Guid;
+
+import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 /**
  * @author trip

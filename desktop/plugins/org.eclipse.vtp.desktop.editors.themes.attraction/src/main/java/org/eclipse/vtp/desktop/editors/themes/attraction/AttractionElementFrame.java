@@ -26,8 +26,9 @@ import org.eclipse.vtp.desktop.editors.themes.core.Theme;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.BeginConnector;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.CommandListener;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.StartMove;
-import org.eclipse.vtp.desktop.model.core.design.IDesignConstants;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConstants;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 /**
  * This is the Attraction theme's implementation of the element frame interface.

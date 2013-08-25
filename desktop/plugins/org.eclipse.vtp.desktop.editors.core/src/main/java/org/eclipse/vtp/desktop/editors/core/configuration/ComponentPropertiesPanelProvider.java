@@ -2,7 +2,7 @@ package org.eclipse.vtp.desktop.editors.core.configuration;
 
 import java.util.List;
 
-import org.eclipse.vtp.desktop.model.core.design.IDesignComponent;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignComponent;
 
 public interface ComponentPropertiesPanelProvider
 {

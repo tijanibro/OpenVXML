@@ -24,8 +24,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.vtp.desktop.core.dialogs.ContentPage;
 import org.eclipse.vtp.desktop.core.dialogs.MultiPageFramedDialog;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
 /**
  * This is the generic dialog that is used to display and edit the properties
@@ -46,7 +47,7 @@ import org.eclipse.vtp.desktop.model.core.design.IDesign;
  */
 public class ComponentPropertiesDialog extends MultiPageFramedDialog implements ConfigurationContextSelectorListener
 {
-	private IWorkflowProject project = null;
+	private IOpenVXMLProject project = null;
 	private ConfigurationContextSelector selector = null;
 	
 	/**

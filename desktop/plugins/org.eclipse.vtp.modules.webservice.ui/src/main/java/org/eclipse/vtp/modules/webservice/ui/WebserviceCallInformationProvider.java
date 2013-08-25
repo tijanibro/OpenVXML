@@ -15,26 +15,33 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.vtp.desktop.model.core.FieldType;
-import org.eclipse.vtp.desktop.model.core.IBusinessObject;
-import org.eclipse.vtp.desktop.model.core.IBusinessObjectSet;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.BusinessObject;
-import org.eclipse.vtp.desktop.model.core.internal.VariableHelper;
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveInformationProvider;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.modules.webservice.ui.configuration.WebserviceBindingManager;
 
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObject;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectSet;
+import com.openmethods.openvxml.desktop.model.businessobjects.internal.BusinessObject;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.VariableHelper;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
+
 public class WebserviceCallInformationProvider extends PrimitiveInformationProvider
 {
 	List<ConnectorRecord> connectorRecords = new ArrayList<ConnectorRecord>();
+	private IBusinessObjectSet businessObjectSet = null;
 	
 	public WebserviceCallInformationProvider(PrimitiveElement element)
 	{
 		super(element);
+		IOpenVXMLProject project = element.getDesign().getDocument().getProject();
+		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 		connectorRecords.add(new ConnectorRecord(element, "error.webservice", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
 	}
@@ -99,7 +106,7 @@ public class WebserviceCallInformationProvider extends PrimitiveInformationProvi
 		if(exitPoint.equals("Continue"))
 		{
 			WebserviceBindingManager manager = (WebserviceBindingManager)this.getElement().getConfigurationManager(WebserviceBindingManager.TYPE_ID);
-			Variable v = VariableHelper.constructVariable(manager.getOutputBinding().getVariableName(), this.getElement().getDesign().getDocument().getProject().getBusinessObjectSet(), new FieldType(this.getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject("WSResponse")));
+			Variable v = VariableHelper.constructVariable(manager.getOutputBinding().getVariableName(), businessObjectSet, new FieldType(businessObjectSet.getBusinessObject("WSResponse")));
 			this.getElement().rollbackConfigurationChanges(manager);
 			ret.add(v);
 		}
@@ -117,7 +124,6 @@ public class WebserviceCallInformationProvider extends PrimitiveInformationProvi
 		System.out.println("creating bos");
 		boolean foundWSHeader = false;
 		boolean foundWSResponse = false;
-		IBusinessObjectSet businessObjectSet = this.getElement().getDesign().getDocument().getProject().getBusinessObjectSet();
 		List<IBusinessObject> currentObjects = businessObjectSet.getBusinessObjects();
 		for(IBusinessObject businessObject : currentObjects)
 		{

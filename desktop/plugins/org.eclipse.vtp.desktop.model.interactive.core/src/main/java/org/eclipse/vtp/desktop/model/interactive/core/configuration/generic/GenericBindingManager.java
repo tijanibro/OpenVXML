@@ -19,10 +19,6 @@ import java.util.TreeMap;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.eclipse.vtp.desktop.model.core.branding.BrandManager;
-import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationException;
-import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationManager;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
 import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionTypeManager;
@@ -30,6 +26,11 @@ import org.eclipse.vtp.desktop.model.interactive.core.mediadefaults.IMediaDefaul
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import com.openmethods.openvxml.desktop.model.branding.BrandManager;
+import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationException;
+import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationManager;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
 /**
  * This class implements the <code>ConfigurationManager</code> interface and

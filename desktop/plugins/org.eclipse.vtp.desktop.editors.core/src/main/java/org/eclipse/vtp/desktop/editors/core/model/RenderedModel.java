@@ -46,20 +46,21 @@ import org.eclipse.vtp.desktop.editors.themes.core.ConnectorFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.ElementFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.Theme;
 import org.eclipse.vtp.desktop.editors.themes.core.ThemeManager;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
-import org.eclipse.vtp.desktop.model.core.design.IDesignComponent;
-import org.eclipse.vtp.desktop.model.core.design.IDesignConnector;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.ModelListener;
-import org.eclipse.vtp.desktop.model.core.internal.DesignDocument;
-import org.eclipse.vtp.desktop.model.core.internal.DesignWriter;
-import org.eclipse.vtp.desktop.model.core.internal.IDesignFilter;
-import org.eclipse.vtp.desktop.model.core.internal.PartialDesignDocument;
-import org.eclipse.vtp.desktop.model.core.internal.design.Design;
-import org.eclipse.vtp.desktop.model.core.internal.design.DesignElement;
 import org.eclipse.vtp.framework.util.XMLWriter;
 import org.w3c.dom.Document;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignComponent;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnector;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.ModelListener;
+import com.openmethods.openvxml.desktop.model.workflow.internal.DesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.internal.DesignWriter;
+import com.openmethods.openvxml.desktop.model.workflow.internal.IDesignFilter;
+import com.openmethods.openvxml.desktop.model.workflow.internal.PartialDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.Design;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.DesignElement;
 
 public class RenderedModel implements ComponentFrameListener, ModelListener
 {

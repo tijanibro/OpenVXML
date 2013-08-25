@@ -41,12 +41,6 @@ import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.vtp.desktop.editors.core.configuration.ComponentPropertiesPanel;
 import org.eclipse.vtp.desktop.editors.core.configuration.ConnectorPropertiesListener;
 import org.eclipse.vtp.desktop.editors.core.configuration.ConnectorPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.design.IDesignConnector;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.internal.branding.BrandContext;
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.context.InteractionTypeContext;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.context.LanguageContext;
@@ -55,6 +49,13 @@ import org.eclipse.vtp.modules.attacheddata.ui.configuration.post.AttachedDataBi
 import org.eclipse.vtp.modules.attacheddata.ui.configuration.post.AttachedDataItemEntry;
 import org.eclipse.vtp.modules.attacheddata.ui.configuration.post.AttachedDataManager;
 import org.eclipse.vtp.modules.attacheddata.ui.dialogs.AttachedDataEntryDialog;
+
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.internal.BrandContext;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnector;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
 
 public class AttachedDataPropertiesPanel extends ComponentPropertiesPanel implements ConnectorPropertiesListener
 {

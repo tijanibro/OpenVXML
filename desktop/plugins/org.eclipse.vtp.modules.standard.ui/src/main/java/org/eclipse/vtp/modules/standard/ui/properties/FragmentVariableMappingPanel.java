@@ -40,17 +40,20 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.IWorkflowEntry;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.branding.BrandContext;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.configuration.FragmentConfigurationListener;
 import org.eclipse.vtp.desktop.model.elements.core.configuration.FragmentConfigurationManager;
 import org.eclipse.vtp.desktop.model.elements.core.configuration.InputBinding;
 import org.eclipse.vtp.desktop.model.elements.core.configuration.InputBrandBinding;
 import org.eclipse.vtp.desktop.model.elements.core.configuration.InputItem;
 import org.eclipse.vtp.desktop.model.elements.core.internal.ApplicationFragmentElement;
+
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.internal.BrandContext;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowEntry;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowProjectAspect;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
 
 public class FragmentVariableMappingPanel extends DesignElementPropertiesPanel implements FragmentConfigurationListener
 {
@@ -575,7 +578,9 @@ outer:	for(Variable v : vars)
 			String entryId = manager.getEntryId();
 			if(entryId != null && !entryId.equals(""))
 			{
-				IWorkflowEntry entry = applicationFragmentElement.getReferencedModel().getWorkflowEntry(entryId);
+				IOpenVXMLProject referencedModel = applicationFragmentElement.getReferencedModel();
+				IWorkflowProjectAspect workflowAspect = (IWorkflowProjectAspect)referencedModel.getProjectAspect(IWorkflowProjectAspect.ASPECT_ID);
+				IWorkflowEntry entry = workflowAspect.getWorkflowEntry(entryId);
 				if(entry != null)
 				{
 					inputVariables = entry.getInputVariables();

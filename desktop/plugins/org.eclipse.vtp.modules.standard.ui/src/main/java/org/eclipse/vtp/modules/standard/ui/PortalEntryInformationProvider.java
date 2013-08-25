@@ -16,15 +16,16 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.vtp.desktop.model.core.design.IDesignConstants;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.design.IDesignEntryPoint;
-import org.eclipse.vtp.desktop.model.core.design.IDesignExitPoint;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveInformationProvider;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConstants;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignEntryPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignExitPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
 
 
 public class PortalEntryInformationProvider extends PrimitiveInformationProvider implements PropertyChangeListener, IDesignExitPoint

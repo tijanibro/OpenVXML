@@ -14,7 +14,7 @@
  */
 package org.eclipse.vtp.modules.standard.ui;
 
-import org.eclipse.vtp.desktop.model.core.FieldType;
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType;
 
 
 /**

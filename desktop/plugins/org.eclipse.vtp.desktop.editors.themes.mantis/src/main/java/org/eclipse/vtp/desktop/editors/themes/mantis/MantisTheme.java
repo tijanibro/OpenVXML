@@ -15,9 +15,10 @@ import org.eclipse.vtp.desktop.editors.themes.core.CanvasFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.ConnectorFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.ElementFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.Theme;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
-import org.eclipse.vtp.desktop.model.core.design.IDesignConnector;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnector;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 /**
  * The main entry point for the Mantis theme.  This class acts as a factory for

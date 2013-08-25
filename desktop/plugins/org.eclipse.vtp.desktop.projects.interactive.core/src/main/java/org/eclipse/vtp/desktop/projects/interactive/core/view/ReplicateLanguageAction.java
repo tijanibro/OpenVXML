@@ -19,9 +19,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResource;
-import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
 import org.eclipse.vtp.desktop.projects.interactive.core.dialogs.ReplicateLanguageDialog;
+
+import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 /**
  * Standard action for copying the currently selected resources to the clipboard.

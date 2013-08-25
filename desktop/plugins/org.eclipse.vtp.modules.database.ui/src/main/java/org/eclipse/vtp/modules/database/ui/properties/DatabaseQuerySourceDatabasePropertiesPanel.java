@@ -25,10 +25,13 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.IDatabase;
-import org.eclipse.vtp.desktop.model.core.IDatabaseTable;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.modules.database.ui.DatabaseQueryInformationProvider;
+
+import com.openmethods.openvxml.desktop.model.databases.IDatabase;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseProjectAspect;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseTable;
 
 /**
  * @author Trip
@@ -53,7 +56,9 @@ public class DatabaseQuerySourceDatabasePropertiesPanel
 		super("Source Database", dqe);
 		this.queryElement = (DatabaseQueryInformationProvider)dqe.getInformationProvider();
 		this.settings = settings;
-		databases = dqe.getDesign().getDocument().getProject().getDatabaseSet()
+		IOpenVXMLProject project = dqe.getDesign().getDocument().getProject();
+		IDatabaseProjectAspect databaseAspect = (IDatabaseProjectAspect)project.getProjectAspect(IDatabaseProjectAspect.ASPECT_ID);
+		databases = databaseAspect.getDatabaseSet()
 				 .getDatabases();
 	}
 

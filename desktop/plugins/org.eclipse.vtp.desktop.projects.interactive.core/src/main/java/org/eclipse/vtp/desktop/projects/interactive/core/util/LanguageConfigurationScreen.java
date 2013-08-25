@@ -20,8 +20,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.vtp.desktop.model.core.branding.BrandManager;
 import org.eclipse.vtp.desktop.projects.interactive.core.util.InteractionSupportManager.SupportRecord;
+
+import com.openmethods.openvxml.desktop.model.branding.BrandManager;
 
 /**
  * A configuration UI for an application's build path.

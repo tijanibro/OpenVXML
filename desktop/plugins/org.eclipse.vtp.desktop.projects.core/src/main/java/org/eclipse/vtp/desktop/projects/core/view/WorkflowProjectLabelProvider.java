@@ -15,10 +15,11 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
-import org.eclipse.vtp.desktop.model.core.IDependencySet;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResource;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResourceContainer;
+
+import com.openmethods.openvxml.desktop.model.dependencies.IDependencySet;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
 
 /**
  * @author trip

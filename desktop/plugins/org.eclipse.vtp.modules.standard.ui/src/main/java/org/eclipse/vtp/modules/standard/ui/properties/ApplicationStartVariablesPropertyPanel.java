@@ -47,13 +47,17 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.vtp.desktop.core.Activator;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.branding.BrandManager;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.modules.standard.ui.BeginInformationProvider;
 import org.eclipse.vtp.modules.standard.ui.VariableDeclaration;
+
+import com.openmethods.openvxml.desktop.model.branding.BrandManager;
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.IBrandingProjectAspect;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectSet;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 /**
  * The graphical user interface used to configure an application's begin module
@@ -63,6 +67,7 @@ import org.eclipse.vtp.modules.standard.ui.VariableDeclaration;
 public class ApplicationStartVariablesPropertyPanel
 	extends DesignElementPropertiesPanel
 {
+	IBusinessObjectSet businessObjectSet = null;
 	List<VariableDeclaration> declarations;
 	TableViewer variableViewer;
 	/**	The button used to add a new variable */
@@ -82,9 +87,12 @@ public class ApplicationStartVariablesPropertyPanel
 	public ApplicationStartVariablesPropertyPanel(String name, IDesignElement element)
 	{
 		super(name, element);
-		IWorkflowProject wp = getElement().getDesign().getDocument().getProject();
+		IOpenVXMLProject wp = getElement().getDesign().getDocument().getProject();
+		IBrandingProjectAspect brandingAspect = (IBrandingProjectAspect)wp.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
+		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)wp.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		declarations = ((BeginInformationProvider)((PrimitiveElement)element).getInformationProvider()).getDeclarations();
-		BrandManager bm = wp.getBrandManager();
+		BrandManager bm = brandingAspect.getBrandManager();
 		IBrand b = bm.getDefaultBrand();
 		addBrand(b);
 	}
@@ -234,8 +242,7 @@ public class ApplicationStartVariablesPropertyPanel
 						reservedNames.add(vd.getName());
 					}
 					NewVariableDialog nvd =
-						new NewVariableDialog(addButton.getShell(), reservedNames, getElement().getDesign()
-								 .getDocument().getProject().getBusinessObjectSet());
+						new NewVariableDialog(addButton.getShell(), reservedNames, businessObjectSet);
 
 					if(nvd.open() == SWT.OK)
 					{

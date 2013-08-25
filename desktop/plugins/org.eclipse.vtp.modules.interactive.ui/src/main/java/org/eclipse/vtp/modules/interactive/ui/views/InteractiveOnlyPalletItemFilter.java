@@ -3,9 +3,10 @@
  */
 package org.eclipse.vtp.modules.interactive.ui.views;
 
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
 import org.eclipse.vtp.desktop.model.elements.core.internal.views.PalletItemFilter;
 import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
 /**
  * @author trip

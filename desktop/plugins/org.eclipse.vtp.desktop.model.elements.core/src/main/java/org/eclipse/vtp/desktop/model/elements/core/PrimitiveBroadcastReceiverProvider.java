@@ -2,7 +2,7 @@ package org.eclipse.vtp.desktop.model.elements.core;
 
 import java.util.List;
 
-import org.eclipse.vtp.desktop.model.core.design.IExitBroadcastReceiver;
+import com.openmethods.openvxml.desktop.model.workflow.design.IExitBroadcastReceiver;
 
 public interface PrimitiveBroadcastReceiverProvider
 {

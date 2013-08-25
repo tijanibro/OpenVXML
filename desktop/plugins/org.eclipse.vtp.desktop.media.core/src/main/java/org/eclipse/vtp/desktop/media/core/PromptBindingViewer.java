@@ -24,9 +24,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
 import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProviderManager;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.BrandBinding;
@@ -44,6 +41,10 @@ import org.eclipse.vtp.framework.interactions.core.media.IMediaProvider;
 import org.eclipse.vtp.framework.interactions.core.media.PlaceholderContent;
 import org.eclipse.vtp.framework.interactions.core.media.ReferencedContent;
 import org.eclipse.vtp.framework.interactions.core.media.TextContent;
+
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
 
 public class PromptBindingViewer implements MouseListener {
 	NamedBinding namedBinding;

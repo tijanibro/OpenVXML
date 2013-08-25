@@ -18,8 +18,9 @@ import org.eclipse.ui.actions.CopyFilesAndFoldersOperation;
 import org.eclipse.ui.actions.MoveFilesAndFoldersOperation;
 import org.eclipse.ui.navigator.CommonDropAdapter;
 import org.eclipse.ui.navigator.CommonDropAdapterAssistant;
-import org.eclipse.vtp.desktop.model.core.IWebserviceDescriptor;
-import org.eclipse.vtp.desktop.model.core.IWebserviceSet;
+
+import com.openmethods.openvxml.desktop.model.webservices.IWebserviceDescriptor;
+import com.openmethods.openvxml.desktop.model.webservices.IWebserviceSet;
 
 public class WebserviceDropAssistant extends CommonDropAdapterAssistant
 {

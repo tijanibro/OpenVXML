@@ -14,27 +14,35 @@ package org.eclipse.vtp.modules.standard.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.vtp.desktop.model.core.FieldType;
-import org.eclipse.vtp.desktop.model.core.FieldType.Primitive;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.VariableHelper;
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveInformationProvider;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.framework.util.XMLUtilities;
 import org.w3c.dom.NodeList;
+
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType;
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType.Primitive;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectSet;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.VariableHelper;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
 
 public class VariableAssignmentInformationProvider extends PrimitiveInformationProvider
 {
 	List<ConnectorRecord> connectorRecords = new ArrayList<ConnectorRecord>();
 	String scriptText = "";
 	private List<VariableDeclaration> variableDeclarations;
+	private IBusinessObjectSet businessObjectSet = null;
 	
 	public VariableAssignmentInformationProvider(PrimitiveElement element)
 	{
 		super(element);
+		IOpenVXMLProject project = element.getDesign().getDocument().getProject();
+		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 		variableDeclarations = new ArrayList<VariableDeclaration>();
 	}
@@ -112,7 +120,7 @@ public class VariableAssignmentInformationProvider extends PrimitiveInformationP
 					if(prim != null)
 						type = new FieldType(Primitive.ARRAY, prim);
 					else
-						type = new FieldType(Primitive.ARRAY, getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(vtype));
+						type = new FieldType(Primitive.ARRAY, businessObjectSet.getBusinessObject(vtype));
 				}
 				else
 				{
@@ -120,7 +128,7 @@ public class VariableAssignmentInformationProvider extends PrimitiveInformationP
 					if(prim != null)
 						type = new FieldType(prim);
 					else
-						type = new FieldType(getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(vtype));
+						type = new FieldType(businessObjectSet.getBusinessObject(vtype));
 				}
 			}
 			else
@@ -128,7 +136,7 @@ public class VariableAssignmentInformationProvider extends PrimitiveInformationP
 				List<org.w3c.dom.Element> typeElements = XMLUtilities.getElementsByTagName(varElement, "data-type", true);
 				if(typeElements.size() > 0)
 				{
-					type = FieldType.load(getElement().getDesign().getDocument().getProject().getBusinessObjectSet(), typeElements.get(0));
+					type = FieldType.load(businessObjectSet, typeElements.get(0));
 				}
 			}
 			int vvaluetype =
@@ -194,7 +202,7 @@ public class VariableAssignmentInformationProvider extends PrimitiveInformationP
 		{
 			VariableDeclaration vd = variableDeclarations.get(i);
 
-			Variable v = VariableHelper.constructVariable(vd.name, getElement().getDesign().getDocument().getProject().getBusinessObjectSet(), vd.getType());
+			Variable v = VariableHelper.constructVariable(vd.name, businessObjectSet, vd.getType());
 			if(v != null)
 			{
 				v.setSecure(vd.isSecure());

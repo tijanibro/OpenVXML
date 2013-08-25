@@ -19,11 +19,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.vtp.desktop.model.core.internal.DesignWriter;
-import org.eclipse.vtp.desktop.model.core.internal.design.Design;
 import org.eclipse.vtp.framework.util.XMLWriter;
 import org.osgi.framework.BundleContext;
 import org.w3c.dom.Document;
+
+import com.openmethods.openvxml.desktop.model.workflow.internal.DesignWriter;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.Design;
 
 /**
  * The activator class controls the plug-in life cycle

@@ -11,11 +11,12 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.desktop.model.elements.core.internal;
 
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.WorkflowCore;
-import org.eclipse.vtp.desktop.model.core.internal.design.Design;
-import org.eclipse.vtp.desktop.model.core.internal.design.DesignElement;
-import org.eclipse.vtp.desktop.model.core.internal.design.ElementFactory;
+
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.Design;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.DesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ElementFactory;
 
 public class ApplicationFragmentElementFactory implements ElementFactory
 {
@@ -23,7 +24,7 @@ public class ApplicationFragmentElementFactory implements ElementFactory
 	public DesignElement createElement(Design design, Object data)
 	{
 		String specializationId = (String)data;
-		IWorkflowProject workflowProject = WorkflowCore.getDefault().getWorkflowModel().getWorkflowProject(specializationId);
+		IOpenVXMLProject workflowProject = WorkflowCore.getDefault().getWorkflowModel().getWorkflowProject(specializationId);
 		ApplicationFragmentElement afe = new ApplicationFragmentElement(specializationId, workflowProject.getName());
 		return afe;
 	}

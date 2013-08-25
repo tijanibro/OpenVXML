@@ -1,7 +1,8 @@
 package org.eclipse.vtp.desktop.export.internal.main;
 
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
 import org.w3c.dom.Document;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
 
 public class DesignReference
 {

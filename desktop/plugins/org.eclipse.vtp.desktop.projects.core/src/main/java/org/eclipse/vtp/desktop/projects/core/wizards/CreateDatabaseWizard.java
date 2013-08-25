@@ -31,9 +31,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.vtp.desktop.model.core.IDatabase;
-import org.eclipse.vtp.desktop.model.core.IDatabaseSet;
-import org.eclipse.vtp.desktop.model.core.IDatabaseTable;
+
+import com.openmethods.openvxml.desktop.model.databases.IDatabase;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseSet;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseTable;
 
 /**
  * This wizard walks the user through the steps required to create a new

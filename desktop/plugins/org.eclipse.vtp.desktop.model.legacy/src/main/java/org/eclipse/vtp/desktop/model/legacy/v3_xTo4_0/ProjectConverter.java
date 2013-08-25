@@ -19,12 +19,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
-import org.eclipse.vtp.desktop.model.core.IDesignFolder;
-import org.eclipse.vtp.desktop.model.core.IDesignItemContainer;
-import org.eclipse.vtp.desktop.model.core.IDesignRootFolder;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionTypeManager;
 import org.eclipse.vtp.desktop.model.legacy.v3_xTo3_X.DocumentConverter;
@@ -36,6 +31,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignFolder;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignItemContainer;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignRootFolder;
+import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 @SuppressWarnings("deprecation")
 public class ProjectConverter

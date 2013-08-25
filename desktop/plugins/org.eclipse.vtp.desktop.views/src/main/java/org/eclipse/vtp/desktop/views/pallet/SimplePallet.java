@@ -45,7 +45,8 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.vtp.desktop.core.Activator;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
 public class SimplePallet implements Pallet
 {

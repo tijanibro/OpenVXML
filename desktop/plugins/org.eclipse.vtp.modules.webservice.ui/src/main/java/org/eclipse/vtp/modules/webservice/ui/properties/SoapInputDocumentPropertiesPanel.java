@@ -53,27 +53,7 @@ import org.eclipse.vtp.desktop.editors.core.configuration.ComponentPropertiesPan
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
 import org.eclipse.vtp.desktop.editors.core.widgets.UIHelper;
 import org.eclipse.vtp.desktop.editors.core.widgets.ValueControl;
-import org.eclipse.vtp.desktop.model.core.FieldType;
-import org.eclipse.vtp.desktop.model.core.FieldType.Primitive;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.ObjectDefinition;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.VariableHelper;
-import org.eclipse.vtp.desktop.model.core.internal.branding.BrandContext;
-import org.eclipse.vtp.desktop.model.core.schema.AttributeItem;
-import org.eclipse.vtp.desktop.model.core.schema.ComplexContentModel;
-import org.eclipse.vtp.desktop.model.core.schema.ComplexType;
-import org.eclipse.vtp.desktop.model.core.schema.ContentModel;
-import org.eclipse.vtp.desktop.model.core.schema.ElementGroup;
-import org.eclipse.vtp.desktop.model.core.schema.ElementItem;
-import org.eclipse.vtp.desktop.model.core.schema.SimpleContentModel;
-import org.eclipse.vtp.desktop.model.core.schema.SimpleType;
-import org.eclipse.vtp.desktop.model.core.schema.Type;
-import org.eclipse.vtp.desktop.model.core.wsdl.ElementPart;
-import org.eclipse.vtp.desktop.model.core.wsdl.Part;
-import org.eclipse.vtp.desktop.model.core.wsdl.TypedPart;
-import org.eclipse.vtp.desktop.model.core.wsdl.soap.SoapBindingOperation;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.modules.webservice.ui.Activator;
 import org.eclipse.vtp.modules.webservice.ui.automata.CCSSuggestionCommand;
 import org.eclipse.vtp.modules.webservice.ui.automata.Command;
@@ -105,6 +85,30 @@ import org.eclipse.vtp.modules.webservice.ui.widgets.ObjectDefinitionFilter;
 import org.eclipse.vtp.modules.webservice.ui.widgets.ValueStack;
 import org.eclipse.vtp.modules.webservice.ui.widgets.VariableBrowserDialog;
 
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.internal.BrandContext;
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectSet;
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType.Primitive;
+import com.openmethods.openvxml.desktop.model.webservices.schema.AttributeItem;
+import com.openmethods.openvxml.desktop.model.webservices.schema.ComplexContentModel;
+import com.openmethods.openvxml.desktop.model.webservices.schema.ComplexType;
+import com.openmethods.openvxml.desktop.model.webservices.schema.ContentModel;
+import com.openmethods.openvxml.desktop.model.webservices.schema.ElementGroup;
+import com.openmethods.openvxml.desktop.model.webservices.schema.ElementItem;
+import com.openmethods.openvxml.desktop.model.webservices.schema.SimpleContentModel;
+import com.openmethods.openvxml.desktop.model.webservices.schema.SimpleType;
+import com.openmethods.openvxml.desktop.model.webservices.schema.Type;
+import com.openmethods.openvxml.desktop.model.webservices.wsdl.ElementPart;
+import com.openmethods.openvxml.desktop.model.webservices.wsdl.Part;
+import com.openmethods.openvxml.desktop.model.webservices.wsdl.TypedPart;
+import com.openmethods.openvxml.desktop.model.webservices.wsdl.soap.SoapBindingOperation;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectDefinition;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.VariableHelper;
+
 public class SoapInputDocumentPropertiesPanel extends
 	DesignElementPropertiesPanel implements IOperationListener
 {
@@ -121,10 +125,15 @@ public class SoapInputDocumentPropertiesPanel extends
 	Map<UIContentComposite, List<Variable>> variableScopes = new HashMap<UIContentComposite, List<Variable>>();
 	private Map<DocumentItem, Map<String, Boolean>> expansionStates = 
 		new HashMap<DocumentItem, Map<String, Boolean>>();
+	private IBusinessObjectSet businessObjectSet = null;
+	
 
 	public SoapInputDocumentPropertiesPanel(String name, IDesignElement element)
 	{
 		super(name, element);
+		IOpenVXMLProject project = element.getDesign().getDocument().getProject();
+		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		manager = (WebserviceBindingManager)element.getConfigurationManager(WebserviceBindingManager.TYPE_ID);
 		structure = manager.getInputDocumentStructure();
 		variables = element.getDesign().getVariablesFor(element);
@@ -1407,7 +1416,7 @@ public class SoapInputDocumentPropertiesPanel extends
 		{
 			super(scoping, parent, SINGLE_DELETE, composing);
 			cursorVariable = new Variable("forLoopCursor", FieldType.STRING);
-			VariableHelper.buildObjectFields(cursorVariable, getElement().getDesign().getDocument().getProject().getBusinessObjectSet());
+			VariableHelper.buildObjectFields(cursorVariable, businessObjectSet);
 			parentScope = super.getVariableScope();
 			setTitle("For Each");
 
@@ -1619,7 +1628,7 @@ outer:					for(int i = 0; i < parts.length; i++)
 			{
 				cursorVariable.setType(FieldType.STRING);
 				cursorVariable.clearFields();
-				VariableHelper.buildObjectFields(cursorVariable, getElement().getDesign().getDocument().getProject().getBusinessObjectSet());
+				VariableHelper.buildObjectFields(cursorVariable, businessObjectSet);
 			}
 			else
 			{
@@ -1629,7 +1638,7 @@ outer:					for(int i = 0; i < parts.length; i++)
 				else
 					cursorVariable.setType(new FieldType(arrayType.getPrimitiveBaseType()));
 				cursorVariable.clearFields();
-				VariableHelper.buildObjectFields(cursorVariable, getElement().getDesign().getDocument().getProject().getBusinessObjectSet());
+				VariableHelper.buildObjectFields(cursorVariable, businessObjectSet);
 			}
 			if(!cursorVariable.getName().equals(oldName))
 			{

@@ -18,7 +18,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.osgi.framework.Bundle;
 
 public class ConfigurationContextRegistry
@@ -87,7 +87,7 @@ public class ConfigurationContextRegistry
 		}
 	}
 
-	public List<ConfigurationContext> getConfigurationContextsFor(IWorkflowProject project)
+	public List<ConfigurationContext> getConfigurationContextsFor(IOpenVXMLProject project)
 	{
 		List<ConfigurationContext> ret = new ArrayList<ConfigurationContext>();
 		for(ContextRecord cr : managerRecords)
@@ -122,7 +122,7 @@ public class ConfigurationContextRegistry
 			adaptableFilters.add(filter);
 		}
 		
-		public boolean isApplicableTo(IWorkflowProject project)
+		public boolean isApplicableTo(IOpenVXMLProject project)
 		{		
 			for(@SuppressWarnings("rawtypes") Class c : adaptableFilters)
 			{

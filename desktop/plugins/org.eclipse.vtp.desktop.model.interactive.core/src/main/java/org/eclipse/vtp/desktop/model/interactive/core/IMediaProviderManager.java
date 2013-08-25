@@ -1,7 +1,8 @@
 package org.eclipse.vtp.desktop.model.interactive.core;
 
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
 import org.eclipse.vtp.framework.interactions.core.media.IMediaProvider;
+
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
 
 public interface IMediaProviderManager
 {

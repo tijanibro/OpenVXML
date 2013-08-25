@@ -31,13 +31,7 @@ import org.eclipse.vtp.desktop.export.IFlowModel;
 import org.eclipse.vtp.desktop.export.internal.ExportCore;
 import org.eclipse.vtp.desktop.media.core.FormatterRegistration;
 import org.eclipse.vtp.desktop.media.core.FormatterRegistrationManager;
-import org.eclipse.vtp.desktop.model.core.IWorkflowEntry;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.branding.IBrand;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.design.IExitBroadcastReceiver;
 import org.eclipse.vtp.desktop.model.interactive.core.content.ContentLoadingManager;
 import org.eclipse.vtp.desktop.model.interactive.core.input.InputLoadingManager;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.mediadefaults.WorkspaceMediaDefaultSettings;
@@ -68,6 +62,13 @@ import org.eclipse.vtp.framework.util.XMLUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowEntry;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.IExitBroadcastReceiver;
 
 /**
  * Constructor that builds process definitions from projects.

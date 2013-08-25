@@ -29,11 +29,12 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IExitBroadcastReceiver;
-import org.eclipse.vtp.desktop.model.core.internal.design.ExitBroadcastReceiver;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.modules.standard.ui.BroadcastReceiverInformationProvider;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IExitBroadcastReceiver;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ExitBroadcastReceiver;
 
 public class BroadcastReceiverPropertiesPanel extends
 		DesignElementPropertiesPanel

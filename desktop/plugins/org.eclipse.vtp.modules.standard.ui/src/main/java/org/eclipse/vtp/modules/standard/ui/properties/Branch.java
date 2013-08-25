@@ -1,7 +1,8 @@
 package org.eclipse.vtp.modules.standard.ui.properties;
 
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
 import org.eclipse.vtp.framework.util.Guid;
+
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
 
 
 public class Branch

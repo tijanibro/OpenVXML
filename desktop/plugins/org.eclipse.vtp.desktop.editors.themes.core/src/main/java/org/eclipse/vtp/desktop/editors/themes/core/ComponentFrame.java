@@ -16,7 +16,8 @@ import java.util.Map;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.CommandListener;
-import org.eclipse.vtp.desktop.model.core.design.IDesignComponent;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignComponent;
 
 /**
  * This interface represents the basic functions that graphical frames that

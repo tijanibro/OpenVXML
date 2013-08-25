@@ -35,11 +35,12 @@ import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.IPipelinedTreeContentProvider;
 import org.eclipse.ui.navigator.PipelinedShapeModification;
 import org.eclipse.ui.navigator.PipelinedViewerUpdate;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResource;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResourceContainer;
-import org.eclipse.vtp.desktop.model.core.WorkflowCore;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 /**
  * @author trip

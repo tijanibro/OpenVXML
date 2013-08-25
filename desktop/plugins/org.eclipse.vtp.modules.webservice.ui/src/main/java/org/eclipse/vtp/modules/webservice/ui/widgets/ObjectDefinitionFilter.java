@@ -1,6 +1,6 @@
 package org.eclipse.vtp.modules.webservice.ui.widgets;
 
-import org.eclipse.vtp.desktop.model.core.design.ObjectDefinition;
+import com.openmethods.openvxml.desktop.model.workflow.design.ObjectDefinition;
 
 public interface ObjectDefinitionFilter
 {

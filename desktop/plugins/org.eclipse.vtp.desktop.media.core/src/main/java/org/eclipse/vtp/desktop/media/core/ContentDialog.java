@@ -43,13 +43,14 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
 import org.eclipse.vtp.framework.interactions.core.media.Content;
 import org.eclipse.vtp.framework.interactions.core.media.FileContent;
 import org.eclipse.vtp.framework.interactions.core.media.FormattableContent;
 import org.eclipse.vtp.framework.interactions.core.media.IMediaProvider;
 import org.eclipse.vtp.framework.interactions.core.media.ReferencedContent;
 import org.eclipse.vtp.framework.interactions.core.media.TextContent;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
 
 /**
  * A dialog for editing a list of content objects.

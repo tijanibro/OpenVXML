@@ -2,7 +2,7 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension
-         point="org.eclipse.vtp.desktop.model.core.configurationManagers">
+         point="com.openmethods.openvxml.desktop.model.workflow.configurationManagers">
       <configuration-manager
             class="org.eclipse.vtp.modules.attacheddata.ui.configuration.post.AttachedDataManager"
             id="org.eclipse.vtp.configuration.attacheddata"

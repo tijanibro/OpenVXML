@@ -33,14 +33,15 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.core.internal.WorkflowProject;
-import org.eclipse.vtp.desktop.model.core.internal.branding.Brand;
-import org.eclipse.vtp.desktop.model.core.internal.branding.DefaultBrandManager;
 import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature;
 import org.eclipse.vtp.desktop.projects.core.util.BrandConfigurationScreen;
 import org.eclipse.vtp.desktop.projects.core.util.ConfigurationBrandManager;
 import org.eclipse.vtp.framework.util.Guid;
+
+import com.openmethods.openvxml.desktop.model.branding.internal.Brand;
+import com.openmethods.openvxml.desktop.model.branding.internal.DefaultBrandManager;
+import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 /**
  * This wizard walks the user through the steps required to create

@@ -25,11 +25,13 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.IWorkflowEntry;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.configuration.FragmentConfigurationManager;
 import org.eclipse.vtp.desktop.model.elements.core.internal.ApplicationFragmentElement;
+
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowEntry;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowProjectAspect;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 public class FragmentEntrySelectionPropertiesPanel extends DesignElementPropertiesPanel
 {
@@ -56,8 +58,9 @@ public class FragmentEntrySelectionPropertiesPanel extends DesignElementProperti
 		ApplicationFragmentElement applicationFragmentElement = (ApplicationFragmentElement)getElement();
 		if(applicationFragmentElement.isModelPresent())
 		{
-			IWorkflowProject referencedModel = applicationFragmentElement.getReferencedModel();
-			entryPoints = referencedModel.getWorkflowEntries();
+			IOpenVXMLProject referencedModel = applicationFragmentElement.getReferencedModel();
+			IWorkflowProjectAspect workflowAspect = (IWorkflowProjectAspect)referencedModel.getProjectAspect(IWorkflowProjectAspect.ASPECT_ID);
+			entryPoints = workflowAspect.getWorkflowEntries();
 			IWorkflowEntry defaultEntry = null;
 			for(IWorkflowEntry entry : entryPoints)
 			{

@@ -25,22 +25,25 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.vtp.desktop.model.core.FieldType;
-import org.eclipse.vtp.desktop.model.core.FieldType.Primitive;
-import org.eclipse.vtp.desktop.model.core.IBusinessObject;
-import org.eclipse.vtp.desktop.model.core.IBusinessObjectField;
-import org.eclipse.vtp.desktop.model.core.IBusinessObjectSet;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
-import org.eclipse.vtp.desktop.model.core.design.Variable;
-import org.eclipse.vtp.desktop.model.core.internal.BusinessObject;
-import org.eclipse.vtp.desktop.model.core.internal.BusinessObjectField;
-import org.eclipse.vtp.desktop.model.core.internal.VariableHelper;
-import org.eclipse.vtp.desktop.model.core.internal.design.ConnectorRecord;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveInformationProvider;
 import org.eclipse.vtp.framework.util.XMLWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType;
+import com.openmethods.openvxml.desktop.model.businessobjects.FieldType.Primitive;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObject;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectField;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectSet;
+import com.openmethods.openvxml.desktop.model.businessobjects.internal.BusinessObject;
+import com.openmethods.openvxml.desktop.model.businessobjects.internal.BusinessObjectField;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.VariableHelper;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.ConnectorRecord;
 
 public class ScriptedPrimitiveInformationProvider extends PrimitiveInformationProvider
 {
@@ -229,7 +232,9 @@ public class ScriptedPrimitiveInformationProvider extends PrimitiveInformationPr
 	public void addVariable(String name, FieldType type)
 	{
 		Variable v = new Variable(name, type);
-		VariableHelper.buildObjectFields(v, getElement().getDesign().getDocument().getProject().getBusinessObjectSet());
+		IOpenVXMLProject project = getElement().getDesign().getDocument().getProject();
+		IBusinessObjectProjectAspect aspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		VariableHelper.buildObjectFields(v, aspect.getBusinessObjectSet());
 		variables.add(v);
 	}
 	
@@ -491,7 +496,9 @@ public class ScriptedPrimitiveInformationProvider extends PrimitiveInformationPr
 			}
 			else //business object type
 			{
-				IBusinessObject bo = getElement().getDesign().getDocument().getProject().getBusinessObjectSet().getBusinessObject(baseTypeName);
+				IOpenVXMLProject project = getElement().getDesign().getDocument().getProject();
+				IBusinessObjectProjectAspect aspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+				IBusinessObject bo = aspect.getBusinessObjectSet().getBusinessObject(baseTypeName);
 				if(bo == null)
 					throw new RuntimeException("Missing business object definition: " + baseTypeName);
 				ft = new FieldType(type, bo);

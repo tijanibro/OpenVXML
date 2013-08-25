@@ -7,15 +7,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.vtp.desktop.model.core.schema.AbstractElementObject;
-import org.eclipse.vtp.desktop.model.core.schema.ComplexContentModel;
-import org.eclipse.vtp.desktop.model.core.schema.ComplexType;
-import org.eclipse.vtp.desktop.model.core.schema.ContentModel;
-import org.eclipse.vtp.desktop.model.core.schema.ElementGroup;
-import org.eclipse.vtp.desktop.model.core.schema.ElementItem;
-import org.eclipse.vtp.desktop.model.core.schema.SimpleContentModel;
-import org.eclipse.vtp.desktop.model.core.schema.SimpleType;
-import org.eclipse.vtp.desktop.model.core.schema.Type;
 import org.eclipse.vtp.modules.webservice.ui.configuration.InputDocumentStructure;
 import org.eclipse.vtp.modules.webservice.ui.configuration.document.ConditionalContainerSet;
 import org.eclipse.vtp.modules.webservice.ui.configuration.document.ConditionalDocumentItem;
@@ -25,6 +16,16 @@ import org.eclipse.vtp.modules.webservice.ui.configuration.document.ElementDocum
 import org.eclipse.vtp.modules.webservice.ui.configuration.document.ElseDocumentItem;
 import org.eclipse.vtp.modules.webservice.ui.configuration.document.ForLoopDocumentItem;
 import org.eclipse.vtp.modules.webservice.ui.configuration.document.TextDocumentItem;
+
+import com.openmethods.openvxml.desktop.model.webservices.schema.AbstractElementObject;
+import com.openmethods.openvxml.desktop.model.webservices.schema.ComplexContentModel;
+import com.openmethods.openvxml.desktop.model.webservices.schema.ComplexType;
+import com.openmethods.openvxml.desktop.model.webservices.schema.ContentModel;
+import com.openmethods.openvxml.desktop.model.webservices.schema.ElementGroup;
+import com.openmethods.openvxml.desktop.model.webservices.schema.ElementItem;
+import com.openmethods.openvxml.desktop.model.webservices.schema.SimpleContentModel;
+import com.openmethods.openvxml.desktop.model.webservices.schema.SimpleType;
+import com.openmethods.openvxml.desktop.model.webservices.schema.Type;
 
 public class SchemaEngine
 {

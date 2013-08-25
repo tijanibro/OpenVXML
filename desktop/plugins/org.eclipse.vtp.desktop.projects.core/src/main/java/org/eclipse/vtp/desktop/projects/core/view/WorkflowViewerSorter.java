@@ -3,12 +3,13 @@ package org.eclipse.vtp.desktop.projects.core.view;
 import java.text.Collator;
 
 import org.eclipse.jface.viewers.ViewerSorter;
-import org.eclipse.vtp.desktop.model.core.IBusinessObjectSet;
-import org.eclipse.vtp.desktop.model.core.IDatabaseSet;
-import org.eclipse.vtp.desktop.model.core.IDependencySet;
-import org.eclipse.vtp.desktop.model.core.IDesignDocument;
-import org.eclipse.vtp.desktop.model.core.IDesignFolder;
-import org.eclipse.vtp.desktop.model.core.IDesignRootFolder;
+
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectSet;
+import com.openmethods.openvxml.desktop.model.databases.IDatabaseSet;
+import com.openmethods.openvxml.desktop.model.dependencies.IDependencySet;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignFolder;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignRootFolder;
 
 public class WorkflowViewerSorter extends ViewerSorter
 {

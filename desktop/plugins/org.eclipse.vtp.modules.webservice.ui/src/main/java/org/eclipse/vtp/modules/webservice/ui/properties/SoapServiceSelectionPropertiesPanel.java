@@ -29,16 +29,19 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.IWebserviceDescriptor;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
-import org.eclipse.vtp.desktop.model.core.wsdl.BindingOperation;
-import org.eclipse.vtp.desktop.model.core.wsdl.Port;
-import org.eclipse.vtp.desktop.model.core.wsdl.Service;
-import org.eclipse.vtp.desktop.model.core.wsdl.WSDL;
-import org.eclipse.vtp.desktop.model.core.wsdl.soap.SoapBinding;
-import org.eclipse.vtp.desktop.model.core.wsdl.soap.SoapBindingOperation;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.modules.webservice.ui.configuration.WebserviceBindingManager;
 import org.eclipse.vtp.modules.webservice.ui.configuration.WebserviceServiceBinding;
+
+import com.openmethods.openvxml.desktop.model.webservices.IWebserviceDescriptor;
+import com.openmethods.openvxml.desktop.model.webservices.IWebserviceProjectAspect;
+import com.openmethods.openvxml.desktop.model.webservices.wsdl.BindingOperation;
+import com.openmethods.openvxml.desktop.model.webservices.wsdl.Port;
+import com.openmethods.openvxml.desktop.model.webservices.wsdl.Service;
+import com.openmethods.openvxml.desktop.model.webservices.wsdl.WSDL;
+import com.openmethods.openvxml.desktop.model.webservices.wsdl.soap.SoapBinding;
+import com.openmethods.openvxml.desktop.model.webservices.wsdl.soap.SoapBindingOperation;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 /**
  * @author trip
@@ -79,7 +82,9 @@ public class SoapServiceSelectionPropertiesPanel extends
 	public SoapServiceSelectionPropertiesPanel(String name, IDesignElement element)
 	{
 		super(name, element);
-		descriptors = element.getDesign().getDocument().getProject().getWebserviceSet().getWebserviceDescriptors(true);
+		IOpenVXMLProject project = element.getDesign().getDocument().getProject();
+		IWebserviceProjectAspect webserviceAspect = (IWebserviceProjectAspect)project.getProjectAspect(IWebserviceProjectAspect.ASPECT_ID);
+		descriptors = webserviceAspect.getWebserviceSet().getWebserviceDescriptors(true);
 		manager = (WebserviceBindingManager)element.getConfigurationManager(WebserviceBindingManager.TYPE_ID);
 		serviceBinding = manager.getServiceBinding();
 		currentKey = serviceBinding.getDescriptor() + ":" + 

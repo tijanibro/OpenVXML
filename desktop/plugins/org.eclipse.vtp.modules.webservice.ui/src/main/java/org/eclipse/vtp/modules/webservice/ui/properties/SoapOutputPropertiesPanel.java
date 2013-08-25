@@ -19,9 +19,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
 import org.eclipse.vtp.modules.webservice.ui.configuration.OutputBinding;
 import org.eclipse.vtp.modules.webservice.ui.configuration.WebserviceBindingManager;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 /**
  * @author trip

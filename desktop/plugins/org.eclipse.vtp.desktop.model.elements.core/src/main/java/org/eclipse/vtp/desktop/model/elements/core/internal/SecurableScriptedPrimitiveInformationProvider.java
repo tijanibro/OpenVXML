@@ -1,7 +1,8 @@
 package org.eclipse.vtp.desktop.model.elements.core.internal;
 
-import org.eclipse.vtp.desktop.model.core.design.ISecurableElement;
 import org.w3c.dom.Element;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.ISecurableElement;
 
 public class SecurableScriptedPrimitiveInformationProvider extends
         ScriptedPrimitiveInformationProvider implements ISecurableElement

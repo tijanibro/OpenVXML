@@ -1,6 +1,6 @@
 package org.eclipse.vtp.modules.webservice.ui.automata;
 
-import org.eclipse.vtp.desktop.model.core.schema.ElementItem;
+import com.openmethods.openvxml.desktop.model.webservices.schema.ElementItem;
 
 public class ElementSuggestionCommand extends SuggestionCommand
 {

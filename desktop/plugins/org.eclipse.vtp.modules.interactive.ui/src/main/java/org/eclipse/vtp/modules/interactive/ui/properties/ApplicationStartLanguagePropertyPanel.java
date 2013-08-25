@@ -22,12 +22,13 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.context.InteractionTypeContext;
 import org.eclipse.vtp.modules.standard.ui.BeginInformationProvider;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 /**
  * The graphical user interface used to configure an application's begin module

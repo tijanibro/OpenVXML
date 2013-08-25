@@ -24,8 +24,9 @@ import org.eclipse.vtp.desktop.editors.themes.core.ComponentFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.ComponentFrameListener;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.CommandListener;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.ShowProperties;
-import org.eclipse.vtp.desktop.model.core.design.IDesignComponent;
-import org.eclipse.vtp.desktop.model.core.design.IDesignComponentListener;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignComponent;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignComponentListener;
 
 /**
  * This is the Attraction theme's implementation of the <code>ComponentFrame</code>

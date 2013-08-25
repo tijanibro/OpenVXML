@@ -17,8 +17,9 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.vtp.desktop.model.core.design.IDesignComponent;
 import org.osgi.framework.Bundle;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignComponent;
 
 public class ComponentPropertiesPanelProviderRegistry
 {

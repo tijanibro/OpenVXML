@@ -8,7 +8,7 @@ import org.eclipse.core.resources.IProject;
  */
 public interface IWorkflowProjectFactory
 {	
-	public IWorkflowProject createWorkflowProject(String name);
+	public IOpenVXMLProject createWorkflowProject(String name);
 	
-	public IWorkflowProject convertToWorkflowProject(IProject project);
+	public IOpenVXMLProject convertToWorkflowProject(IProject project);
 }

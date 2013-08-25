@@ -15,7 +15,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.vtp.framework.common,
  org.eclipse.vtp.desktop.projects.core,
- org.eclipse.vtp.desktop.export
+ org.eclipse.vtp.desktop.export,
+ com.openmethods.openvxml.desktop.model.branding;bundle-version="5.0.0",
+ com.openmethods.openvxml.desktop.model.businessobjects;bundle-version="5.0.0",
+ com.openmethods.openvxml.desktop.model.workflow;bundle-version="5.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.vtp.desktop.model.elements.core,

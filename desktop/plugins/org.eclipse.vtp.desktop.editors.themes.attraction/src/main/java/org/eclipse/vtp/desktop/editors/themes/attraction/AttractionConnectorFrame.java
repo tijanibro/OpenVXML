@@ -25,10 +25,11 @@ import org.eclipse.vtp.desktop.editors.themes.core.ConnectorFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.ElementFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.CommandListener;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.StartMove;
-import org.eclipse.vtp.desktop.model.core.design.IDesignConnector;
-import org.eclipse.vtp.desktop.model.core.design.IDesignConnectorLabel;
-import org.eclipse.vtp.desktop.model.core.design.IDesignConnectorMidpoint;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElementConnectionPoint;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnector;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnectorLabel;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnectorMidpoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
 
 /**
  * This is the Attraction theme's implementation of the connector frame interface.

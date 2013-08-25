@@ -22,7 +22,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 /**
  * LanguageSelectionGeneralPropertiesPanel.

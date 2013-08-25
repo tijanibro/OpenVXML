@@ -19,7 +19,7 @@
       </provider>
    </extension>
    <extension
-         point="org.eclipse.vtp.desktop.model.core.configurationManagers">
+         point="com.openmethods.openvxml.desktop.model.workflow.configurationManagers">
       <configuration-manager
             class="org.eclipse.vtp.modules.webservice.ui.configuration.WebserviceBindingManager"
             id="org.eclipse.vtp.configuration.webservicecall">

@@ -18,7 +18,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.IContributorResourceAdapter;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResource;
 import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.core.event.IRefreshListener;
@@ -50,7 +50,7 @@ public abstract class WorkflowResource implements IWorkflowResource,
 		super();
 	}
 
-	public IWorkflowProject getProject()
+	public IOpenVXMLProject getProject()
 	{
 		return getParent().getProject();
 	}

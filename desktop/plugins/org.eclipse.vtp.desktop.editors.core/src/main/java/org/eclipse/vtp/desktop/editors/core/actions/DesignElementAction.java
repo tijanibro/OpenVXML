@@ -2,7 +2,8 @@ package org.eclipse.vtp.desktop.editors.core.actions;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.CommandListener;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 public class DesignElementAction extends Action
 {

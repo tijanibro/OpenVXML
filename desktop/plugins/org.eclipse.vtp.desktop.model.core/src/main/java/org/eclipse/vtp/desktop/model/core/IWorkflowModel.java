@@ -18,15 +18,15 @@ import org.eclipse.core.resources.IResource;
 
 public interface IWorkflowModel
 {
-	public IWorkflowProject getWorkflowProject(String id);
+	public IOpenVXMLProject getWorkflowProject(String id);
 	
 	public boolean isWorkflowProject(IProject project);
 	
-	public List<IWorkflowProject> listWorkflowProjects();
+	public List<IOpenVXMLProject> listWorkflowProjects();
 	
-	public IWorkflowProject createWorkflowProject(String natureId, String name);
+	public IOpenVXMLProject createWorkflowProject(String natureId, String name);
 	
-	public IWorkflowProject convertToWorkflowProject(IProject project);
+	public IOpenVXMLProject convertToWorkflowProject(IProject project);
 	
 	public IWorkflowResource convertToWorkflowResource(IResource resource);
 }

@@ -22,10 +22,11 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.vtp.desktop.model.core.design.IDesign;
-import org.eclipse.vtp.desktop.model.core.internal.design.Design;
 import org.eclipse.vtp.desktop.model.elements.core.Activator;
 import org.eclipse.vtp.desktop.model.elements.core.internal.DialogElement;
+
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
+import com.openmethods.openvxml.desktop.model.workflow.internal.design.Design;
 
 /**
  * This wizard walks the user through the steps required to create a new
