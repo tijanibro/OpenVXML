@@ -19,7 +19,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionTypeManager;
 import org.eclipse.vtp.desktop.model.legacy.v3_xTo3_X.DocumentConverter;
@@ -31,12 +30,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
-import com.openmethods.openvxml.desktop.model.workflow.IDesignFolder;
-import com.openmethods.openvxml.desktop.model.workflow.IDesignItemContainer;
-import com.openmethods.openvxml.desktop.model.workflow.IDesignRootFolder;
-import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 @SuppressWarnings("deprecation")
 public class ProjectConverter
@@ -391,9 +384,7 @@ uicOuter:					for(int uc = 0; uc < uiConnectorList.getLength(); uc++)
 				description.setNatureIds(new String[] {"org.eclipse.vtp.desktop.model.interactive.core.InteractiveWorkflowProjectNature"});
 				project.setDescription(description, null);
 				callDesignFile.move(project.getFile(callDesignFile.getName() + ".bak").getFullPath(), true, null);
-				IWorkflowProject wp = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject(project);
-				IDesignRootFolder drf = wp.getDesignRootFolder();
-				touchAll(drf);
+				touchAll(designFolder);
 			}
 			
 		}
@@ -403,16 +394,18 @@ uicOuter:					for(int uc = 0; uc < uiConnectorList.getLength(); uc++)
 		}
 	}
 	
-	private void touchAll(IDesignItemContainer container) throws Exception
+	private void touchAll(IFolder container) throws Exception
 	{
-		for(IDesignDocument doc : container.getDesignDocuments())
+		IResource[] resources = container.members();
+		for(IResource r : resources)
 		{
-			doc.becomeWorkingCopy();
-			doc.commitWorkingCopy();
-		}
-		for(IDesignFolder folder : container.getDesignFolders())
-		{
-			touchAll(folder);
+			if(r instanceof IFolder)
+				touchAll((IFolder)r);
+			else
+			{
+				IFile f = (IFile)r;
+				f.touch(null);
+			}
 		}
 	}
 	
