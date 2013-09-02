@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse Voice Tools Desktop Core Plug-in
 Bundle-SymbolicName: org.eclipse.vtp.desktop.core;singleton:=true
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.vtp.desktop.core.Activator
 Require-Bundle: org.eclipse.ui,

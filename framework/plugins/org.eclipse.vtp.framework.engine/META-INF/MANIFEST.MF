@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VTP Ftamework Engine Plug-in
 Bundle-SymbolicName: org.eclipse.vtp.framework.engine;singleton:=true
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.eclipse.vtp.framework.engine.osgi.Activator
 Bundle-Vendor: Eclipse.org

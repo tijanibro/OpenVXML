@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VTP Framework Voice Plug-in
 Bundle-SymbolicName: org.eclipse.vtp.framework.interactions.voice;singleton:=true
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-Vendor: Eclipse.org
 Require-Bundle: org.eclipse.vtp.framework.interactions.core,
  org.eclipse.vtp.framework.util,
