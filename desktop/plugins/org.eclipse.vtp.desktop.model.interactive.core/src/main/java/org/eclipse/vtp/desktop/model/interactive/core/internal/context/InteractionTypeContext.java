@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationContext;
-import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
+import org.eclipse.vtp.desktop.model.interactive.core.ILanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionTypeManager;
 
@@ -21,7 +21,7 @@ public class InteractionTypeContext implements ConfigurationContext
 {
 	public static final String CONTEXT_ID = "org.eclipse.vtp.desktop.model.interactive.core.interactiontypecontext";
 	private static final String CONTEXT_NAME = "Interaction Type";
-	private IWorkflowProject project = null;
+	private IOpenVXMLProject project = null;
 
 	/**
 	 * 
@@ -43,7 +43,7 @@ public class InteractionTypeContext implements ConfigurationContext
 		return CONTEXT_NAME;
 	}
 	
-	public void setProject(IWorkflowProject project)
+	public void setProject(IOpenVXMLProject project)
 	{
 		this.project = project;
 	}
@@ -62,8 +62,8 @@ public class InteractionTypeContext implements ConfigurationContext
 	public List<Object> getValues()
 	{
 		List<Object> ret = new ArrayList<Object>();
-		IInteractiveWorkflowProject interactiveProject = (IInteractiveWorkflowProject)project;
-		List<String> typeIds = interactiveProject.getSupportedInteractionTypes();
+		ILanguageSupportProjectAspect languageSupportAspect = (ILanguageSupportProjectAspect)project.getProjectAspect(ILanguageSupportProjectAspect.ASPECT_ID);
+		List<String> typeIds = languageSupportAspect.getMediaProviderManager().getSupportedInteractionTypes();
 		for(String typeId : typeIds)
 		{
 			ret.add(InteractionTypeManager.getInstance().getType(typeId));

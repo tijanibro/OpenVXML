@@ -29,4 +29,11 @@
             value="true">
       </persistent>
    </extension>
+   <extension
+         point="org.eclipse.vtp.desktop.model.core.projectAspects">
+      <aspect
+            factory="com.openmethods.openvxml.desktop.model.workflow.internal.WorkflowProjectAspectFactory"
+            id="com.openmethods.openvxml.desktop.model.aspect.workflow">
+      </aspect>
+   </extension>
 </plugin>

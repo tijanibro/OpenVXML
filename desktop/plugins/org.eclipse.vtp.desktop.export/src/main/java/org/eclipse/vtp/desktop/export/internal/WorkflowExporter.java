@@ -16,29 +16,34 @@ import javax.xml.parsers.SAXParser;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.vtp.desktop.export.IWorkflowExporter;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
+import org.eclipse.vtp.desktop.model.interactive.core.ILanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProject;
+import org.eclipse.vtp.desktop.model.interactive.core.IMediaProviderManager;
 import org.eclipse.vtp.framework.util.ConfigurationDictionary;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.IBrandingProjectAspect;
 import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
 import com.openmethods.openvxml.desktop.model.workflow.IDesignFolder;
 import com.openmethods.openvxml.desktop.model.workflow.IDesignItemContainer;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowProjectAspect;
 
 public final class WorkflowExporter extends ProjectExporter implements
 		IWorkflowExporter {
 	
 	private final String id;
-	private final IWorkflowProject project;
+	private final IOpenVXMLProject project;
 	private final Map<String, MediaExporter> mediaDependencies = new HashMap<String, MediaExporter>();
 	private final Set<WorkflowExporter> workflowDependencies = new HashSet<WorkflowExporter>();
 	private final Map<String, List<String>> languageMapping = new HashMap<String, List<String>>();
+	private final IBrandingProjectAspect brandingAspect;
+	private final IWorkflowProjectAspect workflowAspect;
 
-	public WorkflowExporter(Exporter exporter, DocumentBuilder db, IWorkflowProject project) {
+	public WorkflowExporter(Exporter exporter, DocumentBuilder db, IOpenVXMLProject project) {
 		this.project = project;
 		String id = "";
 		try {
@@ -52,6 +57,8 @@ public final class WorkflowExporter extends ProjectExporter implements
 			e.printStackTrace();
 		}
 		this.id = id;
+		brandingAspect = (IBrandingProjectAspect)project.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
+		workflowAspect = (IWorkflowProjectAspect)project.getProjectAspect(IWorkflowProjectAspect.ASPECT_ID);
 		loadSettings(exporter);
 	}
 	
@@ -59,7 +66,7 @@ public final class WorkflowExporter extends ProjectExporter implements
 		return id;
 	}
 
-	public IWorkflowProject getWorkflowProject() {
+	public IOpenVXMLProject getWorkflowProject() {
 		return project;
 	}
 
@@ -140,22 +147,24 @@ public final class WorkflowExporter extends ProjectExporter implements
 			if (linkedIds.contains(exporter.getId()))
 				workflowDependencies.add(exporter);
 		}
-		if (project instanceof IInteractiveWorkflowProject) {
-			IInteractiveWorkflowProject iProject = (IInteractiveWorkflowProject)project;
-			for (String interactionType : iProject.getSupportedInteractionTypes())
+		ILanguageSupportProjectAspect interactiveAspect = (ILanguageSupportProjectAspect)project.getProjectAspect(ILanguageSupportProjectAspect.ASPECT_ID);
+		if (interactiveAspect != null)
+		{
+			IMediaProviderManager mediaProviderManager = interactiveAspect.getMediaProviderManager();
+			for (String interactionType : mediaProviderManager.getSupportedInteractionTypes())
 			{
-				languageMapping.put(interactionType, iProject.getSupportedLanguages(interactionType));
-				for (String language : iProject.getSupportedLanguages(interactionType))
+				languageMapping.put(interactionType, mediaProviderManager.getSupportedLanguages(interactionType));
+				for (String language : mediaProviderManager.getSupportedLanguages(interactionType))
 				{
-					resolveMediaDependencies(mediaExporters, iProject, interactionType, language, iProject.getBrandManager().getDefaultBrand());
+					resolveMediaDependencies(mediaExporters, mediaProviderManager, interactionType, language, brandingAspect.getBrandManager().getDefaultBrand());
 				}
 			}
 		}
 	}
 	
 	private void resolveMediaDependencies (Map<String, MediaExporter> mediaExporters, 
-			IInteractiveWorkflowProject iProject, String interactionType, String language, IBrand brand) {
-		IMediaProject mediaProject = iProject.getMediaProviderManager().getMediaProject(interactionType, brand, language);
+			IMediaProviderManager iProject, String interactionType, String language, IBrand brand) {
+		IMediaProject mediaProject = iProject.getMediaProject(interactionType, brand, language);
 		if (mediaProject != null) {
 			MediaExporter exporter = mediaExporters.get(mediaProject.getName());
 			if (exporter != null)
@@ -167,7 +176,7 @@ public final class WorkflowExporter extends ProjectExporter implements
 	
 	public Collection<IDesignDocument> getDesignDocuments () {
 		Collection<IDesignDocument> documents = new LinkedList<IDesignDocument>();
-		findDesignDocuments(project.getDesignRootFolder(), documents);
+		findDesignDocuments(workflowAspect.getDesignRootFolder(), documents);
 		return documents;
 	}
 	

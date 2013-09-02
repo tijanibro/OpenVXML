@@ -21,17 +21,18 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.vtp.desktop.media.core.IMediaDefaultPanel;
 import org.eclipse.vtp.desktop.media.core.MediaDefaultsPanelManager;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.WorkflowCore;
+import org.eclipse.vtp.desktop.model.core.internal.OpenVXMLProject;
+import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionTypeManager;
-import org.eclipse.vtp.desktop.model.interactive.core.internal.InteractiveWorkflowProject;
+import org.eclipse.vtp.desktop.model.interactive.core.internal.InteractiveProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.mediadefaults.IMediaDefaultSettings;
-
-import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 public class ApplicationProjectMediaDefaultsPropertyPage extends PropertyPage
 {
-	private InteractiveWorkflowProject applicationProject = null;
+	private OpenVXMLProject applicationProject = null;
+	private InteractiveProjectAspect interactiveAspect = null;
 	private IMediaDefaultSettings mediaDefaultSettings = null;
 	ScrolledComposite scrollComp = null;
 	Composite stackComp = null;
@@ -53,23 +54,26 @@ public class ApplicationProjectMediaDefaultsPropertyPage extends PropertyPage
 		super.setElement(element);
 		try
         {
-	        if(element instanceof InteractiveWorkflowProject)
-	        	applicationProject = (InteractiveWorkflowProject)element;
+	        if(element instanceof OpenVXMLProject)
+	        	applicationProject = (OpenVXMLProject)element;
 	        else if(element instanceof IProject)
 	        {
 	        	IProject project = (IProject)element;
 	        	if(WorkflowCore.getDefault().getWorkflowModel().isWorkflowProject(project))
 	        	{
-	        		IWorkflowProject workflowProject = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject(project);
-	        		if(workflowProject instanceof InteractiveWorkflowProject)
-	        			applicationProject = (InteractiveWorkflowProject)workflowProject;
+	        		OpenVXMLProject workflowProject = (OpenVXMLProject)WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject(project);
+	        		interactiveAspect = (InteractiveProjectAspect)workflowProject.getProjectAspect(IInteractiveProjectAspect.ASPECT_ID);
+	        		if(interactiveAspect != null)
+	        			applicationProject = workflowProject;
+	        		else
+	        			throw new RuntimeException("Unsupported element type");
 	        	}
 	        	else
 	        		throw new RuntimeException("Unsupported element type");
 	        }
 	        else
         		throw new RuntimeException("Unsupported element type");
-	        mediaDefaultSettings = applicationProject.getMediaDefaultSettings();
+	        mediaDefaultSettings = interactiveAspect.getMediaDefaultSettings();
 			if(stackComp != null) //already created controls
 			{
 				for(int i = 0; i < settingPanels.size(); i++)
@@ -182,7 +186,7 @@ public class ApplicationProjectMediaDefaultsPropertyPage extends PropertyPage
 		{
 			settingPanels.get(i).save();
 		}
-		applicationProject.storeMediaDefaultSettings();
+		applicationProject.storeBuildPath();
 		return true;
 	}
 	

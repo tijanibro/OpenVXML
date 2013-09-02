@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.configuration.ConfigurationContext;
-import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
+import org.eclipse.vtp.desktop.model.interactive.core.ILanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 
 /**
@@ -20,7 +20,7 @@ public class LanguageContext implements ConfigurationContext
 {
 	public static final String CONTEXT_ID = "org.eclipse.vtp.desktop.model.interactive.core.languagecontext";
 	private static final String CONTEXT_NAME = "Language";
-	private IWorkflowProject project = null;
+	private IOpenVXMLProject project = null;
 	private String interactionType = null;
 
 	/**
@@ -43,7 +43,7 @@ public class LanguageContext implements ConfigurationContext
 		return CONTEXT_NAME;
 	}
 	
-	public void setProject(IWorkflowProject project)
+	public void setProject(IOpenVXMLProject project)
 	{
 		this.project = project;
 	}
@@ -64,8 +64,8 @@ public class LanguageContext implements ConfigurationContext
 		List<Object> ret = new ArrayList<Object>();
 		if(interactionType != null)
 		{
-			IInteractiveWorkflowProject interactiveProject = (IInteractiveWorkflowProject)project;
-			ret.addAll(interactiveProject.getSupportedLanguages(interactionType));
+			ILanguageSupportProjectAspect languageSupportAspect = (ILanguageSupportProjectAspect)project.getProjectAspect(ILanguageSupportProjectAspect.ASPECT_ID);
+			ret.addAll(languageSupportAspect.getMediaProviderManager().getSupportedLanguages(interactionType));
 		}
 		return ret;
 	}

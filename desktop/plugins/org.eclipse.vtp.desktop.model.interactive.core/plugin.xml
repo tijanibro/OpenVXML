@@ -40,17 +40,6 @@
       </binding-type>
    </extension>
    <extension
-         id="InteractiveWorkflowProjectBuilder"
-         name="Interactive Workflow Project Builder"
-         point="org.eclipse.core.resources.builders">
-      <builder
-            hasNature="false">
-         <run
-               class="org.eclipse.vtp.desktop.model.interactive.core.builders.InteractiveWorkflowProjectBuilder">
-         </run>
-      </builder>
-   </extension>
-   <extension
          id="MediaProjectBuilder"
          name="Media project Builder"
          point="org.eclipse.core.resources.builders">
@@ -62,29 +51,6 @@
       </builder>
    </extension>
    <extension
-         id="InteractiveWorkflowProjectNature"
-         name="Interactive Workflow Project Nature"
-         point="org.eclipse.core.resources.natures">
-      <runtime>
-         <run
-               class="org.eclipse.vtp.desktop.model.interactive.core.natures.InteractiveWorkflowProjectNature">
-         </run>
-      </runtime>
-      <builder
-            id="org.eclipse.vtp.desktop.model.interactive.core.InteractiveWorkflowProjectBuilder">
-      </builder>
-      <builder
-            id="org.eclipse.vtp.desktop.model.core.WorkflowProjectBuilder">
-      </builder>
-   </extension>
-   <extension
-         point="org.eclipse.vtp.desktop.model.core.workflowProjectFactories">
-      <project-factory
-            class="org.eclipse.vtp.desktop.model.interactive.core.internal.InteractiveWorkflowProjectFactory"
-            nature-id="org.eclipse.vtp.desktop.model.interactive.core.InteractiveWorkflowProjectNature">
-      </project-factory>
-   </extension>
-   <extension
          point="org.eclipse.vtp.desktop.model.core.configurationContexts">
       <context
             class="org.eclipse.vtp.desktop.model.interactive.core.internal.context.InteractionTypeContext"
@@ -92,7 +58,7 @@
       </context>
       <context-binding
             context-id="org.eclipse.vtp.desktop.model.interactive.core.interactiontypecontext"
-            filter-class="org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject">
+            filter-class="org.eclipse.vtp.desktop.model.interactive.core.IInteractiveProjectAspect">
       </context-binding>
       <context
             class="org.eclipse.vtp.desktop.model.interactive.core.internal.context.LanguageContext"
@@ -100,14 +66,29 @@
       </context>
       <context-binding
             context-id="org.eclipse.vtp.desktop.model.interactive.core.languagecontext"
-            filter-class="org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject">
+            filter-class="org.eclipse.vtp.desktop.model.interactive.core.IInteractiveProjectAspect">
       </context-binding>
    </extension>
    <extension
-         point="org.eclipse.vtp.desktop.model.core.configurationManagers">
+         point="com.openmethods.openvxml.desktop.model.workflow.configurationManagers">
       <configuration-manager
             class="org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.GenericBindingManager"
             id="org.eclipse.vtp.configuration.generic">
       </configuration-manager>
+   </extension>
+   <extension
+         point="org.eclipse.vtp.desktop.model.core.projectAspects">
+      <aspect
+            factory="org.eclipse.vtp.desktop.model.interactive.core.internal.InteractiveProjectAspectFactory"
+            id="com.openmethods.openvxml.desktop.model.aspect.interactive">
+      </aspect>
+      <aspect
+            factory="org.eclipse.vtp.desktop.model.interactive.core.internal.LanguageSupportProjectAspectFactory"
+            id="com.openmethods.openvxml.desktop.model.aspect.languagesupport">
+      </aspect>
+      <aspect
+            factory="org.eclipse.vtp.desktop.model.interactive.core.internal.UmbrellaProjectAspectFactory"
+            id="com.openmethods.openvxml.desktop.model.aspect.umbrella">
+      </aspect>
    </extension>
 </plugin>

@@ -3,25 +3,27 @@
  */
 package org.eclipse.vtp.desktop.model.core.internal;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.IWorkflowModel;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProjectFactory;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResource;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResourceContainer;
-import org.osgi.framework.Bundle;
+import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 
 /**
@@ -30,134 +32,58 @@ import org.osgi.framework.Bundle;
  */
 public class WorkflowModel implements IWorkflowModel
 {
-	public static final String workflowProjectFactoryExtensionId = "org.eclipse.vtp.desktop.model.core.workflowProjectFactories";
-
-	private Map<String, IWorkflowProjectFactory> projectFactories =
-		new HashMap<String, IWorkflowProjectFactory>();
+	private OpenVXMLProjectFactory factory = new OpenVXMLProjectFactory();
+	private Map<String, IOpenVXMLProject> projectsById = new HashMap<String, IOpenVXMLProject>();
+	private Map<String, IOpenVXMLProject> projectsByRaw = new HashMap<String, IOpenVXMLProject>();
 	
 	/**
 	 * 
 	 */
 	public WorkflowModel()
 	{
-		IConfigurationElement[] projectFactoryExtensions = Platform.getExtensionRegistry().getConfigurationElementsFor(workflowProjectFactoryExtensionId);
-		for(int i = 0; i < projectFactoryExtensions.length; i++)
-		{
-			String natureId = projectFactoryExtensions[i].getAttribute("nature-id");
-			String className = projectFactoryExtensions[i].getAttribute("class");
-			Bundle contributor = Platform.getBundle(projectFactoryExtensions[i].getContributor().getName());
-			try
-			{
-				@SuppressWarnings("unchecked")
-				Class<IWorkflowProjectFactory> factoryClass = (Class<IWorkflowProjectFactory>)contributor.loadClass(className);
-				IWorkflowProjectFactory factory = factoryClass.newInstance();
-				projectFactories.put(natureId, factory);
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-				continue;
-			}
-		}
 	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#convertToWorkflowProject(org.eclipse.core.resources.IProject)
-	 */
-	public IOpenVXMLProject convertToWorkflowProject(IProject project)
+	
+	public void init()
 	{
-		try
-		{
-			String[] natureIds = project.getDescription().getNatureIds();
-			for(String natureId : natureIds)
-			{
-				IWorkflowProjectFactory factory = projectFactories.get(natureId);
-				if(factory != null)
-				{
-					return factory.convertToWorkflowProject(project);
-				}
-			}
-		}
-		catch (CoreException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
+		loadMissingProjects();
 	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#createWorkflowProject(java.lang.String)
-	 */
-	public IOpenVXMLProject createWorkflowProject(String natureId, String name)
+	
+	private void loadMissingProjects()
 	{
-		IWorkflowProjectFactory factory = projectFactories.get(natureId);
-		if(factory != null)
-		{
-			return factory.createWorkflowProject(name);
-		}
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#getWorkflowProject(java.lang.String)
-	 */
-	public IOpenVXMLProject getWorkflowProject(String id)
-	{
-		List<IOpenVXMLProject> projects = this.listWorkflowProjects();
-		for(IOpenVXMLProject workflowProject : projects)
-		{
-			if(workflowProject.getId().equals(id))
-			{
-				return workflowProject;
-			}
-		}
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#isWorkflowProject(org.eclipse.core.resources.IProject)
-	 */
-	public boolean isWorkflowProject(IProject project)
-	{
-		if(!project.isOpen())
-			return false;
-		try
-		{
-			String[] natureIds = project.getDescription().getNatureIds();
-			for(String natureId : natureIds)
-			{
-				IWorkflowProjectFactory factory = projectFactories.get(natureId);
-				if(factory != null)
-				{
-					return true;
-				}
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#listWorkflowProjects()
-	 */
-	public List<IOpenVXMLProject> listWorkflowProjects()
-	{
-		List<IOpenVXMLProject> projects = new ArrayList<IOpenVXMLProject>();
+		List<ProjectInfo> projectInfoList = new LinkedList<ProjectInfo>();
 		IProject[] rawProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		for(IProject project : rawProjects)
 		{
+			System.out.println(project.getFullPath().toPortableString());
+			if(projectsByRaw.get(project.getFullPath().toPortableString()) != null)
+			{
+				System.out.println("already loaded skipping");
+				continue;
+			}
 			try
 			{
 				String[] natureIds = project.getDescription().getNatureIds();
 				for(String natureId : natureIds)
 				{
-					IWorkflowProjectFactory factory = projectFactories.get(natureId);
-					if(factory != null)
+					if(natureId.equals(WorkflowProjectNature.NATURE_ID))
 					{
-						projects.add(factory.convertToWorkflowProject(project));
+						try
+						{
+							IFile buildPath = project.getFile(".buildPath");
+							DocumentBuilderFactory buildFactory =
+								DocumentBuilderFactory.newInstance();
+							DocumentBuilder builder = buildFactory.newDocumentBuilder();
+							Document doc = builder.parse(buildPath.getContents());
+							Element root = doc.getDocumentElement();
+							String projectId = root.getAttribute("id");
+							String parentId = root.getAttribute("parent");
+							System.out.println("Parsed buildpath: " + projectId + " " + parentId);
+							projectInfoList.add(new ProjectInfo(project, projectId, parentId));
+						}
+						catch(Exception ex)
+						{
+							ex.printStackTrace();
+						}
 						break;
 					}
 				}
@@ -167,7 +93,91 @@ public class WorkflowModel implements IWorkflowModel
 				e.printStackTrace();
 			}
 		}
-		return projects;
+		boolean converted = true;
+		while(converted)
+		{
+			List<ProjectInfo> toProcess = new LinkedList<ProjectInfo>(projectInfoList);
+			converted = false;
+			for(ProjectInfo info : toProcess)
+			{
+				if(info.parentId == null || info.parentId.equals(""))
+				{
+					System.out.println("Null parentId: converting");
+					IOpenVXMLProject convertedProject = factory.convertToWorkflowProject(info.project);
+					projectsById.put(info.projectId, convertedProject);
+					projectsByRaw.put(info.project.getFullPath().toPortableString(), convertedProject);
+					System.out.println("mapped " + info.project.getFullPath().toPortableString());
+					projectInfoList.remove(info);
+					converted = true;
+				}
+				else
+				{
+					IOpenVXMLProject parentProject = projectsById.get(info.parentId);
+					if(parentProject != null)
+					{
+						IOpenVXMLProject convertedProject = factory.convertToWorkflowProject(info.project);
+						projectsById.put(info.projectId, convertedProject);
+						projectsByRaw.put(info.project.getFullPath().toPortableString(), convertedProject);
+						System.out.println("mapped " + info.project.getFullPath().toPortableString());
+						projectInfoList.remove(info);
+						converted = true;
+					}
+				}
+			}
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#convertToWorkflowProject(org.eclipse.core.resources.IProject)
+	 */
+	public IOpenVXMLProject convertToWorkflowProject(IProject project)
+	{
+		IOpenVXMLProject convertedProject = projectsByRaw.get(project.getFullPath().toPortableString());
+		if(convertedProject == null)
+		{
+			loadMissingProjects();
+			return projectsByRaw.get(project.getFullPath().toPortableString());
+		}
+		return convertedProject;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#createWorkflowProject(java.lang.String)
+	 */
+	public IOpenVXMLProject createWorkflowProject(String natureId, String name)
+	{
+		return factory.createWorkflowProject(name);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#getWorkflowProject(java.lang.String)
+	 */
+	public IOpenVXMLProject getWorkflowProject(String id)
+	{
+		IOpenVXMLProject convertedProject = projectsById.get(id);
+		if(convertedProject == null)
+		{
+			loadMissingProjects();
+			return projectsById.get(id);
+		}
+		return convertedProject;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#isWorkflowProject(org.eclipse.core.resources.IProject)
+	 */
+	public boolean isWorkflowProject(IProject project)
+	{
+		return projectsByRaw.containsKey(project.getFullPath().toPortableString());
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowModel#listWorkflowProjects()
+	 */
+	public List<IOpenVXMLProject> listWorkflowProjects()
+	{
+		loadMissingProjects();
+		return new LinkedList<IOpenVXMLProject>(projectsById.values());
 	}
 
 	public IWorkflowResource convertToWorkflowResource(IResource resource)
@@ -209,4 +219,17 @@ public class WorkflowModel implements IWorkflowModel
 		return null;
 	}
 	
+	private class ProjectInfo
+	{
+		IProject project;
+		String projectId;
+		String parentId;
+		
+		public ProjectInfo(IProject project, String projectId, String parentId)
+		{
+			this.project = project;
+			this.projectId = projectId;
+			this.parentId = parentId;
+		}
+	}
 }

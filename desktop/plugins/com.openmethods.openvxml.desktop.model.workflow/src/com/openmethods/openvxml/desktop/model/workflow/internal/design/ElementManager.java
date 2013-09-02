@@ -22,7 +22,7 @@ import org.osgi.framework.Bundle;
 
 public class ElementManager
 {
-	public static final String elementTypeExtensionId = "org.eclipse.vtp.desktop.model.core.elementType";
+	public static final String elementTypeExtensionId = "com.openmethods.openvxml.desktop.model.workflow.elementType";
 	private static final ElementManager INSTANCE = new ElementManager();
 	
 	/**
@@ -70,6 +70,7 @@ public class ElementManager
 	public DesignElement loadElement(String elementTypeId, String id, String name, Properties properties)
 	{
 		ReaderRecord rr = elementTypes.get(elementTypeId);
+		System.out.println("Looking up element: " + id + "[" + elementTypeId + "]: " + rr);
 		try
 		{
 			Constructor<DesignElement> constructor = rr.elementClass.getConstructor(new Class[] { String.class, String.class, Properties.class});

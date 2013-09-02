@@ -12,5 +12,12 @@
             filter-class="org.eclipse.vtp.desktop.model.core.IOpenVXMLProject">
       </context-binding>
    </extension>
+   <extension
+         point="org.eclipse.vtp.desktop.model.core.projectAspects">
+      <aspect
+            factory="com.openmethods.openvxml.desktop.model.branding.internal.BrandingProjectAspectFactory"
+            id="com.openmethods.openvxml.desktop.model.aspect.branding">
+      </aspect>
+   </extension>
 
 </plugin>

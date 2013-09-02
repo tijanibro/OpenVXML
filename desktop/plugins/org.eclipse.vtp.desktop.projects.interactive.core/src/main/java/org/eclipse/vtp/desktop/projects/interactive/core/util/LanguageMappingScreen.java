@@ -78,6 +78,7 @@ public class LanguageMappingScreen
 	private TreeViewer brandViewer = null;
 	private InteractionTypeSupport support = null;
 	private List<IMediaProject> mediaProjects = null;
+	private Button languageButton = null;
 
 	/**
 	 * Creates a new LanguageConfigurationScreen.
@@ -122,6 +123,12 @@ public class LanguageMappingScreen
 		support = supportRecord.getSupport();
 	}
 
+	public void enableControls(boolean enabled)
+	{
+		brandViewer.getTree().setEnabled(enabled);
+		languageButton.setEnabled(enabled);
+	}
+
 	/**
 	 * @param parent
 	 * @return
@@ -147,7 +154,7 @@ public class LanguageMappingScreen
 		treeComp.setLayoutData(gridData2);
 		createTree(treeComp);
 		
-		final Button languageButton = new Button(comp, SWT.PUSH);
+		languageButton = new Button(comp, SWT.PUSH);
 		languageButton.setText("Configure Languages");
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalAlignment = SWT.RIGHT;

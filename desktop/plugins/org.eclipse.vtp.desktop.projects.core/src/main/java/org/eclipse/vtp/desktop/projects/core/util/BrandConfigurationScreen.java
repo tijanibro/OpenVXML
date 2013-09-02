@@ -67,6 +67,11 @@ public class BrandConfigurationScreen
 	{
 		this.brands = brandManager;
 	}
+	
+	public void enableControls(boolean enabled)
+	{
+		brandViewer.getTree().setEnabled(enabled);
+	}
 
 	/**
 	 * @param parent

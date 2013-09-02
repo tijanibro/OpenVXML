@@ -12,17 +12,18 @@ package org.eclipse.vtp.desktop.projects.interactive.core.view;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.SelectionListenerAction;
-import org.eclipse.vtp.desktop.model.core.IWorkflowResource;
-import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
+import org.eclipse.vtp.desktop.model.core.WorkflowCore;
+import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveProjectAspect;
+import org.eclipse.vtp.desktop.model.interactive.core.ILanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.projects.interactive.core.dialogs.ReplicateLanguageDialog;
-
-import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 /**
  * Standard action for copying the currently selected resources to the clipboard.
@@ -68,15 +69,22 @@ public class ReplicateLanguageAction extends SelectionListenerAction {
     	{
 	        @SuppressWarnings("unchecked")
 			List<IResource> selectedResources = getSelectedResources();
-	        IWorkflowResource wr = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowResource(selectedResources.get(0));
-	        if(wr != null && wr instanceof IInteractiveWorkflowProject)
+	        if(selectedResources.get(0) instanceof IProject)
 	        {
-	        	IInteractiveWorkflowProject project = (IInteractiveWorkflowProject)wr;
-	        	List<String> languages = project.getSupportedLanguages("org.eclipse.vtp.framework.interactions.voice.interaction");
-	        	ReplicateLanguageDialog rld = new ReplicateLanguageDialog(shell);
-	        	rld.setLanguage(languages);
-	        	rld.setProject(project);
-	        	rld.open();
+		        IOpenVXMLProject wr = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject((IProject)selectedResources.get(0));
+		        if(wr != null)
+		        {
+		        	IInteractiveProjectAspect interactiveAspect = (IInteractiveProjectAspect)wr.getProjectAspect(IInteractiveProjectAspect.ASPECT_ID);
+		        	if(interactiveAspect != null)
+		        	{
+		        		ILanguageSupportProjectAspect languageAspect = (ILanguageSupportProjectAspect)wr.getProjectAspect(ILanguageSupportProjectAspect.ASPECT_ID);
+			        	List<String> languages = languageAspect.getMediaProviderManager().getSupportedLanguages("org.eclipse.vtp.framework.interactions.voice.interaction");
+			        	ReplicateLanguageDialog rld = new ReplicateLanguageDialog(shell);
+			        	rld.setLanguage(languages);
+			        	rld.setProject(wr);
+			        	rld.open();
+		        	}
+		        }
 	        }
     	}
     }

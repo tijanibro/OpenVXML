@@ -2,10 +2,9 @@ package org.eclipse.vtp.desktop.projects.interactive.core.view;
 
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
-import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
-
-import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
+import org.eclipse.vtp.desktop.model.core.WorkflowCore;
+import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveProjectAspect;
 
 public class InteractiveWorkflowTest extends PropertyTester
 {
@@ -16,11 +15,11 @@ public class InteractiveWorkflowTest extends PropertyTester
 	{
 		if(receiver instanceof IProject)
 		{
-			IWorkflowProject wp = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject((IProject)receiver);
+			IOpenVXMLProject wp = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject((IProject)receiver);
 			if(wp == null)
 				return false;
-			if(wp instanceof IInteractiveWorkflowProject)
-				return true;
+			IInteractiveProjectAspect interactiveAspect = (IInteractiveProjectAspect)wp.getProjectAspect(IInteractiveProjectAspect.ASPECT_ID);
+			return interactiveAspect != null;
 		}
 		return false;
 	}

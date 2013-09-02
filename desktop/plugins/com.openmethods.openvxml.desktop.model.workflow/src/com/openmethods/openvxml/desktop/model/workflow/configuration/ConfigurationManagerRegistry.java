@@ -23,7 +23,7 @@ import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
 public class ConfigurationManagerRegistry
 {
-	public static final String configurationManagerExtensionId = "org.eclipse.vtp.desktop.model.core.configurationManagers";
+	public static final String configurationManagerExtensionId = "com.openmethods.openvxml.desktop.model.workflow.configurationManagers";
 	private static final ConfigurationManagerRegistry instance = new ConfigurationManagerRegistry();
 	
 	public static ConfigurationManagerRegistry getInstance()

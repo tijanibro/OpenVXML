@@ -50,11 +50,12 @@ import org.eclipse.vtp.desktop.export.internal.WorkflowExporter;
 import org.eclipse.vtp.desktop.export.internal.main.WebApplicationExporter;
 import org.eclipse.vtp.desktop.export.internal.pages.ArchiveSelectionPage;
 import org.eclipse.vtp.desktop.export.internal.pages.ProjectSelectionPage;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
+import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProject;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractiveWorkflowCore;
 
-import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowProjectAspect;
 
 /**
  * The wizard that exports projects as web applications.
@@ -78,12 +79,15 @@ public class ExportWizard extends Wizard implements IExportWizard {
 			dbf.setNamespaceAware(true);
 			dbf.setValidating(false);
 			DocumentBuilder db = dbf.newDocumentBuilder();
-			List<IWorkflowProject> rawProjects = WorkflowCore.getDefault()
+			List<IOpenVXMLProject> rawProjects = WorkflowCore.getDefault()
 					.getWorkflowModel().listWorkflowProjects();
 			ArrayList<WorkflowExporter> workflowList = new ArrayList<WorkflowExporter>(
 					rawProjects.size());
-			for (IWorkflowProject project : rawProjects)
-				workflowList.add(new WorkflowExporter(exporter, db, project));
+			for (IOpenVXMLProject project : rawProjects)
+			{
+				if(project.getProjectAspect(IWorkflowProjectAspect.ASPECT_ID) != null)
+					workflowList.add(new WorkflowExporter(exporter, db, project));
+			}
 			Collections.sort(workflowList);
 			workflowProjects = Collections.unmodifiableList(workflowList);
 			// Done.

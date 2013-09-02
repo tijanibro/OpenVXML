@@ -22,8 +22,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
-import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
+import org.eclipse.vtp.desktop.model.interactive.core.ILanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.context.InteractionTypeContext;
 import org.eclipse.vtp.modules.standard.ui.BeginInformationProvider;
@@ -47,8 +48,9 @@ public class ApplicationStartLanguagePropertyPanel
 	public ApplicationStartLanguagePropertyPanel(String name, IDesignElement element)
 	{
 		super(name, element);
-		IInteractiveWorkflowProject iwp = (IInteractiveWorkflowProject)getElement().getDesign().getDocument().getProject();
-		languages = iwp.getSupportedLanguages("org.eclipse.vtp.framework.interactions.voice.interaction");
+		IOpenVXMLProject project = getElement().getDesign().getDocument().getProject();
+		ILanguageSupportProjectAspect iwp = (ILanguageSupportProjectAspect)project.getProjectAspect(ILanguageSupportProjectAspect.ASPECT_ID);
+		languages = iwp.getMediaProviderManager().getSupportedLanguages("org.eclipse.vtp.framework.interactions.voice.interaction");
 	}
 	
 	/* (non-Javadoc)

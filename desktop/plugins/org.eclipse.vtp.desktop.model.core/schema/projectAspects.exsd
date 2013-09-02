@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.vtp.desktop.model.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.vtp.desktop.model.core" id="workflowProjectFactories" name="Workflow Project Factories"/>
+         <meta.schema plugin="org.eclipse.vtp.desktop.model.core" id="projectAspects" name="OpenVXML Project Aspects"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]
@@ -17,9 +17,9 @@
          </appInfo>
       </annotation>
       <complexType>
-         <sequence>
-            <element ref="project-factory" minOccurs="1" maxOccurs="unbounded"/>
-         </sequence>
+         <choice>
+            <element ref="aspect" minOccurs="0" maxOccurs="unbounded"/>
+         </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
@@ -47,22 +47,22 @@
       </complexType>
    </element>
 
-   <element name="project-factory">
+   <element name="aspect">
       <complexType>
-         <attribute name="nature-id" type="string" use="required">
+         <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="class" type="string" use="required">
+         <attribute name="factory" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.vtp.desktop.model.core.IWorkflowProjectFactory"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.vtp.desktop.model.core.spi.IOpenVXMLProjectAspectFactory"/>
                </appInfo>
             </annotation>
          </attribute>

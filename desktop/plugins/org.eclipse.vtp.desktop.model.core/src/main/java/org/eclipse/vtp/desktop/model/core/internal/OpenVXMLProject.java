@@ -49,6 +49,7 @@ public class OpenVXMLProject extends WorkflowResource implements
 {
 	/** The underlying eclipse project for this project resource. */
 	protected IProject project;
+	private IOpenVXMLProject parent;
 	private String projectId = Guid.createGUID();
 	private Map<String, OpenVXMLProjectAspect> aspectsById = 
 			new HashMap<String, OpenVXMLProjectAspect>();
@@ -93,6 +94,33 @@ public class OpenVXMLProject extends WorkflowResource implements
 	{
 		return project;
 	}
+	
+	public IOpenVXMLProject getParentProject()
+	{
+		return parent;
+	}
+	
+	public void setParentProject(IOpenVXMLProject parent)
+	{
+		System.out.println("Begin setting parent: " + parent);
+		IOpenVXMLProject toCheck = parent;
+		while(toCheck != null)
+		{
+			if(toCheck.getId().equals(projectId))
+			{
+				throw new IllegalArgumentException("Cycle detected in project parent structure.");
+			}
+			toCheck = toCheck.getParentProject();
+		}
+		System.out.println("Cycle Check Negative");
+		this.parent = parent;
+		//safely record parent project id
+		storeBuildPath();
+		//reload all project aspects taking the new parent project into account
+		loadBuildPath();
+		//store modified project apsect information
+		storeBuildPath();
+	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowResource#getParent()
@@ -101,6 +129,17 @@ public class OpenVXMLProject extends WorkflowResource implements
 	public IWorkflowResource getParent()
 	{
 		return null;
+	}
+	
+	
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.vtp.desktop.model.core.internal.WorkflowResource#getProject()
+	 */
+	@Override
+	public IOpenVXMLProject getProject()
+	{
+		return this;
 	}
 
 	/* (non-Javadoc)
@@ -175,6 +214,8 @@ public class OpenVXMLProject extends WorkflowResource implements
 
 	private synchronized void loadBuildPath()
 	{
+		System.err.println("Loading Build Path: " + getName());
+		new Exception().printStackTrace();
 		try
 		{
 			IFile buildPath = project.getFile(".buildPath");
@@ -188,6 +229,15 @@ public class OpenVXMLProject extends WorkflowResource implements
 			Document doc = builder.parse(buildPath.getContents());
 			Element root = doc.getDocumentElement();
 			projectId = root.getAttribute("id");
+			String parentId = root.getAttribute("parent");
+			if(parentId != null && !parentId.equals(""))
+			{
+				IOpenVXMLProject parent = WorkflowCore.getDefault().getWorkflowModel().getWorkflowProject(parentId);
+				if(parent != null)
+				{
+					this.parent = parent;
+				}
+			}
 			NodeList aspectsList = root.getElementsByTagName("project-aspects");
 			if(aspectsList.getLength() > 0)
 			{
@@ -197,7 +247,7 @@ public class OpenVXMLProject extends WorkflowResource implements
 				for(int i = 0; i < aspectList.getLength(); i++)
 				{
 					Node node = aspectList.item(i);
-					if(node.getNodeType() == Node.ELEMENT_NODE && ((Element)node).getLocalName().equals("aspect"))
+					if(node.getNodeType() == Node.ELEMENT_NODE && ((Element)node).getTagName().equals("aspect"))
 						aspectsToProcess.add((Element)node);
 				}
 
@@ -253,6 +303,7 @@ public class OpenVXMLProject extends WorkflowResource implements
 	
 	public final void storeBuildPath()
 	{
+		System.out.println("Storing Build Path: " + getName());
 		try
 		{
 			Document document =
@@ -262,6 +313,8 @@ public class OpenVXMLProject extends WorkflowResource implements
 				document.createElement("workflow-settings");
 			document.appendChild(rootElement);
 			rootElement.setAttribute("id", projectId);
+			if(parent != null)
+				rootElement.setAttribute("parent", parent.getId());
 			Element aspectsElement = document.createElement("project-aspects");
 			rootElement.appendChild(aspectsElement);
 			for(OpenVXMLProjectAspect aspect : aspectsById.values())
@@ -327,7 +380,14 @@ public class OpenVXMLProject extends WorkflowResource implements
 		{
 			return project;
 		}
-
+		synchronized(aspectsById)
+		{
+			for(OpenVXMLProjectAspect aspect : aspectsById.values())
+			{
+				if(adapter.isAssignableFrom(aspect.getClass()))
+					return adapter;
+			}
+		}
 		return super.getAdapter(adapter);
 	}
 

@@ -81,24 +81,17 @@ public class WorkflowProjectAspectFactory implements
 			try
 			{
 				designFolder.create(true, true, null);
+				IFile mainDesignDocument = designFolder.getFile("Main Canvas.canvas");
+				String template = getTemplate("primary_design_document_template.xml");
+				template = template.replaceAll("\\[\\[flow_id\\]\\]", Guid.createGUID());
+				template = template.replaceAll("\\[\\[begin_id\\]\\]", Guid.createGUID());
+				mainDesignDocument.create(new ByteArrayInputStream(template.getBytes()), true, null);
 			}
 			catch (CoreException e)
 			{
 				e.printStackTrace();
 				return;
 			}
-		}
-		IFile mainDesignDocument = designFolder.getFile("Main Canvas.canvas");
-		String template = getTemplate("primary_design_document_template.xml");
-		template = template.replaceAll("\\[\\[flow_id\\]\\]", Guid.createGUID());
-		template = template.replaceAll("\\[\\[begin_id\\]\\]", Guid.createGUID());
-		try
-		{
-			mainDesignDocument.create(new ByteArrayInputStream(template.getBytes()), true, null);
-		}
-		catch (CoreException e)
-		{
-			e.printStackTrace();
 		}
 	}
 

@@ -46,6 +46,7 @@ public class BrandContext implements ConfigurationContext
 	public void setProject(IOpenVXMLProject project)
 	{
 		this.brandingAspect = (IBrandingProjectAspect)project.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
+		System.err.println("BrandContext: " + brandingAspect);
 	}
 
 	/* (non-Javadoc)
@@ -83,6 +84,10 @@ public class BrandContext implements ConfigurationContext
 		IBrand defaultBrand = brandingAspect.getBrandManager().getDefaultBrand();
 		ret.add(defaultBrand);
 		traverseBrands(defaultBrand, ret);
+		for(Object obj : ret)
+		{
+			System.err.println(getLabel(obj));
+		}
 		return ret;
 	}
 

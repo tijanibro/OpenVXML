@@ -19,7 +19,8 @@ import java.util.TreeMap;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
+import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionTypeManager;
 import org.eclipse.vtp.desktop.model.interactive.core.mediadefaults.IMediaDefaultSettings;
@@ -28,6 +29,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.openmethods.openvxml.desktop.model.branding.BrandManager;
+import com.openmethods.openvxml.desktop.model.branding.IBrandingProjectAspect;
 import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationException;
 import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationManager;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
@@ -74,8 +76,11 @@ public class GenericBindingManager implements ConfigurationManager
 	{
 		super();
 		this.hostDesign = design;
-		this.brandManager = design.getDocument().getProject().getBrandManager();
-		this.mediaDefaults = ((IInteractiveWorkflowProject)design.getDocument().getProject()).getMediaDefaultSettings();
+		IOpenVXMLProject project = design.getDocument().getProject();
+		IBrandingProjectAspect brandingAspect = (IBrandingProjectAspect)project.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
+		this.brandManager = brandingAspect.getBrandManager();
+		IInteractiveProjectAspect interactiveAspect = (IInteractiveProjectAspect)project.getProjectAspect(IInteractiveProjectAspect.ASPECT_ID);
+		this.mediaDefaults = interactiveAspect.getMediaDefaultSettings();
 	}
 
 	/* (non-Javadoc)

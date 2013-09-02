@@ -37,6 +37,7 @@ public class LanguageConfigurationScreen implements InteractionSupportListener
 	private BrandManager brandManager = null;
 	private Composite comp = null;
 	private Composite mappingComp = null;
+	private boolean enabled = true;
 
 	/**
 	 * Creates a new LanguageConfigurationScreen.
@@ -51,6 +52,13 @@ public class LanguageConfigurationScreen implements InteractionSupportListener
 		this.brandManager = brandManager;
 		this.supportManager = supportManager;
 		supportManager.addListener(this);
+	}
+
+	public void enableControls(boolean enabled)
+	{
+		this.enabled = enabled;
+		mappingComp.dispose();
+		fillScreens();
 	}
 
 	/**
@@ -86,6 +94,7 @@ public class LanguageConfigurationScreen implements InteractionSupportListener
 				child.setLayoutData(new GridData(GridData.FILL_BOTH));
 				child.setLayout(new FillLayout());
 				screen.createContents(child);
+				screen.enableControls(enabled);
 				hasScreen = true;
 			}
 		}

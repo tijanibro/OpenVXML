@@ -36,6 +36,13 @@
             name="Interactive Workflow"
             project="true">
       </wizard>
+      <wizard
+            category="org.eclipse.vtp.desktop.projects.core.wizards"
+            class="org.eclipse.vtp.desktop.projects.interactive.core.wizards.CreateUmbrellaProjectWizard"
+            id="org.eclipse.vtp.desktop.projects.interactive.core.umbrella"
+            name="Umbrella Project"
+            project="true">
+      </wizard>
    </extension>
    <extension
          point="org.eclipse.ui.propertyPages">

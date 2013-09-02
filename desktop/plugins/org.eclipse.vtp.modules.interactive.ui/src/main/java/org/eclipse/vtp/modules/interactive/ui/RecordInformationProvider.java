@@ -20,6 +20,7 @@ import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.framework.util.XMLUtilities;
 
 import com.openmethods.openvxml.desktop.model.businessobjects.FieldType;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
 import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectSet;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
@@ -37,6 +38,7 @@ public class RecordInformationProvider extends PrimitiveInformationProvider impl
 	List<ConnectorRecord> connectorRecords = new ArrayList<ConnectorRecord>();
 	private String varName = "";
 	boolean secured = false;
+	IBusinessObjectProjectAspect businessObjectAspect = null;
 
 	/**
 	 * @param name
@@ -95,6 +97,7 @@ public class RecordInformationProvider extends PrimitiveInformationProvider impl
 
 	public void readConfiguration(org.w3c.dom.Element configuration)
 	{
+		businessObjectAspect = (IBusinessObjectProjectAspect)getElement().getDesign().getDocument().getProject().getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
 		varName = configuration.getAttribute("var-name");
 		secured = Boolean.parseBoolean(configuration.getAttribute("secured"));
 	}
@@ -127,7 +130,7 @@ public class RecordInformationProvider extends PrimitiveInformationProvider impl
 			List<Variable> ret = new ArrayList<Variable>();
 			if(varName != null && !varName.equals(""))
 			{
-				IBusinessObjectSet bos = getElement().getDesign().getDocument().getProject().getBusinessObjectSet();
+				IBusinessObjectSet bos = businessObjectAspect.getBusinessObjectSet();
 				FieldType ft = FieldType.STRING;
 				Variable v = new Variable(varName, ft);
 				VariableHelper.buildObjectFields(v, bos);

@@ -38,8 +38,6 @@ public class DatabaseQueryInformationProvider extends PrimitiveInformationProvid
 		super(element);
 		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 		connectorRecords.add(new ConnectorRecord(element, "error.database.connection", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
-		IOpenVXMLProject project = element.getDesign().getDocument().getProject();
-		businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
 	}
 
 	public boolean acceptsConnector(IDesignElement origin)
@@ -77,6 +75,8 @@ public class DatabaseQueryInformationProvider extends PrimitiveInformationProvid
 
 	public void readConfiguration(org.w3c.dom.Element configuration)
 	{
+		IOpenVXMLProject project = getElement().getDesign().getDocument().getProject();
+		businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
 		NodeList nl = configuration.getElementsByTagName("settings");
 
 		if(nl.getLength() > 0)

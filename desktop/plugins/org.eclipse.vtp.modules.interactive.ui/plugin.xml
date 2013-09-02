@@ -154,7 +154,7 @@
       </provider>
    </extension>
    <extension
-         point="org.eclipse.vtp.desktop.model.core.configurationManagers">
+         point="com.openmethods.openvxml.desktop.model.workflow.configurationManagers">
       <configuration-manager
             class="org.eclipse.vtp.modules.interactive.ui.properties.MenuChoiceBindingManager"
             id="org.eclipse.vtp.configuration.menuchoice">

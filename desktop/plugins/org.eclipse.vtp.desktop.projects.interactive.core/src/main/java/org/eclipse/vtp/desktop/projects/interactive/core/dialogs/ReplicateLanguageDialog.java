@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.GenericBindingManager;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.InteractionBinding;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.NamedBinding;
@@ -40,13 +40,15 @@ import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.Name
 import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
 import com.openmethods.openvxml.desktop.model.workflow.IDesignFolder;
 import com.openmethods.openvxml.desktop.model.workflow.IDesignItemContainer;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowProjectAspect;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 
 public class ReplicateLanguageDialog extends Dialog
 {
 	List<String> languages = new ArrayList<String>();
-	IInteractiveWorkflowProject project;
+	IOpenVXMLProject project;
+	IWorkflowProjectAspect workflowAspect;
 	Combo sourceCombo = null;
 	Combo destinationCombo = null;
 	Button okButton = null;
@@ -178,7 +180,7 @@ public class ReplicateLanguageDialog extends Dialog
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException
 				{
-					IDesignItemContainer root = project.getDesignRootFolder();
+					IDesignItemContainer root = workflowAspect.getDesignRootFolder();
 					int work = countContainer(root);
 					monitor.beginTask("Replicating language configuration", work);
 					processContainer(root, monitor);
@@ -256,8 +258,9 @@ public class ReplicateLanguageDialog extends Dialog
 		this.languages = languages;
 	}
 	
-	public void setProject(IInteractiveWorkflowProject project)
+	public void setProject(IOpenVXMLProject project)
 	{
 		this.project = project;
+		workflowAspect = (IWorkflowProjectAspect)project.getProjectAspect(IWorkflowProjectAspect.ASPECT_ID);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.spi.OpenVXMLProjectAspect;
+import org.eclipse.vtp.framework.util.Guid;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -17,25 +18,44 @@ import com.openmethods.openvxml.desktop.model.branding.IBrandingProjectAspect;
 public class BrandingProjectAspect extends OpenVXMLProjectAspect implements
 		IBrandingProjectAspect
 {
-	private DefaultBrandManager brandManager = null;
+	private BrandManager brandManager = null;
 
 	public BrandingProjectAspect(IOpenVXMLProject project, Element aspectConfiguration)
 	{
 		super(project);
-		brandManager = new DefaultBrandManager();
-		if(aspectConfiguration != null)
+		IOpenVXMLProject parentProject = project.getParentProject();
+		if(parentProject != null)
 		{
-			NodeList nl = aspectConfiguration.getChildNodes();
-			for(int i = 0; i < nl.getLength(); i++)
+			IBrandingProjectAspect parentAspect = (IBrandingProjectAspect)parentProject.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
+			brandManager = parentAspect.getBrandManager();
+		}
+		else
+		{
+			brandManager = new DefaultBrandManager();
+			if(aspectConfiguration != null)
 			{
-				if(nl.item(i).getNodeType() != Node.ELEMENT_NODE)
-					continue;
-				Element brandElement = (Element)nl.item(i);
-				String brandId = brandElement.getAttribute("id");
-				Brand defaultBrand = new Brand(brandId, brandElement.getAttribute("name"));
-				brandManager.setDefaultBrand(defaultBrand);
-				NodeList subBrandList = brandElement.getChildNodes();
-				addBrands(defaultBrand, subBrandList);
+				NodeList brandContainerList = aspectConfiguration.getElementsByTagName("brands");
+				if(brandContainerList.getLength() > 0)
+				{
+					Element brandsElement = (Element)brandContainerList.item(0);
+					NodeList nl = brandsElement.getChildNodes();
+					for(int i = 0; i < nl.getLength(); i++)
+					{
+						if(nl.item(i).getNodeType() != Node.ELEMENT_NODE)
+							continue;
+						Element brandElement = (Element)nl.item(i);
+						String brandId = brandElement.getAttribute("id");
+						Brand defaultBrand = new Brand(brandId, brandElement.getAttribute("name"));
+						((DefaultBrandManager)brandManager).setDefaultBrand(defaultBrand);
+						NodeList subBrandList = brandElement.getChildNodes();
+						addBrands(defaultBrand, subBrandList);
+					}
+				}
+			}
+			else
+			{
+				Brand defaultBrand = new Brand(Guid.createGUID(), "Default");
+				((DefaultBrandManager)brandManager).setDefaultBrand(defaultBrand);
 			}
 		}
 	}

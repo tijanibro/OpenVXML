@@ -41,9 +41,6 @@ public class BroadcastReceiverInformationProvider extends PrimitiveInformationPr
 	public BroadcastReceiverInformationProvider(PrimitiveElement element)
 	{
 		super(element);
-		IOpenVXMLProject project = element.getDesign().getDocument().getProject();
-		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
-		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 	}
 	
@@ -88,6 +85,9 @@ public class BroadcastReceiverInformationProvider extends PrimitiveInformationPr
 
 	public void readConfiguration(org.w3c.dom.Element configuration)
 	{
+		IOpenVXMLProject project = getElement().getDesign().getDocument().getProject();
+		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		NodeList recGroupList = configuration.getElementsByTagName("receivers");
 		if(recGroupList.getLength() != 1)
 			return;

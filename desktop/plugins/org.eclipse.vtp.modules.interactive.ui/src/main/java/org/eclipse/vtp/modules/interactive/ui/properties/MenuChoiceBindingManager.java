@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.MenuChoice;
 import org.eclipse.vtp.framework.util.XMLUtilities;
 import org.w3c.dom.Document;
@@ -17,6 +18,7 @@ import org.w3c.dom.NodeList;
 
 import com.openmethods.openvxml.desktop.model.branding.BrandManager;
 import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.IBrandingProjectAspect;
 import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationException;
 import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationManager;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
@@ -46,7 +48,9 @@ public class MenuChoiceBindingManager implements ConfigurationManager
 	public MenuChoiceBindingManager(IDesign design)
 	{
 		this.hostDesign = design;
-		this.brandManager = design.getDocument().getProject().getBrandManager();
+		IOpenVXMLProject project = design.getDocument().getProject();
+		IBrandingProjectAspect brandingAspect = (IBrandingProjectAspect)project.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
+		this.brandManager = brandingAspect.getBrandManager();
 		System.out.println("constructing this: " + this.getClass());//TODO
 	}
 

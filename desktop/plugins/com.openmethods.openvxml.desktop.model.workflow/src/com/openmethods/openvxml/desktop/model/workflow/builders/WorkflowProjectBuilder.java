@@ -42,7 +42,7 @@ public class WorkflowProjectBuilder extends IncrementalProjectBuilder
 	 * Constant string containing the builder id
 	 */
 	public static final String BUILDER_ID =
-		"org.eclipse.vtp.desktop.model.core.WorkflowProjectBuilder";
+		"com.openmethods.openvxml.desktop.model.workflow.WorkflowProjectBuilder";
 	
 	private WorkflowIndex index = null;
 	private List<IDesignDocument> modifiedByBuilder = new LinkedList<IDesignDocument>();

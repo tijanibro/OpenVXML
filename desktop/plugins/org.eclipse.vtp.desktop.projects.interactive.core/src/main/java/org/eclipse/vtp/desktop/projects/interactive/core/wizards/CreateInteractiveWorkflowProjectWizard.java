@@ -11,11 +11,13 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.desktop.projects.interactive.core.wizards;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -24,24 +26,34 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
+import org.eclipse.vtp.desktop.model.core.WorkflowCore;
+import org.eclipse.vtp.desktop.model.core.internal.OpenVXMLProject;
+import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature;
+import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveProjectAspect;
+import org.eclipse.vtp.desktop.model.interactive.core.ILanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionTypeManager;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.InteractionTypeSupport;
-import org.eclipse.vtp.desktop.model.interactive.core.internal.InteractiveWorkflowProject;
-import org.eclipse.vtp.desktop.model.interactive.core.natures.InteractiveWorkflowProjectNature;
+import org.eclipse.vtp.desktop.model.interactive.core.internal.InteractiveProjectAspect;
+import org.eclipse.vtp.desktop.model.interactive.core.internal.LanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.projects.core.util.BrandConfigurationScreen;
 import org.eclipse.vtp.desktop.projects.core.util.ConfigurationBrandManager;
 import org.eclipse.vtp.desktop.projects.interactive.core.util.InteractionSupportManager;
@@ -49,9 +61,12 @@ import org.eclipse.vtp.desktop.projects.interactive.core.util.InteractionTypeCon
 import org.eclipse.vtp.desktop.projects.interactive.core.util.LanguageConfigurationScreen;
 import org.eclipse.vtp.framework.util.Guid;
 
+import com.openmethods.openvxml.desktop.model.branding.IBrandingProjectAspect;
 import com.openmethods.openvxml.desktop.model.branding.internal.Brand;
 import com.openmethods.openvxml.desktop.model.branding.internal.DefaultBrandManager;
-import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
+import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectProjectAspect;
+import com.openmethods.openvxml.desktop.model.dependencies.IExternalDependenciesProjectAspect;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowProjectAspect;
 
 /**
  * This wizard walks the user through the steps required to create
@@ -136,10 +151,29 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 	 */
 	public boolean performFinish()
 	{
-		InteractiveWorkflowProject project = (InteractiveWorkflowProject)WorkflowCore.getDefault().getWorkflowModel().createWorkflowProject(InteractiveWorkflowProjectNature.NATURE_ID, applicationPage.nameField.getText());
-		buildPathPage.configureBuildPath(project);
-		project.setInteractionTypeSupport(supportManager.getSupport());
-		BasicNewProjectResourceWizard.updatePerspective(configElement);
+		OpenVXMLProject workflowProject = (OpenVXMLProject)WorkflowCore.getDefault().getWorkflowModel().createWorkflowProject(WorkflowProjectNature.NATURE_ID, applicationPage.nameField.getText());
+		try
+		{
+			IOpenVXMLProject parent = applicationPage.getParentProject();
+			if(parent != null)
+				workflowProject.setParentProject(parent);
+			IBrandingProjectAspect brandingAspect = (IBrandingProjectAspect)workflowProject.addProjectAspect(IBrandingProjectAspect.ASPECT_ID);
+			if(parent == null)
+				buildPathPage.configureBuildPath(brandingAspect);
+			IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)workflowProject.addProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+			IWorkflowProjectAspect workflowAspect = (IWorkflowProjectAspect)workflowProject.addProjectAspect(IWorkflowProjectAspect.ASPECT_ID);
+			IExternalDependenciesProjectAspect dependenciesAspect = (IExternalDependenciesProjectAspect)workflowProject.addProjectAspect(IExternalDependenciesProjectAspect.ASPECT_ID);
+			LanguageSupportProjectAspect languageSupportAspect = (LanguageSupportProjectAspect)workflowProject.addProjectAspect(ILanguageSupportProjectAspect.ASPECT_ID);
+			if(parent == null)
+				languageSupportAspect.setInteractionTypeSupport(supportManager.getSupport());
+			InteractiveProjectAspect interactiveAspect = (InteractiveProjectAspect)workflowProject.addProjectAspect(IInteractiveProjectAspect.ASPECT_ID);
+			workflowProject.storeBuildPath();
+			BasicNewProjectResourceWizard.updatePerspective(configElement);
+		}
+		catch (CoreException e)
+		{
+			e.printStackTrace();
+		}
 		return true;
 	}
 
@@ -159,20 +193,25 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 	{
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#canFinish()
-	 */
-	public boolean canFinish(){
-		return applicationPage.isPageComplete();//buildPathPage.equals(getContainer().getCurrentPage());
-	}
-
 	public class ApplicationPage extends WizardPage
 	{
 		Text nameField = null;
+		Button localConfigButton = null;
+		Button parentConfigButton = null;
+		Combo parentCombo = null;
+		List<IOpenVXMLProject> umbrellaProjects = new ArrayList<IOpenVXMLProject>();
 
 		public ApplicationPage()
 		{
 			super("CreateApplicationPage", "Create Application", null);
+			List<IOpenVXMLProject> projects = WorkflowCore.getDefault().getWorkflowModel().listWorkflowProjects();
+			for(IOpenVXMLProject project : projects)
+			{
+				if(project.getProjectAspect("com.openmethods.openvxml.desktop.model.aspect.umbrella") != null)
+				{
+					umbrellaProjects.add(project);
+				}
+			}
 			this.setPageComplete(false);
 		}
 
@@ -253,9 +292,48 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 							setPageComplete(true);
 							setErrorMessage(null);
 						}
-						ApplicationPage.this.getWizard().getContainer().updateButtons();
 					}
 				});
+
+			localConfigButton = new Button(comp, SWT.RADIO);
+			hostLabel.setBackground(comp.getBackground());
+			localConfigButton.setText("Configure settings for this project locally");
+			parentConfigButton = new Button(comp, SWT.RADIO);
+			hostLabel.setBackground(comp.getBackground());
+			parentConfigButton.setText("Inherit settings from an Umbrella project");
+			localConfigButton.setSelection(true);
+			Label projectLabel = new Label(comp, SWT.NONE);
+			hostLabel.setBackground(comp.getBackground());
+			projectLabel.setText("Umbrella Project");
+			projectLabel.setLayoutData(new GridData());
+			parentCombo = new Combo(comp, SWT.READ_ONLY | SWT.DROP_DOWN | SWT.BORDER);
+			for(IOpenVXMLProject project : umbrellaProjects)
+			{
+				parentCombo.add(project.getName());
+			}
+			if(umbrellaProjects.size() > 0)
+			{
+				parentCombo.select(0);
+			}
+			else
+				parentConfigButton.setEnabled(false);
+			parentCombo.setEnabled(false);
+			parentConfigButton.addSelectionListener(new SelectionListener()
+			{
+				@Override
+				public void widgetSelected(SelectionEvent e)
+				{
+					parentCombo.setEnabled(parentConfigButton.getSelection());
+					buildPathPage.enableControls(!parentConfigButton.getSelection());
+					interactionTypePage.enableControls(!parentConfigButton.getSelection());
+					languagePage.enableControls(!parentConfigButton.getSelection());
+				}
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e)
+				{
+				}
+			});
 
 			FormLayout formLayout = new FormLayout();
 			formLayout.marginHeight = 10;
@@ -276,6 +354,30 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 			hostFieldFormData.top = new FormAttachment(0, 10);
 			hostFieldFormData.right = new FormAttachment(100, -10);
 			nameField.setLayoutData(hostFieldFormData);
+			
+			FormData localConfigButtonData = new FormData();
+			localConfigButtonData.left = new FormAttachment(0, 10);
+			localConfigButtonData.top = new FormAttachment(hostLabel, 10);
+			localConfigButtonData.right = new FormAttachment(100, -10);
+			localConfigButton.setLayoutData(localConfigButtonData);
+			
+			FormData parentConfigButtonData = new FormData();
+			parentConfigButtonData.left = new FormAttachment(0, 10);
+			parentConfigButtonData.top = new FormAttachment(localConfigButton, 10);
+			parentConfigButtonData.right = new FormAttachment(100, -10);
+			parentConfigButton.setLayoutData(parentConfigButtonData);
+
+			FormData parentLabelButtonData = new FormData();
+			parentLabelButtonData.left = new FormAttachment(0, 30);
+			parentLabelButtonData.top = new FormAttachment(parentConfigButton, 10);
+			projectLabel.setLayoutData(parentLabelButtonData);
+
+			FormData projectComboButtonData = new FormData();
+			projectComboButtonData.left = new FormAttachment(projectLabel, 10);
+			projectComboButtonData.top = new FormAttachment(parentConfigButton, 8);
+			projectComboButtonData.right = new FormAttachment(100, -10);
+			parentCombo.setLayoutData(projectComboButtonData);
+
 		}
 
 		/**
@@ -286,6 +388,14 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 			return nameField.getText();
 		}
 	
+		public IOpenVXMLProject getParentProject()
+		{
+			if(parentConfigButton.getSelection())
+			{
+				return umbrellaProjects.get(parentCombo.getSelectionIndex());
+			}
+			return null;
+		}
 	}
 
 	public class BuildPathPage extends WizardPage
@@ -309,11 +419,16 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 			setControl(comp);
 			screen.createContents(comp);
 		}
+		
+		public void enableControls(boolean enabled)
+		{
+			screen.enableControls(enabled);
+		}
 
 		/**
 		 * @param project
 		 */
-		void configureBuildPath(IWorkflowProject project) {
+		void configureBuildPath(IBrandingProjectAspect project) {
 			brandManager.saveTo(project.getBrandManager(), true);
 		}
 		
@@ -341,10 +456,15 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 			screen.createContents(comp);
 		}
 
+		public void enableControls(boolean enabled)
+		{
+			screen.enableControls(enabled);
+		}
+
 		/**
 		 * @param project
 		 */
-		void configureBuildPath(InteractiveWorkflowProject project)
+		void configureBuildPath(InteractiveProjectAspect project)
 		{
 		}
 		
@@ -372,10 +492,15 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 			screen.createContents(comp);
 		}
 
+		public void enableControls(boolean enabled)
+		{
+			screen.enableControls(enabled);
+		}
+
 		/**
 		 * @param project
 		 */
-		void configureBuildPath(InteractiveWorkflowProject project)
+		void configureBuildPath(InteractiveProjectAspect project)
 		{
 		}
 		

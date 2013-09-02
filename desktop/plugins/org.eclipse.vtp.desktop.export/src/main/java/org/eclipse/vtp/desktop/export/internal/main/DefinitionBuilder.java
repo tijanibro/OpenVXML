@@ -31,7 +31,7 @@ import org.eclipse.vtp.desktop.export.IFlowModel;
 import org.eclipse.vtp.desktop.export.internal.ExportCore;
 import org.eclipse.vtp.desktop.media.core.FormatterRegistration;
 import org.eclipse.vtp.desktop.media.core.FormatterRegistrationManager;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.interactive.core.content.ContentLoadingManager;
 import org.eclipse.vtp.desktop.model.interactive.core.input.InputLoadingManager;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.mediadefaults.WorkspaceMediaDefaultSettings;
@@ -64,7 +64,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.IBrandingProjectAspect;
 import com.openmethods.openvxml.desktop.model.workflow.IWorkflowEntry;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowProjectAspect;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
@@ -94,7 +96,9 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 
 	private FlowModel mainModel = null;
 	private Map<String, FlowModel> dialogModels = new HashMap<String, FlowModel>();
-	private IWorkflowProject project;
+	private IOpenVXMLProject project;
+	private IBrandingProjectAspect brandingAspect;
+	private IWorkflowProjectAspect workflowAspect;
 
 	/**
 	 * Creates a new DefinitionBuilder.
@@ -115,11 +119,13 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 	 *             If the process cannot be built.
 	 */
 	public DefinitionBuilder(DesignReference[] callDesigns, DocumentBuilder builder,
-			IWorkflowProject project,
+			IOpenVXMLProject project,
 			Map<String, String> formatterIDsByLanguage,
 			Map<String, String> resourceManagerIDsByLanguage,
 			Map<String, List<String>> languageMapping) throws Exception {
 		this.project = project;
+		brandingAspect = (IBrandingProjectAspect)project.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
+		workflowAspect = (IWorkflowProjectAspect)project.getProjectAspect(IWorkflowProjectAspect.ASPECT_ID);
 		this.callDesigns = callDesigns;
 		this.builder = builder;
 		this.definition = builder.newDocument();
@@ -138,10 +144,10 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 		definitionElement.appendChild(actionsElement);
 		definitionElement.appendChild(observersElement);
 		definitionElement.appendChild(transitionsElement);
-		buildServices(project.getUnderlyingProject(), project.getBrandManager()
+		buildServices(project.getUnderlyingProject(), brandingAspect.getBrandManager()
 				.getDefaultBrand(), formatterIDsByLanguage,
 				resourceManagerIDsByLanguage, languageMapping);
-		buildFlow(project.getWorkflowEntries());
+		buildFlow(workflowAspect.getWorkflowEntries());
 	}
 
 	/**

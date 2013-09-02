@@ -9,7 +9,7 @@ import java.util.List;
 import org.eclipse.vtp.desktop.editors.core.configuration.ComponentPropertiesPanel;
 import org.eclipse.vtp.desktop.editors.core.configuration.ComponentPropertiesPanelProvider;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
-import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
+import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveProjectAspect;
 
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignComponent;
 
@@ -45,7 +45,7 @@ public class BeginComponentPropertiesPanelProvider implements
 	 */
 	public boolean isApplicableFor(IDesignComponent designComponent)
 	{
-		if(!(designComponent.getDesign().getDocument().getProject() instanceof IInteractiveWorkflowProject))
+		if(!(designComponent.getDesign().getDocument().getProject() instanceof IInteractiveProjectAspect))
 			return false;
 		if(!(designComponent instanceof PrimitiveElement))
 			return false;

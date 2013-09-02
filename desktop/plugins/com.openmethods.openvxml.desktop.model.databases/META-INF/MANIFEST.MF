@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Database Support Model
-Bundle-SymbolicName: com.openmethods.openvxml.desktop.model.databases
+Bundle-SymbolicName: com.openmethods.openvxml.desktop.model.databases;singleton:=true
 Bundle-Version: 5.0.0.qualifier
 Bundle-Vendor: OPENMETHODS
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

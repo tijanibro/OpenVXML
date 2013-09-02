@@ -40,9 +40,6 @@ public class VariableAssignmentInformationProvider extends PrimitiveInformationP
 	public VariableAssignmentInformationProvider(PrimitiveElement element)
 	{
 		super(element);
-		IOpenVXMLProject project = element.getDesign().getDocument().getProject();
-		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
-		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 		variableDeclarations = new ArrayList<VariableDeclaration>();
 	}
@@ -94,6 +91,9 @@ public class VariableAssignmentInformationProvider extends PrimitiveInformationP
 
 	public void readConfiguration(org.w3c.dom.Element configuration)
 	{
+		IOpenVXMLProject project = getElement().getDesign().getDocument().getProject();
+		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		NodeList decGroupList = configuration.getElementsByTagName("declarations");
 		if(decGroupList.getLength() != 1)
 			return;

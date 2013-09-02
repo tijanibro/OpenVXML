@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Business Object Support Model
-Bundle-SymbolicName: com.openmethods.openvxml.desktop.model.businessobjects
+Bundle-SymbolicName: com.openmethods.openvxml.desktop.model.businessobjects;singleton:=true
 Bundle-Version: 5.0.0.qualifier
 Bundle-Vendor: OPENMETHODS
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

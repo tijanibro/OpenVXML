@@ -35,7 +35,7 @@ public class InteractiveWorkflowCore extends AbstractUIPlugin
 		super.stop(context);
 	}
 
-	public IInteractiveWorkflowModel getInteractiveWorkflowModel()
+	public IMediaProjectModel getInteractiveWorkflowModel()
 	{
 		return model;
 	}

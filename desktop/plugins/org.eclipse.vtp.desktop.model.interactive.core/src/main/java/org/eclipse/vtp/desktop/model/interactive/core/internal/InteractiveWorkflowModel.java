@@ -16,7 +16,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowModel;
+import org.eclipse.vtp.desktop.model.interactive.core.IMediaProjectModel;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaObject;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaObjectContainer;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProject;
@@ -27,7 +27,7 @@ import org.osgi.framework.Bundle;
  * @author trip
  *
  */
-public class InteractiveWorkflowModel implements IInteractiveWorkflowModel
+public class InteractiveWorkflowModel implements IMediaProjectModel
 {
 	public static final String mediaProjectExtensionId = "org.eclipse.vtp.desktop.model.interactive.core.mediaProjects";
 

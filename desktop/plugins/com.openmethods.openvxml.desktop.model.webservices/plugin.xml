@@ -26,5 +26,12 @@
             value="true">
       </persistent>
    </extension>
+   <extension
+         point="org.eclipse.vtp.desktop.model.core.projectAspects">
+      <aspect
+            factory="com.openmethods.openvxml.desktop.model.webservices.internal.WebserviceProjectAspectFactory"
+            id="com.openmethods.openvxml.desktop.model.aspect.webservices">
+      </aspect>
+   </extension>
 
 </plugin>

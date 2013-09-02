@@ -7,27 +7,26 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProjectFactory;
 import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature;
 
 /**
  * @author trip
  *
  */
-public class WorkflowProjectFactory implements IWorkflowProjectFactory
+public class OpenVXMLProjectFactory
 {
 
 	/**
 	 * 
 	 */
-	public WorkflowProjectFactory()
+	public OpenVXMLProjectFactory()
 	{
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.vtp.desktop.model.core.IWorkflowProjectFactory#convertToWorkflowProject(org.eclipse.core.resources.IProject)
 	 */
-	public IOpenVXMLProject convertToWorkflowProject(IProject project)
+	public OpenVXMLProject convertToWorkflowProject(IProject project)
 	{
 		return new OpenVXMLProject(project);
 	}

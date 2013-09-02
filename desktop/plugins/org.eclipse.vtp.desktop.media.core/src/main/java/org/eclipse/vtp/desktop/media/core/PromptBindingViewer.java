@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
+import org.eclipse.vtp.desktop.model.interactive.core.ILanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProviderManager;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.BrandBinding;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.LanguageBinding;
@@ -206,8 +206,8 @@ public class PromptBindingViewer implements MouseListener {
 	 */
 	public void mouseDoubleClick(MouseEvent e) {
 		try {
-			IMediaProviderManager mediaProviderManager = ((IInteractiveWorkflowProject) designElement
-					.getDesign().getDocument().getProject())
+			IMediaProviderManager mediaProviderManager = ((ILanguageSupportProjectAspect) designElement
+					.getDesign().getDocument().getProject().getProjectAspect(ILanguageSupportProjectAspect.ASPECT_ID))
 					.getMediaProviderManager();
 			IMediaProvider mediaProvider = mediaProviderManager
 					.getMediaProvider(interactionType, currentBrand,

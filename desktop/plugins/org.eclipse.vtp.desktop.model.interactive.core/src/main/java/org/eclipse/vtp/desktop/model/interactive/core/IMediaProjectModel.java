@@ -5,7 +5,7 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 
-public interface IInteractiveWorkflowModel
+public interface IMediaProjectModel
 {
 	public IMediaProject getMediaProject(String id);
 	

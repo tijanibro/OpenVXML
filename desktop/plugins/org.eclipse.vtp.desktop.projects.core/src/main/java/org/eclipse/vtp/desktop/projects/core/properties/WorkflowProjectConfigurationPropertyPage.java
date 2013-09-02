@@ -17,21 +17,24 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.dialogs.PropertyPage;
-import org.eclipse.vtp.desktop.model.core.internal.WorkflowProject;
+import org.eclipse.vtp.desktop.model.core.WorkflowCore;
+import org.eclipse.vtp.desktop.model.core.internal.OpenVXMLProject;
 import org.eclipse.vtp.desktop.projects.core.util.BrandConfigurationScreen;
 import org.eclipse.vtp.desktop.projects.core.util.ConfigurationBrandManager;
 import org.eclipse.vtp.framework.util.Guid;
 
+import com.openmethods.openvxml.desktop.model.branding.IBrandingProjectAspect;
 import com.openmethods.openvxml.desktop.model.branding.internal.Brand;
 import com.openmethods.openvxml.desktop.model.branding.internal.DefaultBrandManager;
-import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 public class WorkflowProjectConfigurationPropertyPage extends PropertyPage
 {
 	private BrandConfigurationScreen screen = new BrandConfigurationScreen();
-	private WorkflowProject applicationProject = null;
+	private OpenVXMLProject applicationProject = null;
 	private ConfigurationBrandManager brandManager = null;
+	private IBrandingProjectAspect brandingAspect = null;
 
 	public WorkflowProjectConfigurationPropertyPage()
 	{
@@ -49,20 +52,24 @@ public class WorkflowProjectConfigurationPropertyPage extends PropertyPage
 		super.setElement(element);
 		try
         {
-	        if(element instanceof WorkflowProject)
-	        	applicationProject = (WorkflowProject)element;
+	        if(element instanceof OpenVXMLProject)
+	        	applicationProject = (OpenVXMLProject)element;
 	        else if(element instanceof IProject)
 	        {
 	        	IProject project = (IProject)element;
 	        	if(WorkflowCore.getDefault().getWorkflowModel().isWorkflowProject(project))
-	        		applicationProject = (WorkflowProject)WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject(project);
+	        		applicationProject = (OpenVXMLProject)WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject(project);
 	        	else
 	        		throw new RuntimeException("Unsupported element type");
 	        }
 	        else
         		throw new RuntimeException("Unsupported element type");
-	        brandManager = new ConfigurationBrandManager(applicationProject.getBrandManager());
-	        screen.init(brandManager);
+	        if(applicationProject.getParentProject() == null)
+	        {
+		        brandingAspect = (IBrandingProjectAspect)applicationProject.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
+		        brandManager = new ConfigurationBrandManager(brandingAspect.getBrandManager());
+		        screen.init(brandManager);
+	        }
         }
         catch(Exception e)
         {
@@ -77,7 +84,15 @@ public class WorkflowProjectConfigurationPropertyPage extends PropertyPage
 	{
 		Composite comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new FillLayout());
-		screen.createContents(comp);
+		if(applicationProject.getParentProject() == null)
+		{
+			screen.createContents(comp);
+		}
+		else
+		{
+			Label inheritLabel = new Label(comp, SWT.NONE);
+			inheritLabel.setText("This project is currently inheriting its configuration from the " + applicationProject.getParentProject().getName() + " Umbrella project.");
+		}
 		return comp;
 	}
 
@@ -86,17 +101,20 @@ public class WorkflowProjectConfigurationPropertyPage extends PropertyPage
 	 */
 	protected void performDefaults()
 	{
-		if(applicationProject != null)
+		if(applicationProject.getParentProject() == null)
 		{
-			brandManager = new ConfigurationBrandManager(applicationProject.getBrandManager());
+			if(applicationProject != null)
+			{
+				brandManager = new ConfigurationBrandManager(brandingAspect.getBrandManager());
+			}
+			else
+			{
+				DefaultBrandManager defaultManager = new DefaultBrandManager();
+				defaultManager.setDefaultBrand(new Brand(Guid.createGUID(), "Default"));
+				brandManager = new ConfigurationBrandManager(defaultManager);
+			}
+			screen.init(brandManager);
 		}
-		else
-		{
-			DefaultBrandManager defaultManager = new DefaultBrandManager();
-			defaultManager.setDefaultBrand(new Brand(Guid.createGUID(), "Default"));
-			brandManager = new ConfigurationBrandManager(defaultManager);
-		}
-		screen.init(brandManager);
 		super.performDefaults();
 	}
 
@@ -105,8 +123,11 @@ public class WorkflowProjectConfigurationPropertyPage extends PropertyPage
 	 */
 	public boolean performOk()
 	{
-		brandManager.saveTo(applicationProject.getBrandManager(), false);
-		applicationProject.storeBuildPath();
+		if(applicationProject.getParentProject() == null)
+		{
+			brandManager.saveTo(brandingAspect.getBrandManager(), false);
+			applicationProject.storeBuildPath();
+		}
 		return true;
 	}
 }

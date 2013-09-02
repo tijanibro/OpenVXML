@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.eclipse.vtp.desktop.editors.core.configuration.ComponentPropertiesPanel;
 import org.eclipse.vtp.desktop.editors.core.configuration.ComponentPropertiesPanelProvider;
-import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
+import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveProjectAspect;
 
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignComponent;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnector;
@@ -20,7 +20,7 @@ public class ConnectorPropertiesPanelProvider implements
 
 	public boolean isApplicableFor(IDesignComponent designComponent)
 	{
-		return (designComponent instanceof IDesignConnector) && (designComponent.getDesign().getDocument().getProject() instanceof IInteractiveWorkflowProject);
+		return (designComponent instanceof IDesignConnector) && (designComponent.getDesign().getDocument().getProject() instanceof IInteractiveProjectAspect);
 	}
 	
 	public List<ComponentPropertiesPanel> getPropertiesPanels(

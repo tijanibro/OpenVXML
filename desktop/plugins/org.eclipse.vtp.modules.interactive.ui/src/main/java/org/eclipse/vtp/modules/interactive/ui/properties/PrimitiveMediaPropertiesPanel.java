@@ -26,7 +26,7 @@ import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertie
 import org.eclipse.vtp.desktop.media.core.MediaConfigurationScreen;
 import org.eclipse.vtp.desktop.media.core.MediaConfigurationScreenContainer;
 import org.eclipse.vtp.desktop.media.core.MediaConfigurationScreenManager;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.context.InteractionTypeContext;
@@ -90,7 +90,7 @@ public class PrimitiveMediaPropertiesPanel extends DesignElementPropertiesPanel 
 		Object object = values.get(InteractionTypeContext.CONTEXT_ID);
 		if(brand == null || language == null || object == null)
 		{
-			final IWorkflowProject project = getElement().getDesign().getDocument().getProject();
+			final IOpenVXMLProject project = getElement().getDesign().getDocument().getProject();
 			System.out.println("project: " + project);
 			final IProject uproject = project.getUnderlyingProject();
 			final Shell shell = this.getContainer().getParentShell();
@@ -129,7 +129,7 @@ public class PrimitiveMediaPropertiesPanel extends DesignElementPropertiesPanel 
 
 	public void cancelMediaConfiguration()
 	{
-		final IWorkflowProject project = getElement().getDesign().getDocument().getProject();
+		final IOpenVXMLProject project = getElement().getDesign().getDocument().getProject();
 		final IProject uproject = project.getUnderlyingProject();
 		final Shell shell = this.getContainer().getParentShell();
 		Display.getCurrent().asyncExec(new Runnable(){

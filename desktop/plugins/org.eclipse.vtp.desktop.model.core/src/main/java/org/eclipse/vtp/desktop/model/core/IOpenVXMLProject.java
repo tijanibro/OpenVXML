@@ -15,6 +15,10 @@ public interface IOpenVXMLProject extends IWorkflowResourceContainer
 	 * @return The eclipse project object for this project
 	 */
 	public IProject getUnderlyingProject();
+	
+	public IOpenVXMLProject getParentProject();
+	
+	public void setParentProject(IOpenVXMLProject parent);
 
 	public IOpenVXMLProjectAspect addProjectAspect(String aspectId) throws CoreException;
 	

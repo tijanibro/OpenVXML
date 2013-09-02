@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveWorkflowProject;
+import org.eclipse.vtp.desktop.model.interactive.core.ILanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProviderManager;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.BrandBinding;
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.GrammarBindingItem;
@@ -123,7 +123,7 @@ public class GrammarBindingViewer implements MouseListener
 			GrammarBindingItem pbi = (GrammarBindingItem)brandBinding.getBindingItem();
 			if(pbi == null)
 				pbi = new GrammarBindingItem();
-			IMediaProviderManager mediaProviderManager = ((IInteractiveWorkflowProject)designElement.getDesign().getDocument().getProject()).getMediaProviderManager();
+			IMediaProviderManager mediaProviderManager = ((ILanguageSupportProjectAspect)designElement.getDesign().getDocument().getProject().getProjectAspect(ILanguageSupportProjectAspect.ASPECT_ID)).getMediaProviderManager();
 			pbd.setMediaProvider(mediaProviderManager.getMediaProvider(interactionType, currentBrand, currentLanguage));
 			pbd.setContent(pbi.getGrammar());
 			int result = pbd.open();

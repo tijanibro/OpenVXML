@@ -1,9 +1,9 @@
 package org.eclipse.vtp.desktop.export;
 
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 
 public interface IWorkflowExporter extends IProjectExporter {
 	
-	IWorkflowProject getWorkflowProject();
+	IOpenVXMLProject getWorkflowProject();
 	
 }

@@ -19,7 +19,7 @@ public class BusinessObjectProjectAspect extends OpenVXMLProjectAspect
 			Element aspectConfiguration)
 	{
 		super(hostProject);
-		IFolder dependenciesFolder = hostProject.getUnderlyingProject().getFolder("Dependencies");
+		IFolder dependenciesFolder = hostProject.getUnderlyingProject().getFolder("Business Objects");
 		businessObjectSet = new BusinessObjectSet(this, dependenciesFolder);
 	}
 

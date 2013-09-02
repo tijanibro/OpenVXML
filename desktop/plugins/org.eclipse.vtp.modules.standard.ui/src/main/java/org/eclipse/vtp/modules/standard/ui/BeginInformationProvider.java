@@ -61,9 +61,6 @@ public class BeginInformationProvider extends PrimitiveInformationProvider imple
 	public BeginInformationProvider(PrimitiveElement element)
 	{
 		super(element);
-		IOpenVXMLProject project = element.getDesign().getDocument().getProject();
-		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
-		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 		connectorRecords.add(new ConnectorRecord(element, "error.disconnect.hangup", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
 		variableDeclarations = new ArrayList<VariableDeclaration>();
@@ -139,6 +136,9 @@ public class BeginInformationProvider extends PrimitiveInformationProvider imple
 
 	public void readConfiguration(org.w3c.dom.Element configuration)
 	{
+		IOpenVXMLProject project = getElement().getDesign().getDocument().getProject();
+		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		defaultBrandId = configuration.getAttribute("default-brand");
 		defaultLanguage = configuration.getAttribute("default-language");
 		NodeList decGroupList = configuration.getElementsByTagName("declarations");

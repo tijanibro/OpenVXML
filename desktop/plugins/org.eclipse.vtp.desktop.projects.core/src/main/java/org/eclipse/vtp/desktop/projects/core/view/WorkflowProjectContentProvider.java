@@ -35,12 +35,12 @@ import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.IPipelinedTreeContentProvider;
 import org.eclipse.ui.navigator.PipelinedShapeModification;
 import org.eclipse.ui.navigator.PipelinedViewerUpdate;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResource;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResourceContainer;
+import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 
 import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
-import com.openmethods.openvxml.desktop.model.workflow.WorkflowCore;
 
 /**
  * @author trip
@@ -61,7 +61,7 @@ public class WorkflowProjectContentProvider implements IPipelinedTreeContentProv
 	{
 		if(parentElement instanceof IProject)
 		{
-			IWorkflowProject workflowProject = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject((IProject)parentElement);
+			IOpenVXMLProject workflowProject = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject((IProject)parentElement);
 			return workflowProject.getChildren().toArray();
 		}
 		else if(parentElement instanceof IWorkflowResourceContainer)
@@ -79,7 +79,7 @@ public class WorkflowProjectContentProvider implements IPipelinedTreeContentProv
 		else if(element instanceof IWorkflowResource)
 		{
 			IWorkflowResource con = ((IWorkflowResource)element).getParent();
-			if(con instanceof IWorkflowProject)
+			if(con instanceof IOpenVXMLProject)
 				return con.getAdapter(IResource.class);
 			return con;
 		}
@@ -140,7 +140,7 @@ public class WorkflowProjectContentProvider implements IPipelinedTreeContentProv
 			{
 				if(WorkflowCore.getDefault().getWorkflowModel().isWorkflowProject(project))
 				{
-					IWorkflowProject workflowProject = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject(project);
+					IOpenVXMLProject workflowProject = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject(project);
 					List<IWorkflowResource> workflowResources = workflowProject.getChildren();
 					Iterator<?> iterator = theCurrentChildren.iterator();
 					while(iterator.hasNext())
@@ -184,7 +184,7 @@ public class WorkflowProjectContentProvider implements IPipelinedTreeContentProv
 			IWorkflowResource workflowResource = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowResource(resource);
 			if(workflowResource != null)
 			{
-				if(!(workflowResource instanceof IWorkflowProject))
+				if(!(workflowResource instanceof IOpenVXMLProject))
 				{
 					return workflowResource;
 				}
@@ -202,7 +202,7 @@ public class WorkflowProjectContentProvider implements IPipelinedTreeContentProv
 		{
 			IResource parent = (IResource)parentObj;
 			IWorkflowResource workflowParent = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowResource(parent);
-			if(workflowParent != null && !(workflowParent instanceof IWorkflowProject))
+			if(workflowParent != null && !(workflowParent instanceof IOpenVXMLProject))
 			{
 				anAddModification.setParent(workflowParent);
 			}

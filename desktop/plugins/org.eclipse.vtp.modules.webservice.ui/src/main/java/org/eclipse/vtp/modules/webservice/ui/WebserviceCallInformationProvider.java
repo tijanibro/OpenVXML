@@ -39,9 +39,6 @@ public class WebserviceCallInformationProvider extends PrimitiveInformationProvi
 	public WebserviceCallInformationProvider(PrimitiveElement element)
 	{
 		super(element);
-		IOpenVXMLProject project = element.getDesign().getDocument().getProject();
-		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
-		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 		connectorRecords.add(new ConnectorRecord(element, "error.webservice", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
 	}
@@ -81,6 +78,9 @@ public class WebserviceCallInformationProvider extends PrimitiveInformationProvi
 
 	public void readConfiguration(org.w3c.dom.Element configuration)
 	{
+		IOpenVXMLProject project = getElement().getDesign().getDocument().getProject();
+		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 	}
 
 	public void writeConfiguration(org.w3c.dom.Element configuration)

@@ -30,11 +30,12 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.vtp.desktop.model.core.IWorkflowProject;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResource;
 
 import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
 import com.openmethods.openvxml.desktop.model.workflow.IDesignItemContainer;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowProjectAspect;
 
 /**
  * This wizard walks the user through the steps required to create a
@@ -98,8 +99,12 @@ IExecutableExtension
 			this.designItemContainer = (IDesignItemContainer)obj;
 		else if(obj instanceof IDesignDocument)
 			this.designItemContainer = ((IDesignDocument)obj).getParentDesignContainer();
-		else if(obj instanceof IWorkflowProject)
-			this.designItemContainer = ((IWorkflowProject)obj).getDesignRootFolder();
+		else if(obj instanceof IOpenVXMLProject)
+		{
+			IOpenVXMLProject project = (IOpenVXMLProject)obj;
+			IWorkflowProjectAspect workflowAspect = (IWorkflowProjectAspect)project.getProjectAspect(IWorkflowProjectAspect.ASPECT_ID);
+			this.designItemContainer = workflowAspect.getDesignRootFolder();
+		}
 	}
 	
 	/*

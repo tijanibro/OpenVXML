@@ -12,7 +12,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.vtp.desktop.core,
  org.eclipse.ui,
  org.eclipse.vtp.framework.util,
- org.eclipse.ui.ide
+ org.eclipse.ui.ide,
+ com.openmethods.openvxml.desktop.model.branding;bundle-version="5.0.0",
+ com.openmethods.openvxml.desktop.model.businessobjects;bundle-version="5.0.0",
+ com.openmethods.openvxml.desktop.model.workflow;bundle-version="5.0.0"
 Export-Package: org.eclipse.vtp.desktop.model.interactive.core,
  org.eclipse.vtp.desktop.model.interactive.core.builders,
  org.eclipse.vtp.desktop.model.interactive.core.configuration.generic,
@@ -21,7 +24,6 @@ Export-Package: org.eclipse.vtp.desktop.model.interactive.core,
  org.eclipse.vtp.desktop.model.interactive.core.internal,
  org.eclipse.vtp.desktop.model.interactive.core.internal.context,
  org.eclipse.vtp.desktop.model.interactive.core.internal.mediadefaults,
- org.eclipse.vtp.desktop.model.interactive.core.mediadefaults,
- org.eclipse.vtp.desktop.model.interactive.core.natures
+ org.eclipse.vtp.desktop.model.interactive.core.mediadefaults
 Bundle-Activator: org.eclipse.vtp.desktop.model.interactive.core.InteractiveWorkflowCore
 Bundle-ActivationPolicy: lazy

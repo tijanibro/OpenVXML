@@ -34,6 +34,7 @@
    <extension
          point="org.eclipse.vtp.desktop.model.elements.core.primitiveElement">
       <primitive
+            filter="org.eclipse.vtp.modules.database.ui.DatabasesPalletItemFilter"
             icon="icons/database.gif"
             id="org.eclipse.vtp.modules.database.simplequery"
             name="Database Query">

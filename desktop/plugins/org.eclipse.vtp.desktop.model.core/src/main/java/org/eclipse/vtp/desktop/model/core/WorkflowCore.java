@@ -110,6 +110,7 @@ public class WorkflowCore extends AbstractUIPlugin
 			}
 		}).start();
 		model = new WorkflowModel();
+		((WorkflowModel)model).init();
 	}
 
 	/*
