@@ -4,6 +4,8 @@
   <rm:locator pattern="^org\.eclipse\.vtp\.framework(\..+)?" searchPathRef="VTP-Framework-Plugins"/>
   <rm:locator pattern="^org\.eclipse\.vtp\.desktop(\..+)?\.feature" searchPathRef="VTP-Desktop-Features"/>
   <rm:locator pattern="^org\.eclipse\.vtp\.desktop(\..+)?" searchPathRef="VTP-Desktop-Plugins"/>
+  <rm:locator pattern="^com\.openmethods\.openvxml\.desktop(\..+)?\.feature" searchPathRef="VTP-Desktop-Features"/>
+  <rm:locator pattern="^com\.openmethods\.openvxml\.desktop(\..+)?" searchPathRef="VTP-Desktop-Plugins"/>
   <rm:locator pattern="^org\.eclipse\.vtp\.modules(\..+)?" searchPathRef="VTP-Desktop-Plugins"/>
   <rm:locator pattern="^org\.eclipse\.vtp(\..+)?" searchPathRef="VTP-Releng"/>
   <rm:searchPath name="VTP-Releng">
