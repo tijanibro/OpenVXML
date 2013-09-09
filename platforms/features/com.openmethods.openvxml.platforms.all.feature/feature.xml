@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="com.openmethods.ovxml.platforms.updatesite"
+      id="com.openmethods.openvxml.platforms.all.feature"
       label="OpenVXML Platforms Updatesite"
-      version="1.0.0.qualifier"
+      version="4.0.0.qualifier"
       provider-name="OPENMETHODS">
 
    <description url="http://www.example.com/description">
