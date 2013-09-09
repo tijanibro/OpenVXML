@@ -25,9 +25,9 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
-import org.eclipse.vtp.desktop.model.core.design.IDesignElement;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 import com.openmethods.openvxml.idriver.ui.IDriverInitInformationProvider;
 
 /**
