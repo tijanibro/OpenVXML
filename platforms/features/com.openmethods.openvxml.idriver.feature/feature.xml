@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="com.openmethods.openvxml.platforms.avp.feature"
-      label="Avaya Voice Portal Support for OpenVXML"
-      version="1.0.0.qualifier"
+      id="com.openmethods.openvxml.idriver.feature"
+      label="Feature"
+      version="4.0.0.qualifier"
       provider-name="OPENMETHODS">
 
    <description url="http://www.example.com/description">
@@ -17,22 +17,31 @@
       [Enter License Description here.]
    </license>
 
-   <includes
-         id="com.openmethods.openvxml.idriver.feature"
+   <plugin
+         id="com.openmethods.openvxml.idriver"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.openmethods.openvxml.idriver.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.openmethods.openvxml.idriver.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.sun.jna"
+         download-size="0"
+         install-size="0"
          version="0.0.0"/>
-
-   <plugin
-         id="com.openmethods.openvxml.platforms.avp"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.openmethods.openvxml.platforms.avpwithidriver"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
 </feature>
