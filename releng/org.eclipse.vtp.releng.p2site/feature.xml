@@ -22,4 +22,8 @@
          version="0.0.0"
          search-location="both"/>
 
+   <includes
+         id="com.openmethods.openvxml.platforms.all.feature"
+         version="0.0.0"/>
+
 </feature>
