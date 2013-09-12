@@ -8,6 +8,8 @@
   <rm:locator pattern="^org\.eclipse\.vtp(\..+)?" searchPathRef="VTP-Releng"/>
   <rm:locator pattern="^com\.openmethods\.openvxml\.platforms(\..+)?\.feature" searchPathRef="OpenVXML-Platform-Features"/>
   <rm:locator pattern="^com\.openmethods\.openvxml\.platforms(\..+)?" searchPathRef="OpenVXML-Platform-Plugins"/>
+  <rm:locator pattern="^com\.openmethods\.openvxml\.idriver(\..+)?\.feature" searchPathRef="OpenVXML-Platform-Features"/>
+  <rm:locator pattern="^com\.openmethods\.openvxml\.idriver(\..+)?" searchPathRef="OpenVXML-Platform-Plugins"/>
   <rm:searchPath name="VTP-Releng">
   	<rm:provider componentTypes="buckminster,eclipse.feature,osgi.bundle" readerType="git" resolutionFilter="">
   		<rm:uri format="{0}/openvxml,releng/{1}">
