@@ -4,8 +4,9 @@ import java.text.Collator;
 
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaFile;
-import org.eclipse.vtp.desktop.model.interactive.core.IMediaFilesFolder;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaFolder;
+import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrariesFolder;
+import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrary;
 import org.eclipse.vtp.desktop.model.interactive.core.IPromptSet;
 
 public class MediaViewerSorter extends ViewerSorter
@@ -25,8 +26,14 @@ public class MediaViewerSorter extends ViewerSorter
     {
     	if(element instanceof IPromptSet)
     		return 1;
-    	else if(element instanceof IMediaFilesFolder)
+    	else if(element instanceof IMediaLibrariesFolder)
     		return 2;
+    	else if(element instanceof IMediaLibrary)
+    	{
+    		if(((IMediaLibrary)element).getName().equals("Default"))
+    			return 1;
+    		return 2;
+    	}
     	else if(element instanceof IMediaFolder)
     		return 2;
     	else if(element instanceof IMediaFile)

@@ -43,6 +43,16 @@
             name="Umbrella Project"
             project="true">
       </wizard>
+      <wizard
+            category="org.eclipse.vtp.desktop.projects.core.wizards"
+            class="org.eclipse.vtp.desktop.projects.interactive.core.wizards.CreateMediaLibraryWizard"
+            id="org.eclipse.vtp.desktop.projects.interactive.core.medialibrary"
+            name="Media Library"
+            project="false">
+         <selection
+               class="org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrariesFolder">
+         </selection>
+      </wizard>
    </extension>
    <extension
          point="org.eclipse.ui.propertyPages">

@@ -44,7 +44,7 @@ public interface IMediaProject extends IMediaObjectContainer
 	/**
 	 * @return The root folder for all media resources of this persona project
 	 */
-	public IMediaFilesFolder getMediaFilesFolder();
+	public IMediaLibrariesFolder getMediaLibrariesFolder();
 	
 	/**
 	 * @return

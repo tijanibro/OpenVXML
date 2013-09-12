@@ -42,8 +42,10 @@ public class VoiceProjectFactory implements IMediaProjectFactory
 			newProject.create(null);
 			newProject.open(null);
 			
-			IFolder mfFolder = newProject.getFolder("Media Files");
+			IFolder mfFolder = newProject.getFolder("Media Libraries");
 			mfFolder.create(true, true, null);
+			IFolder dFolder = mfFolder.getFolder("Default");
+			dFolder.create(true, true, null);
 			
 			IFile configDocument = newProject.getFile(".config");
 			InputStream templateIn = this.getClass().getClassLoader().getResourceAsStream("config_template.xml");

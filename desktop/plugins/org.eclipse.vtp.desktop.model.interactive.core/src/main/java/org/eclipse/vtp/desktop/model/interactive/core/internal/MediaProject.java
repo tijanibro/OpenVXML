@@ -21,7 +21,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.vtp.desktop.model.interactive.core.IMediaFilesFolder;
+import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrariesFolder;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaObject;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaObjectContainer;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProject;
@@ -99,23 +99,23 @@ public abstract class MediaProject extends MediaObject implements IMediaProject
 	/* (non-Javadoc)
 	 * @see org.eclipse.vtp.desktop.core.project.IPersonaProject#getMediaFilesFolder()
 	 */
-	public IMediaFilesFolder getMediaFilesFolder()
+	public IMediaLibrariesFolder getMediaLibrariesFolder()
 	{
-		IFolder f = project.getFolder("Media Files");
+		IFolder f = project.getFolder("Media Libraries");
 
 		if(!f.exists())
 		{
-			throw new RuntimeException("Media Files is missing");
+			throw new RuntimeException("Media Libraries filder is missing");
 		}
 
-		return new MediaFilesFolder(this, f);
+		return new MediaLibrariesFolder(this, f);
 	}
 
 	public List<IMediaObject> getChildren()
 	{
 		List<IMediaObject> children = new LinkedList<IMediaObject>();
 		children.add(getPromptSet());
-		children.add(getMediaFilesFolder());
+		children.add(getMediaLibrariesFolder());
 		return children;
 	}
 

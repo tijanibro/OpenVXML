@@ -21,6 +21,6 @@ package org.eclipse.vtp.desktop.model.interactive.core;
  * @author Trip
  * @version 2.0
  */
-public interface IMediaFilesFolder extends IMediaContainer
+public interface IMediaLibrary extends IMediaContainer
 {
 }

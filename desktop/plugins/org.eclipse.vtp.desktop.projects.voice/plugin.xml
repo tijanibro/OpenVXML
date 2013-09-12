@@ -151,6 +151,15 @@
                </instanceof>
             </or></enablement>
       </commonWizard>
+      <commonWizard
+            menuGroupId="group.new"
+            type="new"
+            wizardId="org.eclipse.vtp.desktop.projects.interactive.core.medialibrary">
+         <enablement>
+            <instanceof
+                  value="org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrariesFolder">
+            </instanceof></enablement>
+      </commonWizard>
       <actionProvider
             class="org.eclipse.ui.internal.navigator.resources.actions.NewActionProvider"
             overrides="org.eclipse.ui.navigator.resources.NewActions">

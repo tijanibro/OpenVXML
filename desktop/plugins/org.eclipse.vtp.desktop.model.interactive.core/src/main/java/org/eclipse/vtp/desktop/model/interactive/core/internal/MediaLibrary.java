@@ -24,11 +24,11 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaFile;
-import org.eclipse.vtp.desktop.model.interactive.core.IMediaFilesFolder;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaFolder;
+import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrariesFolder;
+import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrary;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaObject;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaObjectContainer;
-import org.eclipse.vtp.desktop.model.interactive.core.IMediaProject;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaResource;
 
 /**
@@ -38,10 +38,10 @@ import org.eclipse.vtp.desktop.model.interactive.core.IMediaResource;
  * @author Trip Gilman
  * @version 2.0
  */
-public class MediaFilesFolder extends MediaObject
-	implements IMediaFilesFolder
+public class MediaLibrary extends MediaObject
+	implements IMediaLibrary
 {
-	private static final String HASHPREFIX = "MEDIAFILESFOLDER";
+	private static final String HASHPREFIX = "MEDIALIBRARY";
 	/**
 	 * The eclipse folder resource this media files folder represents.
 	 */
@@ -50,7 +50,7 @@ public class MediaFilesFolder extends MediaObject
 	/**
 	 * The parent resource of this media files folder.
 	 */
-	IMediaProject parent;
+	IMediaLibrariesFolder parent;
 
 	/**
 	 * Creates a new <code>MediaFilesFolder</code> in the parent container
@@ -59,7 +59,7 @@ public class MediaFilesFolder extends MediaObject
 	 * @param parent The parent container of this resource
 	 * @param folder The eclipse folder resource this media file folder represents
 	 */
-	public MediaFilesFolder(IMediaProject parent, IFolder folder)
+	public MediaLibrary(IMediaLibrariesFolder parent, IFolder folder)
 	{
 		super();
 		this.parent = parent;
@@ -211,9 +211,9 @@ public class MediaFilesFolder extends MediaObject
 
 	public boolean equals(Object obj)
 	{
-		if(obj instanceof MediaFilesFolder)
+		if(obj instanceof MediaLibrary)
 		{
-			return folder.equals(((MediaFilesFolder)obj).getUnderlyingFolder());
+			return folder.equals(((MediaLibrary)obj).getUnderlyingFolder());
 		}
 		return false;
 	}

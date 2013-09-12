@@ -33,7 +33,7 @@ import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.actions.DeleteResourceAction;
 import org.eclipse.ui.actions.TextActionHandler;
 import org.eclipse.ui.navigator.ICommonMenuConstants;
-import org.eclipse.vtp.desktop.model.interactive.core.IMediaFilesFolder;
+import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrary;
 import org.eclipse.vtp.desktop.projects.core.view.CopyAction;
 import org.eclipse.vtp.desktop.projects.core.view.PasteAction;
 
@@ -78,7 +78,7 @@ public class EditActionGroup extends ActionGroup
 		{
 			if(obj instanceof IResource)
 				deleteSelection.add((IResource)obj);
-			else if(!(obj instanceof IMediaFilesFolder) && obj instanceof IAdaptable)
+			else if(!(obj instanceof IMediaLibrary) && obj instanceof IAdaptable)
 			{
 				IResource resource = (IResource)((IAdaptable)obj).getAdapter(IResource.class);
 				if(resource != null)

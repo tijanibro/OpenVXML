@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.vtp.desktop.media.core.FormatterRegistration;
 import org.eclipse.vtp.desktop.media.core.FormatterRegistrationManager;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaContainer;
+import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrariesFolder;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaObject;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaResource;
 import org.eclipse.vtp.desktop.model.interactive.core.content.ContentType;
@@ -169,7 +170,8 @@ public class VoiceMediaProvider implements IMediaProvider{
 		{
 			if (path == null || path.length() == 0)
 				path = "/";
-			IMediaContainer folder = project.getMediaFilesFolder();
+			IMediaLibrariesFolder libraries = project.getMediaLibrariesFolder();
+			IMediaContainer folder = libraries.getMediaLibrary("Default");
 			IMediaObject result = folder;
 			for (StringTokenizer st = new StringTokenizer(path, "/"); st
 					.hasMoreTokens();) {

@@ -421,7 +421,7 @@ public class WebApplicationExporter {
 			}
 			
 		};
-		File file = project.getMediaProject().getMediaFilesFolder().getUnderlyingFolder().getLocation().toFile();
+		File file = project.getMediaProject().getMediaLibrariesFolder().getUnderlyingFolder().getLocation().toFile();
 		mediaOutput.writeFile(project.getMediaProject().getName() + "/", file, null);
 		String path = exportProject(project, filter);
 		// Create the plugin.xml file.
@@ -444,7 +444,7 @@ public class WebApplicationExporter {
 				new XMLWriter(stream).toXMLResult());
 		stream.close();
 		StringBuilder fileIndex = new StringBuilder();
-		indexMedia(fileIndex, project.getMediaProject().getMediaFilesFolder().getUnderlyingFolder());
+		indexMedia(fileIndex, project.getMediaProject().getMediaLibrariesFolder().getUnderlyingFolder());
 		stream = output.write(path + "files.index");
 		stream.write(fileIndex.toString().getBytes());
 		stream.close();
