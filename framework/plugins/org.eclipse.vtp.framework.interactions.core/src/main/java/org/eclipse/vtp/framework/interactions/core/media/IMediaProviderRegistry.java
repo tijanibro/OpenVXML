@@ -18,5 +18,5 @@ public interface IMediaProviderRegistry
 	IMediaProvider getMediaProvider(String mediaProviderID);
 
 	String lookupMediaProviderID(String brandPath,
-			String interactionTypeID, String langugageID);
+			String interactionTypeID, String languageID);
 }

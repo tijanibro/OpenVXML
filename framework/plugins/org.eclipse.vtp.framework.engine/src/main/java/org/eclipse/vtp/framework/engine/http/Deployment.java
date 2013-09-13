@@ -217,12 +217,6 @@ public class Deployment implements IProcessDescriptor, IResourceManagerRegistry,
 			session.unlock();
 		}
 		IDocument document = null;
-		System.out.println("Result: " + result);
-		if(result != null)
-		{
-			System.out.println("Is Finished: " + result.isTerminated());
-			System.out.println("Document: " + result.getDocument());
-		}
 		if (result == null)
 			document = abort(httpSession, httpRequest, httpReesponse, prefix, depth,
 					variableValues, parameterValues);

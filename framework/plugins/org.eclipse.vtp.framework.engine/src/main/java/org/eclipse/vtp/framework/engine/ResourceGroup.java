@@ -46,8 +46,6 @@ public class ResourceGroup implements IResourceManager
 		this.bundle = bundle;
 		if (!path.startsWith("/")) //$NON-NLS-1$
 			path = "/" + path; //$NON-NLS-2$
-		if (!path.endsWith("/")) //$NON-NLS-1$
-			path = path + "/"; //$NON-NLS-2$
 		this.path = path;
 		URL indexURL = bundle.getResource("files.index");
 		if(indexURL != null)
@@ -77,6 +75,8 @@ public class ResourceGroup implements IResourceManager
 	 */
 	public URL getResource(String fullResourcePath)
 	{
+		if(!fullResourcePath.startsWith("/"))
+			fullResourcePath = "/" + fullResourcePath;
 		System.out.println("resolving resource: " + path + fullResourcePath);
 		URL ret = bundle.getEntry(path + fullResourcePath);
 //		System.out.println("location: " + ret);
@@ -91,11 +91,13 @@ public class ResourceGroup implements IResourceManager
 	 */
 	public String[] listResources(String fullDirectoryPath)
 	{
-		LinkedList list = new LinkedList();
-		for (Enumeration e = bundle.getEntryPaths(path + fullDirectoryPath); e != null
+		if(!fullDirectoryPath.startsWith("/"))
+			fullDirectoryPath = "/" + fullDirectoryPath;
+		LinkedList<String> list = new LinkedList<String>();
+		for (Enumeration<String> e = bundle.getEntryPaths(path + fullDirectoryPath); e != null
 				&& e.hasMoreElements();)
 			list.add(e.nextElement());
-		return (String[])list.toArray(new String[list.size()]);
+		return list.toArray(new String[list.size()]);
 	}
 
 	/*
@@ -117,7 +119,29 @@ public class ResourceGroup implements IResourceManager
 	 */
 	public boolean isFileResource(String fullFilePath)
 	{
+		if(fullFilePath.startsWith("/"))
+			fullFilePath = fullFilePath.substring(1);
+		int slashIndex = fullFilePath.indexOf('/');
+		if(slashIndex >= 0)
+		{
+			String prefix = fullFilePath.substring(0, slashIndex);
+			String libraryFile = "/" + prefix + "/.library";
+			if(!index.contains(libraryFile) && getResource(libraryFile) == null)
+				fullFilePath = "Default/" + fullFilePath;
+		}
+		else
+			fullFilePath = "Default/" + fullFilePath;
+		fullFilePath = "/" + fullFilePath;
+//		System.out.println("Checking existence of " + fullFilePath + ": " + Boolean.toString(!isDirectoryResource(fullFilePath)
+//		&& (index.contains(fullFilePath) || getResource(fullFilePath) != null)));
 		return !isDirectoryResource(fullFilePath)
 		&& (index.contains(fullFilePath) || getResource(fullFilePath) != null);
+	}
+
+	@Override
+	public boolean hasMediaLibrary(String libraryId)
+	{
+		String libraryPath = "/" + libraryId + "/.library";
+		return index.contains(libraryPath) || getResource(libraryPath) != null;
 	}
 }

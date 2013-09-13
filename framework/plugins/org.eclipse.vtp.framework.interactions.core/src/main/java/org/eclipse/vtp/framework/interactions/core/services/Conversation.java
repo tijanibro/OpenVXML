@@ -32,6 +32,7 @@ import org.eclipse.vtp.framework.common.configurations.AssignmentConfiguration;
 import org.eclipse.vtp.framework.core.IExecutionContext;
 import org.eclipse.vtp.framework.interactions.core.IInteractionTypeSelection;
 import org.eclipse.vtp.framework.interactions.core.ILanguageSelection;
+import org.eclipse.vtp.framework.interactions.core.IMediaLibrarySelection;
 import org.eclipse.vtp.framework.interactions.core.commands.BridgeMessageCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.ConversationCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.DataRequestCommand;
@@ -107,6 +108,7 @@ public class Conversation implements IConversation {
 	private final IInteractionTypeSelection interactionTypeSelection;
 	/** The currently selected language. */
 	private final ILanguageSelection languageSelection;
+	private final IMediaLibrarySelection mediaLibrarySelection;
 	/** The media provider registry. */
 	private final IMediaProviderRegistry mediaProviderRegistry;
 	/** Comment for variableRegistry. */
@@ -143,11 +145,12 @@ public class Conversation implements IConversation {
 			IMediaProviderRegistry mediaProviderRegistry,
 			IVariableRegistry variableRegistry,
 			IScriptingService scriptingService, ILastResult lastResult,
-			IExecutionContext context) {
+			IExecutionContext context, IMediaLibrarySelection mediaLibrarySelection) {
 		this.commandProcessor = commandProcessor;
 		this.brandSelection = brandSelection;
 		this.interactionTypeSelection = interactionTypeSelection;
 		this.languageSelection = languageSelection;
+		this.mediaLibrarySelection = mediaLibrarySelection;
 		this.mediaProviderRegistry = mediaProviderRegistry;
 		this.variableRegistry = variableRegistry;
 		this.lastResult = lastResult;
@@ -236,17 +239,7 @@ public class Conversation implements IConversation {
 		String interactionTypeID = interactionTypeSelection
 				.getSelectedInteractionType().getId();
 		String languageID = languageSelection.getSelectedLanguage();
-		Content[] result = null;
 		IBrand brand = brandSelection.getSelectedBrand();
-		// while (brand != null && result == null)
-		// {
-		// result = configuration.getItem(brand.getName(), interactionTypeID,
-		// languageID);
-		// if (result == null)
-		// brand = brand.getParentBrand();
-		// }
-		// if (result == null)
-		// return relativePath;
 		String mediaProviderID = null;
 		while (brand != null && mediaProviderID == null) {
 			mediaProviderID = mediaProviderRegistry.lookupMediaProviderID(
@@ -268,11 +261,16 @@ public class Conversation implements IConversation {
 		}
 		if (mediaProviderID == null)
 		{
+//			context.info("Media provider is null");
 			fileOutput.setProperty("value", relativePath);
 			return fileOutput;
 		}
 		fileOutput.setProperty("media-provider", mediaProviderID);
-		fileOutput.setProperty("value", mediaProviderID + "/" + relativePath);
+		String fullPath = mediaLibrarySelection.getSelectedMediaLibrary() + "/" + relativePath;
+		if(!mediaProviderRegistry.getMediaProvider(mediaProviderID).getResourceManager().isFileResource(fullPath))
+			fullPath = "Default/" + relativePath;
+//		context.info("set file output value: " + mediaProviderID + "/" + fullPath);
+		fileOutput.setProperty("value", mediaProviderID + "/" + fullPath);
 		fileOutput.setProperty("original-path", relativePath);
 		return fileOutput;
 	}
@@ -357,7 +355,7 @@ public class Conversation implements IConversation {
 			return input;
 		}
 		input.setProperty("media-provider", mediaProviderID);
-		input.setProperty("value", mediaProviderID + "/" + relativePath);
+		input.setProperty("value", mediaProviderID + "/" + mediaLibrarySelection.getSelectedMediaLibrary() + "/" + relativePath);
 		input.setProperty("original-path", relativePath);
 		return input;
 	}

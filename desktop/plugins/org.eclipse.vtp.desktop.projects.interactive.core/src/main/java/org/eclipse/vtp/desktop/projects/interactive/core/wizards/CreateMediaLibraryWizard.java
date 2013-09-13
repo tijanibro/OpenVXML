@@ -11,8 +11,10 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.desktop.projects.interactive.core.wizards;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -103,6 +105,8 @@ IExecutableExtension
 			IFolder mlf = container.getUnderlyingFolder();
 			IFolder newFolder = mlf.getFolder(mfwp.mediaFolderNameField.getText());
 			newFolder.create(true, true, null);
+			IFile dot = newFolder.getFile(".library");
+			dot.create(new ByteArrayInputStream("".getBytes()), true, null);
 
 			return true;
 		}

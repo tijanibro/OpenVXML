@@ -435,7 +435,7 @@ public class WebApplicationExporter {
 		Element resourcesElement = pluginXmlDoc.createElement("resources");
 		resourcesElement.setAttribute("id", project.getProject().getName());
 		resourcesElement.setAttribute("name", project.getProject().getName());
-		resourcesElement.setAttribute("path", "project/Media Files");
+		resourcesElement.setAttribute("path", "project/Media Libraries");
 		extensionElement.appendChild(resourcesElement);
 		pluginElement.appendChild(extensionElement);
 		pluginXmlDoc.appendChild(pluginElement);
@@ -543,7 +543,7 @@ public class WebApplicationExporter {
 		Element resourcesElement = pluginXmlDoc.createElement("resources");
 		resourcesElement.setAttribute("id", project.getProject().getName());
 		resourcesElement.setAttribute("name", project.getProject().getName());
-		resourcesElement.setAttribute("path", "project/Media Files");
+		resourcesElement.setAttribute("path", "project/Media Libraries");
 		extensionElement.appendChild(resourcesElement);
 		pluginElement.appendChild(extensionElement);
 		pluginXmlDoc.appendChild(pluginElement);

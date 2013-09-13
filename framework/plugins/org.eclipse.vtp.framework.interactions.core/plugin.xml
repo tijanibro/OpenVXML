@@ -385,6 +385,13 @@
             scope="execution"
             lazy="true">
       </service>
+      <service
+            id="org.eclipse.vtp.framework.interactions.core.services.media-library-selection"
+            lazy="true"
+            name="Media Library Selection"
+            scope="execution"
+            type="org.eclipse.vtp.framework.interactions.core.services.MediaLibrarySelection">
+      </service>
    </extension>
    
    <extension

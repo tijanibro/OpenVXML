@@ -188,6 +188,13 @@ public class VoiceMediaProvider implements IMediaProvider{
 			}
 			return result;
 		}
+
+		@Override
+		public boolean hasMediaLibrary(String libraryId)
+		{
+			IMediaLibrariesFolder libraries = project.getMediaLibrariesFolder();
+			return libraries.getMediaLibrary(libraryId) != null;
+		}
 	}
 
 	private class VoiceSharedContentManager implements ISharedContentProvider {

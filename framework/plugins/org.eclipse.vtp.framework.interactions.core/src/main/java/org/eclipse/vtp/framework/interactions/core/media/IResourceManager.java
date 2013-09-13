@@ -17,4 +17,6 @@ public interface IResourceManager {
 	boolean isDirectoryResource(String fullDirectoryPath);
 
 	String[] listResources(String fullDirectoryPath);
+	
+	boolean hasMediaLibrary(String libraryId);
 }

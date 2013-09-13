@@ -167,6 +167,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 	
 	public AudioOutput generateAudioChain(ILinkFactory links, String path)
 	{
+		context.info("Created audio chain for " + path);
 		AudioOutput output = new AudioOutput(links.createResourceLink(path).toString());
 		if(path.startsWith("http://"))
 			return output;
