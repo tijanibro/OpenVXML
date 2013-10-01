@@ -44,7 +44,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.core.internal.OpenVXMLProject;
-import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature;
+import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature5_0;
 import org.eclipse.vtp.desktop.projects.core.util.BrandConfigurationScreen;
 import org.eclipse.vtp.desktop.projects.core.util.ConfigurationBrandManager;
 import org.eclipse.vtp.framework.util.Guid;
@@ -121,7 +121,7 @@ public class CreateWorkflowProjectWizard extends Wizard implements INewWizard,
 	 */
 	public boolean performFinish()
 	{
-		OpenVXMLProject workflowProject = (OpenVXMLProject)WorkflowCore.getDefault().getWorkflowModel().createWorkflowProject(WorkflowProjectNature.NATURE_ID, applicationPage.nameField.getText());
+		OpenVXMLProject workflowProject = (OpenVXMLProject)WorkflowCore.getDefault().getWorkflowModel().createWorkflowProject(WorkflowProjectNature5_0.NATURE_ID, applicationPage.nameField.getText());
 		try
 		{
 			IOpenVXMLProject parent = applicationPage.getParentProject();

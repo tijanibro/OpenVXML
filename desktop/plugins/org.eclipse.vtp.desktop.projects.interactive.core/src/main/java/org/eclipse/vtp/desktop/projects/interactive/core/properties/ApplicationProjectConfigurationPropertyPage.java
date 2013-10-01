@@ -13,25 +13,33 @@ package org.eclipse.vtp.desktop.projects.interactive.core.properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.core.internal.OpenVXMLProject;
 import org.eclipse.vtp.desktop.model.interactive.core.ILanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.LanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.projects.core.util.BrandConfigurationScreen;
 import org.eclipse.vtp.desktop.projects.core.util.ConfigurationBrandManager;
+import org.eclipse.vtp.desktop.projects.core.wizards.ConnectWorkflowToUmbrellaWizard;
 import org.eclipse.vtp.desktop.projects.interactive.core.util.InteractionSupportManager;
 import org.eclipse.vtp.desktop.projects.interactive.core.util.InteractionTypeConfigurationScreen;
 import org.eclipse.vtp.desktop.projects.interactive.core.util.LanguageConfigurationScreen;
+import org.eclipse.vtp.desktop.projects.interactive.core.wizards.DisconnectInteractiveWorkflowWizard;
 
 import com.openmethods.openvxml.desktop.model.branding.IBrandingProjectAspect;
 
@@ -41,6 +49,7 @@ public class ApplicationProjectConfigurationPropertyPage extends PropertyPage
 	private InteractionTypeConfigurationScreen interactionScreen = new InteractionTypeConfigurationScreen();
 	private LanguageConfigurationScreen languageScreen = new LanguageConfigurationScreen();
 	private OpenVXMLProject applicationProject = null;
+	private IOpenVXMLProject parentProject = null;
 	private ConfigurationBrandManager brandManager = null;
 	private InteractionSupportManager supportManager = null;
 	private IBrandingProjectAspect brandingAspect = null;
@@ -70,7 +79,8 @@ public class ApplicationProjectConfigurationPropertyPage extends PropertyPage
 	        }
 	        else
         		throw new RuntimeException("Unsupported element type");
-	        if(applicationProject.getParentProject() == null)
+	        parentProject = applicationProject.getParentProject();
+	        if(parentProject == null)
 	        {
 	        	brandingAspect = (IBrandingProjectAspect)applicationProject.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
 				brandManager = new ConfigurationBrandManager(brandingAspect.getBrandManager());
@@ -95,8 +105,25 @@ public class ApplicationProjectConfigurationPropertyPage extends PropertyPage
 	{
 		Composite comp = new Composite(parent, SWT.NONE);
 		comp.setLayout(new GridLayout(1, false));
-		if(applicationProject.getParentProject() == null)
+		if(parentProject == null)
 		{
+			Link connectLink = new Link(comp, SWT.NONE);
+			connectLink.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			connectLink.setText("<A>Connect project to umbrella</A>");
+			connectLink.addSelectionListener(new SelectionListener()
+			{
+				@Override
+				public void widgetSelected(SelectionEvent e)
+				{
+					WizardDialog wizard = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new ConnectWorkflowToUmbrellaWizard(applicationProject));
+					wizard.open();
+				}
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e)
+				{
+				}
+			});
 			TabFolder tabFolder = new TabFolder(comp, SWT.NONE);
 			tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
 			TabItem brandItem = new TabItem(tabFolder, SWT.NONE);
@@ -121,8 +148,25 @@ public class ApplicationProjectConfigurationPropertyPage extends PropertyPage
 		else
 		{
 			Label inheritLabel = new Label(comp, SWT.NONE);
-			inheritLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
+			inheritLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			inheritLabel.setText("This project is currently inheriting its configuration from the " + applicationProject.getParentProject().getName() + " Umbrella project.");
+			Link disconnectLink = new Link(comp, SWT.NONE);
+			disconnectLink.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			disconnectLink.setText("<A>Disconnect project from umbrella</A>");
+			disconnectLink.addSelectionListener(new SelectionListener()
+			{
+				@Override
+				public void widgetSelected(SelectionEvent e)
+				{
+					WizardDialog wizard = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new DisconnectInteractiveWorkflowWizard(applicationProject));
+					wizard.open();
+				}
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e)
+				{
+				}
+			});
 		}
 		return comp;
 	}
@@ -132,7 +176,7 @@ public class ApplicationProjectConfigurationPropertyPage extends PropertyPage
 	 */
 	protected void performDefaults()
 	{
-		if(applicationProject.getParentProject() == null)
+		if(parentProject == null)
 		{
 			brandManager = new ConfigurationBrandManager(brandingAspect.getBrandManager());
 			supportManager = new InteractionSupportManager();
@@ -149,7 +193,7 @@ public class ApplicationProjectConfigurationPropertyPage extends PropertyPage
 	 */
 	public boolean performOk()
 	{
-		if(applicationProject.getParentProject() == null)
+		if(parentProject == null)
 		{
 			brandManager.saveTo(brandingAspect.getBrandManager());
 			languageSupportAspect.setInteractionTypeSupport(supportManager.getSupport());

@@ -228,7 +228,7 @@ public class DeploymentSession implements ISessionDescriptor
 			.lookupService(IVariableRegistry.class.getName()), variableValues, false);
 		IBrandRegistry brands = (IBrandRegistry)session
 			.lookupService(IBrandRegistry.class.getName());
-		IBrand selectedBrand = brands.getBrand(brand);
+		IBrand selectedBrand = brands.getBrandByPath(brand);
 		if (selectedBrand != null)
 			((IBrandSelection)session
 				.lookupService(IBrandSelection.class.getName()))
@@ -239,7 +239,7 @@ public class DeploymentSession implements ISessionDescriptor
 			.lookupService(IVariableRegistry.class.getName());
 		IDataObject platform = variables.createVariable("Platform");
 		((IStringObject)platform.getField("Brand")).setValue(selectedBrand
-			.getName());
+			.getPath());
 		if (httpRequest.getParameter("PLATFORM_ANI") != null)
 		{
 			((IStringObject)platform.getField("PLATFORM_ANI")).setValue(httpRequest

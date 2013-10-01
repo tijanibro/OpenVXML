@@ -52,6 +52,8 @@ public class LanguageConfigurationScreen implements InteractionSupportListener
 		this.brandManager = brandManager;
 		this.supportManager = supportManager;
 		supportManager.addListener(this);
+		if(comp != null)
+			fillScreens();
 	}
 
 	public void enableControls(boolean enabled)
@@ -81,6 +83,8 @@ public class LanguageConfigurationScreen implements InteractionSupportListener
 	
 	private void fillScreens()
 	{
+		if(mappingComp != null)
+			mappingComp.dispose();
 		mappingComp = new Composite(comp, SWT.NONE);
 		mappingComp.setLayout(new GridLayout(1, true));
 		boolean hasScreen = false;

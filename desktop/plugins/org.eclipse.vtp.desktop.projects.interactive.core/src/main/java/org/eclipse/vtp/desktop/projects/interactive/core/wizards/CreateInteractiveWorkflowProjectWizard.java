@@ -46,7 +46,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.core.internal.OpenVXMLProject;
-import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature;
+import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature5_0;
 import org.eclipse.vtp.desktop.model.interactive.core.IInteractiveProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.ILanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
@@ -108,6 +108,8 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 
 	private ConfigurationBrandManager brandManager = null;
 	private InteractionSupportManager supportManager = null;
+	private ConfigurationBrandManager currentBrandManager = null;
+	private InteractionSupportManager currentSupportManager = null;
 
 	/**
 	 * Creates a new <code>CreateApplicationWizard</code> instance with default
@@ -118,7 +120,7 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 		super();
 		DefaultBrandManager defaultManager = new DefaultBrandManager();
 		defaultManager.setDefaultBrand(new Brand(Guid.createGUID(), "Default"));
-		brandManager = new ConfigurationBrandManager(defaultManager);
+		currentBrandManager = brandManager = new ConfigurationBrandManager(defaultManager);
 		List<InteractionTypeSupport> supportList = new LinkedList<InteractionTypeSupport>();
 		List<InteractionType> installedTypes = InteractionTypeManager.getInstance().getInteractionTypes();
 		for(InteractionType installedType : installedTypes)
@@ -127,7 +129,7 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 			supportList.add(typeSupport);
 			typeSupport.addLanguageSupport("English");
 		}
-		supportManager = new InteractionSupportManager();
+		currentSupportManager = supportManager = new InteractionSupportManager();
 		supportManager.init(supportList);
 		this.applicationPage = new ApplicationPage();
 		this.buildPathPage= new BuildPathPage();
@@ -151,7 +153,7 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 	 */
 	public boolean performFinish()
 	{
-		OpenVXMLProject workflowProject = (OpenVXMLProject)WorkflowCore.getDefault().getWorkflowModel().createWorkflowProject(WorkflowProjectNature.NATURE_ID, applicationPage.nameField.getText());
+		OpenVXMLProject workflowProject = (OpenVXMLProject)WorkflowCore.getDefault().getWorkflowModel().createWorkflowProject(WorkflowProjectNature5_0.NATURE_ID, applicationPage.nameField.getText());
 		try
 		{
 			IOpenVXMLProject parent = applicationPage.getParentProject();
@@ -165,7 +167,7 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 			IExternalDependenciesProjectAspect dependenciesAspect = (IExternalDependenciesProjectAspect)workflowProject.addProjectAspect(IExternalDependenciesProjectAspect.ASPECT_ID);
 			LanguageSupportProjectAspect languageSupportAspect = (LanguageSupportProjectAspect)workflowProject.addProjectAspect(ILanguageSupportProjectAspect.ASPECT_ID);
 			if(parent == null)
-				languageSupportAspect.setInteractionTypeSupport(supportManager.getSupport());
+				languageSupportAspect.setInteractionTypeSupport(currentSupportManager.getSupport());
 			InteractiveProjectAspect interactiveAspect = (InteractiveProjectAspect)workflowProject.addProjectAspect(IInteractiveProjectAspect.ASPECT_ID);
 			workflowProject.storeBuildPath();
 			BasicNewProjectResourceWizard.updatePerspective(configElement);
@@ -317,6 +319,27 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 			}
 			else
 				parentConfigButton.setEnabled(false);
+			parentCombo.addSelectionListener(new SelectionListener()
+			{
+				@Override
+				public void widgetSelected(SelectionEvent e)
+				{
+					IOpenVXMLProject parentProject = umbrellaProjects.get(parentCombo.getSelectionIndex());
+					IBrandingProjectAspect brandingAspect = (IBrandingProjectAspect)parentProject.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
+					currentBrandManager = new ConfigurationBrandManager(brandingAspect.getBrandManager());
+					LanguageSupportProjectAspect languageSupportAspect = (LanguageSupportProjectAspect)parentProject.getProjectAspect(ILanguageSupportProjectAspect.ASPECT_ID);
+					currentSupportManager = new InteractionSupportManager();
+					currentSupportManager.init(languageSupportAspect.getInteractionTypeSupport());
+					buildPathPage.changeBrandManager();
+					interactionTypePage.updateSupportManager();
+					languagePage.updateManagers();
+				}
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e)
+				{
+				}
+			});
 			parentCombo.setEnabled(false);
 			parentConfigButton.addSelectionListener(new SelectionListener()
 			{
@@ -327,6 +350,31 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 					buildPathPage.enableControls(!parentConfigButton.getSelection());
 					interactionTypePage.enableControls(!parentConfigButton.getSelection());
 					languagePage.enableControls(!parentConfigButton.getSelection());
+					if(parentConfigButton.getSelection())
+					{
+						IOpenVXMLProject parentProject = umbrellaProjects.get(parentCombo.getSelectionIndex());
+						if(parentProject == null)
+						{
+							parentCombo.select(0);
+							parentProject = umbrellaProjects.get(0);
+						}
+						IBrandingProjectAspect brandingAspect = (IBrandingProjectAspect)parentProject.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
+						currentBrandManager = new ConfigurationBrandManager(brandingAspect.getBrandManager());
+						LanguageSupportProjectAspect languageSupportAspect = (LanguageSupportProjectAspect)parentProject.getProjectAspect(ILanguageSupportProjectAspect.ASPECT_ID);
+						currentSupportManager = new InteractionSupportManager();
+						currentSupportManager.init(languageSupportAspect.getInteractionTypeSupport());
+						buildPathPage.changeBrandManager();
+						interactionTypePage.updateSupportManager();
+						languagePage.updateManagers();
+					}
+					else
+					{
+						currentBrandManager = brandManager;
+						currentSupportManager = supportManager;
+						buildPathPage.changeBrandManager();
+						interactionTypePage.updateSupportManager();
+						languagePage.updateManagers();
+					}
 				}
 
 				@Override
@@ -405,7 +453,7 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 		public BuildPathPage()
 		{
 			super("ConfigureBuildPathPage", "Branding", null);
-			screen.init(brandManager);
+			screen.init(currentBrandManager);
 			this.setPageComplete(true);
 		}
 
@@ -424,12 +472,18 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 		{
 			screen.enableControls(enabled);
 		}
+		
+		public void changeBrandManager()
+		{
+			screen.init(currentBrandManager);
+			screen.updateBrands();
+		}
 
 		/**
 		 * @param project
 		 */
 		void configureBuildPath(IBrandingProjectAspect project) {
-			brandManager.saveTo(project.getBrandManager(), true);
+			currentBrandManager.saveTo(project.getBrandManager(), true);
 		}
 		
 	}
@@ -441,7 +495,7 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 		public InteractionTypePage()
 		{
 			super("InteractionTypePage", "Interaction Type Support", null);
-			screen.setSupport(supportManager);
+			screen.setSupport(currentSupportManager);
 			this.setPageComplete(true);
 		}
 
@@ -459,6 +513,11 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 		public void enableControls(boolean enabled)
 		{
 			screen.enableControls(enabled);
+		}
+		
+		public void updateSupportManager()
+		{
+			screen.setSupport(currentSupportManager);
 		}
 
 		/**
@@ -477,7 +536,7 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 		public LanguagePage()
 		{
 			super("LanguagePage", "Languge Support", null);
-			screen.init(brandManager, supportManager);
+			screen.init(currentBrandManager, currentSupportManager);
 			this.setPageComplete(true);
 		}
 
@@ -495,6 +554,11 @@ public class CreateInteractiveWorkflowProjectWizard extends Wizard implements IN
 		public void enableControls(boolean enabled)
 		{
 			screen.enableControls(enabled);
+		}
+		
+		public void updateManagers()
+		{
+			screen.init(currentBrandManager, currentSupportManager);
 		}
 
 		/**

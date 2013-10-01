@@ -159,10 +159,27 @@
          <enabledWhen>
             <adapt
                   type="org.eclipse.core.resources.IProject">
-               <test
-                     property="org.eclipse.core.resources.projectNature"
-                     value="org.eclipse.vtp.desktop.model.core.WorkflowProjectNature">
-               </test>
+               <and>
+                  <test
+                        property="org.eclipse.vtp.desktop.model.core.isWorkflow">
+                  </test>
+                  <test
+                        property="org.eclipse.vtp.desktop.model.core.hasProjectAspect"
+                        value="com.openmethods.openvxml.desktop.model.aspect.workflow">
+                  </test>
+                  <not>
+                     <or>
+                        <test
+                              property="org.eclipse.vtp.desktop.model.core.hasProjectAspect"
+                              value="com.openmethods.openvxml.desktop.model.aspect.interactive">
+                        </test>
+                        <test
+                              property="org.eclipse.vtp.desktop.model.core.hasProjectAspect"
+                              value="com.openmethods.openvxml.desktop.model.aspect.umbrella">
+                        </test>
+                     </or>
+                  </not>
+               </and>
             </adapt>
          </enabledWhen>
       </page>

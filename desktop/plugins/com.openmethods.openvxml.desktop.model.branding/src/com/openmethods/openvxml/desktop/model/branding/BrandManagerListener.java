@@ -15,6 +15,8 @@ public interface BrandManagerListener
 {
 	public void brandAdded(IBrand brand);
 	
+	public void brandIdChanged(IBrand brand, String oldId);
+	
 	public void brandNameChanged(IBrand brand, String oldName);
 	
 	public void brandParentChanged(IBrand brand, IBrand oldParent);

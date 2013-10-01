@@ -185,7 +185,7 @@ public class AttachedDataPropertiesPanel extends ComponentPropertiesPanel implem
 							aded.setEntry(entryRecord.entry);
 	                        if(aded.open() == Dialog.OK)
 	                        {
-	                        	entryRecord.binding.putAttachedDataItem(currentBrand.getName(), interactionType, currentLanguage, entryRecord.item);
+	                        	entryRecord.binding.putAttachedDataItem(currentBrand.getId(), interactionType, currentLanguage, entryRecord.item);
 	                        	dataViewer.refresh();
 	                        }
                         }
@@ -224,9 +224,9 @@ public class AttachedDataPropertiesPanel extends ComponentPropertiesPanel implem
 	                        if(aded.open() == Dialog.OK)
 	                        {
 	                        	AttachedDataBinding dataBinding = attachedDataManager.getAttachedDataBinding(cr.getName());
-	                        	AttachedDataBindingItem item = dataBinding.getAttachedDataItem(currentBrand.getName(), interactionType, currentLanguage);
+	                        	AttachedDataBindingItem item = dataBinding.getAttachedDataItem(currentBrand.getId(), interactionType, currentLanguage);
 	                        	item.addEntry(aded.getEntry());
-	                        	dataBinding.putAttachedDataItem(currentBrand.getName(), interactionType, currentLanguage, item);
+	                        	dataBinding.putAttachedDataItem(currentBrand.getId(), interactionType, currentLanguage, item);
 	                        	dataViewer.refresh();
 	                        }
                         }
@@ -314,7 +314,7 @@ public class AttachedDataPropertiesPanel extends ComponentPropertiesPanel implem
 				System.out.println("connector: " + cr.getName());
 				AttachedDataBinding dataBinding = attachedDataManager.getAttachedDataBinding(cr.getName());
 				System.out.println("data binding: " + dataBinding);
-				AttachedDataBindingItem item = dataBinding.getAttachedDataItem(currentBrand.getName(), interactionType, currentLanguage);
+				AttachedDataBindingItem item = dataBinding.getAttachedDataItem(currentBrand.getId(), interactionType, currentLanguage);
 				System.out.println("binding item: " + item);
 				List<AttachedDataItemEntry> copy = item.getEntries();
 				System.out.println("item entries: " + copy + " [" + copy.size() + "]");

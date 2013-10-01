@@ -49,12 +49,12 @@ public class BrandSelection implements IBrandSelection, IScriptable
 	 */
 	public final IBrand getSelectedBrand()
 	{
-		Object name = context.getAttribute(ATTRIBUTE_KEY);
-		if (name == null)
-			name = context.getInheritedAttribute(ATTRIBUTE_KEY);
-		if (name == null)
+		Object id = context.getAttribute(ATTRIBUTE_KEY);
+		if (id == null)
+			id = context.getInheritedAttribute(ATTRIBUTE_KEY);
+		if (id == null)
 			return brandRegistry.getDefaultBrand();
-		IBrand brand = brandRegistry.getBrand(name.toString());
+		IBrand brand = brandRegistry.getBrandById(id.toString());
 		if (brand == null)
 			return brandRegistry.getDefaultBrand();
 		return brand;
@@ -70,11 +70,11 @@ public class BrandSelection implements IBrandSelection, IScriptable
 			context.clearAttribute(ATTRIBUTE_KEY);
 		else
 		{
-			IBrand toSelect = brandRegistry.getBrand(brand.getName());
+			IBrand toSelect = brandRegistry.getBrandById(brand.getId());
 			if (toSelect == null)
 				return false;
-			context.setAttribute(ATTRIBUTE_KEY, toSelect.getName());
-			context.info("Set brand to:" + toSelect.getName());
+			context.setAttribute(ATTRIBUTE_KEY, toSelect.getId());
+			context.info("Set brand to:" + toSelect.getPath());
 		}
 		return true;
 	}

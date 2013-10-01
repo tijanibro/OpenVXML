@@ -37,7 +37,7 @@ import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 import org.eclipse.vtp.desktop.media.core.FormatterRegistration;
 import org.eclipse.vtp.desktop.media.core.FormatterRegistrationManager;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractiveWorkflowCore;
-import org.eclipse.vtp.desktop.model.interactive.voice.natures.VoiceProjectNature;
+import org.eclipse.vtp.desktop.model.interactive.voice.natures.VoiceProjectNature5_0;
 
 /**
  * This wizard walks the user through the steps required to create a new
@@ -83,7 +83,7 @@ public class CreateVoiceWizard extends Wizard implements INewWizard,
 	public boolean performFinish()
 	{
 		FormatterRegistration fr = formatters.get(personaInformationPage.languagePackSelector.getSelectionIndex());
-		InteractiveWorkflowCore.getDefault().getInteractiveWorkflowModel().createMediaProject(VoiceProjectNature.NATURE_ID, fr.getId(), personaInformationPage.personaName
+		InteractiveWorkflowCore.getDefault().getInteractiveWorkflowModel().createMediaProject(VoiceProjectNature5_0.NATURE_ID, fr.getId(), personaInformationPage.personaName
 			.getText());
 		BasicNewProjectResourceWizard.updatePerspective(configElement);
 		return true;

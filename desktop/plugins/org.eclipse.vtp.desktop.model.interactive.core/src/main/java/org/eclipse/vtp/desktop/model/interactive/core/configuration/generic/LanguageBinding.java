@@ -137,7 +137,7 @@ public class LanguageBinding implements BrandManagerListener
 				Element brandBindingElement = languageBindingElement.getOwnerDocument().createElement("brand-binding");
 				languageBindingElement.appendChild(brandBindingElement);
 				brandBindingElement.setAttribute("id", brandBinding.getBrand().getId());
-				brandBindingElement.setAttribute("name", brandBinding.getBrand().getName());
+				brandBindingElement.setAttribute("name", brandBinding.getBrand().getPath());
 				brandBinding.writeConfiguration(brandBindingElement);
 			}
 		}
@@ -189,6 +189,13 @@ public class LanguageBinding implements BrandManagerListener
 		BrandBinding brandBinding = createBrandBinding(brand);
 		brandBinding.setParent(parentBinding);
     }
+	
+	public void brandIdChanged(IBrand brand, String oldId)
+	{
+		BrandBinding binding = brandBindings.get(oldId);
+		if(binding != null)
+			brandBindings.put(brand.getId(), binding);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.vtp.desktop.core.configuration.BrandManagerListener#brandNameChanged(org.eclipse.vtp.desktop.core.configuration.Brand, java.lang.String)

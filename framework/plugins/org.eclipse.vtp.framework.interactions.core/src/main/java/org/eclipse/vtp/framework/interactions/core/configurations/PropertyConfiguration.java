@@ -48,20 +48,20 @@ public class PropertyConfiguration implements IConfiguration,
 	 * Returns the item configured for the specified brand, interaction type, and
 	 * language or <code>null</code> if no such item is configured.
 	 * 
-	 * @param brandName The path of the brand to find the item for.
+	 * @param brandId The id of the brand to find the item for.
 	 * @param interactionTypeID The ID of the interaction type to find the item
 	 *          for.
 	 * @return The item configured for the specified brand, interaction type, and
 	 *         language or <code>null</code> if no such item is configured.
 	 */
-	public Value getItem(String brandName, String interactionTypeID)
+	public Value getItem(String brandId, String interactionTypeID)
 	{
-		return getItem(brandName, interactionTypeID, "");
+		return getItem(brandId, interactionTypeID, "");
 	}
 	
-	public Value getItem(String brandName, String interactionTypeID, String language)
+	public Value getItem(String brandId, String interactionTypeID, String language)
 	{
-		String key = brandName + interactionTypeID + language;
+		String key = brandId + ":" + interactionTypeID + ":" + language;
 		return items.get(key);
 	}
 
@@ -69,15 +69,15 @@ public class PropertyConfiguration implements IConfiguration,
 	 * Sets the item configured for the specified brand, interaction type, and
 	 * language.
 	 * 
-	 * @param brandName The path of the brand to set the item for.
+	 * @param brandId The id of the brand to set the item for.
 	 * @param interactionTypeID The ID of the interaction type to set the item
 	 *          for.
 	 * @param item The item to set as the configuration or <code>null</code> to
 	 *          remove the specified configuration.
 	 */
-	public void setItem(String brandName, String interactionTypeID, String type, String value)
+	public void setItem(String brandId, String interactionTypeID, String type, String value)
 	{
-		setItem(brandName + interactionTypeID, new Value(type, value));
+		setItem(brandId, interactionTypeID, "", type, value);
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class PropertyConfiguration implements IConfiguration,
 
 	public void setItem(String brandName, String interactionTypeID, String language, String type, String value)
 	{
-		setItem(brandName + interactionTypeID + language, new Value(type, value));
+		setItem(brandName + ":" + interactionTypeID + ":" + language, new Value(type, value));
 	}
 
 	/*

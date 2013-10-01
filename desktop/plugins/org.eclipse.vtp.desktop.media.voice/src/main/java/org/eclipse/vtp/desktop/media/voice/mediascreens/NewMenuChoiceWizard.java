@@ -51,8 +51,6 @@ public class NewMenuChoiceWizard extends Wizard
 	 */
 	private OptionSetInformationProvider menu = null;
 
-	private String brandName = null;
-	
 	private IBrand brand = null;
 	
 	private MenuChoiceBindingManager mcBindingManager = null;
@@ -69,7 +67,6 @@ public class NewMenuChoiceWizard extends Wizard
 		this.menu = menu;
 		this.page = new ApplicationPage();
 		addPage(page);
-		this.brandName = brand.getName();
 		this.brand = brand;
 		this.mcBindingManager = mcBindingManager;
 	}
@@ -83,8 +80,8 @@ public class NewMenuChoiceWizard extends Wizard
 	{
 		MenuChoice choice = new MenuChoice(page.nameField.getText(), null);
 		choice.setScriptText("");
-		menu.addChoice(brandName, choice);
-		mcBindingManager.addChoice(brandName, choice);
+		menu.addChoice(choice);
+		mcBindingManager.addChoice(brand.getId(), choice);
 
 		return true;
 	}

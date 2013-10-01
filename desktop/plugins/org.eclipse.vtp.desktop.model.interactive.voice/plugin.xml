@@ -15,13 +15,26 @@
       </builder>
    </extension>
    <extension
+         id="VoiceProjectNature5_0"
+         name="Voice Project Nature v5"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.eclipse.vtp.desktop.model.interactive.voice.natures.VoiceProjectNature5_0">
+         </run>
+      </runtime>
+      <builder
+            id="org.eclipse.vtp.desktop.model.interactive.core.MediaProjectBuilder">
+      </builder>
+   </extension>
+   <extension
          point="org.eclipse.vtp.desktop.model.interactive.core.mediaProjects">
       <media-project-type
             class="org.eclipse.vtp.desktop.model.interactive.voice.internal.VoiceProjectFactory"
             id="org.eclipse.vtp.desktop.model.interactive.voice.project"
             interaction-type="org.eclipse.vtp.framework.interactions.voice.interaction"
             name="Voice Project"
-            nature-id="org.eclipse.vtp.desktop.model.interactive.voice.VoiceProjectNature"/>
+            nature-id="org.eclipse.vtp.desktop.model.interactive.voice.VoiceProjectNature5_0"/>
    </extension>
    <extension
          point="org.eclipse.vtp.desktop.model.interactive.core.mediaFileTypes">

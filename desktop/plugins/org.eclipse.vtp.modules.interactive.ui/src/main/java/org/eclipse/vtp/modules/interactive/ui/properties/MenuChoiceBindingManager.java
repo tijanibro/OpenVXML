@@ -28,7 +28,7 @@ public class MenuChoiceBindingManager implements ConfigurationManager
 	/**	The unique identifier for this manager type */
 	public static final String TYPE_ID = "org.eclipse.vtp.configuration.menuchoice";
 	/**	The current XML structure version used by this manager */
-	public static final String XML_VERSION = "1.0.1";
+	public static final String XML_VERSION = "5.0.0";
 	
 	/**	The brand manager to use when resolving the brand hierarchy */
 	private BrandManager brandManager = null;
@@ -75,6 +75,21 @@ public class MenuChoiceBindingManager implements ConfigurationManager
 	 */
 	public void readConfiguration(Element configuration) throws ConfigurationException
 	{
+		String configVersion = configuration.getAttribute("xml-version");
+		if(!configVersion.equals(XML_VERSION))
+		{
+			if(configVersion.equals("1.0.1"))
+			{
+				NodeList brandOrdersList = configuration.getElementsByTagName("brand-order");
+				for(int i = 0; i < brandOrdersList.getLength(); i++)
+				{
+					org.w3c.dom.Element brandOrderElement = (org.w3c.dom.Element)brandOrdersList.item(i);
+					String brandName = brandOrderElement.getAttribute("brand");
+					IBrand brand = brandManager.getBrandByName(brandName);
+					brandOrderElement.setAttribute("brand", brand.getId());
+				}
+			}
+		}
 		try
 		{
 			org.w3c.dom.Element[] choices =
@@ -97,13 +112,13 @@ public class MenuChoiceBindingManager implements ConfigurationManager
 		{
 			List<MenuChoice> defaultList = new ArrayList<MenuChoice>();
 			defaultList.addAll(this.menuChoices);
-			this.brandOrders.put("Default", defaultList);
+			this.brandOrders.put(brandManager.getDefaultBrand().getId(), defaultList);
 		}
 		for(int i = 0; i < brandOrdersList.getLength(); i++)
 		{
 			List<MenuChoice> brandList = new ArrayList<MenuChoice>();
 			org.w3c.dom.Element brandOrderElement = (org.w3c.dom.Element)brandOrdersList.item(i);
-			String brandName = brandOrderElement.getAttribute("brand");
+			String brandId = brandOrderElement.getAttribute("brand");
 			NodeList entryList = brandOrderElement.getElementsByTagName("entry");
 			for(int e = 0; e < entryList.getLength(); e++)
 			{
@@ -117,13 +132,13 @@ public class MenuChoiceBindingManager implements ConfigurationManager
 					}
 				}
 			}
-			this.brandOrders.put(brandName, brandList);
+			this.brandOrders.put(brandId, brandList);
 		}
-		if(brandOrders.get("Default") == null) //sanity pass
+		if(brandOrders.get(brandManager.getDefaultBrand().getId()) == null) //sanity pass
 		{
 			List<MenuChoice> defaultList = new ArrayList<MenuChoice>();
 			defaultList.addAll(menuChoices);
-			this.brandOrders.put("Default", defaultList);
+			this.brandOrders.put(brandManager.getDefaultBrand().getId(), defaultList);
 		}
 	}
 
@@ -200,7 +215,7 @@ public class MenuChoiceBindingManager implements ConfigurationManager
 		List<MenuChoice> orderList = brandOrders.get(brand);
 		if(orderList == null)
 		{
-			orderList = new ArrayList<MenuChoice>(brandOrders.get("Default"));
+			orderList = new ArrayList<MenuChoice>(brandOrders.get(brandManager.getDefaultBrand().getId()));
 			brandOrders.put(brand, orderList);
 		}
 		for(MenuChoice mc : menuChoices)
@@ -221,7 +236,7 @@ public class MenuChoiceBindingManager implements ConfigurationManager
 		List<MenuChoice> orderList = brandOrders.get(brand);
 		if(orderList == null)
 		{
-			orderList = new ArrayList<MenuChoice>(brandOrders.get("Default"));
+			orderList = new ArrayList<MenuChoice>(brandOrders.get(brandManager.getDefaultBrand().getId()));
 			brandOrders.put(brand, orderList);
 		}
 		orderList.remove(choice);
@@ -247,7 +262,7 @@ public class MenuChoiceBindingManager implements ConfigurationManager
 		List<MenuChoice> orderList = brandOrders.get(brand);
 		if(orderList == null)
 		{
-			orderList = new ArrayList<MenuChoice>(brandOrders.get("Default"));
+			orderList = new ArrayList<MenuChoice>(brandOrders.get(brandManager.getDefaultBrand().getId()));
 			brandOrders.put(brand, orderList);
 		}
 		int index = orderList.indexOf(choice);
@@ -263,7 +278,7 @@ public class MenuChoiceBindingManager implements ConfigurationManager
 		List<MenuChoice> orderList = brandOrders.get(brand);
 		if(orderList == null)
 		{
-			orderList = new ArrayList<MenuChoice>(brandOrders.get("Default"));
+			orderList = new ArrayList<MenuChoice>(brandOrders.get(brandManager.getDefaultBrand().getId()));
 			brandOrders.put(brand, orderList);
 		}
 		int index = orderList.indexOf(choice);
@@ -281,17 +296,17 @@ public class MenuChoiceBindingManager implements ConfigurationManager
 	
 	public List<MenuChoice> getChoicesByBrand(IBrand brand)
 	{
-		List<MenuChoice> list = brandOrders.get(brand.getName());
+		List<MenuChoice> list = brandOrders.get(brand.getId());
 		if(list == null)
 		{
-			if(!"Default".equals(brand.getName()))
+			if(brand.getParent() != null)
 			{
 				return getChoicesByBrand(brand.getParent());
 			}
 			else
 			{
 				list = new ArrayList<MenuChoice>();
-				brandOrders.put("Default", list);
+				brandOrders.put(brandManager.getDefaultBrand().getId(), list);
 			}
 		}
 		return Collections.unmodifiableList(list);

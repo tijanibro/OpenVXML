@@ -20,7 +20,14 @@ public interface IBrandRegistry
 {
 	IBrand getDefaultBrand();
 	
+	/**
+	 * @param name
+	 * @return
+	 * @deprecated
+	 */
 	IBrand getBrand(String name);
+	
+	IBrand getBrandByPath(String path);
 	
 	IBrand getBrandById(String id);
 }

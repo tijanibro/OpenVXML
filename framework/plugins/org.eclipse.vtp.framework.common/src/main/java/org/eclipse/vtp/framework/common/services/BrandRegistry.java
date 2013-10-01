@@ -82,6 +82,34 @@ public class BrandRegistry implements IBrandRegistry, IScriptable
 		return brandsByName.get(name);
 	}
 	
+	public IBrand getBrandByPath(String path)
+	{
+		String[] parts = path.split("/");
+		int s = 0;
+		if(path.startsWith("/"))
+			s = 1;
+		IBrand brand = defaultBrand;
+		if(!brand.getName().equals(parts[s]))
+			return null;
+		++s;
+		for(int i = s; i < parts.length; i++)
+		{
+			boolean found = false;
+			for(IBrand child : brand.getChildBrands())
+			{
+				if(child.getName().equals(parts[i]))
+				{
+					brand = child;
+					found = true;
+					break;
+				}
+			}
+			if(!found)
+				return null;
+		}
+		return brand;
+	}
+	
 	public IBrand getBrandById(String id)
 	{
 		return brandsById.get(id);
@@ -149,6 +177,8 @@ public class BrandRegistry implements IBrandRegistry, IScriptable
 		{
 			Brand brand = defaultBrand;
 			String nameString = arguments[0].toString();
+			if(nameString.startsWith("/"))
+				nameString = nameString.substring(1);
 			String[] parts = nameString.split("[\\./\\\\]");
 outer:		for(int i = 0; i < parts.length; i++)
 			{
@@ -315,6 +345,20 @@ outer:		for(int i = 0; i < parts.length; i++)
 		public String getName()
 		{
 			return name;
+		}
+		
+		public String getPath()
+		{
+			StringBuilder buf = new StringBuilder("/");
+			buf.append(name);
+			IBrand b = parent;
+			while(b != null)
+			{
+				buf.insert(0, parent.name);
+				buf.insert(0, "/");
+				b = b.getParentBrand();
+			}
+			return buf.toString();
 		}
 
 		/*

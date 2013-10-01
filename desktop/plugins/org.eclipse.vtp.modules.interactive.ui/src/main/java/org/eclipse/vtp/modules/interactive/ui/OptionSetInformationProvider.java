@@ -138,7 +138,7 @@ public class OptionSetInformationProvider extends PrimitiveInformationProvider i
 	 * @param choice
 	 * @return
 	 */
-	public MenuChoice addChoice(String brand, MenuChoice choice)
+	public MenuChoice addChoice(MenuChoice choice)
 	{
 		connectorRecords.add(new ConnectorRecord(getElement(), choice.getOptionName(),
 			IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
@@ -149,7 +149,7 @@ public class OptionSetInformationProvider extends PrimitiveInformationProvider i
 	 * @param brand
 	 * @param choice
 	 */
-	public void removeChoice(String brand, MenuChoice choice, boolean found)
+	public void removeChoice(MenuChoice choice, boolean found)
 	{
 		if(!found)
 		{

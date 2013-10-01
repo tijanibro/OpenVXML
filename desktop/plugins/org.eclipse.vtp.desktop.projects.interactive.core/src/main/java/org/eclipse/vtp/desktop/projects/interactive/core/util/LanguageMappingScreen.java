@@ -103,6 +103,10 @@ public class LanguageMappingScreen
 			{
 			}
 			
+			public void brandIdChanged(IBrand brand, String oldId)
+			{
+			}
+			
 			public void brandNameChanged(IBrand brand, String oldName)
 			{
 				if(brandViewer != null)
@@ -204,7 +208,7 @@ public class LanguageMappingScreen
 		brandViewer.setContentProvider(new BrandContentProvider());
 		brandViewer.setLabelProvider(new BrandLabelProvider());
 		brandViewer.setInput(this);
-		
+		brandViewer.expandAll();
 	}
 
 	private void hookContextMenu()
@@ -350,6 +354,7 @@ public class LanguageMappingScreen
 	private List<String> getBrandNames(IBrand brand)
 	{
 		List<String> ret = new ArrayList<String>();
+		ret.add("Default");
 		for(IBrand child : brand.getChildBrands())
 		{
 			ret.add(child.getName());

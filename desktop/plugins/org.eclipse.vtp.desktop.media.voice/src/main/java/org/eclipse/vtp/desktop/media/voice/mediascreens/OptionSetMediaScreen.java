@@ -1131,7 +1131,7 @@ public class OptionSetMediaScreen extends MediaConfigurationScreen implements Pr
 								.get(0));
 						}
 
-						mcBindingManager.moveChoiceUp(currentBrand.getName(), option);
+						mcBindingManager.moveChoiceUp(currentBrand.getId(), option);
 						updateButtons();
 						canvas.layout(true, true);
 					}
@@ -1179,7 +1179,7 @@ public class OptionSetMediaScreen extends MediaConfigurationScreen implements Pr
 								.get(0));
 						}
 
-						mcBindingManager.moveChoiceDown(currentBrand.getName(), option);
+						mcBindingManager.moveChoiceDown(currentBrand.getId(), option);
 						updateButtons();
 						canvas.layout(true, true);
 					}
@@ -1212,7 +1212,7 @@ public class OptionSetMediaScreen extends MediaConfigurationScreen implements Pr
 					}
 
 					optionControlMap.remove(option);
-					info.removeChoice(currentBrand.getName(), option, mcBindingManager.removeChoice(currentBrand.getName(), option));
+					info.removeChoice(option, mcBindingManager.removeChoice(currentBrand.getId(), option));
 					updateButtons();
 					canvas.layout(true, true);
 					comp.layout();

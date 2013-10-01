@@ -54,6 +54,8 @@ public class InteractionTypeConfigurationScreen implements ICheckStateListener
 	public void setSupport(InteractionSupportManager supportManager)
 	{
 		this.supportManager = supportManager;
+		if(viewer != null)
+			viewer.refresh();
 	}
 
 	public void enableControls(boolean enabled)

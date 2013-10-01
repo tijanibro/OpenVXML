@@ -170,7 +170,7 @@ public class BrandBinding
 	 */
 	public void dumpContents(PrintStream out)
 	{
-		out.println("[IBrand Binding] " + brand.getName() + "(" + brand.getId() + ")");
+		out.println("[IBrand Binding] " + brand.getPath() + "(" + brand.getId() + ")");
 		out.println("Binding Value " + bindingItem);
 	}
 }

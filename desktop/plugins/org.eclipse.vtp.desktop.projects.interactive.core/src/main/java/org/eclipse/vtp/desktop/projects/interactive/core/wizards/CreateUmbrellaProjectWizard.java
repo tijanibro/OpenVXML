@@ -39,7 +39,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.wizards.newresource.BasicNewProjectResourceWizard;
 import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.core.internal.OpenVXMLProject;
-import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature;
+import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature5_0;
 import org.eclipse.vtp.desktop.model.interactive.core.ILanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.IUmbrellaProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractionType;
@@ -141,7 +141,7 @@ public class CreateUmbrellaProjectWizard extends Wizard implements INewWizard,
 	 */
 	public boolean performFinish()
 	{
-		OpenVXMLProject workflowProject = (OpenVXMLProject)WorkflowCore.getDefault().getWorkflowModel().createWorkflowProject(WorkflowProjectNature.NATURE_ID, applicationPage.nameField.getText());
+		OpenVXMLProject workflowProject = (OpenVXMLProject)WorkflowCore.getDefault().getWorkflowModel().createWorkflowProject(WorkflowProjectNature5_0.NATURE_ID, applicationPage.nameField.getText());
 		try
 		{
 			IBrandingProjectAspect brandingAspect = (IBrandingProjectAspect)workflowProject.addProjectAspect(IBrandingProjectAspect.ASPECT_ID);

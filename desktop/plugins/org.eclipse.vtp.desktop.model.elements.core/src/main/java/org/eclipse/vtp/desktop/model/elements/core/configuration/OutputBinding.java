@@ -107,7 +107,7 @@ public class OutputBinding implements BrandManagerListener
 				Element brandBindingElement = inputBindingElement.getOwnerDocument().createElement("brand-binding");
 				inputBindingElement.appendChild(brandBindingElement);
 				brandBindingElement.setAttribute("id", brandBinding.getBrand().getId());
-				brandBindingElement.setAttribute("name", brandBinding.getBrand().getName());
+				brandBindingElement.setAttribute("name", brandBinding.getBrand().getPath());
 				brandBinding.writeConfiguration(brandBindingElement);
 			}
 		}
@@ -159,6 +159,13 @@ public class OutputBinding implements BrandManagerListener
 		OutputBrandBinding brandBinding = createBrandBinding(brand);
 		brandBinding.setParent(parentBinding);
     }
+	
+	public void brandIdChanged(IBrand brand, String oldId)
+	{
+		OutputBrandBinding binding = brandBindings.get(oldId);
+		if(binding != null)
+			brandBindings.put(brand.getId(), binding);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.vtp.desktop.core.configuration.BrandManagerListener#brandNameChanged(org.eclipse.vtp.desktop.core.configuration.Brand, java.lang.String)

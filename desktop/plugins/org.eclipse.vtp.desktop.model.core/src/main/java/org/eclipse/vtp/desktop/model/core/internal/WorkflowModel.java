@@ -21,7 +21,7 @@ import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.IWorkflowModel;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResource;
 import org.eclipse.vtp.desktop.model.core.IWorkflowResourceContainer;
-import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature;
+import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature5_0;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -65,7 +65,7 @@ public class WorkflowModel implements IWorkflowModel
 				String[] natureIds = project.getDescription().getNatureIds();
 				for(String natureId : natureIds)
 				{
-					if(natureId.equals(WorkflowProjectNature.NATURE_ID))
+					if(natureId.equals(WorkflowProjectNature5_0.NATURE_ID))
 					{
 						try
 						{

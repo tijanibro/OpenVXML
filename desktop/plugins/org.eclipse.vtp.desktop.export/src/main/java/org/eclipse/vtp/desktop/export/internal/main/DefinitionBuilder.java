@@ -1104,13 +1104,13 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 							propertyConfig = new PropertyConfiguration();
 							propertyConfigurations.put(name, propertyConfig);
 						}
-						Value item = propertyConfig.getItem("Default",
+						Value item = propertyConfig.getItem(brandingAspect.getBrandManager().getDefaultBrand().getId(),
 								interactionType);
 						System.err.println("Current property value: "
 								+ (item == null ? "null" : (item.getType()
 										+ ":" + item.getValue())));
 						if (item == null)
-							propertyConfig.setItem("Default", interactionType,
+							propertyConfig.setItem(brandingAspect.getBrandManager().getDefaultBrand().getId(), interactionType,
 									"static", defaultSetting);
 					}
 				}

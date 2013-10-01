@@ -38,6 +38,8 @@ public interface IBrand
 	 */
 	public String getName();
 	
+	public String getPath();
+	
 	/**
 	 * Sets the name of this brand to the given value.  If the new name is equal
 	 * to the old name, no action is taken.  Otherwise, the new name is made the

@@ -15,9 +15,20 @@ public interface BrandManager
 {
 	public IBrand getDefaultBrand();
 	
-	public IBrand getBrand(String name);
+	/**
+	 * @param name
+	 * @return
+	 * @deprecated
+	 */
+	public IBrand getBrandByName(String name);
 	
-	public boolean checkBrandName(String name);
+	public IBrand getBrandById(String id);
+	
+	public IBrand getBrandByPath(String path);
+	
+	public boolean checkBrandName(IBrand parent, String name);
+	
+	public void fireBrandIdChanged(IBrand brand, String oldId);
 	
 	public void fireBrandNameChanged(IBrand brand, String oldName);
 	

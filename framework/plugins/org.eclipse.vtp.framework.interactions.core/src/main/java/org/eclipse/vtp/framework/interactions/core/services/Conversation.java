@@ -177,7 +177,7 @@ public class Conversation implements IConversation {
 		OutputNode[] nodes = null;
 		IBrand brand = brandSelection.getSelectedBrand();
 		while (brand != null && nodes == null) {
-			nodes = configuration.getItem(brand.getName(), interactionTypeID,
+			nodes = configuration.getItem(brand.getId(), interactionTypeID,
 					languageID);
 			if (nodes == null)
 				brand = brand.getParentBrand();
@@ -292,7 +292,7 @@ public class Conversation implements IConversation {
 		InputGrammar result = null;
 		IBrand brand = brandSelection.getSelectedBrand();
 		while (brand != null && result == null) {
-			result = configuration.getItem(brand.getName(), interactionTypeID,
+			result = configuration.getItem(brand.getId(), interactionTypeID,
 					languageID);
 			if (result == null)
 				brand = brand.getParentBrand();
@@ -332,7 +332,7 @@ public class Conversation implements IConversation {
 		InputGrammar result = null;
 		IBrand brand = brandSelection.getSelectedBrand();
 		while (brand != null && result == null) {
-			result = configuration.getItem(brand.getName(), interactionTypeID,
+			result = configuration.getItem(brand.getId(), interactionTypeID,
 					languageID);
 			if (result == null)
 				brand = brand.getParentBrand();
@@ -389,7 +389,7 @@ public class Conversation implements IConversation {
 		while (brand != null) {
 			value = configuration
 					.getItem(
-							brand.getName(),
+							brand.getId(),
 							useInteractionType ? interactionTypeID : "", useLanguage ? languageID : ""); //$NON-NLS-1$
 			if (value != null)
 				break;
@@ -423,13 +423,13 @@ public class Conversation implements IConversation {
 		MetaDataItemConfiguration[] items = null;
 		IBrand brand = brandSelection.getSelectedBrand();
 		for (; brand != null && items == null; brand = brand.getParentBrand())
-			items = configuration.getItem(brand.getName() + interactionTypeID
-					+ languageID);
+			items = configuration.getItem(brand.getId() + ":" + interactionTypeID
+					+ ":" + languageID);
 		if (items == null) {
 			brand = brandSelection.getSelectedBrand();
 			for (; brand != null && items == null; brand = brand
 					.getParentBrand())
-				items = configuration.getItem(brand.getName());
+				items = configuration.getItem(brand.getId());
 			if (items == null)
 				return Collections.EMPTY_LIST;
 		}
@@ -1246,7 +1246,7 @@ public class Conversation implements IConversation {
 			String[] choiceNames = null;
 			for (IBrand brand = brandSelection.getSelectedBrand(); choiceNames == null
 					&& brand != null; brand = brand.getParentBrand())
-				choiceNames = configuration.getBrandedChoices(brand.getName());
+				choiceNames = configuration.getBrandedChoices(brand.getId());
 			if (choiceNames != null) {
 				for (int i = 0, index = 0; i < choiceNames.length; ++i) {
 					SelectionChoiceConfiguration choice = (SelectionChoiceConfiguration) choiceIndex

@@ -173,28 +173,28 @@ public class SelectionRequestConfiguration implements IConfiguration,
 	/**
 	 * Returns the choice names registered for the specified brand.
 	 * 
-	 * @param brandName The name of the brand to find the choice names for.
+	 * @param brandId The id of the brand to find the choice names for.
 	 * @return The choice names registered for the specified brand.
 	 */
-	public String[] getBrandedChoices(String brandName)
+	public String[] getBrandedChoices(String brandId)
 	{
-		return (String[])brandedChoices.get(brandName);
+		return (String[])brandedChoices.get(brandId);
 	}
 
 	/**
 	 * Sets the choice names registered for the specified brand.
 	 * 
-	 * @param brandName The name of the brand to set the choice names for.
+	 * @param brandId The id of the brand to set the choice names for.
 	 * @param choiceNames The choice names to register for the specified brand.
 	 */
-	public void setBrandedChoices(String brandName, String[] choiceNames)
+	public void setBrandedChoices(String brandId, String[] choiceNames)
 	{
-		if (brandName == null)
+		if (brandId == null)
 			return;
 		if (choiceNames == null)
-			brandedChoices.remove(brandName);
+			brandedChoices.remove(brandId);
 		else
-			brandedChoices.put(brandName, choiceNames);
+			brandedChoices.put(brandId, choiceNames);
 	}
 
 	/*

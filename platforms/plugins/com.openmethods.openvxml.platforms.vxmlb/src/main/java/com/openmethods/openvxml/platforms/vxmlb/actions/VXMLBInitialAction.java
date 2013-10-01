@@ -143,14 +143,14 @@ public class VXMLBInitialAction extends InitialAction
 			}
 			IBrand b = brand.getSelectedBrand();
 			if (b != null)
-				((IStringObject)platform.getField("Brand")).setValue(b.getName());
+				((IStringObject)platform.getField("Brand")).setValue(b.getPath());
 			else
 			{
 				b = brandRegistry.getBrandById(initialConfig.getDefaultBrandId());
 				if (b != null)
-					((IStringObject)platform.getField("Brand")).setValue(b.getName());
+					((IStringObject)platform.getField("Brand")).setValue(b.getPath());
 				else
-					((IStringObject)platform.getField("Brand")).setValue(brandRegistry.getDefaultBrand().getName());
+					((IStringObject)platform.getField("Brand")).setValue(brandRegistry.getDefaultBrand().getPath());
 			}
 			languageSelection.setDefaultLanguage(initialConfig.getDefaultLanguageName());
 			variableRegistry.setVariable("Platform", platform);

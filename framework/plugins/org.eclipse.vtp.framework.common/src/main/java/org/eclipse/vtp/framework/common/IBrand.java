@@ -23,6 +23,8 @@ public interface IBrand
 	String getId();
 
 	String getName();
+	
+	String getPath();
 
 	IBrand getParentBrand();
 

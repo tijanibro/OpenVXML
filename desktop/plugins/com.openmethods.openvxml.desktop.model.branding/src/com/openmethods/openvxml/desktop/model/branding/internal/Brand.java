@@ -66,6 +66,13 @@ public class Brand implements IBrand
 		return id;
 	}
 	
+	public void setId(String id)
+	{
+		String oldId = this.id;
+		this.id = id;
+		manager.fireBrandIdChanged(this, oldId);
+	}
+	
 	/**
 	 * @return the human readable name for this brand
 	 */
@@ -91,6 +98,20 @@ public class Brand implements IBrand
 		manager.fireBrandNameChanged(this, oldName);
 	}
 	
+	public String getPath()
+	{
+		StringBuilder buf = new StringBuilder("/");
+		buf.append(name);
+		IBrand b = parentBrand;
+		while(b != null)
+		{
+			buf.insert(0, parentBrand.name);
+			buf.insert(0, "/");
+			b = b.getParent();
+		}
+		return buf.toString();
+	}
+
 	/**
 	 * @return This brand's parent brand or null if this brand has no parent.
 	 */

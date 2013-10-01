@@ -13,16 +13,26 @@ package org.eclipse.vtp.desktop.projects.core.properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.core.internal.OpenVXMLProject;
 import org.eclipse.vtp.desktop.projects.core.util.BrandConfigurationScreen;
 import org.eclipse.vtp.desktop.projects.core.util.ConfigurationBrandManager;
+import org.eclipse.vtp.desktop.projects.core.wizards.ConnectWorkflowToUmbrellaWizard;
+import org.eclipse.vtp.desktop.projects.core.wizards.DisconnectWorkflowWizard;
 import org.eclipse.vtp.framework.util.Guid;
 
 import com.openmethods.openvxml.desktop.model.branding.IBrandingProjectAspect;
@@ -33,6 +43,7 @@ public class WorkflowProjectConfigurationPropertyPage extends PropertyPage
 {
 	private BrandConfigurationScreen screen = new BrandConfigurationScreen();
 	private OpenVXMLProject applicationProject = null;
+	private IOpenVXMLProject parentProject = null;
 	private ConfigurationBrandManager brandManager = null;
 	private IBrandingProjectAspect brandingAspect = null;
 
@@ -64,7 +75,8 @@ public class WorkflowProjectConfigurationPropertyPage extends PropertyPage
 	        }
 	        else
         		throw new RuntimeException("Unsupported element type");
-	        if(applicationProject.getParentProject() == null)
+	        parentProject = applicationProject.getParentProject();
+	        if(parentProject == null)
 	        {
 		        brandingAspect = (IBrandingProjectAspect)applicationProject.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
 		        brandManager = new ConfigurationBrandManager(brandingAspect.getBrandManager());
@@ -83,15 +95,53 @@ public class WorkflowProjectConfigurationPropertyPage extends PropertyPage
 	protected Control createContents(Composite parent)
 	{
 		Composite comp = new Composite(parent, SWT.NONE);
-		comp.setLayout(new FillLayout());
-		if(applicationProject.getParentProject() == null)
+		comp.setLayout(new GridLayout(1, false));
+		if(parentProject == null)
 		{
-			screen.createContents(comp);
+			Link connectLink = new Link(comp, SWT.NONE);
+			connectLink.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			connectLink.setText("<A>Connect project to umbrella</A>");
+			connectLink.addSelectionListener(new SelectionListener()
+			{
+				@Override
+				public void widgetSelected(SelectionEvent e)
+				{
+					WizardDialog wizard = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new ConnectWorkflowToUmbrellaWizard(applicationProject));
+					wizard.open();
+				}
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e)
+				{
+				}
+			});
+			Composite screenComp = new Composite(comp, SWT.NONE);
+			screenComp.setLayout(new FillLayout());
+			screenComp.setLayoutData(new GridData(GridData.FILL_BOTH));
+			screen.createContents(screenComp);
 		}
 		else
 		{
 			Label inheritLabel = new Label(comp, SWT.NONE);
+			inheritLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			inheritLabel.setText("This project is currently inheriting its configuration from the " + applicationProject.getParentProject().getName() + " Umbrella project.");
+			Link disconnectLink = new Link(comp, SWT.NONE);
+			disconnectLink.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			disconnectLink.setText("<A>Disconnect project from umbrella</A>");
+			disconnectLink.addSelectionListener(new SelectionListener()
+			{
+				@Override
+				public void widgetSelected(SelectionEvent e)
+				{
+					WizardDialog wizard = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new DisconnectWorkflowWizard(applicationProject));
+					wizard.open();
+				}
+
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e)
+				{
+				}
+			});
 		}
 		return comp;
 	}
@@ -101,7 +151,7 @@ public class WorkflowProjectConfigurationPropertyPage extends PropertyPage
 	 */
 	protected void performDefaults()
 	{
-		if(applicationProject.getParentProject() == null)
+		if(parentProject == null)
 		{
 			if(applicationProject != null)
 			{
@@ -123,7 +173,7 @@ public class WorkflowProjectConfigurationPropertyPage extends PropertyPage
 	 */
 	public boolean performOk()
 	{
-		if(applicationProject.getParentProject() == null)
+		if(parentProject == null)
 		{
 			brandManager.saveTo(brandingAspect.getBrandManager(), false);
 			applicationProject.storeBuildPath();

@@ -64,7 +64,7 @@ public class InitialAction extends AssignmentAction
 	/** The conversation to use. */
 	private final IConversation conversation;
 	/** The brand to use. */
-	private final IBrandSelection brand;
+	private final IBrandSelection brandSelection;
 	private final IDataTypeRegistry dataTypeRegistry;
 	private final IPlatformSelector platformSelector;
 	private final InitialConfiguration initialConfig;
@@ -84,13 +84,13 @@ public class InitialAction extends AssignmentAction
 			IVariableRegistry variableRegistry,
 			IDataTypeRegistry dataTypeRegistry,
 			AssignmentConfiguration[] assignCongigs, IConversation conversation,
-			IBrandSelection brand, IPlatformSelector platformSelector,
+			IBrandSelection brandSelection, IPlatformSelector platformSelector,
 			InitialConfiguration initialConfig, IBrandRegistry brandRegistry,
 			ILanguageSelection languageSelection, ILanguageRegistry languageRegistry)
 	{
 		super(context, variableRegistry, assignCongigs);
 		this.conversation = conversation;
-		this.brand = brand;
+		this.brandSelection = brandSelection;
 		this.dataTypeRegistry = dataTypeRegistry;
 		this.platformSelector = platformSelector;
 		this.initialConfig = initialConfig;
@@ -151,16 +151,16 @@ public class InitialAction extends AssignmentAction
 				((IStringObject)platform.getField("DNIS")).setValue(dnisvalue);
 				((IStringObject)platform.getField("PLATFORM_DNIS")).setValue(dnisvalue);
 			}
-			IBrand b = brand.getSelectedBrand();
+			IBrand b = brandSelection.getSelectedBrand();
 			if (b != null)
-				((IStringObject)platform.getField("Brand")).setValue(b.getName());
+				((IStringObject)platform.getField("Brand")).setValue(b.getPath());
 			else
 			{
 				b = brandRegistry.getBrandById(initialConfig.getDefaultBrandId());
 				if (b != null)
-					((IStringObject)platform.getField("Brand")).setValue(b.getName());
+					((IStringObject)platform.getField("Brand")).setValue(b.getPath());
 				else
-					((IStringObject)platform.getField("Brand")).setValue(brandRegistry.getDefaultBrand().getName());
+					((IStringObject)platform.getField("Brand")).setValue(brandRegistry.getDefaultBrand().getPath());
 			}
 			languageSelection.setDefaultLanguage(initialConfig.getDefaultLanguageName());
 			variableRegistry.setVariable("Platform", platform);

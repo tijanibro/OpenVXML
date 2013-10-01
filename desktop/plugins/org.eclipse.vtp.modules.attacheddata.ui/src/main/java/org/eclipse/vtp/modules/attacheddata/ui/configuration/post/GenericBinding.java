@@ -13,11 +13,14 @@ package org.eclipse.vtp.modules.attacheddata.ui.configuration.post;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.openmethods.openvxml.desktop.model.branding.BrandManagerListener;
 import com.openmethods.openvxml.desktop.model.branding.IBrand;
 
 /**
@@ -26,7 +29,7 @@ import com.openmethods.openvxml.desktop.model.branding.IBrand;
  * 
  * @author trip
  */
-public abstract class GenericBinding
+public abstract class GenericBinding implements BrandManagerListener
 {
 	/**	The name of this binding */
 	private String name;
@@ -46,6 +49,7 @@ public abstract class GenericBinding
 	{
 		super();
 		this.manager = manager;
+		manager.getBrandManager().addListener(this);
 		this.name = name;
 	}
 
@@ -71,26 +75,26 @@ public abstract class GenericBinding
 	 * the hash of the string that results from concatenating all three
 	 * parameters.  The given values should not be null.
 	 * 
-	 * @param brand The name of the brand associated with the item
+	 * @param brandId The name of the brand associated with the item
 	 * @param interactionType The interaction type associated with the item
 	 * @param language The name of the language associated with the item
 	 * @return The binding item associated with the given parameters
 	 */
-	protected GenericBindingItem getItem(String brand,
+	protected GenericBindingItem getItem(String brandId,
 										 String interactionType,
 										 String language)
 	{
-		IBrand brandObject = manager.getBrandManager().getBrand(brand);
-		GenericBindingItem bindingItemObject = bindingItems.get(brand
-				+ interactionType + language);
+		IBrand brandObject = manager.getBrandManager().getBrandById(brandId);
+		GenericBindingItem bindingItemObject = bindingItems.get(brandId + ":"
+				+ interactionType + ":" + language);
 		while (bindingItemObject == null && brandObject.getParent() != null)
 		// no binding for the requested brand, search for item within parent
 		// brand
 		{
 			brandObject = brandObject.getParent();
 			bindingItemObject = bindingItems.get(brandObject
-					.getName()
-					+ interactionType + language);
+					.getId() + ":"
+					+ interactionType + ":" + language);
 			if (bindingItemObject != null)
 				bindingItemObject = (GenericBindingItem) bindingItemObject.clone();
 		}
@@ -103,26 +107,26 @@ public abstract class GenericBinding
 	 * already a binding item associated with the information, the item is
 	 * removed from this binding and replaced with the new item.
 	 * 
-	 * @param brand The name of the brand associated with the item
+	 * @param brandId The id of the brand associated with the item
 	 * @param interactionType The interaction type associated with the item
 	 * @param language The name of the language associated with the item
 	 * @param item The item being added to this binding
 	 */
-	protected void putItem(String brand,
+	protected void putItem(String brandId,
 						   String interactionType,
 						   String language,
 						   GenericBindingItem item)
 	{
-		bindingItems.put(brand + interactionType + language, item);
-		IBrand brandObject = manager.getBrandManager().getBrand(brand);
+		bindingItems.put(brandId + ":" + interactionType + ":" + language, item);
+		IBrand brandObject = manager.getBrandManager().getBrandById(brandId);
 		while (brandObject.getParent() != null)
 		// no binding for the requested brand parent, copy config down the stack
 		{
 			brandObject = brandObject.getParent();
-			if (bindingItems.get(brandObject.getName() + interactionType
-					+ language) == null)
-				bindingItems.put(brandObject.getName() + interactionType
-						+ language, item);
+			if (bindingItems.get(brandObject.getId() + ":" + interactionType
+					+ ":" + language) == null)
+				bindingItems.put(brandObject.getId() + ":" + interactionType
+						+ ":" + language, item);
 			else
 				break;
 		}
@@ -177,4 +181,46 @@ public abstract class GenericBinding
 	 */
 	protected abstract void writeBindingItem(GenericBindingItem item,
 											 Element itemConfiguration);
+	
+	public void brandAdded(IBrand brand)
+	{
+	}
+	
+	public void brandIdChanged(IBrand brand, String oldId)
+	{
+		List<String> toChange = new LinkedList<String>();
+		for(String key : bindingItems.keySet())
+		{
+			if(key.startsWith(oldId))
+				toChange.add(key);
+		}
+		for(String key : toChange)
+		{
+			GenericBindingItem item = bindingItems.remove(key);
+			String[] parts = key.split(":");
+			bindingItems.put(brand.getId() + ":" + parts[1] + ":" + parts[2], item);
+		}
+	}
+	
+	public void brandNameChanged(IBrand brand, String oldName)
+	{
+	}
+	
+	public void brandParentChanged(IBrand brand, IBrand oldParent)
+	{
+	}
+	
+	public void brandRemoved(IBrand brand)
+	{
+		List<String> toRemove = new LinkedList<String>();
+		for(String key : bindingItems.keySet())
+		{
+			if(key.startsWith(brand.getId()))
+				toRemove.add(key);
+		}
+		for(String key : toRemove)
+		{
+			bindingItems.remove(key);
+		}
+	}
 }

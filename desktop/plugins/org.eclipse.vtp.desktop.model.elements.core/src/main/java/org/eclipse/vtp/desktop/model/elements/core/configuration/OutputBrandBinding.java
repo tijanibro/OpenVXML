@@ -166,7 +166,7 @@ public class OutputBrandBinding
 	 */
 	public void dumpContents(PrintStream out)
 	{
-		out.println("[IBrand Binding] " + brand.getName() + "(" + brand.getId() + ")");
+		out.println("[IBrand Binding] " + brand.getPath() + "(" + brand.getId() + ")");
 		out.println("Value " + (value == null ? "NULL" : value.getValue()));
 	}
 }

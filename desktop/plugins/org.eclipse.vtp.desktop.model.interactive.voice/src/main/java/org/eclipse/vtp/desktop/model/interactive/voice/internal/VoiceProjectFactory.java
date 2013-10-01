@@ -22,7 +22,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProject;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProjectFactory;
-import org.eclipse.vtp.desktop.model.interactive.voice.natures.VoiceProjectNature;
+import org.eclipse.vtp.desktop.model.interactive.voice.natures.VoiceProjectNature5_0;
 import org.eclipse.vtp.framework.util.Guid;
 
 public class VoiceProjectFactory implements IMediaProjectFactory
@@ -79,7 +79,7 @@ public class VoiceProjectFactory implements IMediaProjectFactory
 			mainDesignDocument.create(new ByteArrayInputStream(template.getBytes()), true, null);
 	
 			IProjectDescription desc = newProject.getDescription();
-			desc.setNatureIds(new String[] {VoiceProjectNature.NATURE_ID});
+			desc.setNatureIds(new String[] {VoiceProjectNature5_0.NATURE_ID});
 			newProject.setDescription(desc, null);
 			return convertToMediaProject(newProject);
 		}

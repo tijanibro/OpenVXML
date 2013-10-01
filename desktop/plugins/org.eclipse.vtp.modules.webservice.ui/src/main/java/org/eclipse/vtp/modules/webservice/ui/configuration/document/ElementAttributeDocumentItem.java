@@ -122,7 +122,7 @@ public class ElementAttributeDocumentItem implements BrandedBinding
 				Element brandBindingElement = attributeItemElement.getOwnerDocument().createElementNS(null, "brand-binding");
 				attributeItemElement.appendChild(brandBindingElement);
 				brandBindingElement.setAttribute("id", brandBinding.getBrand().getId());
-				brandBindingElement.setAttribute("name", brandBinding.getBrand().getName());
+				brandBindingElement.setAttribute("name", brandBinding.getBrand().getPath());
 				brandBinding.writeConfiguration(brandBindingElement);
 			}
 		}

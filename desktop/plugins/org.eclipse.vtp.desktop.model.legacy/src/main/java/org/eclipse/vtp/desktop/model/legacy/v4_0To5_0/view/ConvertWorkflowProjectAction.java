@@ -9,7 +9,7 @@
  *    Trip Gilman (OpenMethods), Lonnie G. Pryor (OpenMethods)
  *    - initial API and implementation
  -------------------------------------------------------------------------*/
-package org.eclipse.vtp.desktop.model.legacy.v3_xTo4_0.view;
+package org.eclipse.vtp.desktop.model.legacy.v4_0To5_0.view;
 
 import java.util.List;
 
@@ -17,11 +17,11 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.SelectionListenerAction;
-import org.eclipse.vtp.desktop.model.legacy.v3_xTo4_0.ProjectConverter;
-import org.eclipse.vtp.desktop.model.legacy.v3_xTo4_0.VoiceConverter;
-import org.eclipse.vtp.desktop.model.legacy.v3_xTo4_0.dialogs.ConversionSelectionDialog;
-import org.eclipse.vtp.desktop.projects.core.builder.VoiceApplicationFragmentNature;
-import org.eclipse.vtp.desktop.projects.core.builder.VoiceApplicationNature;
+import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature;
+import org.eclipse.vtp.desktop.model.interactive.voice.natures.VoiceProjectNature;
+import org.eclipse.vtp.desktop.model.legacy.v4_0To5_0.ProjectConverter;
+import org.eclipse.vtp.desktop.model.legacy.v4_0To5_0.VoiceConverter;
+import org.eclipse.vtp.desktop.model.legacy.v4_0To5_0.dialogs.ConversionSelectionDialog;
 
 /**
  * Used in context menus to initiate the creation of a new application.
@@ -42,7 +42,7 @@ public class ConvertWorkflowProjectAction extends SelectionListenerAction
 	 */
 	public ConvertWorkflowProjectAction()
 	{
-		super("Convert to 4.0 VTP Project");
+		super("Convert to 5.0 OpenVXML Project");
 	}
 
 	@Override
@@ -58,13 +58,26 @@ public class ConvertWorkflowProjectAction extends SelectionListenerAction
 			{
 				try
 				{
-					if(project.hasNature(VoiceApplicationNature.NATURE_ID) || project.hasNature(VoiceApplicationFragmentNature.NATURE_ID))
+					if(project.hasNature(VoiceProjectNature.NATURE_ID))
+					{	
+						voiceConverter.convertVoice(project);
+					}
+				}
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+			for(IProject project : projects)
+			{
+				try
+				{
+					if(project.hasNature(WorkflowProjectNature.NATURE_ID) || project.hasNature("org.eclipse.vtp.desktop.model.interactive.core.InteractiveWorkflowProjectNature"))
 					{	
 						pc.convertProject(project);
 					}
 					else
 					{
-						voiceConverter.convertVoice(project);
 					}
 				}
 				catch(Exception ex)

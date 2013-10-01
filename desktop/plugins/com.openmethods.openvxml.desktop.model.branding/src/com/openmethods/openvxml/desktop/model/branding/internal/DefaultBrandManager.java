@@ -11,7 +11,6 @@
  -------------------------------------------------------------------------*/
 package com.openmethods.openvxml.desktop.model.branding.internal;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,9 +24,8 @@ public class DefaultBrandManager implements BrandManager
 {
 	private Brand defaultBrand;
 	private List<BrandManagerListener> listeners = new LinkedList<BrandManagerListener>();
-	private Map<String, IBrand> brandMap = new HashMap<String, IBrand>();
-	private Map<String, List<String>> supportedLanguages = new HashMap<String, List<String>>();
-	private List<String> supportedInteractions = new ArrayList<String>();
+	private Map<String, IBrand> brandNameMap = new HashMap<String, IBrand>();
+	private Map<String, IBrand> brandIdMap = new HashMap<String, IBrand>();
 
 	public DefaultBrandManager()
 	{
@@ -36,12 +34,28 @@ public class DefaultBrandManager implements BrandManager
 
 	public void fireBrandAdded(IBrand brand)
 	{
-		brandMap.put(brand.getName(), brand);
+		brandNameMap.put(brand.getName(), brand);
+		brandIdMap.put(brand.getId(), brand);
 		for(BrandManagerListener listener : listeners)
 		{
 			try
 			{
 				listener.brandAdded(brand);
+			}
+			catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+		}
+	}
+
+	public void fireBrandIdChanged(IBrand brand, String oldId)
+	{
+		for(BrandManagerListener listener : listeners)
+		{
+			try
+			{
+				listener.brandNameChanged(brand, oldId);
 			}
 			catch(Exception ex)
 			{
@@ -82,7 +96,9 @@ public class DefaultBrandManager implements BrandManager
 
 	public void fireBrandRemoved(IBrand brand)
 	{
-		brandMap.remove(brand.getName());
+		if(brandNameMap.get(brand.getName()).getId().equals(brand.getId()))
+			brandNameMap.remove(brand.getName());
+		brandIdMap.remove(brand.getId());
 		for(BrandManagerListener listener : listeners)
 		{
 			try
@@ -104,10 +120,11 @@ public class DefaultBrandManager implements BrandManager
 	public void setDefaultBrand(IBrand defaultBrand)
 	{
 		if(this.defaultBrand != null)
-			brandMap.remove(this.defaultBrand.getName());
+			brandNameMap.remove(this.defaultBrand.getName());
 		this.defaultBrand = (Brand)defaultBrand;
 		this.defaultBrand.setManager(this);
-		brandMap.put(defaultBrand.getName(), defaultBrand);
+		brandNameMap.put(defaultBrand.getName(), defaultBrand);
+		brandIdMap.put(defaultBrand.getId(), defaultBrand);
 	}
 	
 	public void addListener(BrandManagerListener listener)
@@ -121,44 +138,52 @@ public class DefaultBrandManager implements BrandManager
 		listeners.remove(listener);
 	}
 
-	public boolean checkBrandName(String name)
+	public boolean checkBrandName(IBrand parent, String name)
 	{
-		return brandMap.get(name) == null;
+		for(IBrand child : parent.getChildBrands())
+		{
+			if(child.getName().equals(name))
+				return false;
+		}
+		return true;
 	}
 
-	public Brand getBrand(String name)
+	public Brand getBrandByName(String name)
 	{
-		return (Brand)brandMap.get(name);
+		return (Brand)brandNameMap.get(name);
 	}
 
-	public List<String> getSupportedInteractionTypes()
+	public IBrand getBrandById(String id)
 	{
-		return supportedInteractions;
+		return brandIdMap.get(id);
 	}
 	
-	public void addInteractionSupport(String interactionType)
+	public IBrand getBrandByPath(String path)
 	{
-		if(!supportedInteractions.contains(interactionType))
-			supportedInteractions.add(interactionType);
-	}
-
-	public List<String> getSupportedLanguages(String interactionType)
-	{
-		List<String> ret = supportedLanguages.get(interactionType);
-		if(ret == null)
-			ret = new ArrayList<String>();
-		return ret;
-	}
-
-	public void addSupportedLanguage(String interactionType, String language)
-	{
-		List<String> ret = supportedLanguages.get(interactionType);
-		if(ret == null)
+		String[] parts = path.split("/");
+		int s = 0;
+		if(path.startsWith("/"))
+			s = 1;
+		IBrand brand = defaultBrand;
+		if(!brand.getName().equals(parts[s]))
+			return null;
+		++s;
+		for(int i = s; i < parts.length; i++)
 		{
-			ret = new ArrayList<String>();
-			supportedLanguages.put(interactionType, ret);
+			boolean found = false;
+			for(IBrand child : brand.getChildBrands())
+			{
+				if(child.getName().equals(parts[i]))
+				{
+					brand = child;
+					found = true;
+					break;
+				}
+			}
+			if(!found)
+				return null;
 		}
-		ret.remove(language);
-		ret.add(language);
+		return brand;
 	}
+	
 }

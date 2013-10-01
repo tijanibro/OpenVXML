@@ -107,7 +107,7 @@ public class MetaDataRequestAction implements IAction
 				MetaDataItemConfiguration[] items = null;
 				for (; brand != null && items == null; brand = brand.getParentBrand())
 				{
-					items = configuration.getItem(brand.getName() + ""
+					items = configuration.getItem(brand.getId() + ""
 							+ "");
 				}
 				AbstractPlatform platform = (AbstractPlatform)platformSelector.getSelectedPlatform();

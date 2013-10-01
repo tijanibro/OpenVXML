@@ -78,7 +78,7 @@ public class TextDocumentItem extends DocumentItem implements BrandedBinding
 				Element brandBindingElement = textItemElement.getOwnerDocument().createElementNS(null, "brand-binding");
 				textItemElement.appendChild(brandBindingElement);
 				brandBindingElement.setAttribute("id", brandBinding.getBrand().getId());
-				brandBindingElement.setAttribute("name", brandBinding.getBrand().getName());
+				brandBindingElement.setAttribute("name", brandBinding.getBrand().getPath());
 				brandBinding.writeConfiguration(brandBindingElement);
 			}
 		}

@@ -102,5 +102,35 @@
             </or>
          </enablement>
       </actionProvider>
+      <actionProvider
+            class="org.eclipse.vtp.desktop.model.legacy.v4_0To5_0.view.ConvertActionProvider"
+            id="org.eclipse.vtp.desktop.model.legacy.convertaction"
+            priority="normal">
+         <enablement>
+            <or>
+               <adapt
+                     type="org.eclipse.core.resources.IProject">
+                  <test
+                        property="org.eclipse.core.resources.projectNature"
+                        value="org.eclipse.vtp.desktop.model.core.WorkflowProjectNature">
+                  </test>
+               </adapt>
+               <adapt
+                     type="org.eclipse.core.resources.IProject">
+                  <test
+                        property="org.eclipse.core.resources.projectNature"
+                        value="org.eclipse.vtp.desktop.model.interactive.core.InteractiveWorkflowProjectNature">
+                  </test>
+               </adapt>
+               <adapt
+                     type="org.eclipse.core.resources.IProject">
+                  <test
+                        property="org.eclipse.core.resources.projectNature"
+                        value="org.eclipse.vtp.desktop.model.interactive.voice.VoiceProjectNature">
+                  </test>
+               </adapt>
+            </or>
+         </enablement>
+      </actionProvider>
    </extension>
 </plugin>

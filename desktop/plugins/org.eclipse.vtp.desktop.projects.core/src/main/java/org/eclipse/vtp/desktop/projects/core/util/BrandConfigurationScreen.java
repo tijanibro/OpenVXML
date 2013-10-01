@@ -72,6 +72,15 @@ public class BrandConfigurationScreen
 	{
 		brandViewer.getTree().setEnabled(enabled);
 	}
+	
+	public void updateBrands()
+	{
+		if(brandViewer != null)
+		{
+			brandViewer.refresh();
+			brandViewer.expandAll();
+		}
+	}
 
 	/**
 	 * @param parent
@@ -95,6 +104,7 @@ public class BrandConfigurationScreen
 		brandViewer.setContentProvider(new BrandContentProvider());
 		brandViewer.setLabelProvider(new BrandLabelProvider());
 		brandViewer.setInput(this);
+		brandViewer.expandAll();
 		GridData gridData2 = new GridData(GridData.FILL_HORIZONTAL);
 		gridData2.minimumHeight = 125;
 		gridData2.heightHint = 125;
@@ -226,6 +236,7 @@ public class BrandConfigurationScreen
 	private List<String> getBrandNames(IBrand brand)
 	{
 		List<String> ret = new ArrayList<String>();
+		ret.add("Default");
 		for(IBrand child : brand.getChildBrands())
 		{
 			ret.add(child.getName());
