@@ -20,9 +20,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
 import org.eclipse.vtp.framework.common.IBrand;
 import org.eclipse.vtp.framework.common.IBrandSelection;
 import org.eclipse.vtp.framework.core.IExecutionContext;
@@ -171,51 +168,27 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		AudioOutput output = new AudioOutput(links.createResourceLink(path).toString());
 		if(path.startsWith("http://"))
 			return output;
-		try
+		AudioOutput current = output;
+		List<String> servers = ExternalServerManager.getInstance().getLocations();
+		for(int i = 0; i < servers.size(); i++)
 		{
-			InitialContext jndiContext = new InitialContext();
-			String mediaServerCountString = (String)jndiContext.lookup("java:comp/env/media-server-count");
-			if(mediaServerCountString != null)
+			String serverPrefix = servers.get(i);
+			if(serverPrefix != null)
 			{
-				int count = 0;
-				try
+				String fullPath = serverPrefix + path;
+				if(!serverPrefix.endsWith("/") && !path.startsWith("/"))
+					fullPath = serverPrefix + "/" + path;
+				if(i == 0)
 				{
-					count = Integer.parseInt(mediaServerCountString);
+					current.setAudioFileURI(fullPath); 
 				}
-				catch (NumberFormatException e)
+				else
 				{
-				}
-				AudioOutput current = output;
-				for(int i = 1; i < count + 1; i++)
-				{
-					try
-					{
-						String serverPrefix = (String)jndiContext.lookup("java:comp/env/media-server-" + i);
-						if(serverPrefix != null)
-						{
-							String fullPath = serverPrefix + path;
-							if(!serverPrefix.endsWith("/") && !path.startsWith("/"))
-								fullPath = serverPrefix + "/" + path;
-							if(i == 1)
-							{
-								current.setAudioFileURI(fullPath); 
-							}
-							else
-							{
-								AudioOutput ao = new AudioOutput(fullPath);
-								current.addOutput(ao);
-								current = ao;
-							}
-						}
-					}
-					catch (NamingException e)
-					{
-					}
+					AudioOutput ao = new AudioOutput(fullPath);
+					current.addOutput(ao);
+					current = ao;
 				}
 			}
-		}
-		catch (NamingException e)
-		{
 		}
 		return output;
 	}
