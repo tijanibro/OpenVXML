@@ -18,8 +18,10 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.vtp.framework.interactions.core.media.IResourceManager;
+import org.eclipse.vtp.framework.interactions.voice.services.ExternalServerManager;
 import org.osgi.framework.Bundle;
 
 /**
@@ -65,6 +67,53 @@ public class ResourceGroup implements IResourceManager
 				e.printStackTrace();
 			}
 		}
+		Thread t = new Thread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				while(true)
+				{
+					List<String> locations = ExternalServerManager.getInstance().getLocations();
+					if(locations.size() > 0)
+					{
+						for(String location : locations)
+						{
+							if(!location.endsWith("/"))
+								location = location + "/";
+							location = location + ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + "/";
+							try
+							{
+								URL indexURL = new URL(location);
+								BufferedReader br = new BufferedReader(new InputStreamReader(indexURL.openConnection().getInputStream()));
+								String line = br.readLine();
+								while(line != null)
+								{
+									index.add(line);
+									line = br.readLine();
+								}
+								br.close();
+								break;
+							}
+							catch (Exception e)
+							{
+								e.printStackTrace();
+							}
+						}
+					}
+					try
+					{
+						Thread.sleep(30000);
+					}
+					catch(Exception ex)
+					{
+						
+					}
+				}
+			}
+		}, bundle.getSymbolicName() + "-index");
+		t.setDaemon(true);
+		t.start();
 	}
 
 	/**

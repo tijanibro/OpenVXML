@@ -50,6 +50,11 @@ public class Exporter {
 		this.mediaLocation = mediaLocation;
 	}
 	
+	public void excludeMedia(boolean exclude)
+	{
+		this.separateMedia = exclude;
+	}
+	
 	public Collection<MediaExporter> getMediaSelection() {
 		return Collections.unmodifiableCollection(mediaSelection);
 	}

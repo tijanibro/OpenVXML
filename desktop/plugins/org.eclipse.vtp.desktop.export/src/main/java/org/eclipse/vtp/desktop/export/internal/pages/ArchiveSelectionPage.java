@@ -50,8 +50,8 @@ public final class ArchiveSelectionPage extends WizardPage implements
 	private Combo directoryCombo = null;
 	private Button directoryBrowse = null;
 	private Button mediaCheckbox = null;
-	private Combo mediaCombo = null;
-	private Button mediaBrowse = null;
+//	private Combo mediaCombo = null;
+//	private Button mediaBrowse = null;
 	private boolean hasNonMediaError = false;
 	private boolean hasMediaError = false;
 
@@ -113,18 +113,18 @@ public final class ArchiveSelectionPage extends WizardPage implements
 		mediaCheckbox = new Button(composite, SWT.CHECK);
 		mediaCheckbox.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false, 2, 1));
-		mediaCheckbox.setText("Export media to separate directory");
+		mediaCheckbox.setText("Don't include voice libraries in exported package");
 		mediaCheckbox.addSelectionListener(this);
-		mediaCombo = new Combo(composite, SWT.DROP_DOWN);
-		mediaCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
-				false));
-		mediaCombo.addModifyListener(this);
-		mediaCombo.addSelectionListener(this);
-		mediaBrowse = new Button(composite, SWT.PUSH);
-		mediaBrowse.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
-				false));
-		mediaBrowse.setText("Browse...");
-		mediaBrowse.addSelectionListener(this);
+//		mediaCombo = new Combo(composite, SWT.DROP_DOWN);
+//		mediaCombo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
+//				false));
+//		mediaCombo.addModifyListener(this);
+//		mediaCombo.addSelectionListener(this);
+//		mediaBrowse = new Button(composite, SWT.PUSH);
+//		mediaBrowse.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false,
+//				false));
+//		mediaBrowse.setText("Browse...");
+//		mediaBrowse.addSelectionListener(this);
 		String lastPath = getLastArchivePath();
 		String[] paths = getAllArchivePaths();
 		Arrays.sort(paths);
@@ -153,9 +153,9 @@ public final class ArchiveSelectionPage extends WizardPage implements
 
 	public void modifyText(ModifyEvent e)
 	{
-		if(e.getSource() == mediaCombo)
-			evaluateMedia(((Combo) e.getSource()).getText(), true);
-		else
+//		if(e.getSource() == mediaCombo)
+//			evaluateMedia(((Combo) e.getSource()).getText(), true);
+//		else
 			evaluate(((Combo) e.getSource()).getText(), true);
 	}
 
@@ -176,16 +176,16 @@ public final class ArchiveSelectionPage extends WizardPage implements
 			}
 			else if(button == mediaCheckbox)
 			{
-				evaluateMedia(mediaCombo.getText(), true);
+				exporter.excludeMedia(mediaCheckbox.getSelection());
 			}
-			else if(button == mediaBrowse)
-			{
-				String path = new DirectoryDialog(getShell()).open();
-				if (path == null)
-					return;
-				mediaCombo.setText(path);
-				evaluateMedia(path, true);
-			}
+//			else if(button == mediaBrowse)
+//			{
+//				String path = new DirectoryDialog(getShell()).open();
+//				if (path == null)
+//					return;
+//				mediaCombo.setText(path);
+//				evaluateMedia(path, true);
+//			}
 			else {
 				String path = new DirectoryDialog(getShell()).open();
 				if (path == null)
@@ -196,9 +196,9 @@ public final class ArchiveSelectionPage extends WizardPage implements
 		}
 		else
 		{
-			if(source == mediaCombo)
-				evaluateMedia(((Combo) source).getText(), true);
-			else
+//			if(source == mediaCombo)
+//				evaluateMedia(((Combo) source).getText(), true);
+//			else
 				evaluate(((Combo) source).getText(), true);
 		}
 	}
@@ -246,33 +246,4 @@ public final class ArchiveSelectionPage extends WizardPage implements
 		exporter.setArchiveLocation(file, isArchive());
 	}
 
-	private void evaluateMedia(String path, boolean showErrorMessage) {
-		File file = null;
-		String msg = null;
-		if(mediaCheckbox.getSelection())
-		{
-			if (path == null || path.length() == 0) {
-				msg = "Select a directory to export the media to.";
-			} else {
-				try {
-					file = new File(path).getCanonicalFile();
-					if (file.isFile())
-						msg = "Select a directory, not a file.";
-				} catch (IOException e) {
-					msg = "Error resolving directory: " + e.getMessage();
-				}
-			}
-			if (msg != null)
-			{
-				file = null;
-			}
-		}
-		if (showErrorMessage)
-			setErrorMessage(msg);
-		hasMediaError = msg != null;
-		System.err.println("media error: " + hasMediaError);
-		System.err.println("non media error: " + hasNonMediaError);
-		setPageComplete(!hasMediaError && !hasNonMediaError);
-		exporter.setMediaLocation(file);
-	}
 }

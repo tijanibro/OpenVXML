@@ -117,7 +117,7 @@ public class WebApplicationExporter {
 
 	public final synchronized boolean export(File archive,
 			Collection<WorkflowExporter> workflowProjects,
-			Collection<MediaExporter> mediaProjects, boolean separateMedia, File mediaDestination, IProgressMonitor monitor)
+			Collection<MediaExporter> mediaProjects, boolean separateMedia, IProgressMonitor monitor)
 			throws Exception {
 		this.separateMedia = separateMedia;
 		File canonical = archive.getCanonicalFile();
@@ -130,15 +130,6 @@ public class WebApplicationExporter {
 				deleteChildren(canonical);
 			this.output = ExportWriter.create(canonical);
 			this.mediaOutput = output;
-			if(separateMedia)
-			{
-				File mediaCanonical = mediaDestination.getCanonicalFile();
-				if (mediaCanonical.isFile())
-					delete(mediaCanonical);
-				if (mediaCanonical.isDirectory())
-					deleteChildren(mediaCanonical);
-				this.mediaOutput = ExportWriter.create(mediaCanonical);
-			}
 			this.workflowExporters = workflowProjects;
 			this.mediaExporters = mediaProjects;
 			this.bundleExporters = new LinkedHashMap<String, BundleExporter>();
@@ -415,14 +406,12 @@ public class WebApplicationExporter {
 			@Override
 			public boolean accept(File dir, String name)
 			{
-				if(name.endsWith(".wav") || name.endsWith(".au") || name.endsWith(".vox"))
-					return false;
-				return true;
+				return false;
 			}
 			
 		};
-		File file = project.getMediaProject().getMediaLibrariesFolder().getUnderlyingFolder().getLocation().toFile();
-		mediaOutput.writeFile(project.getMediaProject().getName() + "/", file, null);
+//		File file = project.getMediaProject().getMediaLibrariesFolder().getUnderlyingFolder().getLocation().toFile();
+//		mediaOutput.writeFile(project.getMediaProject().getName() + "/", file, null);
 		String path = exportProject(project, filter);
 		// Create the plugin.xml file.
 		Document pluginXmlDoc = documentBuilder.newDocument();

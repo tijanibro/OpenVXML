@@ -225,7 +225,7 @@ public class ExportWizard extends Wizard implements IExportWizard {
 						new WebApplicationExporter(agents).export(
 								exporter.getArchiveLocation(),
 								exporter.getWorkflowSelection(),
-								exporter.getMediaSelection(), exporter.hasSeparateMedia(), exporter.getMediaLocation(), monitor);
+								exporter.getMediaSelection(), exporter.hasSeparateMedia(), monitor);
 						((ArchiveSelectionPage) pages.keySet().iterator()
 								.next()).saveArchivePath();
 						for (WorkflowExporter e : exporter
