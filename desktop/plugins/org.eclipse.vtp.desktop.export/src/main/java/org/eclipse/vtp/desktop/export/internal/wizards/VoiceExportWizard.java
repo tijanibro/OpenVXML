@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.wizard.Wizard;
@@ -236,6 +237,12 @@ public class VoiceExportWizard extends Wizard implements IExportWizard
 			viewer = CheckboxTableViewer.newCheckList(composite, SWT.BORDER);
 			viewer.addCheckStateListener(this);
 			viewer.setContentProvider(this);
+			viewer.setLabelProvider(new LabelProvider(){
+				public String getText(Object element)
+				{
+					return ((IMediaProject)element).getName();
+				}
+			});
 			viewer.setSorter(new ViewerSorter());
 			viewer.setInput(voices);
 			viewer.setCheckedElements(initialSelection.toArray());
@@ -295,6 +302,7 @@ public class VoiceExportWizard extends Wizard implements IExportWizard
 			}
 			return ret;
 		}
+		
 	}
 
 	public class LocationPage extends WizardPage
