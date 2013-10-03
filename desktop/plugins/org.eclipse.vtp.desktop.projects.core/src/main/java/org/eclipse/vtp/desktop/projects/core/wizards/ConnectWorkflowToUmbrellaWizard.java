@@ -167,6 +167,7 @@ public class ConnectWorkflowToUmbrellaWizard extends Wizard
 					@Override
 					public void widgetSelected(SelectionEvent e)
 					{
+						brandMappingPage.setUmbrellaProject(umbrellaProjects.get(umbrellaCombo.getSelectionIndex()));
 					}
 
 					@Override

@@ -32,6 +32,7 @@ import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.core.internal.OpenVXMLProject;
 import org.eclipse.vtp.desktop.model.interactive.core.ILanguageSupportProjectAspect;
+import org.eclipse.vtp.desktop.model.interactive.core.IUmbrellaProjectAspect;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.LanguageSupportProjectAspect;
 import org.eclipse.vtp.desktop.projects.core.util.BrandConfigurationScreen;
 import org.eclipse.vtp.desktop.projects.core.util.ConfigurationBrandManager;
@@ -107,23 +108,26 @@ public class ApplicationProjectConfigurationPropertyPage extends PropertyPage
 		comp.setLayout(new GridLayout(1, false));
 		if(parentProject == null)
 		{
-			Link connectLink = new Link(comp, SWT.NONE);
-			connectLink.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			connectLink.setText("<A>Connect project to umbrella</A>");
-			connectLink.addSelectionListener(new SelectionListener()
+			if(applicationProject.getProjectAspect(IUmbrellaProjectAspect.ASPECT_ID) == null)
 			{
-				@Override
-				public void widgetSelected(SelectionEvent e)
+				Link connectLink = new Link(comp, SWT.NONE);
+				connectLink.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+				connectLink.setText("<A>Connect project to umbrella</A>");
+				connectLink.addSelectionListener(new SelectionListener()
 				{
-					WizardDialog wizard = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new ConnectWorkflowToUmbrellaWizard(applicationProject));
-					wizard.open();
-				}
-
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e)
-				{
-				}
-			});
+					@Override
+					public void widgetSelected(SelectionEvent e)
+					{
+						WizardDialog wizard = new WizardDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), new ConnectWorkflowToUmbrellaWizard(applicationProject));
+						wizard.open();
+					}
+	
+					@Override
+					public void widgetDefaultSelected(SelectionEvent e)
+					{
+					}
+				});
+			}
 			TabFolder tabFolder = new TabFolder(comp, SWT.NONE);
 			tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
 			TabItem brandItem = new TabItem(tabFolder, SWT.NONE);
