@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: AVP with I-Driver for OpenVXML
 Bundle-SymbolicName: com.openmethods.openvxml.platforms.avpwithidriver;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Bundle-Vendor: OPENMETHODS
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.vtp.framework.core,
