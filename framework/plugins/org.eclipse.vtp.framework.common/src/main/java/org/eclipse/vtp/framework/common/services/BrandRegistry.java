@@ -84,6 +84,8 @@ public class BrandRegistry implements IBrandRegistry, IScriptable
 	
 	public IBrand getBrandByPath(String path)
 	{
+		if(path == null || path.equals(""))
+			return null;
 		String[] parts = path.split("/");
 		int s = 0;
 		if(path.startsWith("/"))
