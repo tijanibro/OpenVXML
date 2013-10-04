@@ -4,8 +4,8 @@ Bundle-Name: VTP Framework Databases Plug-in
 Bundle-SymbolicName: org.eclipse.vtp.framework.databases;singleton:=true
 Bundle-Version: 5.0.0.qualifier
 Bundle-Vendor: Eclipse.org
-Require-Bundle: org.eclipse.vtp.framework.core;bundle-version="4.0.0",
- org.eclipse.vtp.framework.common;bundle-version="4.0.0"
+Require-Bundle: org.eclipse.vtp.framework.core;bundle-version="5.0.0",
+ org.eclipse.vtp.framework.common;bundle-version="5.0.0"
 Export-Package: org.eclipse.vtp.framework.databases,
  org.eclipse.vtp.framework.databases.actions,
  org.eclipse.vtp.framework.databases.configurations,

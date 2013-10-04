@@ -7,4 +7,4 @@ Bundle-Vendor: Eclipse.org
 Import-Package: org.w3c.dom
 Export-Package: org.eclipse.vtp.framework.spi
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.vtp.framework.core;bundle-version="4.0.0"
+Require-Bundle: org.eclipse.vtp.framework.core;bundle-version="5.0.0"

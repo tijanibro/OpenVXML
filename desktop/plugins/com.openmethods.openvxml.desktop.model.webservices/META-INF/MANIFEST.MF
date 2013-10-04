@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.vtp.desktop.model.core;bundle-version="5.0.0",
  com.openmethods.openvxml.desktop.model.workflow;bundle-version="5.0.0",
  org.apache.xerces,
- org.eclipse.vtp.framework.util;bundle-version="4.0.0"
+ org.eclipse.vtp.framework.util;bundle-version="5.0.0"
 Import-Package: org.w3c.dom
 Export-Package: com.openmethods.openvxml.desktop.model.webservices,
  com.openmethods.openvxml.desktop.model.webservices.builders,
