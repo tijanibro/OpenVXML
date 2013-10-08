@@ -35,7 +35,7 @@ public class IncludeConfigurationExporter implements IConfigurationExporter
 				NodeList brandBindingList = inputBinding.getElementsByTagName("brand-binding");
 				for (int j = 0; j < brandBindingList.getLength(); ++j) {
 					Element brandBinding = (Element)brandBindingList.item(j);
-					if (!"Default".equals(brandBinding.getAttribute("name")))
+					if (!"/Default".equals(brandBinding.getAttribute("name")))
 						continue;
 					Element inputItem = (Element)brandBinding.getElementsByTagName("input-item").item(0);
 					String type = inputItem.getAttribute("type");
