@@ -39,7 +39,7 @@ public class ExternalServerManager
 					try
 					{
 						String serverPrefix = (String)jndiContext.lookup("java:comp/env/media-server-" + i);
-						serverLocations.add(serverPrefix);
+						addLocation(serverPrefix);
 					}
 					catch(Exception ex)
 					{
@@ -50,7 +50,8 @@ public class ExternalServerManager
 		}
 		catch (NamingException e)
 		{
-			e.printStackTrace();
+			System.out.println("Unable to lookup external media server configuration");
+			//e.printStackTrace();
 		}
 	}
 
@@ -61,11 +62,13 @@ public class ExternalServerManager
 	
 	public void clearLocations()
 	{
+		System.out.println("Clearing current list of external media servers");
 		serverLocations.clear();
 	}
 	
 	public void addLocation(String location)
 	{
+		System.out.println("Adding external media server: " + location);
 		serverLocations.add(location);
 	}
 }
