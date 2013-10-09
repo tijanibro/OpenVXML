@@ -517,6 +517,7 @@ public class SIPAvpPlatform extends VoicePlatform
 			int headerIndex = 0;
 			for(Entry<String, IDataObject> headerEntry : sipHeaders.entrySet())
 			{
+				System.out.print("Adding SIP Header - " + headerEntry.getKey() + ":" + String.valueOf(headerEntry.getValue()));
 				form.setProperty("AVAYA_SIPHEADER.session.connection.protocol.sip.unknownhdr[" + headerIndex + "].name", headerEntry.getKey());
 				form.setProperty("AVAYA_SIPHEADER.session.connection.protocol.sip.unknownhdr[" + headerIndex + "].value", String.valueOf(headerEntry.getValue()));	
 			}
