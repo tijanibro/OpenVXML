@@ -984,8 +984,8 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 						for (int bb = 0; bb < brandBindingList.getLength(); bb++) {
 							Element brandBinding = (Element) brandBindingList
 									.item(bb);
-							String brandName = brandBinding
-									.getAttribute("name");
+							String brandId = brandBinding
+									.getAttribute("id");
 							NodeList bindingItemList = brandBinding
 									.getElementsByTagName("binding-item");
 							if (bindingItemList.getLength() > 0) {
@@ -1005,9 +1005,7 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 												outputConfig);
 									}
 									outputConfig
-											.setItem(
-													brandName + interactionType
-															+ languageName,
+											.setItem(brandId, interactionType, languageName,
 													loadOutputNodesFrom(bindingItemElement));
 								}
 								if ("org.eclipse.vtp.configuration.generic.items.grammar"
@@ -1032,9 +1030,8 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 															(Element) contents
 																	.item(k));
 									if (grammar != null)
-										inputConfig.setItem(brandName
-												+ interactionType
-												+ languageName, grammar);
+										inputConfig.setItem(brandId, interactionType,
+											languageName, grammar);
 								}
 								if ("org.eclipse.vtp.configuration.generic.items.property"
 										.equals(bindingItemType)) {
@@ -1052,16 +1049,11 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 												.item(0);
 										try {
 											propertyConfig
-													.setItem(
-															brandName
-																	+ interactionType
-																	+ languageName,
-															propertyValueElement
-																	.getAttribute("value-type"),
-															XMLUtilities
-																	.getElementTextData(
-																			propertyValueElement,
-																			true));
+												.setItem(brandId, interactionType,
+													languageName, propertyValueElement.getAttribute("value-type"),
+													XMLUtilities.getElementTextData(
+														propertyValueElement,
+														true));
 										} catch (Exception e) {
 											e.printStackTrace();
 										}

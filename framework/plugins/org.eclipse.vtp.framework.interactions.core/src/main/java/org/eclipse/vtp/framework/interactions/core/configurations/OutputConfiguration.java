@@ -46,8 +46,8 @@ public class OutputConfiguration implements IConfiguration,
 	 * Returns the item configured for the specified brand, interaction type,
 	 * and language or <code>null</code> if no such item is configured.
 	 * 
-	 * @param brandName
-	 *            The path of the brand to find the item for.
+	 * @param brandId
+	 *            The id of the brand to find the item for.
 	 * @param interactionTypeID
 	 *            The ID of the interaction type to find the item for.
 	 * @param languageID
@@ -55,16 +55,16 @@ public class OutputConfiguration implements IConfiguration,
 	 * @return The item configured for the specified brand, interaction type,
 	 *         and language or <code>null</code> if no such item is configured.
 	 */
-	public OutputNode[] getItem(String brandName, String interactionTypeID,
+	public OutputNode[] getItem(String brandId, String interactionTypeID,
 			String languageID) {
-		return items.get(brandName + interactionTypeID + languageID);
+		return items.get(brandId + ":" + interactionTypeID + ":" + languageID);
 	}
 
 	/**
 	 * Sets the item configured for the specified brand, interaction type, and
 	 * language.
 	 * 
-	 * @param brandName
+	 * @param brandId
 	 *            The path of the brand to set the item for.
 	 * @param interactionTypeID
 	 *            The ID of the interaction type to set the item for.
@@ -74,9 +74,9 @@ public class OutputConfiguration implements IConfiguration,
 	 *            The item to set as the configuration or <code>null</code> to
 	 *            remove the specified configuration.
 	 */
-	public void setItem(String brandName, String interactionTypeID,
+	public void setItem(String brandId, String interactionTypeID,
 			String languageID, OutputNode[] item) {
-		setItem(brandName + interactionTypeID + languageID, item);
+		setItem(brandId + ":" + interactionTypeID + ":" + languageID, item);
 	}
 
 	/**

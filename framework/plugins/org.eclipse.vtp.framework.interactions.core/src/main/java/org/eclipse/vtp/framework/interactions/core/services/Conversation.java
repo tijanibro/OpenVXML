@@ -183,7 +183,10 @@ public class Conversation implements IConversation {
 				brand = brand.getParentBrand();
 		}
 		if (nodes == null)
+		{
+			context.warn("Unable to locate content list for " + brandSelection.getSelectedBrand().getId() + "[" + brandSelection.getSelectedBrand().getName() + "] " + languageID);
 			return Collections.emptyList();
+		}
 		String mediaProviderID = null;
 		while (brand != null && mediaProviderID == null) {
 			mediaProviderID = mediaProviderRegistry.lookupMediaProviderID(
@@ -192,7 +195,10 @@ public class Conversation implements IConversation {
 				brand = brand.getParentBrand();
 		}
 		if (mediaProviderID == null)
+		{
+			context.warn("Unable to find media provider");
 			return Collections.emptyList();
+		}
 		List<Content> results = new LinkedList<Content>();
 		for (OutputNode node : nodes)
 			resolveContentNode(node, results);
