@@ -17,13 +17,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.openmethods.openvxml.desktop.model.branding.BrandManager;
+import com.openmethods.openvxml.desktop.model.branding.BrandManagerListener;
 import com.openmethods.openvxml.desktop.model.branding.IBrand;
 import com.openmethods.openvxml.desktop.model.branding.IBrandingProjectAspect;
 import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationException;
 import com.openmethods.openvxml.desktop.model.workflow.configuration.ConfigurationManager;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesign;
 
-public class MenuChoiceBindingManager implements ConfigurationManager
+public class MenuChoiceBindingManager implements ConfigurationManager, BrandManagerListener
 {
 	/**	The unique identifier for this manager type */
 	public static final String TYPE_ID = "org.eclipse.vtp.configuration.menuchoice";
@@ -51,6 +52,7 @@ public class MenuChoiceBindingManager implements ConfigurationManager
 		IOpenVXMLProject project = design.getDocument().getProject();
 		IBrandingProjectAspect brandingAspect = (IBrandingProjectAspect)project.getProjectAspect(IBrandingProjectAspect.ASPECT_ID);
 		this.brandManager = brandingAspect.getBrandManager();
+		brandManager.addListener(this);
 		System.out.println("constructing this: " + this.getClass());//TODO
 	}
 
@@ -310,5 +312,39 @@ public class MenuChoiceBindingManager implements ConfigurationManager
 			}
 		}
 		return Collections.unmodifiableList(list);
+	}
+
+	@Override
+	public void brandAdded(IBrand brand)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void brandIdChanged(IBrand brand, String oldId)
+	{
+		List<MenuChoice> choices = brandOrders.remove(oldId);
+		if(choices != null)
+		{
+			brandOrders.put(brand.getId(), choices);
+		}
+	}
+
+	@Override
+	public void brandNameChanged(IBrand brand, String oldName)
+	{
+	}
+
+	@Override
+	public void brandParentChanged(IBrand brand, IBrand oldParent)
+	{
+	}
+
+	@Override
+	public void brandRemoved(IBrand brand)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
