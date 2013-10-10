@@ -2,6 +2,7 @@ package org.eclipse.vtp.framework.interactions.voice.services;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.naming.InitialContext;
@@ -17,6 +18,7 @@ public class ExternalServerManager
 	private static final ExternalServerManager instance = new ExternalServerManager();
 	
 	private List<String> serverLocations = new ArrayList<String>();
+	private List<ExternalServerManagerListener> listeners = new LinkedList<ExternalServerManagerListener>();
 
 	private ExternalServerManager()
 	{
@@ -70,23 +72,61 @@ public class ExternalServerManager
 	{
 		System.out.println("Adding external media server: " + location);
 		serverLocations.add(location);
+		fireLocationChange();
+	}
+	
+	private void updateLocations(List<String> locations)
+	{
+		serverLocations.clear();
+		serverLocations.addAll(locations);
+		fireLocationChange();
+		for(String location : locations)
+		{
+			System.out.println("Adding external media server: " + location);
+		}
 	}
 	
 	public synchronized void ensureLocations(List<String> locations)
 	{
 		if(serverLocations.size() != locations.size())
 		{
-			serverLocations.clear();
-			serverLocations.addAll(locations);
+			updateLocations(locations);
 			return;
 		}
 		for(int i = 0; i < locations.size(); i++)
 		{
 			if(!serverLocations.contains(locations.get(i)))
 			{
-				serverLocations.clear();
-				serverLocations.addAll(locations);
+				updateLocations(locations);
 				return;
+			}
+		}
+	}
+	
+	public void addListener(ExternalServerManagerListener l)
+	{
+		synchronized(listeners)
+		{
+			listeners.remove(l);
+			listeners.add(l);
+		}
+	}
+	
+	public void removeListener(ExternalServerManagerListener l)
+	{
+		synchronized(listeners)
+		{
+			listeners.remove(l);
+		}
+	}
+	
+	private void fireLocationChange()
+	{
+		synchronized(listeners)
+		{
+			for(ExternalServerManagerListener l : listeners)
+			{
+				l.locationsChanged();
 			}
 		}
 	}

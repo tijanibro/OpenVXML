@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.eclipse.vtp.framework.interactions.core.media.IResourceManager;
 import org.eclipse.vtp.framework.interactions.voice.services.ExternalServerManager;
+import org.eclipse.vtp.framework.interactions.voice.services.ExternalServerManagerListener;
 import org.osgi.framework.Bundle;
 
 /**
@@ -29,12 +30,13 @@ import org.osgi.framework.Bundle;
  * 
  * @author Lonnie Pryor
  */
-public class ResourceGroup implements IResourceManager
+public class ResourceGroup implements IResourceManager, ExternalServerManagerListener
 {
 	/** The bundle to load from. */
 	private final Bundle bundle;
 	/** The base path to publish. */
 	private final String path;
+	private Object lock = new Object();
 	private HashSet<String> index = new HashSet<String>();
 
 	/**
@@ -45,6 +47,7 @@ public class ResourceGroup implements IResourceManager
 	 */
 	public ResourceGroup(Bundle bundle, String path)
 	{
+		ExternalServerManager.getInstance().addListener(this);
 		this.bundle = bundle;
 		if (!path.startsWith("/")) //$NON-NLS-1$
 			path = "/" + path; //$NON-NLS-2$
@@ -84,7 +87,7 @@ public class ResourceGroup implements IResourceManager
 							if(!location.endsWith("/"))
 								location = location + "/";
 							location = location + ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + "/";
-							System.out.println("Contacting " + location);
+//							System.out.println("Contacting " + location);
 							try
 							{
 								URL indexURL = new URL(location);
@@ -93,7 +96,7 @@ public class ResourceGroup implements IResourceManager
 								String line = br.readLine();
 								while(line != null)
 								{
-									System.out.println("Received: " + line);
+//									System.out.println("Received: " + line);
 									localIndex.add(line);
 									line = br.readLine();
 								}
@@ -109,7 +112,10 @@ public class ResourceGroup implements IResourceManager
 					}
 					try
 					{
-						Thread.sleep(30000);
+						synchronized(lock)
+						{
+							lock.wait(30000);
+						}
 					}
 					catch(Exception ex)
 					{
@@ -198,5 +204,14 @@ public class ResourceGroup implements IResourceManager
 	{
 		String libraryPath = "/" + libraryId + "/.library";
 		return index.contains(libraryPath) || getResource(libraryPath) != null;
+	}
+
+	@Override
+	public void locationsChanged()
+	{
+		synchronized(lock)
+		{
+			lock.notifyAll();
+		}
 	}
 }
