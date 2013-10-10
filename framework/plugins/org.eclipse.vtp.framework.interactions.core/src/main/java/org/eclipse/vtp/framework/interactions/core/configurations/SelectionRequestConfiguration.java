@@ -178,6 +178,7 @@ public class SelectionRequestConfiguration implements IConfiguration,
 	 */
 	public String[] getBrandedChoices(String brandId)
 	{
+		System.out.println("Getting branded choices for " + brandId + " " + brandedChoices.get(brandId));
 		return (String[])brandedChoices.get(brandId);
 	}
 
@@ -230,10 +231,12 @@ public class SelectionRequestConfiguration implements IConfiguration,
 		List choiceNames = new ArrayList();
 		elements = configurationElement.getElementsByTagNameNS(NAMESPACE_URI,
 				NAME_CHOICES);
+		System.out.println("Loading branded choices");
 		for (int i = 0; i < elements.getLength(); ++i)
 		{
 			Element element = (Element)elements.item(i);
 			String content = XMLUtilities.getElementTextDataNoEx(element, true);
+			System.out.println("brand: " + element.getAttribute(NAME_KEY) + " value: " + content);
 			if (content != null)
 				for (StringTokenizer st = new StringTokenizer(content, "\r\n"); //$NON-NLS-1$
 				st.hasMoreTokens();)
