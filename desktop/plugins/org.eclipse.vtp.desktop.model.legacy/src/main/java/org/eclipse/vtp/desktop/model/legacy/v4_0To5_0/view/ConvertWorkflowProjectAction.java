@@ -14,14 +14,24 @@ package org.eclipse.vtp.desktop.model.legacy.v4_0To5_0.view;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceDescription;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.SelectionListenerAction;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
+import org.eclipse.vtp.desktop.model.core.WorkflowCore;
 import org.eclipse.vtp.desktop.model.core.natures.WorkflowProjectNature;
 import org.eclipse.vtp.desktop.model.interactive.voice.natures.VoiceProjectNature;
 import org.eclipse.vtp.desktop.model.legacy.v4_0To5_0.ProjectConverter;
 import org.eclipse.vtp.desktop.model.legacy.v4_0To5_0.VoiceConverter;
 import org.eclipse.vtp.desktop.model.legacy.v4_0To5_0.dialogs.ConversionSelectionDialog;
+
+import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignItemContainer;
+import com.openmethods.openvxml.desktop.model.workflow.IWorkflowProjectAspect;
 
 /**
  * Used in context menus to initiate the creation of a new application.
@@ -51,6 +61,21 @@ public class ConvertWorkflowProjectAction extends SelectionListenerAction
 		ConversionSelectionDialog dialog = new ConversionSelectionDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
 		if(dialog.open() == Dialog.OK)
 		{
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			IWorkspaceDescription description = workspace.getDescription();
+			boolean autoBuild = description.isAutoBuilding();
+			if (autoBuild)
+			{
+				description.setAutoBuilding(false);
+				try
+				{
+					workspace.setDescription(description);
+				}
+				catch (CoreException e)
+				{
+					e.printStackTrace();
+				}
+			}
 			ProjectConverter pc = new ProjectConverter();
 			VoiceConverter voiceConverter = new VoiceConverter();
 			List<IProject> projects = dialog.getProjectsToConvert();
@@ -84,6 +109,58 @@ public class ConvertWorkflowProjectAction extends SelectionListenerAction
 				{
 					ex.printStackTrace();
 				}
+			}
+			for(IProject project : projects)
+			{
+				try
+				{
+					if(WorkflowCore.getDefault().getWorkflowModel().isWorkflowProject(project))
+					{
+						IOpenVXMLProject op = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject(project);
+						IWorkflowProjectAspect workflowAspect = (IWorkflowProjectAspect)op.getProjectAspect(IWorkflowProjectAspect.ASPECT_ID);
+						if(workflowAspect != null)
+						{
+							IDesignItemContainer container = workflowAspect.getDesignRootFolder();
+							touchContainer(container);
+						}
+					}
+				}
+				catch(Exception ex)
+				{
+					ex.printStackTrace();
+				}
+			}
+			if(autoBuild)
+			{
+				description.setAutoBuilding(true);
+				try
+				{
+					workspace.setDescription(description);
+				}
+				catch (CoreException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	private void touchContainer(IDesignItemContainer container)
+	{
+		for(IDesignItemContainer childContainer : container.getDesignFolders())
+		{
+			touchContainer(childContainer);
+		}
+		for(IDesignDocument child : container.getDesignDocuments())
+		{
+			child.becomeWorkingCopy(true);
+			try
+			{
+				child.commitWorkingCopy();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
 			}
 		}
 	}
