@@ -55,20 +55,39 @@ public class ExternalServerManager
 		}
 	}
 
-	public List<String> getLocations()
+	public synchronized List<String> getLocations()
 	{
 		return Collections.unmodifiableList(serverLocations);
 	}
 	
-	public void clearLocations()
+	public synchronized void clearLocations()
 	{
 		System.out.println("Clearing current list of external media servers");
 		serverLocations.clear();
 	}
 	
-	public void addLocation(String location)
+	public synchronized void addLocation(String location)
 	{
 		System.out.println("Adding external media server: " + location);
 		serverLocations.add(location);
+	}
+	
+	public synchronized void ensureLocations(List<String> locations)
+	{
+		if(serverLocations.size() != locations.size())
+		{
+			serverLocations.clear();
+			serverLocations.addAll(locations);
+			return;
+		}
+		for(int i = 0; i < locations.size(); i++)
+		{
+			if(!serverLocations.contains(locations.get(i)))
+			{
+				serverLocations.clear();
+				serverLocations.addAll(locations);
+				return;
+			}
+		}
 	}
 }

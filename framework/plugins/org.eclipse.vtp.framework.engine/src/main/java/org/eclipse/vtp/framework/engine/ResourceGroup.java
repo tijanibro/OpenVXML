@@ -35,7 +35,7 @@ public class ResourceGroup implements IResourceManager
 	private final Bundle bundle;
 	/** The base path to publish. */
 	private final String path;
-	private final HashSet<String> index = new HashSet<String>();
+	private HashSet<String> index = new HashSet<String>();
 
 	/**
 	 * Creates a new ResourceGroup.
@@ -74,7 +74,9 @@ public class ResourceGroup implements IResourceManager
 			{
 				while(true)
 				{
-					List<String> locations = ExternalServerManager.getInstance().getLocations();
+					HashSet<String> localIndex = new HashSet<String>();
+					System.out.println("Retreiving file index");
+					List<String> locations = new LinkedList<String>(ExternalServerManager.getInstance().getLocations());
 					if(locations.size() > 0)
 					{
 						for(String location : locations)
@@ -82,17 +84,21 @@ public class ResourceGroup implements IResourceManager
 							if(!location.endsWith("/"))
 								location = location + "/";
 							location = location + ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + "/";
+							System.out.println("Contacting " + location);
 							try
 							{
 								URL indexURL = new URL(location);
 								BufferedReader br = new BufferedReader(new InputStreamReader(indexURL.openConnection().getInputStream()));
+								System.out.println("Connected to " + location);
 								String line = br.readLine();
 								while(line != null)
 								{
-									index.add(line);
+									System.out.println("Received: " + line);
+									localIndex.add(line);
 									line = br.readLine();
 								}
 								br.close();
+								index = localIndex;
 								break;
 							}
 							catch (Exception e)
