@@ -61,7 +61,7 @@ public class IncludeConfigurationExporter implements IConfigurationExporter
 					NodeList brandBindingList = outputBinding.getElementsByTagName("brand-binding");
 					for (int k = 0; k < brandBindingList.getLength(); ++k) {
 						Element brandBinding = (Element)brandBindingList.item(k);
-						if (!"Default".equals(brandBinding.getAttribute("name")))
+						if (!"/Default".equals(brandBinding.getAttribute("name")))
 							continue;
 						Element outputItem = (Element)brandBinding.getElementsByTagName("output-item").item(0);
 						config.setOutgoingDataValue(exitBinding.getAttribute("name"),
