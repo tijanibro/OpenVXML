@@ -164,6 +164,17 @@ public class VoiceExportWizard extends Wizard implements IExportWizard
 				}
 				in.close();
 				fos.close();
+				in = getClass().getClassLoader().getResourceAsStream("index.jsp");
+				indexFile = new File(voicePath, "index.jsp");
+				fos = new FileOutputStream(indexFile);
+				len = in.read(buf);
+				while(len != -1)
+				{
+					fos.write(buf);
+					len = in.read(buf);
+				}
+				in.close();
+				fos.close();
 			}
 			catch (Exception e)
 			{
