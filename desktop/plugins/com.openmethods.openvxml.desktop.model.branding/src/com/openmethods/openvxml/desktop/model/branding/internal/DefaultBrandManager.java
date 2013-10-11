@@ -11,6 +11,8 @@
  -------------------------------------------------------------------------*/
 package com.openmethods.openvxml.desktop.model.branding.internal;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +25,7 @@ import com.openmethods.openvxml.desktop.model.branding.IBrand;
 public class DefaultBrandManager implements BrandManager
 {
 	private Brand defaultBrand;
-	private List<BrandManagerListener> listeners = new LinkedList<BrandManagerListener>();
+	private List<WeakReference<BrandManagerListener>> listeners = new LinkedList<WeakReference<BrandManagerListener>>();
 	private Map<String, IBrand> brandNameMap = new HashMap<String, IBrand>();
 	private Map<String, IBrand> brandIdMap = new HashMap<String, IBrand>();
 
@@ -36,8 +38,15 @@ public class DefaultBrandManager implements BrandManager
 	{
 		brandNameMap.put(brand.getName(), brand);
 		brandIdMap.put(brand.getId(), brand);
-		for(BrandManagerListener listener : listeners)
+		List<WeakReference<BrandManagerListener>> toRemove = new ArrayList<WeakReference<BrandManagerListener>>();
+		for(WeakReference<BrandManagerListener> listenerRef : listeners)
 		{
+			BrandManagerListener listener = listenerRef.get();
+			if(listener == null)
+			{
+				toRemove.add(listenerRef);
+				continue;
+			}
 			try
 			{
 				listener.brandAdded(brand);
@@ -47,27 +56,49 @@ public class DefaultBrandManager implements BrandManager
 				ex.printStackTrace();
 			}
 		}
+		for(int i = 0; i < toRemove.size(); i++)
+		{
+			listeners.remove(toRemove.get(i));
+		}
 	}
 
 	public void fireBrandIdChanged(IBrand brand, String oldId)
 	{
-		for(BrandManagerListener listener : listeners)
+		List<WeakReference<BrandManagerListener>> toRemove = new ArrayList<WeakReference<BrandManagerListener>>();
+		for(WeakReference<BrandManagerListener> listenerRef : listeners)
 		{
+			BrandManagerListener listener = listenerRef.get();
+			if(listener == null)
+			{
+				toRemove.add(listenerRef);
+				continue;
+			}
 			try
 			{
-				listener.brandNameChanged(brand, oldId);
+				listener.brandIdChanged(brand, oldId);
 			}
 			catch(Exception ex)
 			{
 				ex.printStackTrace();
 			}
 		}
+		for(int i = 0; i < toRemove.size(); i++)
+		{
+			listeners.remove(toRemove.get(i));
+		}
 	}
 
 	public void fireBrandNameChanged(IBrand brand, String oldName)
 	{
-		for(BrandManagerListener listener : listeners)
+		List<WeakReference<BrandManagerListener>> toRemove = new ArrayList<WeakReference<BrandManagerListener>>();
+		for(WeakReference<BrandManagerListener> listenerRef : listeners)
 		{
+			BrandManagerListener listener = listenerRef.get();
+			if(listener == null)
+			{
+				toRemove.add(listenerRef);
+				continue;
+			}
 			try
 			{
 				listener.brandNameChanged(brand, oldName);
@@ -77,12 +108,23 @@ public class DefaultBrandManager implements BrandManager
 				ex.printStackTrace();
 			}
 		}
+		for(int i = 0; i < toRemove.size(); i++)
+		{
+			listeners.remove(toRemove.get(i));
+		}
 	}
 
 	public void fireBrandParentChanged(IBrand brand, IBrand oldParent)
 	{
-		for(BrandManagerListener listener : listeners)
+		List<WeakReference<BrandManagerListener>> toRemove = new ArrayList<WeakReference<BrandManagerListener>>();
+		for(WeakReference<BrandManagerListener> listenerRef : listeners)
 		{
+			BrandManagerListener listener = listenerRef.get();
+			if(listener == null)
+			{
+				toRemove.add(listenerRef);
+				continue;
+			}
 			try
 			{
 				listener.brandParentChanged(brand, oldParent);
@@ -92,6 +134,10 @@ public class DefaultBrandManager implements BrandManager
 				ex.printStackTrace();
 			}
 		}
+		for(int i = 0; i < toRemove.size(); i++)
+		{
+			listeners.remove(toRemove.get(i));
+		}
 	}
 
 	public void fireBrandRemoved(IBrand brand)
@@ -99,8 +145,15 @@ public class DefaultBrandManager implements BrandManager
 		if(brandNameMap.get(brand.getName()).getId().equals(brand.getId()))
 			brandNameMap.remove(brand.getName());
 		brandIdMap.remove(brand.getId());
-		for(BrandManagerListener listener : listeners)
+		List<WeakReference<BrandManagerListener>> toRemove = new ArrayList<WeakReference<BrandManagerListener>>();
+		for(WeakReference<BrandManagerListener> listenerRef : listeners)
 		{
+			BrandManagerListener listener = listenerRef.get();
+			if(listener == null)
+			{
+				toRemove.add(listenerRef);
+				continue;
+			}
 			try
 			{
 				listener.brandRemoved(brand);
@@ -109,6 +162,10 @@ public class DefaultBrandManager implements BrandManager
 			{
 				ex.printStackTrace();
 			}
+		}
+		for(int i = 0; i < toRemove.size(); i++)
+		{
+			listeners.remove(toRemove.get(i));
 		}
 	}
 
@@ -129,13 +186,26 @@ public class DefaultBrandManager implements BrandManager
 	
 	public void addListener(BrandManagerListener listener)
 	{
-		listeners.remove(listener);
-		listeners.add(listener);
+		for(int i = 0; i < listeners.size(); i++)
+		{
+			WeakReference<BrandManagerListener> l = listeners.get(i);
+			if(listener == l.get())
+				return;
+		}
+		listeners.add(new WeakReference<BrandManagerListener>(listener));
 	}
 
 	public void removeListener(BrandManagerListener listener)
 	{
-		listeners.remove(listener);
+		for(int i = 0; i < listeners.size(); i++)
+		{
+			WeakReference<BrandManagerListener> l = listeners.get(i);
+			if(listener == l.get())
+			{
+				listeners.remove(i);
+				return;
+			}
+		}
 	}
 
 	public boolean checkBrandName(IBrand parent, String name)

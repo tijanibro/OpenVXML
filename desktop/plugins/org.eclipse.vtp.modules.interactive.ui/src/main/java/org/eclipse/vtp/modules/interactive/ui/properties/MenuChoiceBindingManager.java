@@ -324,7 +324,9 @@ public class MenuChoiceBindingManager implements ConfigurationManager, BrandMana
 	@Override
 	public void brandIdChanged(IBrand brand, String oldId)
 	{
+		System.err.println("in brandIdChanged()");
 		List<MenuChoice> choices = brandOrders.remove(oldId);
+		System.err.println("BRAND ID CHANGED: " + oldId + "->" + brand.getId() + " " + choices);
 		if(choices != null)
 		{
 			brandOrders.put(brand.getId(), choices);
