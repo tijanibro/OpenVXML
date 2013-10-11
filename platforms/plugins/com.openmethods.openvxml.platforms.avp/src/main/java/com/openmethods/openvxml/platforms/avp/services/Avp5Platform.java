@@ -21,7 +21,6 @@ import org.eclipse.vtp.framework.interactions.core.platforms.ILink;
 import org.eclipse.vtp.framework.interactions.core.platforms.ILinkFactory;
 import org.eclipse.vtp.framework.interactions.core.platforms.IRenderingQueue;
 import org.eclipse.vtp.framework.interactions.voice.services.VoicePlatform;
-import org.eclipse.vtp.framework.interactions.voice.vxml.AudioOutput;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Catch;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Dialog;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Else;
@@ -206,8 +205,7 @@ public class Avp5Platform extends VoicePlatform
 			switch (inputRequestCommand.getOutputType(i))
 			{
 			case InputRequestCommand.OUTPUT_TYPE_FILE:
-				outputs.addOutput(new AudioOutput(links.createResourceLink(
-						outputValue).toString()));
+				outputs.addOutput(generateAudioChain(links, outputValue));
 				break;
 			case InputRequestCommand.OUTPUT_TYPE_TEXT:
 				if(outputValue.startsWith("@@mark "))
@@ -407,8 +405,7 @@ public class Avp5Platform extends VoicePlatform
 			switch (selectionRequestCommand.getOutputType(i))
 			{
 			case InputRequestCommand.OUTPUT_TYPE_FILE:
-				outputs.addOutput(new AudioOutput(links.createResourceLink(
-						outputValue).toString()));
+				outputs.addOutput(generateAudioChain(links, outputValue));
 				break;
 			case InputRequestCommand.OUTPUT_TYPE_TEXT:
 				if(outputValue.startsWith("@@mark "))
@@ -553,10 +550,7 @@ public class Avp5Platform extends VoicePlatform
 					switch (selectionRequestCommand.getOptionOutputType(i, j))
 					{
 					case SelectionRequestCommand.OUTPUT_TYPE_FILE:
-						outputs
-								.addOutput(new AudioOutput(links.createResourceLink(
-										optionOutputValue)
-										.toString()));
+						outputs.addOutput(generateAudioChain(links, optionOutputValue));
 						break;
 					case SelectionRequestCommand.OUTPUT_TYPE_TEXT:
 						if(optionOutputValue.startsWith("@@mark "))
