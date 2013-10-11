@@ -237,7 +237,7 @@ public class Conversation implements IConversation {
 			String relativePath)
 	{
 		Output fileOutput = new Output(Output.TYPE_FILE);
-		if (relativePath.startsWith("http://") || relativePath.startsWith("dtmf:"))
+		if (relativePath.startsWith("http://") || relativePath.startsWith("https://") || relativePath.startsWith("dtmf:"))
 		{
 			fileOutput.setProperty("value", relativePath);
 			return fileOutput;
@@ -327,7 +327,7 @@ public class Conversation implements IConversation {
 			String relativePath)
 	{
 		Input input = new Input(ConversationCommand.INPUT_TYPE_FILE);
-		if (relativePath.startsWith("http://") || relativePath.startsWith("dtmf:"))
+		if (relativePath.startsWith("http://") || relativePath.startsWith("https://") || relativePath.startsWith("dtmf:"))
 		{
 			input.setProperty("value", relativePath);
 			return input;

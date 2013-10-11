@@ -412,7 +412,7 @@ public class DeploymentExecution implements IExecutionDescriptor, ILinkFactory,
 	{
 		if (path == null)
 			return null;
-		else if(path.startsWith("http://"))
+		else if(path.startsWith("http://") || path.startsWith("https://"))
 			return new Link(path, false);
 		else if(path.startsWith("dtmf:"))
 			return new Link(path, false);
@@ -629,7 +629,7 @@ public class DeploymentExecution implements IExecutionDescriptor, ILinkFactory,
 		
 		Link(String path, boolean appendMode)
 		{
-			if(path.startsWith("http://") || path.startsWith("dtmf:"))
+			if(path.startsWith("http://") || path.startsWith("https://") || path.startsWith("dtmf:"))
 			{
 				this.path = path;
 				return;
