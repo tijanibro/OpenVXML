@@ -406,6 +406,11 @@ public class WebApplicationExporter {
 			@Override
 			public boolean accept(File dir, String name)
 			{
+				if(name.endsWith(".xml") || name.endsWith(".grxml") || name.endsWith(".gram") || name.endsWith(".grammar") || name.endsWith(".regex") || name.endsWith(".regx"))
+					return true;
+				File child = new File(dir, name);
+				if(child.exists() && child.isDirectory())
+					return true;
 				return false;
 			}
 			
