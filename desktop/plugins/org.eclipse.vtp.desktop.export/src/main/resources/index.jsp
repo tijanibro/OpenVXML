@@ -1,10 +1,19 @@
 <%@ page language="java" contentType="text/plain; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.io.File,java.io.PrintWriter"%>
 <%
+String requestURI = request.getRequestURI();
 String realPath = application.getRealPath("/");
+System.out.println(realPath);
 File root = new File(realPath);
+System.out.println(root.exists());
 PrintWriter pw = response.getWriter();
-printDir("", root, pw);
+for(File child : root.listFiles())
+{
+	if(child.isDirectory())
+	{
+		printDir("", child, pw);
+	}
+}
 pw.close();
 response.flushBuffer();
 %>
