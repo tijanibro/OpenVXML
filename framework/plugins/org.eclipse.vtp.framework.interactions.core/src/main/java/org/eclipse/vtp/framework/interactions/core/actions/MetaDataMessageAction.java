@@ -66,7 +66,6 @@ public class MetaDataMessageAction implements IAction
 	{
 		String resultParameterName = ACTION_PREFIX + context.getActionID().replace(':', '_');
 		String result = context.getParameter(resultParameterName);
-		System.out.println("Meta-data Message Result: " + result);
 		context.clearParameter(resultParameterName);
 		if (IConversation.RESULT_NAME_FILLED.equals(result))
 		{

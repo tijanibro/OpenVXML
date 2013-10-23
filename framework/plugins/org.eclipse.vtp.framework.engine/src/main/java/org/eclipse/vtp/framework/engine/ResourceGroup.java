@@ -78,7 +78,7 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 				while(true)
 				{
 					HashSet<String> localIndex = new HashSet<String>();
-					System.out.println("Retreiving file index");
+//					System.out.println("Retreiving file index");
 					List<String> locations = new LinkedList<String>(ExternalServerManager.getInstance().getLocations());
 					if(locations.size() > 0)
 					{
@@ -92,7 +92,7 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 							{
 								URL indexURL = new URL(location);
 								BufferedReader br = new BufferedReader(new InputStreamReader(indexURL.openConnection().getInputStream()));
-								System.out.println("Connected to " + location);
+//								System.out.println("Connected to " + location);
 								String line = br.readLine();
 								while(line != null)
 								{

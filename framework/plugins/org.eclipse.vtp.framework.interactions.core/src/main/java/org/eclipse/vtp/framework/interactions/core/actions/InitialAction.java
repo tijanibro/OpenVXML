@@ -97,7 +97,6 @@ public class InitialAction extends AssignmentAction
 		this.brandRegistry = brandRegistry;
 		this.languageSelection = languageSelection;
 		this.languageRegistry = languageRegistry;
-		System.out.println("Created initial action");
 	}
 
 	/*

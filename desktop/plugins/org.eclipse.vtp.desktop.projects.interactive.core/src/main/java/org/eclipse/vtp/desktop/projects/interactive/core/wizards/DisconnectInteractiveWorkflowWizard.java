@@ -62,8 +62,8 @@ public class DisconnectInteractiveWorkflowWizard extends Wizard
 		{
 			Composite comp = new Composite(parent, SWT.NONE);
 			comp.setLayout(new FillLayout());
-			Label label = new Label(comp, SWT.NONE);
-			label.setText("This will disconnect the " + vxmlProject.getName() + " project from its umbrella project " + umbrellaProject.getName() + ".  All settings currently inherited will be copied into " + vxmlProject.getName() + "\r\nNote: You will need to close and reopen the project properties dialog to make changes.");
+			Label label = new Label(comp, SWT.WRAP);
+			label.setText("This will disconnect the " + vxmlProject.getName() + " project from its umbrella project " + umbrellaProject.getName() + ".  All settings currently inherited will be copied into " + vxmlProject.getName() + ".\r\nNote: You will need to close and reopen the project properties dialog to make changes.");
 			setControl(comp);
 		}
 		

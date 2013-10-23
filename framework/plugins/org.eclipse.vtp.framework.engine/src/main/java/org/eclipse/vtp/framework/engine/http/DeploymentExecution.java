@@ -181,7 +181,7 @@ public class DeploymentExecution implements IExecutionDescriptor, ILinkFactory,
 				if (!execution.hasNextStep())
 					return null;
 				command = execution.nextStep();
-				System.out.println("Processing execution step: " + command);
+//				System.out.println("Processing execution step: " + command);
 				IDocument document = null;
 				if (command instanceof ConversationCommand)
 				{
