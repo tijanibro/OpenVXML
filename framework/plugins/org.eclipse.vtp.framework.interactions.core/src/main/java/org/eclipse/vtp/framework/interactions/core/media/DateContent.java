@@ -87,6 +87,12 @@ public class DateContent extends FormattableContent
 	public static void main(String[] args)
 	{
 		String[] dates = new String[] {"3/4/1977 3:45:34 pm EST",
+				   					   "3/4/1977 3:45:34 pm -6000",
+				   					   "3/4/1977 3:45:34 pm GMT-6:00",
+				   					   "3/4/1977 3:45:34 pm GMT-06:00",
+				   					   "3/4/1977 3:45:34 pm -5000",
+				   					   "3/4/1977 3:45:34 pm GMT-5:00",
+				   					   "3/4/1977 3:45:34 pm GMT-05:00",
 									   "3/4/1977 3:45:34 pm",
 									   "3/4/1977 3:45:34 EST",
 									   "3/4/1977 3:45 pm EST",
