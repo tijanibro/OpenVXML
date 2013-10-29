@@ -159,7 +159,7 @@ public class VoiceExportWizard extends Wizard implements IExportWizard
 				int len = in.read(buf);
 				while(len != -1)
 				{
-					fos.write(buf);
+					fos.write(buf, 0, len);
 					len = in.read(buf);
 				}
 				in.close();
@@ -170,7 +170,7 @@ public class VoiceExportWizard extends Wizard implements IExportWizard
 				len = in.read(buf);
 				while(len != -1)
 				{
-					fos.write(buf);
+					fos.write(buf, 0, len);
 					len = in.read(buf);
 				}
 				in.close();
@@ -181,7 +181,7 @@ public class VoiceExportWizard extends Wizard implements IExportWizard
 				len = in.read(buf);
 				while(len != -1)
 				{
-					fos.write(buf);
+					fos.write(buf, 0, len);
 					len = in.read(buf);
 				}
 				in.close();
