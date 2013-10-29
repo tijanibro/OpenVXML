@@ -3,13 +3,15 @@ package org.eclipse.vtp.framework.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class DateHelper
 {
 	private static String[] datePatterns = new String[] { "M/d/yyyy",
 														  "M-d-yyyy",
 														  "M.d.yyyy"};
-	private static String[] timePatterns = new String[] { "h:mm:ss a z",
+	private static String[] timePatterns = new String[] { "h:mm:ss a Z",
+														  "h:mm:ss a z",
 														  "H:mm:ss z",
 														  "h:mm:ss a",
 														  "H:mm:ss",
@@ -19,6 +21,22 @@ public class DateHelper
 														  "H:mm"};
 	
 	public static Calendar parseDate(String dateString)
+	{
+		Calendar cal = parseDate0(dateString);
+		if(cal != null)
+		{
+			int index = dateString.indexOf("GMT");
+			if(index >= 0)
+			{
+				String tzOffsetString = dateString.substring(index);
+				TimeZone tzOffset = TimeZone.getTimeZone(tzOffsetString);
+				cal.setTimeZone(tzOffset);
+			}
+		}
+		return cal;
+	}
+	
+	private static Calendar parseDate0(String dateString)
 	{
 		for(String datePattern : datePatterns)
 		{
