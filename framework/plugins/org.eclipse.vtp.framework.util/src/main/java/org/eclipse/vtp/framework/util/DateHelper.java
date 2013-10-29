@@ -3,6 +3,7 @@ package org.eclipse.vtp.framework.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class DateHelper
 {
@@ -19,6 +20,22 @@ public class DateHelper
 														  "H:mm"};
 	
 	public static Calendar parseDate(String dateString)
+	{
+		Calendar cal = parseDate0(dateString);
+		if(cal != null)
+		{
+			int index = dateString.indexOf("GMT");
+			if(index >= 0)
+			{
+				String tzOffsetString = dateString.substring(index);
+				TimeZone tzOffset = TimeZone.getTimeZone(tzOffsetString);
+				cal.setTimeZone(tzOffset);
+			}
+		}
+		return cal;
+	}
+	
+	private static Calendar parseDate0(String dateString)
 	{
 		for(String datePattern : datePatterns)
 		{
