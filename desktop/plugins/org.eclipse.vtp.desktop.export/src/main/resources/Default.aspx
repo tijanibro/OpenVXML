@@ -1,9 +1,9 @@
 <%@ Page Language="C#" %>
 <%@ Import Namespace="System.IO" %>
 <%
+   Context.Response.ContentType = "text/plain";
 	
-    string path = @"C:\Bala\"; // to specify absolute location or
-    path = AppDomain.CurrentDomain.BaseDirectory; // to specify application's base directory
+    string path = Server.MapPath(Request.ServerVariables("PATH_INFO" )); // to specify application's base directory
  
   // to get folder names only
     foreach (string s in Directory.GetDirectories(path, "*.*", SearchOption.AllDirectories))
