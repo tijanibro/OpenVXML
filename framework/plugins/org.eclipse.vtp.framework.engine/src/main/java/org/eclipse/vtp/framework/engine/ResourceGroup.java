@@ -82,6 +82,7 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 					List<String> locations = new LinkedList<String>(ExternalServerManager.getInstance().getLocations());
 					if(locations.size() > 0)
 					{
+						boolean connected = false;
 						for(String location : locations)
 						{
 							if(!location.endsWith("/"))
@@ -102,13 +103,15 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 								}
 								br.close();
 								index = localIndex;
+								connected = true;
 								break;
 							}
 							catch (Exception e)
 							{
-								e.printStackTrace();
 							}
 						}
+						if(!connected)
+							System.out.println("Unable to load index for " + ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + " from any external media servers");
 					}
 					try
 					{
