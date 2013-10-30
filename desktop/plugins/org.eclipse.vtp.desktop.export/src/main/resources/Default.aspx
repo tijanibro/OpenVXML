@@ -3,7 +3,9 @@
 <%
    Context.Response.ContentType = "text/plain";
 	
-    string path = Server.MapPath(Request.ServerVariables("PATH_INFO" )); // to specify application's base directory
+    string path = Server.MapPath(Request.ServerVariables["PATH_INFO"]); // to specify application's base directory
+    path = path.Replace("Default.aspx", null);
+    path = path.Replace("default.aspx", null);
  
   // to get folder names only
     foreach (string s in Directory.GetDirectories(path, "*.*", SearchOption.AllDirectories))
