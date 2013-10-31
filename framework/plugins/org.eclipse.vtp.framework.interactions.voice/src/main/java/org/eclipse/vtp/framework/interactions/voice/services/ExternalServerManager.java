@@ -17,9 +17,10 @@ public class ExternalServerManager
 	
 	private static final ExternalServerManager instance = new ExternalServerManager();
 	
-	private List<String> serverLocations = new ArrayList<String>();
+	private List<ExternalServer> serverLocations = new ArrayList<ExternalServer>();
 	private List<ExternalServerManagerListener> listeners = new LinkedList<ExternalServerManagerListener>();
 	private DistributionMethod method = DistributionMethod.FAILOVER;
+	private Logging logging = Logging.FIRSTFAILURE;
 
 	private ExternalServerManager()
 	{
@@ -58,24 +59,36 @@ public class ExternalServerManager
 		}
 	}
 	
+	public Logging getLogging()
+	{
+		return logging;
+	}
+	
+	public void setLogging(Logging logging)
+	{
+		if(logging == null)
+			throw new IllegalArgumentException("Logging cannot be null");
+		this.logging = logging;
+	}
+	
 	public void setDistributionMethod(DistributionMethod method)
 	{
 		this.method = method;
 	}
 
-	public List<String> getLocations()
+	public List<ExternalServer> getLocations()
 	{
 		if(method == DistributionMethod.FAILOVER)
 			synchronized(this)
 			{
-				return new ArrayList<String>(serverLocations);
+				return new ArrayList<ExternalServer>(serverLocations);
 			}
 		else
 		{
-			List<String> random = null;
+			List<ExternalServer> random = null;
 			synchronized(this)
 			{
-				random = new ArrayList<String>(serverLocations);
+				random = new ArrayList<ExternalServer>(serverLocations);
 			}
 			Collections.shuffle(random);
 			return random;
@@ -91,14 +104,18 @@ public class ExternalServerManager
 	public synchronized void addLocation(String location)
 	{
 		System.out.println("Adding external media server: " + location);
-		serverLocations.add(location);
+		serverLocations.add(new ExternalServer(location));
 		fireLocationChange();
 	}
 	
 	private void updateLocations(List<String> locations)
 	{
-		serverLocations.clear();
-		serverLocations.addAll(locations);
+		List<ExternalServer> local = new ArrayList<ExternalServer>();
+		for(String location : locations)
+		{
+			local.add(new ExternalServer(location));
+		}
+		serverLocations = local;
 		fireLocationChange();
 		for(String location : locations)
 		{
@@ -173,6 +190,34 @@ public class ExternalServerManager
 				return RANDOMIZED;
 			if("failover".equalsIgnoreCase(name))
 				return FAILOVER;
+			return null;
+		}
+	}
+	
+	public enum Logging
+	{
+		NONE("none"),FIRSTFAILURE("first-failure"),ALWAYS("always");
+		
+		private String name;
+		
+		private Logging(String name)
+		{
+			this.name = name;
+		}
+		
+		public String getLevel()
+		{
+			return name;
+		}
+		
+		public static Logging byLevel(String name)
+		{
+			if("none".equalsIgnoreCase(name))
+				return NONE;
+			if("first-failure".equalsIgnoreCase(name) || "firstfailure".equalsIgnoreCase(name) || "first".equalsIgnoreCase(name))
+				return FIRSTFAILURE;
+			if("always".equalsIgnoreCase(name) || "all".equalsIgnoreCase(name))
+				return ALWAYS;
 			return null;
 		}
 	}

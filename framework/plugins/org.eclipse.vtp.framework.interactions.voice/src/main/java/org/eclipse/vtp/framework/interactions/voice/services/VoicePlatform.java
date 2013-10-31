@@ -169,10 +169,10 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		if(path.startsWith("http://") || path.startsWith("https://"))
 			return output;
 		AudioOutput current = output;
-		List<String> servers = ExternalServerManager.getInstance().getLocations();
+		List<ExternalServer> servers = ExternalServerManager.getInstance().getLocations();
 		for(int i = 0; i < servers.size(); i++)
 		{
-			String serverPrefix = servers.get(i);
+			String serverPrefix = servers.get(i).getLocation();
 			if(serverPrefix != null)
 			{
 				String fullPath = serverPrefix + path;

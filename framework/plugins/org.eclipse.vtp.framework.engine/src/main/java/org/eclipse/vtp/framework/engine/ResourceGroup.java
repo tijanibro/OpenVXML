@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.vtp.framework.interactions.core.media.IResourceManager;
+import org.eclipse.vtp.framework.interactions.voice.services.ExternalServer;
 import org.eclipse.vtp.framework.interactions.voice.services.ExternalServerManager;
 import org.eclipse.vtp.framework.interactions.voice.services.ExternalServerManagerListener;
 import org.osgi.framework.Bundle;
@@ -79,25 +80,24 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 				{
 					HashSet<String> localIndex = new HashSet<String>();
 //					System.out.println("Retreiving file index");
-					List<String> locations = new LinkedList<String>(ExternalServerManager.getInstance().getLocations());
+					ExternalServerManager.Logging logging = ExternalServerManager.getInstance().getLogging();
+					List<ExternalServer> locations = ExternalServerManager.getInstance().getLocations();
 					if(locations.size() > 0)
 					{
 						boolean connected = false;
-						for(String location : locations)
+						for(ExternalServer server : locations)
 						{
+							String location = server.getLocation();
 							if(!location.endsWith("/"))
 								location = location + "/";
 							location = location + ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + "/";
-//							System.out.println("Contacting " + location);
 							try
 							{
 								URL indexURL = new URL(location);
 								BufferedReader br = new BufferedReader(new InputStreamReader(indexURL.openConnection().getInputStream()));
-//								System.out.println("Connected to " + location);
 								String line = br.readLine();
 								while(line != null)
 								{
-//									System.out.println("Received: " + line);
 									localIndex.add(line);
 									line = br.readLine();
 								}
@@ -108,9 +108,18 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 							}
 							catch (Exception e)
 							{
+								switch(logging)
+								{
+									case FIRSTFAILURE:
+										if(!server.lastStatus())
+											break;
+									case ALWAYS:
+										System.out.println("Unable to connect to external media server @ " + location);
+										e.printStackTrace();
+								}
 							}
 						}
-						if(!connected)
+						if(!connected && logging != ExternalServerManager.Logging.NONE)
 							System.out.println("Unable to load index for " + ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + " from any external media servers");
 					}
 					try
