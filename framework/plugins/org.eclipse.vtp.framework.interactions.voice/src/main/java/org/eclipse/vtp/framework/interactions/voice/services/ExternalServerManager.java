@@ -186,7 +186,7 @@ public class ExternalServerManager
 		
 		public static DistributionMethod getMethod(String name)
 		{
-			if("random".equalsIgnoreCase(name))
+			if("random".equalsIgnoreCase(name) || "balanced".equalsIgnoreCase(name))
 				return RANDOMIZED;
 			if("failover".equalsIgnoreCase(name))
 				return FAILOVER;
