@@ -104,6 +104,7 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 								br.close();
 								index = localIndex;
 								connected = true;
+								server.setStatus(true);
 								break;
 							}
 							catch (Exception e)
@@ -117,6 +118,7 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 										System.out.println("Unable to connect to external media server @ " + location);
 										e.printStackTrace();
 								}
+								server.setStatus(false);
 							}
 						}
 						if(!connected && logging != ExternalServerManager.Logging.NONE)
