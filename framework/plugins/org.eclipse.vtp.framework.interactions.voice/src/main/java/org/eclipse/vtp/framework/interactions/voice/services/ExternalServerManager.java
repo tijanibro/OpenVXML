@@ -19,6 +19,7 @@ public class ExternalServerManager
 	
 	private List<String> serverLocations = new ArrayList<String>();
 	private List<ExternalServerManagerListener> listeners = new LinkedList<ExternalServerManagerListener>();
+	private DistributionMethod method = DistributionMethod.FAILOVER;
 
 	private ExternalServerManager()
 	{
@@ -56,10 +57,29 @@ public class ExternalServerManager
 			//e.printStackTrace();
 		}
 	}
-
-	public synchronized List<String> getLocations()
+	
+	public void setDistributionMethod(DistributionMethod method)
 	{
-		return Collections.unmodifiableList(serverLocations);
+		this.method = method;
+	}
+
+	public List<String> getLocations()
+	{
+		if(method == DistributionMethod.FAILOVER)
+			synchronized(this)
+			{
+				return new ArrayList<String>(serverLocations);
+			}
+		else
+		{
+			List<String> random = null;
+			synchronized(this)
+			{
+				random = new ArrayList<String>(serverLocations);
+			}
+			Collections.shuffle(random);
+			return random;
+		}
 	}
 	
 	public synchronized void clearLocations()
@@ -128,6 +148,32 @@ public class ExternalServerManager
 			{
 				l.locationsChanged();
 			}
+		}
+	}
+	
+	public enum DistributionMethod
+	{
+		RANDOMIZED("random"),FAILOVER("failover");
+		
+		private String name;
+		
+		private DistributionMethod(String name)
+		{
+			this.name = name;
+		}
+		
+		public String getName()
+		{
+			return name;
+		}
+		
+		public static DistributionMethod getMethod(String name)
+		{
+			if("random".equalsIgnoreCase(name))
+				return RANDOMIZED;
+			if("failover".equalsIgnoreCase(name))
+				return FAILOVER;
+			return null;
 		}
 	}
 }
