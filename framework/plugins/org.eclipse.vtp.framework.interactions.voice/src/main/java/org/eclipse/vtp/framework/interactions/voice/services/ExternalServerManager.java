@@ -68,11 +68,13 @@ public class ExternalServerManager
 	{
 		if(logging == null)
 			throw new IllegalArgumentException("Logging cannot be null");
+		System.out.println("Setting external media server logging to " + logging.getLevel());
 		this.logging = logging;
 	}
 	
 	public void setDistributionMethod(DistributionMethod method)
 	{
+		System.out.println("Setting external media server distribution method to " + method.getName());
 		this.method = method;
 	}
 
