@@ -265,6 +265,9 @@ public class BeginInformationProvider extends PrimitiveInformationProvider imple
 	@Override
 	public void declareBusinessObjects()
 	{
+		IOpenVXMLProject project = getElement().getDesign().getDocument().getProject();
+		IBusinessObjectProjectAspect businessObjectAspect = (IBusinessObjectProjectAspect)project.getProjectAspect(IBusinessObjectProjectAspect.ASPECT_ID);
+		businessObjectSet = businessObjectAspect.getBusinessObjectSet();
 		boolean foundPlatform = false;
 		List<IBusinessObject> currentObjects = businessObjectSet.getBusinessObjects();
 ex:		for(IBusinessObject businessObject : currentObjects)
