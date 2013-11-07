@@ -231,25 +231,25 @@ public class OptionSetInformationProvider extends PrimitiveInformationProvider i
 	
 	public void updateConfiguration(Element configuration)//TODO add a reference to this in the readconfiguration method
 	{
-		MenuChoiceBindingManager mcBindingManager = (MenuChoiceBindingManager) getElement().getConfigurationManager(MenuChoiceBindingManager.TYPE_ID); //TODO 
-		List<MenuChoice> menuChoices = new ArrayList<MenuChoice>();
-		Map<String, List<MenuChoice>> brandOrders = new HashMap<String, List<MenuChoice>>();
 
 		System.out.println("Converting the old xml"); //TODO remove this line
 		List<Element> choicesElements = XMLUtilities.getElementsByTagName(configuration, "choices", true);
 		if(choicesElements.size() == 0)
 		{
 			System.err.println("does not have old config");
-			getElement().rollbackConfigurationChanges(mcBindingManager);
+//			getElement().rollbackConfigurationChanges(mcBindingManager);
 			return;
 		}
 		List<Element> choices = XMLUtilities.getElementsByTagName(choicesElements.get(0), "choice", true);
 		System.err.println("# of choices: " + choices.size());
 		if(choices.size() == 0)
 		{
-			getElement().rollbackConfigurationChanges(mcBindingManager);
+//			getElement().rollbackConfigurationChanges(mcBindingManager);
 			return;
 		}
+		MenuChoiceBindingManager mcBindingManager = (MenuChoiceBindingManager) getElement().getConfigurationManager(MenuChoiceBindingManager.TYPE_ID); //TODO 
+		List<MenuChoice> menuChoices = new ArrayList<MenuChoice>();
+		Map<String, List<MenuChoice>> brandOrders = new HashMap<String, List<MenuChoice>>();
 		for(Element choiceElement : choices)
 		{
 			MenuChoice mc =
