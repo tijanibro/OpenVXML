@@ -134,7 +134,16 @@ public class ExternalServerManager
 		}
 		for(int i = 0; i < locations.size(); i++)
 		{
-			if(!serverLocations.contains(locations.get(i)))
+			boolean found = false;
+			for(ExternalServer server : serverLocations)
+			{
+				if(server.getLocation().equals(locations.get(i)))
+				{
+					found = true;
+					break;
+				}
+			}
+			if(!found)
 			{
 				updateLocations(locations);
 				return;
