@@ -79,7 +79,6 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 				while(true)
 				{
 					HashSet<String> localIndex = new HashSet<String>();
-//					System.out.println("Retreiving file index");
 					ExternalServerManager.Logging logging = ExternalServerManager.getInstance().getLogging();
 					List<ExternalServer> locations = ExternalServerManager.getInstance().getLocations();
 					if(locations.size() > 0)
@@ -91,6 +90,8 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 							if(!location.endsWith("/"))
 								location = location + "/";
 							location = location + ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + "/";
+							if(logging == ExternalServerManager.Logging.ALWAYS)
+								System.out.println("Attempting to load index from: " + location);
 							try
 							{
 								URL indexURL = new URL(location);
@@ -98,6 +99,8 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 								String line = br.readLine();
 								while(line != null)
 								{
+									if(logging == ExternalServerManager.Logging.ALWAYS)
+										System.out.println(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + " " + line);
 									localIndex.add(line);
 									line = br.readLine();
 								}
