@@ -95,7 +95,7 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 								if(!location.endsWith("/"))
 									location = location + "/";
 								location = location + ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + "/";
-								if(logging == ExternalServerManager.Logging.ALWAYS)
+//								if(logging == ExternalServerManager.Logging.ALWAYS)
 									System.out.println("Attempting to load index from: " + location);
 								try
 								{
@@ -104,7 +104,7 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 									String line = br.readLine();
 									while(line != null)
 									{
-										if(logging == ExternalServerManager.Logging.ALWAYS)
+//										if(logging == ExternalServerManager.Logging.ALWAYS)
 											System.out.println(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + " " + line);
 										localIndex.add(line);
 										line = br.readLine();
