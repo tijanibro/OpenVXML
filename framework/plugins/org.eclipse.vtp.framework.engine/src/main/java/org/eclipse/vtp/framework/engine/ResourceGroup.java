@@ -76,68 +76,78 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 			@Override
 			public void run()
 			{
-				while(true)
+				try
 				{
-					HashSet<String> localIndex = new HashSet<String>();
-					ExternalServerManager.Logging logging = ExternalServerManager.getInstance().getLogging();
-					List<ExternalServer> locations = ExternalServerManager.getInstance().getLocations();
-					if(locations.size() > 0)
+					while(true)
 					{
-						boolean connected = false;
-						for(ExternalServer server : locations)
+						HashSet<String> localIndex = new HashSet<String>();
+						ExternalServerManager.Logging logging = ExternalServerManager.getInstance().getLogging();
+						System.out.println(logging);
+						List<ExternalServer> locations = ExternalServerManager.getInstance().getLocations();
+						System.out.println(locations);
+						System.out.println(locations.size());
+						if(locations.size() > 0)
 						{
-							String location = server.getLocation();
-							if(!location.endsWith("/"))
-								location = location + "/";
-							location = location + ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + "/";
-							if(logging == ExternalServerManager.Logging.ALWAYS)
-								System.out.println("Attempting to load index from: " + location);
-							try
+							boolean connected = false;
+							for(ExternalServer server : locations)
 							{
-								URL indexURL = new URL(location);
-								BufferedReader br = new BufferedReader(new InputStreamReader(indexURL.openConnection().getInputStream()));
-								String line = br.readLine();
-								while(line != null)
+								String location = server.getLocation();
+								if(!location.endsWith("/"))
+									location = location + "/";
+								location = location + ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + "/";
+								if(logging == ExternalServerManager.Logging.ALWAYS)
+									System.out.println("Attempting to load index from: " + location);
+								try
 								{
-									if(logging == ExternalServerManager.Logging.ALWAYS)
-										System.out.println(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + " " + line);
-									localIndex.add(line);
-									line = br.readLine();
+									URL indexURL = new URL(location);
+									BufferedReader br = new BufferedReader(new InputStreamReader(indexURL.openConnection().getInputStream()));
+									String line = br.readLine();
+									while(line != null)
+									{
+										if(logging == ExternalServerManager.Logging.ALWAYS)
+											System.out.println(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + " " + line);
+										localIndex.add(line);
+										line = br.readLine();
+									}
+									br.close();
+									index = localIndex;
+									connected = true;
+									server.setStatus(true);
+									break;
 								}
-								br.close();
-								index = localIndex;
-								connected = true;
-								server.setStatus(true);
-								break;
+								catch (Exception e)
+								{
+									switch(logging)
+									{
+										case FIRSTFAILURE:
+											if(!server.lastStatus())
+												break;
+										case ALWAYS:
+											System.out.println("Unable to connect to external media server @ " + location);
+											e.printStackTrace();
+									}
+									server.setStatus(false);
+								}
 							}
-							catch (Exception e)
+							if(!connected && logging != ExternalServerManager.Logging.NONE)
+								System.out.println("Unable to load index for " + ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + " from any external media servers");
+						}
+						try
+						{
+							synchronized(lock)
 							{
-								switch(logging)
-								{
-									case FIRSTFAILURE:
-										if(!server.lastStatus())
-											break;
-									case ALWAYS:
-										System.out.println("Unable to connect to external media server @ " + location);
-										e.printStackTrace();
-								}
-								server.setStatus(false);
+								lock.wait(30000);
 							}
 						}
-						if(!connected && logging != ExternalServerManager.Logging.NONE)
-							System.out.println("Unable to load index for " + ResourceGroup.this.bundle.getHeaders().get("Bundle-Name") + " from any external media servers");
-					}
-					try
-					{
-						synchronized(lock)
+						catch(Exception ex)
 						{
-							lock.wait(30000);
+							
 						}
 					}
-					catch(Exception ex)
-					{
-						
-					}
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
 				}
 			}
 		}, bundle.getSymbolicName() + "-index");
