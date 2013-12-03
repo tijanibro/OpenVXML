@@ -74,7 +74,8 @@ public class WebApplicationExporter {
 					"org.eclipse.vtp.framework.core",
 					"org.eclipse.vtp.framework.engine",
 					"org.eclipse.vtp.framework.spi",
-					"org.eclipse.vtp.framework.util" }));
+					"org.eclipse.vtp.framework.util",
+					"org.apache.commons.codec"}));
 
 	private static final List<String> OPTIONAL_BUNDLES = Collections
 			.unmodifiableList(Arrays.asList(new String[] { "javax.xml",
