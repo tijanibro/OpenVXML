@@ -12,14 +12,21 @@
 package org.eclipse.vtp.framework.engine;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.eclipse.vtp.framework.interactions.core.media.IResourceManager;
 import org.eclipse.vtp.framework.interactions.voice.services.ExternalServer;
 import org.eclipse.vtp.framework.interactions.voice.services.ExternalServerManager;
@@ -99,8 +106,19 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 									System.out.println("Attempting to load index from: " + location);
 								try
 								{
-									URL indexURL = new URL(location);
-									BufferedReader br = new BufferedReader(new InputStreamReader(indexURL.openConnection().getInputStream()));
+									URI indexURL = new URI(location);
+								    DefaultHttpClient httpclient = new DefaultHttpClient();
+						            HttpGet httpGet = new HttpGet(indexURL);
+
+						            HttpResponse response = httpclient.execute(httpGet);
+						            int statusCode = response.getStatusLine().getStatusCode();
+									if(statusCode != 200)
+						            {
+						           		throw new Exception("Error during request. " + response.getStatusLine());
+						            }
+									ResponseHandler<String> responseHandler = new BasicResponseHandler();
+									String responseBody = responseHandler.handleResponse(response);
+									BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(responseBody.getBytes())));
 									String line = br.readLine();
 									while(line != null)
 									{
