@@ -97,7 +97,7 @@ public class VXMLBVoicePlatform extends VoicePlatform
 			{
 				Block block = new Block("SetUUIBlock");
 				Script uuiScript = new Script();
-				uuiScript.setText("session.connection.aai = '" + aai + "';");
+				uuiScript.setText("session.connection.uui = '" + aai + "';");
 				block.addAction(uuiScript);
 				form.addFormElement(block);
 			}
