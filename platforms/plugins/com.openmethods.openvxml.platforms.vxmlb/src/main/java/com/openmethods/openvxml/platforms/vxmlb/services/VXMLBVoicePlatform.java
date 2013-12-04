@@ -18,6 +18,7 @@ import org.eclipse.vtp.framework.interactions.core.platforms.ILink;
 import org.eclipse.vtp.framework.interactions.core.platforms.ILinkFactory;
 import org.eclipse.vtp.framework.interactions.core.services.ExtendedActionEventManager;
 import org.eclipse.vtp.framework.interactions.voice.services.VoicePlatform;
+import org.eclipse.vtp.framework.interactions.voice.vxml.Block;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Catch;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Dialog;
 import org.eclipse.vtp.framework.interactions.voice.vxml.ElseIf;
@@ -25,6 +26,7 @@ import org.eclipse.vtp.framework.interactions.voice.vxml.Filled;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Form;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Goto;
 import org.eclipse.vtp.framework.interactions.voice.vxml.If;
+import org.eclipse.vtp.framework.interactions.voice.vxml.Script;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Transfer;
 import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLDocument;
 
@@ -85,8 +87,6 @@ public class VXMLBVoicePlatform extends VoicePlatform
 			BridgeMessageCommand bridgeMessageCommand)
 	{
 		Form form = new Form("BridgeMessageForm"); //$NON-NLS-1$
-		Transfer tx = new Transfer("BridgeMessageElement", //$NON-NLS-1$
-				bridgeMessageCommand.getDestination());
 		IStringObject aaiVariable = (IStringObject)variableRegistry.getVariable("ctiAAI");
 		System.out.println("Looking for AAI information: " + aaiVariable);
 		if(aaiVariable != null)
@@ -95,12 +95,15 @@ public class VXMLBVoicePlatform extends VoicePlatform
 			System.out.println("AAI Value: " + aai);
 			if(aai != null && !"".equals(aai))
 			{
-				aai = aai.replaceAll("\\\\\"", "\\\"");
-				tx.setAAI(aai);
-//				Variable aaiVXMLVariable = new Variable("newAAI", aai);
-//				form.addVariable(aaiVXMLVariable);
+				Block block = new Block("SetUUIBlock");
+				Script uuiScript = new Script();
+				uuiScript.setText("session.connection.aai = '" + aai + "';");
+				block.addAction(uuiScript);
+				form.addFormElement(block);
 			}
 		}
+		Transfer tx = new Transfer("BridgeMessageElement", //$NON-NLS-1$
+				bridgeMessageCommand.getDestination());
 		tx.setMaxTime("0s");
 		tx.setTransferType(bridgeMessageCommand.getTransferType());
 		Filled filled = new Filled();
