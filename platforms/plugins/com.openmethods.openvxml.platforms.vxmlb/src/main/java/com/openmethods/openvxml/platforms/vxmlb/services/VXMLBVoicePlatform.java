@@ -8,6 +8,7 @@ package com.openmethods.openvxml.platforms.vxmlb.services;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.codec.binary.Hex;
 import org.eclipse.vtp.framework.common.IStringObject;
 import org.eclipse.vtp.framework.common.IVariableRegistry;
 import org.eclipse.vtp.framework.core.IExecutionContext;
@@ -60,6 +61,24 @@ public class VXMLBVoicePlatform extends VoicePlatform
         names.add("aai");
         return names;
     }
+    
+	/* (non-Javadoc)
+	 * @see org.eclipse.vtp.framework.interactions.core.support.AbstractPlatform#postProcessInitialVariable(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public String postProcessInitialVariable(String name, String originalValue)
+	{
+		if("aai".equals(name))
+		{
+			if(originalValue == null || originalValue.equals(""))
+				return originalValue;
+			if(!originalValue.endsWith(";encoding=hex")) //already decoded
+			{
+				return new String(Hex.encodeHex(new String(originalValue + ";encoding=hex").getBytes()));
+			}
+		}
+		return super.postProcessInitialVariable(name, originalValue);
+	}
 
 	@Override
 	protected IDocument renderBridgeMessage(ILinkFactory links,

@@ -190,7 +190,7 @@ public class InitialAction extends AssignmentAction
 				IDataObject initialParameters = variableRegistry.createVariable(cdt);
 				for(int i = 0; i < incomingParametersNames.size(); i++)
 				{
-					String parameter = context.getParameter(incomingParametersNames.get(i));
+					String parameter = abstractPlatform.postProcessInitialVariable(incomingParametersNames.get(i), context.getParameter(incomingParametersNames.get(i)));
 					IStringObject field = (IStringObject)initialParameters.getField(incomingParametersNames.get(i));
 					if(field != null)
 					{

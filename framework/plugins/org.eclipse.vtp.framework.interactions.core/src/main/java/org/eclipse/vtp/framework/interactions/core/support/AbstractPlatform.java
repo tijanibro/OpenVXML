@@ -261,6 +261,11 @@ public abstract class AbstractPlatform implements IPlatform
 	{
 		return new LinkedList<String>();
 	}
+	
+	public String postProcessInitialVariable(String name, String originalValue)
+	{
+		return originalValue;
+	}
 
 	/**
 	 * The visitor implementation.
