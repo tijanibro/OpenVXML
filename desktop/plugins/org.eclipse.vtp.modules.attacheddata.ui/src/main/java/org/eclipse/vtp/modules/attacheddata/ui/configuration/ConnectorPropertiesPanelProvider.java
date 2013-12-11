@@ -20,7 +20,7 @@ public class ConnectorPropertiesPanelProvider implements
 
 	public boolean isApplicableFor(IDesignComponent designComponent)
 	{
-		return (designComponent instanceof IDesignConnector) && (designComponent.getDesign().getDocument().getProject() instanceof IInteractiveProjectAspect);
+		return (designComponent instanceof IDesignConnector) && (designComponent.getDesign().getDocument().getProject().getProjectAspect(IInteractiveProjectAspect.ASPECT_ID) != null);
 	}
 	
 	public List<ComponentPropertiesPanel> getPropertiesPanels(
