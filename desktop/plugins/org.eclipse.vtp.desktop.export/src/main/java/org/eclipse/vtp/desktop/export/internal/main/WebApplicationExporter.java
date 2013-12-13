@@ -75,7 +75,8 @@ public class WebApplicationExporter {
 					"org.eclipse.vtp.framework.engine",
 					"org.eclipse.vtp.framework.spi",
 					"org.eclipse.vtp.framework.util",
-					"org.apache.commons.codec"}));
+					"org.apache.commons.codec",
+					"org.apache.commons.lang"}));
 
 	private static final List<String> OPTIONAL_BUNDLES = Collections
 			.unmodifiableList(Arrays.asList(new String[] { "javax.xml",
@@ -249,14 +250,25 @@ public class WebApplicationExporter {
 
 			BundleExporter exporter = bundleExporters.get(symbolicName);
 			if (exporter == null)
+			{
+				System.out.println("First bundle version: " + symbolicName + "_" + (String) bundle.getHeaders()
+						.get(Constants.BUNDLE_VERSION));
 				bundleExporters.put(symbolicName, new BundleExporter(bundle));
-			else {
+			}
+			else
+			{
+				System.out.println("Multiple bundle versions: " + symbolicName + " current: " + (String) exporter.getHeaders()
+						.get(Constants.BUNDLE_VERSION) + " new: " + (String)bundle.getHeaders()
+						.get(Constants.BUNDLE_VERSION));
 				Version oldVersion = new Version((String) exporter.getHeaders()
 						.get(Constants.BUNDLE_VERSION));
 				Version newVersion = new Version((String)bundle.getHeaders()
 						.get(Constants.BUNDLE_VERSION));
 				if (newVersion.compareTo(oldVersion) > 0)
+				{
+					System.out.println("Replacing current version");
 					bundleExporters.put(symbolicName, exporter);
+				}
 			}
 		}
 		for (String name : bundleExporters.keySet().toArray(

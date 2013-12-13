@@ -53,7 +53,7 @@ public class VXMLBVoicePlatform extends VoicePlatform
     {
         super.generateInitialVariableRequests(variables);
         variables.put("ctiID", "session.connection.cti_uuid");
-        variables.put("aai", "session.connection.aai");
+        variables.put("aai", "session.connection.uui");
     }
 
     public List getPlatformVariableNames()
