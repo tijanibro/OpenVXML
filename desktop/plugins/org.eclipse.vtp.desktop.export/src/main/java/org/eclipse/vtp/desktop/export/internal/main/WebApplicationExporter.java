@@ -267,7 +267,7 @@ public class WebApplicationExporter {
 				if (newVersion.compareTo(oldVersion) > 0)
 				{
 					System.out.println("Replacing current version");
-					bundleExporters.put(symbolicName, exporter);
+					bundleExporters.put(symbolicName, new BundleExporter(bundle));
 				}
 			}
 		}
