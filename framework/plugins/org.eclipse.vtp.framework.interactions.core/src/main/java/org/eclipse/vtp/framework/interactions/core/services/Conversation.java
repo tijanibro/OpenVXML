@@ -236,6 +236,7 @@ public class Conversation implements IConversation {
 	public Output resolveFilePath(OutputConfiguration configuration,
 			String relativePath)
 	{
+		context.info("Resolving file path: " + relativePath);
 		Output fileOutput = new Output(Output.TYPE_FILE);
 		if (relativePath.startsWith("http://") || relativePath.startsWith("https://") || relativePath.startsWith("dtmf:"))
 		{
