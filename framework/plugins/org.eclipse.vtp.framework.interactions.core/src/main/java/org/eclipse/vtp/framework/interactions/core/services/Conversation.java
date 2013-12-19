@@ -273,9 +273,9 @@ public class Conversation implements IConversation {
 			return fileOutput;
 		}
 		fileOutput.setProperty("media-provider", mediaProviderID);
-		String fullPath = mediaLibrarySelection.getSelectedMediaLibrary() + "/" + relativePath;
+		String fullPath = mediaLibrarySelection.getSelectedMediaLibrary() + (relativePath.startsWith("/") ? "" : "/") + relativePath;
 		if(!mediaProviderRegistry.getMediaProvider(mediaProviderID).getResourceManager().isFileResource(fullPath))
-			fullPath = "Default/" + relativePath;
+			fullPath = "Default" + (relativePath.startsWith("/") ? "" : "/") + relativePath;
 //		context.info("set file output value: " + mediaProviderID + "/" + fullPath);
 		fileOutput.setProperty("value", mediaProviderID + "/" + fullPath);
 		fileOutput.setProperty("original-path", relativePath);
