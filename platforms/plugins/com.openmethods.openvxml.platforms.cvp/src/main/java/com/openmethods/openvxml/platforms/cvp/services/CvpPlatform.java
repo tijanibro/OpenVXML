@@ -280,6 +280,8 @@ public class CvpPlatform extends VoicePlatform
 							IMediaProvider provider = mediaProviderRegistry.getMediaProvider(input.getProperty("media-provider"));
 							ResourceGroup manager = (ResourceGroup)provider.getResourceManager();
 							URL url = manager.getResource((input.getProperty("media-library") == null ? "" : input.getProperty("media-library") + "/") + path + lastPart + query);
+							if(url == null)
+								url = manager.getResource("Default/" + path + lastPart + query);
 							System.out.println("resource URL: " + url);
 							if(url == null)
 							{
