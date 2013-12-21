@@ -507,26 +507,22 @@ public class HttpConnector
 		boolean subdialog = false;
 		if (!pathInfo.startsWith(PATH_PREFIX))
 		{
-//			System.out.println("invoking process engine for new session: " + pathInfo);
 			newSession = true;
 			synchronized (this)
 			{
 				for (String path : deploymentsByPath.keySet())
 				{
-//					System.out.println("Comparing to deployment: " + path);
 					if (pathInfo.equals(path) || pathInfo.startsWith(path)
 							&& pathInfo.length() > path.length()
 							&& pathInfo.charAt(path.length()) == '/')
 					{
 						deployment = deploymentsByPath.get(path);
-//						System.out.println("Matching deployment found: " + deployment);
 						brand = req.getParameter("BRAND");
 						if(req.getParameter("SUBDIALOG") != null)
 							subdialog = Boolean.parseBoolean(req.getParameter("SUBDIALOG"));
 						if (pathInfo.length() > path.length() + 1)
 						{
 							entryName = pathInfo.substring(path.length() + 1);
-//							System.out.println("Entry point name: " + entryName);
 						}
 						break;
 					}
@@ -582,7 +578,6 @@ public class HttpConnector
 		if (ServletFileUpload.isMultipartContent(new ServletRequestContext(
 				req)))
 		{
-//			System.out.println("ServletFileUpload.isMultipartContent(new ServletRequestContext(httpRequest)) is true");
 			try
 			{
 				List items = upload.parseRequest(req);
@@ -591,7 +586,6 @@ public class HttpConnector
 					FileItem fui = (FileItem)items.get(i);
 					if (fui.isFormField() || "text/plain".equals(fui.getContentType()))
 					{
-//						System.out.println("Form Field: " + fui.getFieldName() + " | " + fui.getString());
 						parameterValues
 								.put(fui.getFieldName(), new String[] { fui.getString() });
 					}
@@ -602,10 +596,6 @@ public class HttpConnector
 						parameterValues.put(fui.getFieldName(), new String[] { temp
 								.getAbsolutePath() });
 						fui.delete();
-//						System.out.println("File Upload: " + fui.getFieldName());
-//						System.out.println("\tTemp file name: " + temp.getAbsolutePath());
-//						System.out.println("\tContent Type: " + fui.getContentType());
-//						System.out.println("\tSize: " + fui.getSize());
 					}
 				}
 			}

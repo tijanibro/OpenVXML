@@ -58,11 +58,9 @@ public class DeploymentSession implements ISessionDescriptor
 
 	private static void assignVariables(IVariableRegistry variableRegistry, Map variables, boolean copy)
 	{
-//		System.out.println("Assigning Variables");
 		for (Iterator i = variables.entrySet().iterator(); i.hasNext();)
 		{
 			Map.Entry entry = (Map.Entry)i.next();
-//			System.out.println("Variable: " + entry.getKey());
 			IDataObject variable = importVariable(variableRegistry, (Map)entry
 					.getValue(), copy);
 			if (variable != null)
@@ -73,13 +71,8 @@ public class DeploymentSession implements ISessionDescriptor
 	private static IDataObject importVariable(IVariableRegistry variableRegistry,
 			Map<String, Object> data, boolean copy)
 	{
-//		System.out.println("Importing Variable");
 		if (data == null)
 			return null;
-//		for(Map.Entry<String, Object> entry : data.entrySet())
-//		{
-//			System.out.println("Key: " + entry.getKey() + " Value: [" + entry.getValue().getClass().getName() + "] " + entry.getValue().toString());
-//		}
 		String typeName = (String)data.get(null);
 		if (typeName == null)
 			return null;

@@ -157,7 +157,6 @@ public class Item extends Iota
 			throw new NullPointerException("outputHandler"); //$NON-NLS-1$
 		if(outputHandler instanceof XMLWriter)
 		{
-//			System.out.println("XMLWRITER");
 			((XMLWriter)outputHandler).setCompactElements(true);
 		}
 		// Start the element.
@@ -171,7 +170,6 @@ public class Item extends Iota
 		outputHandler.endElement(NAMESPACE_URI_VXML, NAME_ITEM, NAME_ITEM);
 		if(outputHandler instanceof XMLWriter)
 		{
-//			System.out.println("XMLWRITER");
 			((XMLWriter)outputHandler).setCompactElements(false);
 		}
 	}

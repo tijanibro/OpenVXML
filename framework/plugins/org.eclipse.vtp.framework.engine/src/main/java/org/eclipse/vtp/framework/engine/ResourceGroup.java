@@ -182,7 +182,6 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 			fullResourcePath = "/" + fullResourcePath;
 		System.out.println("resolving resource: " + path + fullResourcePath);
 		URL ret = bundle.getEntry(path + fullResourcePath);
-//		System.out.println("location: " + ret);
 		return ret;
 	}
 
@@ -235,8 +234,6 @@ public class ResourceGroup implements IResourceManager, ExternalServerManagerLis
 		else
 			fullFilePath = "Default/" + fullFilePath;
 		fullFilePath = "/" + fullFilePath;
-//		System.out.println("Checking existence of " + fullFilePath + ": " + Boolean.toString(!isDirectoryResource(fullFilePath)
-//		&& (index.contains(fullFilePath) || getResource(fullFilePath) != null)));
 		return !isDirectoryResource(fullFilePath)
 		&& (index.contains(fullFilePath) || getResource(fullFilePath) != null);
 	}

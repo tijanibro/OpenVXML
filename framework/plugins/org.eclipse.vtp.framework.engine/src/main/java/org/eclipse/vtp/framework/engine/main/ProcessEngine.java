@@ -307,7 +307,6 @@ public class ProcessEngine implements IProcessEngine
 	public IProcess createProcess(IProcessDefinition definition,
 			IProcessDescriptor descriptor) throws NullPointerException
 	{
-//		System.out.println("Creating process for " + descriptor.getProcessID());
 		ActionDescriptor[] actions = null;
 		ConfigurationDescriptor[] configurations = null;
 		ObserverDescriptor[] observers = null;

@@ -105,46 +105,6 @@ public class DeploymentExecution implements IExecutionDescriptor, ILinkFactory,
 			Map.Entry entry = (Map.Entry)i.next();
 			parameters.put(entry.getKey(), entry.getValue());
 		}
-//		ServletFileUpload upload = new ServletFileUpload(new DiskFileItemFactory());
-//		if (ServletFileUpload.isMultipartContent(new ServletRequestContext(
-//				httpRequest)))
-//		{
-//			System.out.println("ServletFileUpload.isMultipartContent(new ServletRequestContext(httpRequest)) is true");
-//			try
-//			{
-//				List items = upload.parseRequest(httpRequest);
-//				for (int i = 0; i < items.size(); i++)
-//				{
-//					FileItem fui = (FileItem)items.get(i);
-//					if (fui.isFormField() || "text/plain".equals(fui.getContentType()))
-//					{
-//						System.out.println("Form Field: " + fui.getFieldName() + " | " + fui.getString());
-//						parameters
-//								.put(fui.getFieldName(), new String[] { fui.getString() });
-//					}
-//					else
-//					{
-//						File temp = File.createTempFile(Guid.createGUID(), ".tmp");
-//						fui.write(temp);
-//						parameters.put(fui.getFieldName(), new String[] { temp
-//								.getAbsolutePath() });
-//						System.out.println("File Upload: " + fui.getFieldName());
-//						System.out.println("\tTemp file name: " + temp.getAbsolutePath());
-//						System.out.println("\tContent Type: " + fui.getContentType());
-//						System.out.println("\tSize: " + fui.getSize());
-//					}
-//				}
-//			}
-//			catch (Exception e)
-//			{
-//				e.printStackTrace();
-//			}
-//		}
-//		for (Enumeration e = httpRequest.getParameterNames(); e.hasMoreElements();)
-//		{
-//			String key = (String)e.nextElement();
-//			parameters.put(key, httpRequest.getParameterValues(key));
-//		}
 	}
 
 	/**
@@ -181,7 +141,6 @@ public class DeploymentExecution implements IExecutionDescriptor, ILinkFactory,
 				if (!execution.hasNextStep())
 					return null;
 				command = execution.nextStep();
-//				System.out.println("Processing execution step: " + command);
 				IDocument document = null;
 				if (command instanceof ConversationCommand)
 				{

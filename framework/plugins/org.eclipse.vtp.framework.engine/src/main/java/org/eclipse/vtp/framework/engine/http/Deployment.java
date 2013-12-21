@@ -231,7 +231,6 @@ public class Deployment implements IProcessDescriptor, IResourceManagerRegistry,
 		synchronized (sessions)
 		{
 			DeploymentSession session = sessions.remove(sessionID);
-			System.out.println("Ending Session: " + session);
 			if(session != null)
 				session.end(httpSession, prefix, depth);
 		}
