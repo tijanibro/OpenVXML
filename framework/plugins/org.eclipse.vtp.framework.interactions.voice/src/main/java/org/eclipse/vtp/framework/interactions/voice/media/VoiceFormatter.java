@@ -60,16 +60,16 @@ public abstract class VoiceFormatter implements IFormatter
             String defaultText)
     {
     	Content ret = null;
-    	if(resourceManager.isFileResource(path + filename + ".vox"))
-    	{
-    		AudioContent ac = new AudioContent();
-    		ac.setStaticPath(path + filename + ".vox");
-    		ret = ac;
-    	}
-    	else if(resourceManager.isFileResource(path + filename + ".wav"))
+    	if(resourceManager.isFileResource(path + filename + ".wav"))
     	{
     		AudioContent ac = new AudioContent();
     		ac.setStaticPath(path + filename + ".wav");
+    		ret = ac;
+    	}
+    	else if(resourceManager.isFileResource(path + filename + ".vox"))
+    	{
+    		AudioContent ac = new AudioContent();
+    		ac.setStaticPath(path + filename + ".vox");
     		ret = ac;
     	}
     	else if(resourceManager.isFileResource(path + filename + ".au"))
