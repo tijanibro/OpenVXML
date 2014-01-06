@@ -19,6 +19,7 @@ import org.eclipse.vtp.framework.core.IAction;
 import org.eclipse.vtp.framework.core.IActionContext;
 import org.eclipse.vtp.framework.core.IActionResult;
 import org.eclipse.vtp.framework.core.IReporter;
+import org.eclipse.vtp.framework.interactions.core.configurations.MediaConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.OutputMessageConfiguration;
 import org.eclipse.vtp.framework.interactions.core.conversation.IConversation;
 
@@ -58,6 +59,11 @@ public class OutputMessageAction implements IAction
 	 */
 	public IActionResult execute()
 	{
+		MediaConfiguration mediaConfiguration = configuration.getMediaConfiguration();
+		if(mediaConfiguration == null || conversation.resolveOutput(mediaConfiguration.getOutputConfiguration(configuration.getOutputName())).size() == 0)
+		{
+			return context.createResult(IActionResult.RESULT_NAME_DEFAULT);
+		}
 		String resultParameterName = ACTION_PREFIX + context.getActionID().replace(':', '_');
 		try
 		{
@@ -91,7 +97,6 @@ public class OutputMessageAction implements IAction
 					context.report(IReporter.SEVERITY_INFO, "Sending output.", props);
 				}
 				conversation.createOutputMessage(configuration, resultParameterName).enqueue();
-				if(context.isInfoEnabled()) context.info("Output sent.");
 				return context.createResult(IActionResult.RESULT_NAME_REPEAT);
 			}
 		}
