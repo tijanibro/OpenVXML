@@ -2,20 +2,20 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse Voice Tools Export Plug-in
 Bundle-SymbolicName: org.eclipse.vtp.desktop.export;singleton:=true
-Bundle-Version: 5.0.0.qualifier
+Bundle-Version: 5.1.0.qualifier
 Bundle-Activator: org.eclipse.vtp.desktop.export.internal.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.vtp.desktop.model.core,
- org.eclipse.vtp.desktop.model.interactive.core,
- org.eclipse.vtp.desktop.media.core,
- org.eclipse.vtp.framework.common,
- org.eclipse.vtp.framework.interactions.core,
- org.eclipse.vtp.framework.util,
  org.eclipse.core.resources,
- com.openmethods.openvxml.desktop.model.branding;bundle-version="5.0.0",
- com.openmethods.openvxml.desktop.model.businessobjects;bundle-version="5.0.0",
- com.openmethods.openvxml.desktop.model.workflow;bundle-version="5.0.0"
+ org.eclipse.vtp.desktop.model.core;bundle-version="5.1.0",
+ org.eclipse.vtp.desktop.model.interactive.core;bundle-version="5.1.0",
+ org.eclipse.vtp.desktop.media.core;bundle-version="5.1.0",
+ org.eclipse.vtp.framework.common;bundle-version="5.1.0",
+ org.eclipse.vtp.framework.interactions.core;bundle-version="5.1.0",
+ org.eclipse.vtp.framework.util;bundle-version="5.1.0",
+ com.openmethods.openvxml.desktop.model.branding;bundle-version="5.1.0",
+ com.openmethods.openvxml.desktop.model.businessobjects;bundle-version="5.1.0",
+ com.openmethods.openvxml.desktop.model.workflow;bundle-version="5.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.ui,
