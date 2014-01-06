@@ -131,6 +131,7 @@ public class Action extends Executable
 		try
 		{
 			actionResult = ((IAction)createInstance(sequence)).execute();
+			sequence.context.clearParameters();
 		}
 		catch (RuntimeException e)
 		{

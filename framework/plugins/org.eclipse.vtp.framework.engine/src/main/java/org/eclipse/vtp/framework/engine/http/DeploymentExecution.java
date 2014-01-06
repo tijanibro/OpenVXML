@@ -304,6 +304,11 @@ public class DeploymentExecution implements IExecutionDescriptor, ILinkFactory,
 	{
 		parameters.remove(parameterName);
 	}
+	
+	public void clearParameters()
+	{
+		parameters.clear();
+	}
 
 	/*
 	 * (non-Javadoc)

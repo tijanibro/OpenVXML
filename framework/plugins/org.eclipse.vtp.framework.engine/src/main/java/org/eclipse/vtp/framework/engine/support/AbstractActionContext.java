@@ -313,6 +313,11 @@ public abstract class AbstractActionContext extends AbstractContext implements
 	{
 		executionContext.clearParameter(parameterName);
 	}
+	
+	public void clearParameters()
+	{
+		executionContext.clearParameters();
+	}
 
 	/*
 	 * (non-Javadoc)

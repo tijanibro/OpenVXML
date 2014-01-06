@@ -351,6 +351,11 @@ public abstract class AbstractExecutionContext extends AbstractContext
 	{
 		descriptor.clearParameter(parameterName);
 	}
+	
+	public void clearParameters()
+	{
+		descriptor.clearParameters();
+	}
 
 	public String[] getRootAttributeNames()
 	{

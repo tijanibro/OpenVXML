@@ -90,4 +90,6 @@ public interface IExecutionContext extends ISessionContext
 	 *           <code>null</code>.
 	 */
 	void clearParameter(String parameterName) throws NullPointerException;
+	
+	void clearParameters();
 }

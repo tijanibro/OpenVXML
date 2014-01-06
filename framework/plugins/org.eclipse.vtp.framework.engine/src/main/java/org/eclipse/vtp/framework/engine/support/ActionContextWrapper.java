@@ -582,6 +582,11 @@ public abstract class ActionContextWrapper implements IActionContext
 	{
 		getActionContext().clearParameter(parameterName);
 	}
+	
+	public void clearParameters()
+	{
+		getActionContext().clearParameters();
+	}
 
 	// IActionContext Methods //
 

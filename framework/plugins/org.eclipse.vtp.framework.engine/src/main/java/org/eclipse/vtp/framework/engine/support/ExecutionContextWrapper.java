@@ -581,6 +581,11 @@ public abstract class ExecutionContextWrapper implements IExecutionContext
 	{
 		getExecutionContext().clearParameter(parameterName);
 	}
+	
+	public void clearParameters()
+	{
+		getExecutionContext().clearParameters();
+	}
 
 	public String[] getRootAttributeNames()
 	{

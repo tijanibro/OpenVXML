@@ -75,18 +75,18 @@ public class InitialAction extends AssignmentAction
 	 * 
 	 * @param context
 	 * @param variableRegistry
-	 * @param assignCongigs
+	 * @param assignConfigs
 	 * @param conversation The conversation to use.
 	 */
 	public InitialAction(IActionContext context,
 			IVariableRegistry variableRegistry,
 			IDataTypeRegistry dataTypeRegistry,
-			AssignmentConfiguration[] assignCongigs, IConversation conversation,
+			AssignmentConfiguration[] assignConfigs, IConversation conversation,
 			IBrandSelection brandSelection, IPlatformSelector platformSelector,
 			InitialConfiguration initialConfig, IBrandRegistry brandRegistry,
 			ILanguageSelection languageSelection, ILanguageRegistry languageRegistry)
 	{
-		super(context, variableRegistry, assignCongigs);
+		super(context, variableRegistry, assignConfigs);
 		this.conversation = conversation;
 		this.brandSelection = brandSelection;
 		this.dataTypeRegistry = dataTypeRegistry;
@@ -106,7 +106,7 @@ public class InitialAction extends AssignmentAction
 	{
 		if(variableRegistry.getVariable("Platform") != null)
 		{
-			return context.createResult(IActionResult.RESULT_NAME_DEFAULT);
+			return execute(Collections.<String, String>emptyMap(), false);
 		}
 		String resultParameterName = ACTION_PREFIX + context.getActionID().replace(':', '_');
 		String result = context.getParameter(resultParameterName);
