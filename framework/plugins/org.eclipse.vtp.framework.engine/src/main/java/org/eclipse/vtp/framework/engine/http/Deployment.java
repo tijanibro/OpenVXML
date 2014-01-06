@@ -196,7 +196,7 @@ public class Deployment implements IProcessDescriptor, IResourceManagerRegistry,
 	 * @return The next document to render.
 	 */
 	public IDocument next(HttpSession httpSession,
-			HttpServletRequest httpRequest, HttpServletResponse httpReesponse,
+			HttpServletRequest httpRequest, HttpServletResponse httpResponse,
 			String prefix, int depth, Map<Object, Object> variableValues, Map parameterValues)
 	{
 		String sessionID = httpSession.getId();
@@ -211,14 +211,14 @@ public class Deployment implements IProcessDescriptor, IResourceManagerRegistry,
 		ResultDocument result = null;
 		session.lock();
 		try {
-			result = session.next(httpSession, httpRequest, httpReesponse,
+			result = session.next(httpSession, httpRequest, httpResponse,
 				prefix, depth, variableValues, parameterValues);
 		} finally {
 			session.unlock();
 		}
 		IDocument document = null;
 		if (result == null)
-			document = abort(httpSession, httpRequest, httpReesponse, prefix, depth,
+			document = abort(httpSession, httpRequest, httpResponse, prefix, depth,
 					variableValues, parameterValues);
 		if (result != null && result.getDocument() != null)
 			document = result.getDocument();

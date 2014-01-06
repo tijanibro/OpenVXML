@@ -31,14 +31,13 @@ import org.eclipse.vtp.framework.common.IDataObject;
 import org.eclipse.vtp.framework.common.IDataTypeRegistry;
 import org.eclipse.vtp.framework.common.IDateObject;
 import org.eclipse.vtp.framework.common.IDecimalObject;
+import org.eclipse.vtp.framework.common.IMapObject;
 import org.eclipse.vtp.framework.common.INumberObject;
 import org.eclipse.vtp.framework.common.IStringObject;
 import org.eclipse.vtp.framework.common.IVariableRegistry;
 import org.eclipse.vtp.framework.common.actions.AssignmentAction;
 import org.eclipse.vtp.framework.common.configurations.AssignmentConfiguration;
 import org.eclipse.vtp.framework.common.configurations.InitialConfiguration;
-import org.eclipse.vtp.framework.common.support.CustomDataField;
-import org.eclipse.vtp.framework.common.support.CustomDataType;
 import org.eclipse.vtp.framework.core.IActionContext;
 import org.eclipse.vtp.framework.core.IActionResult;
 import org.eclipse.vtp.framework.core.IReporter;
@@ -47,7 +46,6 @@ import org.eclipse.vtp.framework.interactions.core.ILanguageSelection;
 import org.eclipse.vtp.framework.interactions.core.conversation.IConversation;
 import org.eclipse.vtp.framework.interactions.core.platforms.IPlatformSelector;
 import org.eclipse.vtp.framework.interactions.core.support.AbstractPlatform;
-import org.eclipse.vtp.framework.util.Guid;
 
 /**
  * InitialAction.
@@ -106,6 +104,10 @@ public class InitialAction extends AssignmentAction
 	 */
 	public IActionResult execute()
 	{
+		if(variableRegistry.getVariable("Platform") != null)
+		{
+			return context.createResult(IActionResult.RESULT_NAME_DEFAULT);
+		}
 		String resultParameterName = ACTION_PREFIX + context.getActionID().replace(':', '_');
 		String result = context.getParameter(resultParameterName);
 		if (IConversation.RESULT_NAME_FILLED.equals(result))
@@ -117,7 +119,7 @@ public class InitialAction extends AssignmentAction
 				context.report(IReporter.SEVERITY_INFO, "Processing initial variables.",
 					props);
 			}
-			IDataObject platform = variableRegistry.createVariable("Platform");
+			IDataObject platform = variableRegistry.createVariable(IMapObject.TYPE_NAME);
 			String anivalue = context.getParameter("PLATFORM_ANI");
 			if (anivalue != null)
 			{
@@ -131,8 +133,10 @@ public class InitialAction extends AssignmentAction
 						"Assigned variable \"Platform.ANI\" to \"" + anivalue
 						+ "\"", props2);
 				}
-				((IStringObject)platform.getField("ANI")).setValue(anivalue);
-				((IStringObject)platform.getField("PLATFORM_ANI")).setValue(anivalue);
+				IStringObject aniVar = (IStringObject)variableRegistry.createVariable(IStringObject.TYPE_NAME);
+				aniVar.setValue(anivalue);
+				platform.setEntry("ANI", aniVar);
+				platform.setEntry("PLATFORM_ANI", aniVar);
 			}
 			String dnisvalue = context.getParameter("PLATFORM_DNIS");
 			if (dnisvalue != null)
@@ -147,20 +151,24 @@ public class InitialAction extends AssignmentAction
 						"Assigned variable \"Platform.DNIS\" to \"" + dnisvalue
 						+ "\"", props2);
 				}
-				((IStringObject)platform.getField("DNIS")).setValue(dnisvalue);
-				((IStringObject)platform.getField("PLATFORM_DNIS")).setValue(dnisvalue);
+				IStringObject dnisVar = (IStringObject)variableRegistry.createVariable(IStringObject.TYPE_NAME);
+				dnisVar.setValue(dnisvalue);
+				platform.setEntry("DNIS", dnisVar);
+				platform.setEntry("PLATFORM_DNIS", dnisVar);
 			}
+			IStringObject brandVar = (IStringObject)variableRegistry.createVariable(IStringObject.TYPE_NAME);
 			IBrand b = brandSelection.getSelectedBrand();
 			if (b != null)
-				((IStringObject)platform.getField("Brand")).setValue(b.getPath());
+				brandVar.setValue(b.getPath());
 			else
 			{
 				b = brandRegistry.getBrandById(initialConfig.getDefaultBrandId());
 				if (b != null)
-					((IStringObject)platform.getField("Brand")).setValue(b.getPath());
+					brandVar.setValue(b.getPath());
 				else
-					((IStringObject)platform.getField("Brand")).setValue(brandRegistry.getDefaultBrand().getPath());
+					brandVar.setValue(brandRegistry.getDefaultBrand().getPath());
 			}
+			platform.setEntry("Brand", brandVar);
 			languageSelection.setDefaultLanguage(initialConfig.getDefaultLanguageName());
 			variableRegistry.setVariable("Platform", platform);
 			Map values = new HashMap();
@@ -176,26 +184,18 @@ public class InitialAction extends AssignmentAction
 			List<String> incomingParametersNames = abstractPlatform.getPlatformVariableNames();
 			if(incomingParametersNames.size() > 0)
 			{
+				IMapObject initialParameters = (IMapObject)variableRegistry.createVariable(IMapObject.TYPE_NAME);
 				for(int i = 0; i < incomingParametersNames.size(); i++)
 				{
 					incomingParametersNames.set(i, incomingParametersNames.get(i).replaceAll(Pattern.quote("."), "_"));
 					incomingParametersNames.set(i, incomingParametersNames.get(i).replaceAll("-", "_"));
 				}
-				CustomDataField[] platformFields = new CustomDataField[incomingParametersNames.size()];
-				for(int i = 0; i < incomingParametersNames.size(); i++)
-				{
-					platformFields[i] = new CustomDataField(incomingParametersNames.get(i), dataTypeRegistry.getDataType(IStringObject.TYPE_NAME), "");
-				}
-				CustomDataType cdt = new CustomDataType(Guid.createGUID(), incomingParametersNames.get(0), platformFields);
-				IDataObject initialParameters = variableRegistry.createVariable(cdt);
 				for(int i = 0; i < incomingParametersNames.size(); i++)
 				{
 					String parameter = abstractPlatform.postProcessInitialVariable(incomingParametersNames.get(i), context.getParameter(incomingParametersNames.get(i)));
-					IStringObject field = (IStringObject)initialParameters.getField(incomingParametersNames.get(i));
-					if(field != null)
-					{
-						field.setValue(parameter == null ? "" : parameter);
-					}
+					IStringObject field = (IStringObject)variableRegistry.createVariable(IStringObject.TYPE_NAME);
+					field.setValue(parameter == null ? "" : parameter);
+					initialParameters.setEntry(incomingParametersNames.get(i), field);
 				}
 				variableRegistry.setVariable("PlatformVariables", initialParameters);
 			}
@@ -226,25 +226,13 @@ public class InitialAction extends AssignmentAction
             		incomingParametersNames[i] = incomingParametersNames[i].replaceAll(Pattern.quote("."), "_");
             		incomingParametersNames[i] = incomingParametersNames[i].replaceAll("-", "_");
             	}
-            	CustomDataField[] fields = new CustomDataField[incomingParametersNames.length];
-            	for(int i = 0; i < incomingParametersNames.length; i++)
-            	{
-            		fields[i] = new CustomDataField(incomingParametersNames[i], dataTypeRegistry.getDataType(IStringObject.TYPE_NAME), "");
-            	}
-            	if(fields.length < 1)
-            	{
-            		fields = new CustomDataField[] { new CustomDataField("empty", dataTypeRegistry.getDataType(IStringObject.TYPE_NAME), "")};
-            	}
-            	CustomDataType cdt = new CustomDataType(Guid.createGUID(), incomingParametersNames.length > 1 ? incomingParametersNames[0] : "empty", fields);
-            	IDataObject initialParameters = variableRegistry.createVariable(cdt);
+            	IMapObject initialParameters = (IMapObject)variableRegistry.createVariable(IMapObject.TYPE_NAME);
             	for(int i = 0; i < incomingParametersNames.length; i++)
             	{
             		String parameter = context.getParameter(incomingParametersNames[i]);
-            		IStringObject field = (IStringObject)initialParameters.getField(incomingParametersNames[i]);
-            		if(field != null)
-            		{
-            			field.setValue(parameter == null ? "" : parameter);
-            		}
+            		IStringObject field = (IStringObject)variableRegistry.createVariable(IStringObject.TYPE_NAME);
+           			field.setValue(parameter == null ? "" : parameter);
+            		initialParameters.setEntry(incomingParametersNames[i], field);
             	}
             	variableRegistry.setVariable("InitialParameters", initialParameters);
 				if(context.isReportingEnabled())

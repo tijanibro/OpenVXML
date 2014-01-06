@@ -228,26 +228,6 @@ public class DeploymentSession implements ISessionDescriptor
 				.setSelectedBrand(selectedBrand);
 		else
 			selectedBrand = brands.getDefaultBrand();
-		IVariableRegistry variables = (IVariableRegistry)session
-			.lookupService(IVariableRegistry.class.getName());
-		IDataObject platform = variables.createVariable("Platform");
-		((IStringObject)platform.getField("Brand")).setValue(selectedBrand
-			.getPath());
-		if (httpRequest.getParameter("PLATFORM_ANI") != null)
-		{
-			((IStringObject)platform.getField("PLATFORM_ANI")).setValue(httpRequest
-				.getParameter("PLATFORM_ANI"));
-			((IStringObject)platform.getField("ANI")).setValue(httpRequest
-				.getParameter("PLATFORM_ANI"));
-		}
-		if (httpRequest.getParameter("PLATFORM_DNIS") != null)
-		{
-			((IStringObject)platform.getField("PLATFORM_DNIS")).setValue(httpRequest
-				.getParameter("PLATFORM_DNIS"));
-			((IStringObject)platform.getField("DNIS")).setValue(httpRequest
-				.getParameter("PLATFORM_DNIS"));
-		}
-		variables.setVariable("Platform", platform);
 		IReporter reporter = (IReporter)session.lookupService(IReporter.class.getName());
 		if(reporter.isReportingEnabled())
 		{

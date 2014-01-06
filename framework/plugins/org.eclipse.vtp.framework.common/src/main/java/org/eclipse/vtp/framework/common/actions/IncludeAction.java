@@ -16,6 +16,7 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 import org.eclipse.vtp.framework.common.configurations.DispatchConfiguration;
+import org.eclipse.vtp.framework.common.configurations.VariableMappingConfiguration;
 import org.eclipse.vtp.framework.common.controller.IController;
 import org.eclipse.vtp.framework.common.controller.IIncludeDispatcher;
 import org.eclipse.vtp.framework.core.IAction;
@@ -89,6 +90,15 @@ public class IncludeAction implements IAction
 				context.report(IReporter.SEVERITY_INFO, "Including \""
 					+ configuration.getTargetProcessURI() + "\".", props);
 			}
+			VariableMappingConfiguration platformMapping = new VariableMappingConfiguration();
+			platformMapping.setVariableValue("Platform");
+			configuration.setVariableMapping("Platform", platformMapping);
+			VariableMappingConfiguration initialParameterMapping = new VariableMappingConfiguration();
+			initialParameterMapping.setVariableValue("InitialParameters");
+			configuration.setVariableMapping("InitialParameters", initialParameterMapping);
+			VariableMappingConfiguration platformVarMapping = new VariableMappingConfiguration();
+			platformVarMapping.setVariableValue("PlatformVariables");
+			configuration.setVariableMapping("PlatformVariables", platformVarMapping);
 			IIncludeDispatcher include = controller.createInclude(configuration);
 			include.setParameterValue(context.getActionID(), "complete"); //$NON-NLS-1$
 			if (include.enqueue())
