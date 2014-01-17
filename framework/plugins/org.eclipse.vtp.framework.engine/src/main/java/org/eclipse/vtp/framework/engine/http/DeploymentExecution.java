@@ -634,6 +634,19 @@ public class DeploymentExecution implements IExecutionDescriptor, ILinkFactory,
 				String[] mode = getParameters("MODE"); //$NON-NLS-1$
 				if (mode != null && mode.length > 0)
 					setParameters("MODE", mode); //$NON-NLS-1$
+				else
+				{
+					IMapObject ipmap = (IMapObject)variableRegistry.getVariable("InitialParameters");
+					if(ipmap != null)
+					{
+						IStringObject modeVar = (IStringObject)ipmap.getEntry("MODE");
+						if(modeVar != null)
+						{
+							if(modeVar.getValue() != null && !modeVar.getValue().equals(""))
+								setParameters("MODE", new String[] {modeVar.getValue()});
+						}
+					}
+				}
 			}
 		}
 

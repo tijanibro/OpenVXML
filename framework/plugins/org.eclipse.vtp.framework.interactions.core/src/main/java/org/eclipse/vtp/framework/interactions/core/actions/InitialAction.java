@@ -106,6 +106,7 @@ public class InitialAction extends AssignmentAction
 	{
 		if(variableRegistry.getVariable("Platform") != null)
 		{
+			context.info("Skipping initial action as Platform variable already exists");
 			return execute(Collections.<String, String>emptyMap(), false);
 		}
 		String resultParameterName = ACTION_PREFIX + context.getActionID().replace(':', '_');
@@ -178,10 +179,14 @@ public class InitialAction extends AssignmentAction
 				if (value != null && value.length() > 0)
 					values.put(configurations[i].getName(), value);
 			}
-			
 			//platform extension variables
 			AbstractPlatform abstractPlatform = (AbstractPlatform)platformSelector.getSelectedPlatform();
 			List<String> incomingParametersNames = abstractPlatform.getPlatformVariableNames();
+			context.info("Platform Variables");
+			for(String vname : incomingParametersNames)
+			{
+				context.info("\t" + vname);
+			}
 			if(incomingParametersNames.size() > 0)
 			{
 				IMapObject initialParameters = (IMapObject)variableRegistry.createVariable(IMapObject.TYPE_NAME);
@@ -193,11 +198,16 @@ public class InitialAction extends AssignmentAction
 				for(int i = 0; i < incomingParametersNames.size(); i++)
 				{
 					String parameter = abstractPlatform.postProcessInitialVariable(incomingParametersNames.get(i), context.getParameter(incomingParametersNames.get(i)));
+					context.info("\t" + incomingParametersNames.get(i) + " = " + parameter + " [" + context.getParameter(incomingParametersNames.get(i)) + "]");
 					IStringObject field = (IStringObject)variableRegistry.createVariable(IStringObject.TYPE_NAME);
 					field.setValue(parameter == null ? "" : parameter);
 					initialParameters.setEntry(incomingParametersNames.get(i), field);
 				}
 				variableRegistry.setVariable("PlatformVariables", initialParameters);
+			}
+			else
+			{
+				context.info("\tNone");
 			}
 			return execute(values, false);
 		}
