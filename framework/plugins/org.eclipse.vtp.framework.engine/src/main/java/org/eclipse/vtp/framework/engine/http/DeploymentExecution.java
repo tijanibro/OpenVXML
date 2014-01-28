@@ -389,6 +389,26 @@ public class DeploymentExecution implements IExecutionDescriptor, ILinkFactory,
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.eclipse.vtp.framework.interactions.core.platforms.ILinkFactory#
+	 *      createResourceLink(java.lang.String)
+	 */
+	public ILink createIncludeLink(String path)
+	{
+		if (path == null)
+			return null;
+		else if(path.startsWith("http://") || path.startsWith("https://"))
+			return new Link(path, false);
+		else if(path.startsWith("dtmf:"))
+			return new Link(path, false);
+		else if (path.startsWith("/")) //$NON-NLS-1$
+			return new Link(HttpConnector.PLATFORM_PATH + path, false);
+		else
+			return new Link(HttpConnector.PLATFORM_PATH + "/" + path, false); //$NON-NLS-1$
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.vtp.framework.interactions.core.platforms.IRenderingQueue#
 	 *      isEmpty()
 	 */

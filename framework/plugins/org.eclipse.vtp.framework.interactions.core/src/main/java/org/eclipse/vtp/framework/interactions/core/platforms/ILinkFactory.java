@@ -25,4 +25,6 @@ public interface ILinkFactory
 	ILink createAbortLink();
 
 	ILink createResourceLink(String path);
+	
+	ILink createIncludeLink(String path);
 }

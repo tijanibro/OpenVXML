@@ -50,6 +50,7 @@ import org.eclipse.vtp.framework.common.IStringObject;
 import org.eclipse.vtp.framework.common.IVariableRegistry;
 import org.eclipse.vtp.framework.core.IReporter;
 import org.eclipse.vtp.framework.engine.ResourceGroup;
+import org.eclipse.vtp.framework.engine.osgi.Activator;
 import org.eclipse.vtp.framework.interactions.core.platforms.IDocument;
 import org.eclipse.vtp.framework.spi.IProcessDefinition;
 import org.eclipse.vtp.framework.spi.IProcessEngine;
@@ -77,6 +78,8 @@ public class HttpConnector
 	public static final String NEXT_PATH = PATH_PREFIX + "next"; //$NON-NLS-1$
 	/** The path info for binary resources. */
 	public static final String RESOURCES_PATH = PATH_PREFIX + "resources"; //$NON-NLS-1$
+	/** The path info for binary platform includes. */
+	public static final String PLATFORM_PATH = PATH_PREFIX + "platform-includes"; //$NON-NLS-1$
 	/** The path info for the session examiner. */
 	public static final String EXAMINE_PATH = PATH_PREFIX + "examine"; //$NON-NLS-1$
 	/** The path info for the log level setter. */
@@ -804,6 +807,7 @@ public class HttpConnector
 		int firstSlash = normal.indexOf('/');
 		if (firstSlash < 0)
 			return null;
+		
 		String resourcesID = normal.substring(0, firstSlash);
 		ResourceGroup resources = null;
 		synchronized (resourcesByID)
@@ -813,6 +817,28 @@ public class HttpConnector
 		if (resources == null)
 			return null;
 		return resources.getResource(normal.substring(firstSlash + 1));
+	}
+
+	/**
+	 * Returns the resource at the specified path.
+	 * 
+	 * @param resourcePath The path of the resource to return.
+	 * @return The resource at the specified path.
+	 */
+	public URL getPlatformInclude(String resourcePath)
+	{
+		System.out.println("raw path = " + resourcePath);
+		String normal = HttpUtils.normalizePath(resourcePath).substring(1);
+		System.out.println("normalized path = " + normal);
+		int firstSlash = normal.indexOf('/');
+		if (firstSlash < 0)
+			return null;
+		String resourcesID = normal.substring(0, firstSlash);
+		Bundle bundle = null;
+		bundle = Activator.getInstance().findBundle(resourcesID);
+		if (bundle == null)
+			return null;
+		return bundle.getResource(normal.substring(firstSlash + 1));
 	}
 
 	/**
@@ -831,9 +857,13 @@ public class HttpConnector
 			else
 				servletPath = "/"; //$NON-NLS-1$
 			if ("/".equals(servletPath)) //$NON-NLS-1$
+			{
 				resourcesPath = RESOURCES_PATH;
+			}
 			else
+			{
 				resourcesPath = servletPath + RESOURCES_PATH;
+			}
 			HttpConnectorContext context = new HttpConnectorContext(httpService
 					.createDefaultHttpContext(), this);
 			httpService.registerResources(resourcesPath, "/", context); //$NON-NLS-1$

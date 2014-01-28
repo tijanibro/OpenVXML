@@ -32,6 +32,7 @@ import org.eclipse.vtp.framework.core.IReporter;
 import org.eclipse.vtp.framework.engine.support.AbstractReporter;
 import org.eclipse.vtp.framework.util.LogTracker;
 import org.eclipse.vtp.framework.util.StaticConfigurationAdmin;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -71,12 +72,30 @@ public class Activator extends AbstractReporter implements BundleActivator,
 	/** The service tracker that tracks the reporter services. */
 	private ServiceTracker reporters = null;
 	private int activeLogLevel = 3;
+	private static Activator instance;
+	
+	public static Activator getInstance()
+	{
+		return instance;
+	}
 
 	/**
 	 * Creates a new Activator.
 	 */
 	public Activator()
 	{
+		instance = this;
+	}
+	
+	public Bundle findBundle(String id)
+	{
+		Bundle[] bundles = context.getBundles();
+		for(Bundle b : bundles)
+		{
+			if(b.getSymbolicName().equals(id))
+				return b;
+		}
+		return null;
 	}
 
 	/**

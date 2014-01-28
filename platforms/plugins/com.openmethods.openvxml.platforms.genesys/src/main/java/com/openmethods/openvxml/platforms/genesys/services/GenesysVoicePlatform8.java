@@ -39,6 +39,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import com.openmethods.openvxml.platforms.genesys.Activator;
 import com.openmethods.openvxml.platforms.genesys.vxml.Send;
 import com.openmethods.openvxml.platforms.genesys.vxml.UserData;
 
@@ -102,7 +103,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		document.setProperty("documentmaxage", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 		document.setProperty("documentmaxstale", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 		Script jsonInclude = new Script();
-		jsonInclude.setSrc("json.js");
+		jsonInclude.setSrc(links.createIncludeLink(Activator.getDefault().getBundle().getSymbolicName() + "/includes/json.js").toString());
 		document.addScript(jsonInclude);
 		Form form = new Form("InitialForm"); //$NON-NLS-1$
 		Map<String, String> varMap = new LinkedHashMap<String, String>();
@@ -111,7 +112,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		{
 			form.addVariable(new Variable(key, "''")); //$NON-NLS-1$
 		}
-		form.addVariable(new Variable("gvpUserData", "session.com.genesyslab.userdata"));
+		form.addVariable(new Variable("gvpUserData", "JSON.stringify(session.com.genesyslab.userdata)"));
 		String[] variables = initialCommand.getVariableNames();
 		for (int i = 0; i < variables.length; ++i)
 		{

@@ -122,6 +122,63 @@ public class HttpConnectorServlet extends HttpServlet
 			connector.examine(req, res);
 			return;
 		}
+		else if (pathInfo.startsWith(HttpConnector.PLATFORM_PATH))
+		{
+			String resourcePath = pathInfo.substring(HttpConnector.PLATFORM_PATH
+					.length());
+			URL resource = connector.getPlatformInclude(resourcePath);
+			if (resource == null)
+				resource = getServletContext().getResource(resourcePath);
+			if (resource == null)
+			{
+				res.sendError(HttpServletResponse.SC_NOT_FOUND, resourcePath);
+				return;
+			}
+			res.setStatus(HttpServletResponse.SC_OK);
+			String mimeType = connector.getMimeType(resourcePath);
+			if (mimeType == null)
+				mimeType = getServletContext().getMimeType(resourcePath);
+			if (mimeType != null)
+				res.setContentType(mimeType);
+			OutputStream output = null;
+			try
+			{
+				output = res.getOutputStream();
+				InputStream input = null;
+				try
+				{
+					input = resource.openStream();
+					byte[] b = new byte[BUFFER_SIZE];
+					for (int i = input.read(b); i >= 0; i = input.read(b))
+						output.write(b, 0, i);
+				}
+				finally
+				{
+					try
+					{
+						if (input != null)
+							input.close();
+					}
+					catch (IOException e)
+					{
+					}
+				}
+				output.flush();
+				res.flushBuffer();
+			}
+			finally
+			{
+				try
+				{
+					if (output != null)
+						output.close();
+				}
+				catch (IOException e)
+				{
+				}
+			}
+			return;
+		}
 		connector.process(req, res);
 	}
 	
