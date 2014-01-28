@@ -29,7 +29,6 @@ import org.eclipse.vtp.framework.interactions.voice.vxml.Filled;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Form;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Goto;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Parameter;
-import org.eclipse.vtp.framework.interactions.voice.vxml.Script;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Submit;
 import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLConstants;
 import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLDocument;
@@ -108,7 +107,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		{
 			form.addVariable(new Variable(key, "''")); //$NON-NLS-1$
 		}
-		form.addVariable(new Variable("gvpUserData", "''"));
+		form.addVariable(new Variable("gvpUserData", "JSON.stringify(session.com.genesyslab.userdata)"));
 		String[] variables = initialCommand.getVariableNames();
 		for (int i = 0; i < variables.length; ++i)
 		{
@@ -122,14 +121,14 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		{
 			block.addAction(new Assignment(key, varMap.get(key)));
 		}
-		Script userDataScript = new Script();
-		userDataScript.appendText("for(var key in session.com.genesyslab.userdata)\r\n");
-		userDataScript.appendText("{\r\n");
-		userDataScript.appendText("\tif(gvpUserData != '')\r\n");
-		userDataScript.appendText("\t\tgvpUserData = gvpUserData + '&';\r\n");
-		userDataScript.appendText("\tgvpUserData = gvpUserData + key + '=' + session.com.genesyslab.userdata[key];\r\n");
-		userDataScript.appendText("}\r\n");
-		block.addAction(userDataScript);
+//		Script userDataScript = new Script();
+//		userDataScript.appendText("for(var key in session.com.genesyslab.userdata)\r\n");
+//		userDataScript.appendText("{\r\n");
+//		userDataScript.appendText("\tif(gvpUserData != '')\r\n");
+//		userDataScript.appendText("\t\tgvpUserData = gvpUserData + '&';\r\n");
+//		userDataScript.appendText("\tgvpUserData = gvpUserData + key + '=' + session.com.genesyslab.userdata[key];\r\n");
+//		userDataScript.appendText("}\r\n");
+//		block.addAction(userDataScript);
 		ILink nextLink = links.createNextLink();
 		String[] parameterNames = initialCommand.getParameterNames();
 		for (int i = 0; i < parameterNames.length; ++i)
