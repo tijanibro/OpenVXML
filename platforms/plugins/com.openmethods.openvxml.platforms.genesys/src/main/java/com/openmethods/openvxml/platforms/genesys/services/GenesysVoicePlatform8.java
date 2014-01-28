@@ -107,7 +107,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		{
 			form.addVariable(new Variable(key, "''")); //$NON-NLS-1$
 		}
-		form.addVariable(new Variable("gvpUserData", "JSON.stringify(session.com.genesyslab.userdata)"));
+		form.addVariable(new Variable("gvpUserData", "session.com.genesyslab.userdata"));
 		String[] variables = initialCommand.getVariableNames();
 		for (int i = 0; i < variables.length; ++i)
 		{
