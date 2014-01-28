@@ -29,6 +29,7 @@ import org.eclipse.vtp.framework.interactions.voice.vxml.Filled;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Form;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Goto;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Parameter;
+import org.eclipse.vtp.framework.interactions.voice.vxml.Script;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Submit;
 import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLConstants;
 import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLDocument;
@@ -100,6 +101,9 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		VXMLDocument document = new VXMLDocument();
 		document.setProperty("documentmaxage", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 		document.setProperty("documentmaxstale", "0"); //$NON-NLS-1$ //$NON-NLS-2$
+		Script jsonInclude = new Script();
+		jsonInclude.setSrc("json.js");
+		document.addScript(jsonInclude);
 		Form form = new Form("InitialForm"); //$NON-NLS-1$
 		Map<String, String> varMap = new LinkedHashMap<String, String>();
 		generateInitialVariableRequests(varMap);
