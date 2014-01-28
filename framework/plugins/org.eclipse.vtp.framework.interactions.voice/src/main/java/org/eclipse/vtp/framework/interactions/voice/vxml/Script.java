@@ -28,6 +28,7 @@ public class Script extends Action implements VXMLConstants
 {
 	/** The script text of this script block */
 	private final StringBuffer text = new StringBuffer();
+	private String src = null;
 
 	/**
 	 * Creates a new Script object.
@@ -58,6 +59,16 @@ public class Script extends Action implements VXMLConstants
 			throw new NullPointerException("text"); //$NON-NLS-1$
 		this.text.setLength(0);
 		this.text.append(text);
+	}
+	
+	public String getSrc()
+	{
+		return src;
+	}
+	
+	public void setSrc(String src)
+	{
+		this.src = src;
 	}
 
 	/**
@@ -98,8 +109,11 @@ public class Script extends Action implements VXMLConstants
 		writeAttributes(attributes);
 		outputHandler.startElement(NAMESPACE_URI_VXML, NAME_SCRIPT, NAME_SCRIPT,
 				attributes);
-		// Write the script.
-		writeText(outputHandler);
+		if(src == null)
+		{
+			// Write the script.
+			writeText(outputHandler);
+		}
 		// End the element.
 		outputHandler.endElement(NAMESPACE_URI_VXML, NAME_SCRIPT, NAME_SCRIPT);
 	}
@@ -113,6 +127,8 @@ public class Script extends Action implements VXMLConstants
 	 */
 	protected void writeAttributes(AttributesImpl attributes)
 	{
+		if(src != null)
+			writeAttribute(attributes, null, null, NAME_SRC, TYPE_CDATA, src);
 	}
 
 	/**
