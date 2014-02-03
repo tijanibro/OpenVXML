@@ -12,13 +12,15 @@
 package org.eclipse.vtp.modules.interactive.ui.properties;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -40,6 +42,9 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -49,13 +54,23 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.internal.dialogs.PropertyDialog;
 import org.eclipse.vtp.desktop.core.dialogs.FramedDialog;
 import org.eclipse.vtp.desktop.editors.core.configuration.DesignElementPropertiesPanel;
+import org.eclipse.vtp.desktop.model.core.IOpenVXMLProject;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
+import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.BrandBinding;
+import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.GenericBindingManager;
+import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.InteractionBinding;
+import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.LanguageBinding;
+import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.NamedBinding;
+import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.PropertyBindingItem;
 import org.eclipse.vtp.framework.util.QuickSort;
 import org.eclipse.vtp.framework.util.VariableNameValidator;
 import org.eclipse.vtp.modules.interactive.ui.SubdialogInformationProvider;
@@ -63,10 +78,13 @@ import org.eclipse.vtp.modules.interactive.ui.SubdialogInformationProvider.Subdi
 import org.eclipse.vtp.modules.interactive.ui.SubdialogInformationProvider.SubdialogOutput;
 import org.eclipse.vtp.modules.interactive.ui.SubdialogInformationProvider.SubdialogParameter;
 
+import com.openmethods.openvxml.desktop.model.branding.IBrand;
+import com.openmethods.openvxml.desktop.model.branding.internal.BrandContext;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 import com.openmethods.openvxml.desktop.model.workflow.design.ObjectDefinition;
 import com.openmethods.openvxml.desktop.model.workflow.design.ObjectField;
 import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
+import com.openmethods.openvxml.desktop.model.workflow.internal.VariableHelper;
 
 /**
  * The UI used to configure a Subdialog module.
@@ -75,6 +93,8 @@ import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
  */
 public class SubdialogPropertiesPanel extends DesignElementPropertiesPanel
 {
+	GenericBindingManager bindingManager;
+	IBrand currentBrand;
 	/** A list of all SubdialogParameter objects configured in this Subdialog module*/
 	List<SubdialogParameter> urlParameters = new ArrayList<SubdialogParameter>();
 	/** A list of all SubdialogInput objects configured in this Subdialog module*/
@@ -85,14 +105,24 @@ public class SubdialogPropertiesPanel extends DesignElementPropertiesPanel
 	Text nameField = null;
 	/** A Label used to label the Text field for the name of the subdialog*/
 	Label nameLabel = null;
-	/** A text field used to display/change the url of subdialog called by this particular Subdialog module*/
-	Text urlField = null;
+	Composite container = null;
+	Composite destinationContainer = null;
+	Combo destinationType = null;
+	Composite destinationComp = null;
+	StackLayout destinationLayout = null;
+	Composite destinationValueComp = null;
+	Text destinationValue = null;
+	Composite destinationExprComp = null;
+	Text destinationExpr = null;
+	Composite destinationTreeComp = null;
+	TreeViewer destinationTree = null;
 	/** A UI table of all SubdialogInput objects configured in this Subdialog module*/
 	TableViewer inputTable = null;
 	/** A UI table of all SubdialogOutput objects configured in this Subdialog module*/
 	TableViewer outputTable = null;
 	/** A UI table of all SubdialogParameter objects configured in this Subdialog module*/
 	TableViewer urlParamTable = null;
+	List<Variable> variables = new ArrayList<Variable>();
 	private SubdialogInformationProvider info = null;
 
 	/**
@@ -105,10 +135,24 @@ public class SubdialogPropertiesPanel extends DesignElementPropertiesPanel
 	{
 		super(name, subdialogElement);
 		PrimitiveElement pe = (PrimitiveElement)subdialogElement;
+		bindingManager = (GenericBindingManager)pe.getConfigurationManager(GenericBindingManager.TYPE_ID);
 		info = (SubdialogInformationProvider)pe.getInformationProvider();
 		inputs.addAll(info.getInputs());
 		outputs.addAll(info.getOutputs());
 		urlParameters.addAll(info.getURLParameters());
+		List<Variable> vars = pe.getDesign().getVariablesFor(pe);
+outer:	for(Variable v : vars)
+		{
+			for(int i = 0; i < variables.size(); i++)
+			{
+				if(variables.get(i).getName().compareToIgnoreCase(v.getName()) > 0)
+				{
+					variables.add(i, v);
+					continue outer;
+				}
+			}
+			variables.add(v);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -116,7 +160,7 @@ public class SubdialogPropertiesPanel extends DesignElementPropertiesPanel
 	 */
 	public void createControls(Composite parent)
 	{
-		Composite container = new Composite(parent, SWT.NONE);
+		container = new Composite(parent, SWT.NONE);
 		container.setBackground(parent.getBackground());
 		container.setLayout(new GridLayout(2, false));
 		nameLabel = new Label(container, SWT.NONE);
@@ -157,14 +201,80 @@ public class SubdialogPropertiesPanel extends DesignElementPropertiesPanel
 			nameField.setForeground(nameField.getDisplay().getSystemColor(SWT.COLOR_RED));
 			getContainer().setCanFinish(false);
 		}
-		Label urlLabel = new Label(container, SWT.NONE);
-		urlLabel.setText("URL");
-		urlLabel.setBackground(container.getBackground());
-		urlLabel.setLayoutData(new GridData());
-		urlField = new Text(container, SWT.SINGLE | SWT.BORDER);
-		urlField.setText(info.getURL());
-		urlField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
+		Label urlLabel = new Label(container, SWT.NONE);
+		urlLabel.setText("URL: ");
+		urlLabel.setBackground(container.getBackground());
+
+		GridData gd3 = new GridData();
+		gd3.verticalAlignment = SWT.TOP;
+		urlLabel.setLayoutData(gd3);
+		
+		destinationContainer = new Composite(container, SWT.NONE);
+		destinationContainer.setBackground(container.getBackground());
+		GridLayout gridLayout = new GridLayout(2, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		destinationContainer.setLayout(gridLayout);
+		GridData gd2 = new GridData(SWT.FILL, SWT.FILL, true, true);
+		destinationContainer.setLayoutData(gd2);
+
+		destinationType = new Combo(destinationContainer, SWT.DROP_DOWN | SWT.READ_ONLY);
+		GridData gd4 = new GridData();
+		gd4.verticalAlignment = SWT.TOP;
+		destinationType.setLayoutData(gd4);
+		destinationType.add("Value");
+		destinationType.add("Expression");
+		destinationType.add("Variable");
+		destinationType.select(0);
+		destinationType.addSelectionListener(new SelectionListener()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				destinationTypeChanged();
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e)
+			{
+			}
+		});
+		destinationComp = new Composite(destinationContainer, SWT.NONE);
+		destinationComp.setBackground(container.getBackground());
+		destinationComp.setLayout(destinationLayout = new StackLayout());
+		destinationComp.setLayoutData(new GridData(GridData.FILL_BOTH));
+		destinationValueComp = new Composite(destinationComp, SWT.NONE);
+		destinationValueComp.setBackground(destinationComp.getBackground());
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginWidth = layout.marginHeight = 0;
+		destinationValueComp.setLayout(layout);
+		destinationValue = new Text(destinationValueComp, SWT.SINGLE | SWT.BORDER);
+		destinationValue.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		destinationExprComp = new Composite(destinationComp, SWT.NONE);
+		destinationExprComp.setBackground(destinationComp.getBackground());
+		layout = new GridLayout(1, false);
+		layout.marginWidth = layout.marginHeight = 0;
+		destinationExprComp.setLayout(layout);
+		destinationExpr = new Text(destinationExprComp, SWT.SINGLE | SWT.BORDER);
+		destinationExpr.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		destinationTreeComp = new Composite(destinationComp, SWT.NONE);
+		destinationTreeComp.setBackground(destinationComp.getBackground());
+		FormLayout fl = new FormLayout();
+		destinationTreeComp.setLayout(fl);
+		destinationTree = new TreeViewer(destinationTreeComp, SWT.H_SCROLL
+				| SWT.V_SCROLL | SWT.BORDER | SWT.SINGLE);
+		FormData fd = new FormData();
+		fd.left = new FormAttachment(0);
+		fd.top = new FormAttachment(0);
+		fd.right = new FormAttachment(100);
+		fd.bottom = new FormAttachment(100);
+		fd.height = 10;
+		destinationTree.getControl().setLayoutData(
+				fd);
+		destinationTree.setContentProvider(new VariableContentProvider());
+		destinationTree.setLabelProvider(new VariableLabelProvider());
+		destinationTree.setInput(this);
+		destinationLayout.topControl = destinationValueComp;
+		destinationComp.layout();
 		
 		Group paramsGroup = new Group(container, SWT.NONE);
 		paramsGroup.setBackground(container.getBackground());
@@ -485,13 +595,38 @@ public class SubdialogPropertiesPanel extends DesignElementPropertiesPanel
 		});
 	}
 
+	/**
+	 * Sets which controls are visible based on the destination type
+	 */
+	private void destinationTypeChanged()
+	{
+		((FormData)destinationTree.getControl().getLayoutData()).height = 10;
+		switch (destinationType.getSelectionIndex())
+		{
+		case 2:
+			destinationLayout.topControl = destinationTreeComp;
+			((FormData)destinationTree.getControl().getLayoutData()).height = 175;
+			break;
+		case 1:
+			destinationLayout.topControl = destinationExprComp;
+			break;
+		default:
+			destinationLayout.topControl = destinationValueComp;
+		}
+		destinationTreeComp.layout();
+		destinationComp.layout();
+		destinationContainer.layout();
+		container.layout();
+	}
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.vtp.desktop.ui.app.editor.model.ComponentPropertiesPanel#save()
 	 */
 	public void save()
 	{
 		getElement().setName(nameField.getText());
-		info.setURL(urlField.getText());
+		storeBindings();
+		getElement().commitConfigurationChanges(bindingManager);
 		info.setInputs(inputs);
 		info.setOutputs(outputs);
 		info.setURLParameters(urlParameters);
@@ -502,7 +637,7 @@ public class SubdialogPropertiesPanel extends DesignElementPropertiesPanel
 	 */
 	public void cancel()
 	{
-		
+		getElement().rollbackConfigurationChanges(bindingManager);
 	}
 
 	public class ParamTableContentProvider implements IStructuredContentProvider
@@ -1732,10 +1867,234 @@ public class SubdialogPropertiesPanel extends DesignElementPropertiesPanel
 
 	public void setConfigurationContext(Map<String, Object> values)
 	{
+		if(!(currentBrand == null))
+		{
+			storeBindings();
+		}
+		
+		currentBrand = (IBrand)values.get(BrandContext.CONTEXT_ID);
+		if(currentBrand == null)
+		{
+			final IOpenVXMLProject project = getElement().getDesign().getDocument().getProject();
+			final IProject uproject = project.getUnderlyingProject();
+			final Shell shell = this.getContainer().getParentShell();
+			Display.getCurrent().asyncExec(new Runnable(){
+				public void run()
+				{
+					MessageBox mb = new MessageBox(shell, SWT.OK | SWT.CANCEL | SWT.ICON_ERROR);
+					mb.setText("Configuration Problems");
+					mb.setMessage("The interaction and language configuration for this project is incomplete.  You will not be able edit the applications effectively until this is resolved.  Would you like to configure this now?");
+					if(mb.open() == SWT.OK)
+					{
+						Display.getCurrent().asyncExec(new Runnable(){
+							public void run()
+							{
+								PropertyDialog pd = PropertyDialog
+								.createDialogOn(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "org.eclipse.vtp.desktop.projects.core.appproperties", uproject);
+								pd.open();
+							}
+						});
+					}
+					getContainer().cancelDialog();
+				}
+			});
+			return;
+		}
+		InteractionBinding interactionBinding = bindingManager.getInteractionBinding("");
+		NamedBinding namedBinding = interactionBinding.getNamedBinding("destination");
+		LanguageBinding languageBinding = namedBinding.getLanguageBinding("");
+		BrandBinding brandBinding = languageBinding.getBrandBinding(currentBrand);
+		System.out.println(currentBrand.getId());
+		PropertyBindingItem valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
+		if(valuePropertyItem == null)
+		{
+			System.out.println("Value item is null");
+			valuePropertyItem = new PropertyBindingItem();
+		}
+		System.out.println("VALUE TYPE: " + valuePropertyItem.getValueType());
+		if (valuePropertyItem.getValue() != null)
+		{
+			if(valuePropertyItem.getValueType().equals(PropertyBindingItem.STATIC))
+			{
+				destinationType.select(0);
+				destinationValue.setText(valuePropertyItem.getValue());
+			}
+			else if(valuePropertyItem.getValueType().equals(PropertyBindingItem.EXPRESSION))
+			{
+				destinationType.select(1);
+				destinationExpr.setText(valuePropertyItem.getValue());
+			}
+			else
+			{
+				destinationType.select(2);
+				ObjectDefinition od =
+						VariableHelper.getObjectDefinitionFromVariables(variables, valuePropertyItem.getValue());
+				StructuredSelection ss =
+						(od == null) ? StructuredSelection.EMPTY
+								: new StructuredSelection(od);
+				destinationTree.setSelection(ss);
+			}
+		}
+		destinationTypeChanged();
 	}
 	
-	public List<String> getApplicableContexts()
+	private void storeBindings()
 	{
-		return Collections.emptyList();
+		try
+		{
+			InteractionBinding interactionBinding = bindingManager.getInteractionBinding("");
+			NamedBinding namedBinding = interactionBinding.getNamedBinding("destination");
+			LanguageBinding languageBinding = namedBinding.getLanguageBinding("");
+			BrandBinding brandBinding = languageBinding.getBrandBinding(currentBrand);
+			PropertyBindingItem valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
+			if(valuePropertyItem == null)
+				valuePropertyItem = new PropertyBindingItem();
+			else
+				valuePropertyItem = (PropertyBindingItem)valuePropertyItem.clone();
+			switch (destinationType.getSelectionIndex())
+			{
+			case 2:
+				ISelection selection = destinationTree.getSelection();
+				if((selection != null) && !selection.isEmpty()
+						&& selection instanceof IStructuredSelection)
+				{
+					Object selObj = ((IStructuredSelection)selection).getFirstElement();
+					if(selObj instanceof ObjectDefinition)
+					{
+						valuePropertyItem.setVariable(((ObjectDefinition)selObj).getPath());
+						break;
+					}
+				}
+				valuePropertyItem.setVariable("");
+				break;
+			case 1:
+				valuePropertyItem.setExpression(destinationExpr.getText());
+				break;
+			default:
+				valuePropertyItem.setValue(destinationValue.getText());
+			}
+			brandBinding.setBindingItem(valuePropertyItem);
+			
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	public class VariableContentProvider implements ITreeContentProvider
+	{
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
+		 */
+		public Object[] getChildren(Object parentElement)
+		{
+			if (parentElement instanceof ObjectDefinition)
+			{
+				ObjectDefinition v = (ObjectDefinition)parentElement;
+
+				return v.getFields().toArray();
+			}
+
+			return null;
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
+		 */
+		public Object getParent(Object element)
+		{
+			if (element instanceof Variable)
+			{
+				return null;
+			}
+			else
+			{
+				return ((ObjectField)element).getParent();
+			}
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
+		 */
+		public boolean hasChildren(Object element)
+		{
+			return ((ObjectDefinition)element).getFields().size() > 0;
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
+		 */
+		public Object[] getElements(Object inputElement)
+		{
+			return variables.toArray();
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
+		 */
+		public void dispose()
+		{
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+		 */
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
+		{
+		}
+	}
+
+	/**
+	 * VariableLabelProvider.
+	 * 
+	 * @author Lonnie Pryor
+	 */
+	public class VariableLabelProvider implements ILabelProvider
+	{
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
+		 */
+		public Image getImage(Object element)
+		{
+			return null;
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.ILabelProvider#getText(java.lang.Object)
+		 */
+		public String getText(Object element)
+		{
+			return ((ObjectDefinition)element).getName();
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(org.eclipse.jface.viewers.ILabelProviderListener)
+		 */
+		public void addListener(ILabelProviderListener listener)
+		{
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
+		 */
+		public void dispose()
+		{
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(java.lang.Object, java.lang.String)
+		 */
+		public boolean isLabelProperty(Object element, String property)
+		{
+			return true;
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(org.eclipse.jface.viewers.ILabelProviderListener)
+		 */
+		public void removeListener(ILabelProviderListener listener)
+		{
+		}
 	}
 }

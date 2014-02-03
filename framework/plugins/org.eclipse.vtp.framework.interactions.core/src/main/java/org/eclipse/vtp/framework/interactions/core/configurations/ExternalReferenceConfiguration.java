@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.vtp.framework.core.IConfiguration;
+import org.eclipse.vtp.framework.interactions.core.media.IContentFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -29,19 +30,43 @@ public class ExternalReferenceConfiguration implements IConfiguration,
 {
 	/** Comment for name. */
 	private String name = ""; //$NON-NLS-1$
-	/** Comment for url. */
-	private String url = ""; //$NON-NLS-1$
+	private MediaConfiguration mediaConfiguration = null;
 	/** Comment for outputs. */
 	private final Map inputs = new HashMap();
 	/** Comment for outputs. */
 	private final Map outputs = new HashMap();
 	private final Map urlParameters = new HashMap();
+	private final IContentFactory contentFactory;
 
 	/**
 	 * Creates a new ExternalReferenceConfiguration.
 	 */
-	public ExternalReferenceConfiguration()
+	public ExternalReferenceConfiguration(IContentFactory contentFactory)
 	{
+		this.contentFactory = contentFactory;
+	}
+
+	/**
+	 * Returns the media configuration for this message or <code>null</code> if
+	 * no such configuration is registered.
+	 * 
+	 * @return The media configuration for this message or <code>null</code> if
+	 *         no such configuration is registered.
+	 */
+	public MediaConfiguration getMediaConfiguration()
+	{
+		return mediaConfiguration;
+	}
+
+	/**
+	 * Sets the media configuration for this message.
+	 * 
+	 * @param mediaConfiguration The media configuration for this message or
+	 *          <code>null</code> to remove the configuration.
+	 */
+	public void setMediaConfiguration(MediaConfiguration mediaConfiguration)
+	{
+		this.mediaConfiguration = mediaConfiguration;
 	}
 
 	/**
@@ -55,16 +80,6 @@ public class ExternalReferenceConfiguration implements IConfiguration,
 	}
 
 	/**
-	 * Returns the url.
-	 * 
-	 * @return The url.
-	 */
-	public String getUrl()
-	{
-		return url;
-	}
-
-	/**
 	 * Sets the name.
 	 * 
 	 * @param name The name to set.
@@ -72,16 +87,6 @@ public class ExternalReferenceConfiguration implements IConfiguration,
 	public void setName(String name)
 	{
 		this.name = name == null ? "" : name;
-	}
-
-	/**
-	 * Sets the url.
-	 * 
-	 * @param url The url to set.
-	 */
-	public void setUrl(String url)
-	{
-		this.url = url == null ? "" : url;
 	}
 
 	/**
@@ -240,8 +245,17 @@ public class ExternalReferenceConfiguration implements IConfiguration,
 	 */
 	public void load(Element configurationElement)
 	{
+		NodeList elements = configurationElement.getElementsByTagNameNS(
+				NAMESPACE_URI, NAME_MEDIA);
+		mediaConfiguration = null;
+		if (elements.getLength() == 0)
+			mediaConfiguration = null;
+		else
+		{
+			mediaConfiguration = new MediaConfiguration(contentFactory, null);
+			mediaConfiguration.load((Element)elements.item(0));
+		}
 		name = configurationElement.getAttribute(NAME_NAME);
-		url = configurationElement.getAttribute(NAME_VALUE);
 		inputs.clear();
 		NodeList itemElements = configurationElement.getElementsByTagNameNS(
 				NAMESPACE_URI, NAME_INPUT_ITEM);
@@ -284,10 +298,18 @@ public class ExternalReferenceConfiguration implements IConfiguration,
 	public void save(Element configurationElement)
 	{
 		configurationElement.setAttribute(NAME_NAME, name);
-		configurationElement.setAttribute(NAME_VALUE, url);
+		if (mediaConfiguration == null)
+			return;
+		String mediaName = NAME_MEDIA;
+		String prefix = configurationElement.getPrefix();
+		if (prefix != null && prefix.length() > 0)
+			mediaName = prefix + ":" + mediaName; //$NON-NLS-1$
+		Element mediaElement = configurationElement.getOwnerDocument().createElementNS(
+				NAMESPACE_URI, mediaName);
+		mediaConfiguration.save(mediaElement);
+		configurationElement.appendChild(mediaElement);
 		String inputItemName = NAME_INPUT_ITEM;
 		String outputItemName = NAME_OUTPUT_ITEM;
-		String prefix = configurationElement.getPrefix();
 		if (prefix != null && prefix.length() > 0)
 		{
 			inputItemName = prefix + ":" + inputItemName; //$NON-NLS-1$

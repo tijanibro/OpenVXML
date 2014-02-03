@@ -127,7 +127,7 @@ public class GenericBindingManager implements ConfigurationManager
 			Element interactionElement = (Element)interactionElementList.item(i);
 			String interactionTypeId = interactionElement.getAttribute("type");
 			InteractionType interactionType = InteractionTypeManager.getInstance().getType(interactionTypeId);
-			if(interactionType != null)
+			if(interactionTypeId.equals("") || interactionType != null)
 			{
 				InteractionBinding interactionBinding = new InteractionBinding(this, interactionTypeId);
 				interactionBinding.readConfiguration(interactionElement);

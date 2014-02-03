@@ -61,4 +61,82 @@ public class VariableHelper
 		}
 	}
 	
+	public static ObjectDefinition getObjectDefinitionFromVariables(List<Variable> vars, String name)
+	{
+		ObjectDefinition ret = null;
+		for(int i = 0; i < vars.size(); i++)
+		{
+			String varName = name;
+			boolean sub = false;
+
+			if(name.indexOf(".") != -1)
+			{
+				varName = name.substring(0, name.indexOf("."));
+				sub = true;
+			}
+
+			Variable v = vars.get(i);
+
+			if(v.getName().equals(varName))
+			{
+				if(sub)
+				{
+					//dig deeper
+					ret = getObjectDefinitionFromFields(name.substring(name
+								.indexOf(".") + 1), v);
+				}
+				else
+				{
+					ret = v;
+
+					break;
+				}
+			}
+		}
+
+		return ret;
+	}
+
+	/**
+	 * @param name
+	 * @param parent
+	 * @return
+	 */
+	public static ObjectDefinition getObjectDefinitionFromFields(String name,
+		ObjectDefinition parent)
+	{
+		ObjectDefinition ret = null;
+		List<ObjectField> fields = parent.getFields();
+
+		for(int i = 0; i < fields.size(); i++)
+		{
+			String varName = name;
+			boolean sub = false;
+
+			if(name.indexOf('.') != -1)
+			{
+				varName = name.substring(0, name.indexOf("."));
+				sub = true;
+			}
+
+			ObjectField of = fields.get(i);
+
+			if(of.getName().equals(varName))
+			{
+				if(sub)
+				{
+					ret = getObjectDefinitionFromFields(name.substring(name
+								.indexOf(".") + 1), of);
+				}
+				else
+				{
+					ret = of;
+
+					break;
+				}
+			}
+		}
+
+		return ret;
+	}
 }

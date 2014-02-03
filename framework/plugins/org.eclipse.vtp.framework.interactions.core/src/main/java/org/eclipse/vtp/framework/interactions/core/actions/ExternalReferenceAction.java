@@ -122,7 +122,7 @@ public class ExternalReferenceAction implements IAction
 		}
 		catch (RuntimeException e)
 		{
-			return context.createResult("error.external.reference", e); //$NON-NLS-1$
+			return context.createResult("error.subdialog", e); //$NON-NLS-1$
 		}
 	}
 }
