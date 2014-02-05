@@ -1210,6 +1210,15 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		Catch disconnectCatch = new Catch("connection.disconnect.hangup");
 		disconnectCatch.addAction(new Goto(hangupLink.toString()));
 		form.addEventHandler(disconnectCatch);
+		ILink fetchLink = links.createNextLink();
+		for (int i = 0; i < parameterNames.length; ++i)
+			fetchLink.setParameters(parameterNames[i], externalReferenceCommand
+					.getParameterValues(parameterNames[i]));
+		fetchLink.setParameter(externalReferenceCommand.getResultName(),
+				externalReferenceCommand.getBadFetchResultValue());
+		Catch badFetchCatch = new Catch("error.badfetch");
+		badFetchCatch.addAction(new Goto(fetchLink.toString()));
+		form.addEventHandler(badFetchCatch);
 		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
 		for(String event : events)
 		{

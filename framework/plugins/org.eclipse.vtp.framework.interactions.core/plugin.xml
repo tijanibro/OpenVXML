@@ -233,8 +233,13 @@
                normal="true">
          </result>
          <result
-               id="error.external.reference"
+               id="error.subdialog"
                name="External Reference Error"
+               normal="false">
+         </result>
+         <result
+               id="error.badfetch"
+               name="Bad Fetch Error"
                normal="false">
          </result>
       </action>

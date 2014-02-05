@@ -1546,6 +1546,7 @@ public class Conversation implements IConversation {
 			command.setResultName(resultParameterName);
 			command.setFilledResultValue(RESULT_NAME_FILLED);
 			command.setHangupResultValue(RESULT_NAME_HANGUP);
+			command.setBadFetchResultValue(RESULT_NAME_BAD_FETCH);
 			
 			command.setReferenceURI(resolveProperty(mediaConfiguration.getPropertyConfiguration("destination"), false, false));
 			String[] keys = configuration.getInputNames();

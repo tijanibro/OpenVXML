@@ -101,6 +101,17 @@ public class ExternalReferenceAction implements IAction
 				}
 				return context.createResult(IConversation.RESULT_NAME_HANGUP);
 			}
+			else if (IConversation.RESULT_NAME_BAD_FETCH.equals(result))
+			{
+				if(context.isReportingEnabled())
+				{
+					Dictionary props = new Hashtable();
+					props.put("event", "error.badfetch");
+					context.report(IReporter.SEVERITY_INFO,
+						"Could not load external URL.", props);
+				}
+				return context.createResult(IConversation.RESULT_NAME_BAD_FETCH);
+			}
 			else if(result != null)
 			{
 				return context.createResult(result);

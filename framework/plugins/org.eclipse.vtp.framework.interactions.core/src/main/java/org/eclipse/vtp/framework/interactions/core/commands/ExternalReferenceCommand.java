@@ -33,6 +33,8 @@ public final class ExternalReferenceCommand extends ConversationCommand
 	private String filledResultValue = null;
 	/** The value of the result parameter to pass if the caller hungup. */
 	private String hangupResultValue = null;
+	/** The value of the result parameter to pass if the target URL is not available. */
+	private String badFetchResultValue = null;
 	/** The URL of the external reference. */
 	private String referenceURI = null;
 	/** The arguments to pass to the external entity. */
@@ -131,6 +133,27 @@ public final class ExternalReferenceCommand extends ConversationCommand
 	public void setHangupResultValue(String hangupResultValue)
 	{
 		this.hangupResultValue = hangupResultValue;
+	}
+
+	/**
+	 * Returns the value of the result parameter to pass if the caller hungup.
+	 * 
+	 * @return The value of the result parameter to pass if the caller hungup.
+	 */
+	public String getBadFetchResultValue()
+	{
+		return badFetchResultValue;
+	}
+
+	/**
+	 * Sets the value of the result parameter to pass if the caller hungup.
+	 * 
+	 * @param noInputResultValue The value of the result parameter to pass if the
+	 *          caller hungup.
+	 */
+	public void setBadFetchResultValue(String badFetchResultValue)
+	{
+		this.badFetchResultValue = badFetchResultValue;
 	}
 
 	/**

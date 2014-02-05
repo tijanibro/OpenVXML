@@ -40,6 +40,7 @@ public interface IConversation
 	String RESULT_NAME_NO_INPUT = "error.input.noinput"; //$NON-NLS-1$
 	String RESULT_NAME_NO_MATCH = "error.input.nomatch"; //$NON-NLS-1$
 	String RESULT_NAME_HANGUP = "error.disconnect.hangup"; //$NON-NLS-1$
+	String RESULT_NAME_BAD_FETCH = "error.badfetch"; //$NON-NLS-1$
 
 	IInitial createInitial(String resultParameterName, Map variableNames);
 
