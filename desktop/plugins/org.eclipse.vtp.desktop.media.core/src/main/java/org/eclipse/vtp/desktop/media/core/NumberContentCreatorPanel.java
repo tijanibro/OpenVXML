@@ -39,6 +39,7 @@ public class NumberContentCreatorPanel extends DynamicContentCreatorPanel
 			content.setVariableValue(getDynamicSelection());
 		else
 			content.setStaticValue(text.getText());
+		content.setFormatName(getFormat());
 		return content;
 	}
 
@@ -73,5 +74,6 @@ public class NumberContentCreatorPanel extends DynamicContentCreatorPanel
 				setDynamicSelection(numberContent.getValue());
 			}
 		}
+		super.setInitialContent(content);
 	}
 }
