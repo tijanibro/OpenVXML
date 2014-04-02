@@ -87,12 +87,16 @@ public class DesignParser
 							for(int c = 0; c < managedConfigSectionList.getLength(); c++)
 							{
 								org.w3c.dom.Element configSectionElement = (org.w3c.dom.Element)managedConfigSectionList.item(c);
+								long t = System.currentTimeMillis();
 								ConfigurationManager manager = ConfigurationManagerRegistry.getInstance().getConfigurationManager(design, configSectionElement.getAttribute("type"));
 								if(manager != null)
 								{
+									System.out.println("Loaded configuration manager " + manager.getType() + " in " + Long.toString(System.currentTimeMillis() - t));
 									try
 				                    {
+										t = System.currentTimeMillis();
 					                    manager.readConfiguration(configSectionElement);
+										System.out.println("Read configuration  in " + Long.toString(System.currentTimeMillis() - t));
 				                    }
 				                    catch(ConfigurationException e)
 				                    {
