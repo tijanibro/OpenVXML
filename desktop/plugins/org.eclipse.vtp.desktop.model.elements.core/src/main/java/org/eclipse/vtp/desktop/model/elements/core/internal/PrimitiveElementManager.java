@@ -163,19 +163,27 @@ public class PrimitiveElementManager
 	public class ImplementedClassTemplate extends PrimitiveElementTemplate
 	{
 		Class<PrimitiveInformationProvider> informationProviderClass;
+		Constructor<PrimitiveInformationProvider> constructor;
 		
 		public ImplementedClassTemplate(String id, String name, PalletItemFilter filter, Class<PrimitiveInformationProvider> informationProviderClass)
 		{
 			super(id, name, filter);
 			this.informationProviderClass = informationProviderClass;
+			try
+			{
+				constructor = informationProviderClass.getConstructor(new Class[] {PrimitiveElement.class});
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 
 		public PrimitiveInformationProvider getInformationProviderInstance(PrimitiveElement element)
 		{
 			try
 			{
-				Constructor<PrimitiveInformationProvider> con = informationProviderClass.getConstructor(new Class[] {PrimitiveElement.class});
-				return con.newInstance(new Object[] {element});
+				return constructor.newInstance(new Object[] {element});
 			}
 			catch (Exception e)
 			{

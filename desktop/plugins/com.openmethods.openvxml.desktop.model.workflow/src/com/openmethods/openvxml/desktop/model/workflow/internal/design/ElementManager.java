@@ -50,8 +50,9 @@ public class ElementManager
 			try
 			{
 				rr.elementClass = (Class<DesignElement>)contributor.loadClass(className);
+				rr.constructor = rr.elementClass.getConstructor(new Class[] { String.class, String.class, Properties.class});
 			}
-			catch (ClassNotFoundException e)
+			catch (Exception e)
 			{
 				e.printStackTrace();
 				continue;
@@ -73,8 +74,7 @@ public class ElementManager
 		System.out.println("Looking up element: " + id + "[" + elementTypeId + "]: " + rr);
 		try
 		{
-			Constructor<DesignElement> constructor = rr.elementClass.getConstructor(new Class[] { String.class, String.class, Properties.class});
-			return constructor.newInstance(new Object[] { id, name, properties});
+			return rr.constructor.newInstance(new Object[] { id, name, properties});
 		}
 		catch (Exception e)
 		{
@@ -87,5 +87,6 @@ public class ElementManager
 	{
 		String type;
 		Class<DesignElement> elementClass;
+		Constructor<DesignElement> constructor;
 	}
 }
