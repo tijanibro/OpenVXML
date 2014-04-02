@@ -174,24 +174,49 @@ public class FragmentConfigurationManager implements ConfigurationManager
 	public void readConfiguration(Element configuration)
 		throws ConfigurationException
 	{
+		long t = System.currentTimeMillis();
 		entryId = configuration.getAttribute("entry-id");
+		System.out.println(System.currentTimeMillis() - t);
+		t = System.currentTimeMillis();
 		NodeList inputElementList = configuration.getElementsByTagName("input-binding");
+		System.out.println(System.currentTimeMillis() - t);
+		t = System.currentTimeMillis();
 		for(int i = 0; i < inputElementList.getLength(); i++)
 		{
 			Element inputElement = (Element)inputElementList.item(i);
+			System.out.println(System.currentTimeMillis() - t);
+			t = System.currentTimeMillis();
 			String inputName = inputElement.getAttribute("name");
+			System.out.println(System.currentTimeMillis() - t);
+			t = System.currentTimeMillis();
 			InputBinding inputBinding = new InputBinding(this, inputName);
+			System.out.println(System.currentTimeMillis() - t);
+			t = System.currentTimeMillis();
 			inputBinding.readConfiguration(inputElement);
+			System.out.println(System.currentTimeMillis() - t);
+			t = System.currentTimeMillis();
 			inputBindings.put(inputName, inputBinding);
+			System.out.println();
 		}
 		NodeList exitElementList = configuration.getElementsByTagName("exit-binding");
+		System.out.println(System.currentTimeMillis() - t);
+		t = System.currentTimeMillis();
 		for(int i = 0; i < exitElementList.getLength(); i++)
 		{
 			Element exitElement = (Element)exitElementList.item(i);
+			System.out.println(System.currentTimeMillis() - t);
+			t = System.currentTimeMillis();
 			String exitName = exitElement.getAttribute("name");
+			System.out.println(System.currentTimeMillis() - t);
+			t = System.currentTimeMillis();
 			ExitBinding exitBinding = new ExitBinding(this, exitName);
+			System.out.println(System.currentTimeMillis() - t);
+			t = System.currentTimeMillis();
 			exitBinding.readConfiguration(exitElement);
+			System.out.println(System.currentTimeMillis() - t);
+			t = System.currentTimeMillis();
 			exitBindings.put(exitName, exitBinding);
+			System.out.println();
 		}
 	}
 
