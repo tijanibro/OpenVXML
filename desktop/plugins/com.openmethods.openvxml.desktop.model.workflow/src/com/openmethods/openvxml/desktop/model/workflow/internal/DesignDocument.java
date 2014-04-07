@@ -142,7 +142,7 @@ public class DesignDocument extends WorkflowResource implements IDesignDocument,
 	
 	public synchronized void becomeWorkingCopy(boolean followExternalReferences)
 	{
-		if(!isWorking || followExternalReferences != externalReferencesFollowed)
+		if(!isWorking || (followExternalReferences != externalReferencesFollowed))
 		{
 			externalReferencesFollowed = followExternalReferences;
 			isWorking = true;

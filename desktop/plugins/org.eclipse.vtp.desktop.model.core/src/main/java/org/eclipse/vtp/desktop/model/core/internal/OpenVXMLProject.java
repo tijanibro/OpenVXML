@@ -215,7 +215,7 @@ public class OpenVXMLProject extends WorkflowResource implements
 	private synchronized void loadBuildPath()
 	{
 		System.err.println("Loading Build Path: " + getName());
-		new Exception().printStackTrace();
+//		new Exception().printStackTrace();
 		try
 		{
 			IFile buildPath = project.getFile(".buildPath");

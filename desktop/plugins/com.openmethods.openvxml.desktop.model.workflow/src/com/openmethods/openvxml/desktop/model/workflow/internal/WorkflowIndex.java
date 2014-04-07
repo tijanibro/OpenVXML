@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -26,6 +27,7 @@ import com.openmethods.openvxml.desktop.model.businessobjects.IBusinessObjectSet
 import com.openmethods.openvxml.desktop.model.workflow.IDesignDocument;
 import com.openmethods.openvxml.desktop.model.workflow.IDesignFolder;
 import com.openmethods.openvxml.desktop.model.workflow.IDesignItemContainer;
+import com.openmethods.openvxml.desktop.model.workflow.IDesignRootFolder;
 import com.openmethods.openvxml.desktop.model.workflow.IWorkflowEntry;
 import com.openmethods.openvxml.desktop.model.workflow.IWorkflowExit;
 import com.openmethods.openvxml.desktop.model.workflow.IWorkflowProjectAspect;
@@ -766,82 +768,91 @@ public class WorkflowIndex
 	{
 		IOpenVXMLProject wproject = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject(project);
 		IWorkflowProjectAspect aspect = (IWorkflowProjectAspect)wproject.getProjectAspect(IWorkflowProjectAspect.ASPECT_ID);
-		indexStructure(aspect.getDesignRootFolder());
-		indexExportedData(aspect.getDesignRootFolder());
-		try
+		IDesignRootFolder designRootFolder = aspect.getDesignRootFolder();
+		List<IDesignDocument> documents = new LinkedList<IDesignDocument>();
+		collectDocuments(designRootFolder, documents);
+		for(IDesignDocument document: documents)
 		{
-			Connection con = createConnection(true);
-			Statement st = con.createStatement();
-			System.out.println("Table: designdocuments");
-			ResultSet rs = st.executeQuery("select * from designdocuments");
-			while(rs.next())
-			{
-				System.out.println("id: " + rs.getString(1) + " path: " + rs.getString(2));
-			}
-			rs.close();
-			System.out.println("Table: workflowentries");
-			rs = st.executeQuery("select * from workflowentries");
-			while(rs.next())
-			{
-				System.out.println("id: " + rs.getString(1) + " name: " + rs.getString(2) + " doc: " + rs.getString(3));
-			}
-			rs.close();
-			System.out.println("Table: variables");
-			rs = st.executeQuery("select * from variables");
-			while(rs.next())
-			{
-				System.out.println("name: " + rs.getString(1) + " type: " + rs.getString(2) + " basetype: " + rs.getString(3) + " elementid: " + rs.getString(5) + " doc: " + rs.getString(6));
-			}
-			rs.close();
-			System.out.println("Table: workflowexits");
-			rs = st.executeQuery("select * from workflowexits");
-			while(rs.next())
-			{
-				System.out.println("id: " + rs.getString(1) + " name: " + rs.getString(2) + " type: " + rs.getString(3) + " doc: " + rs.getString(4));
-			}
-			rs.close();
-			System.out.println("Table: workflowreferences");
-			rs = st.executeQuery("select * from workflowreferences");
-			while(rs.next())
-			{
-				System.out.println("id: " + rs.getString(1) + " target: " + rs.getString(2) + " entry: " + rs.getString(3) + " doc: " + rs.getString(4));
-			}
-			rs.close();
-			System.out.println("Table: designentries");
-			rs = st.executeQuery("select * from designentries");
-			while(rs.next())
-			{
-				System.out.println("id: " + rs.getString(1) + " name: " + rs.getString(2) + " doc: " + rs.getString(3));
-			}
-			rs.close();
-			System.out.println("Table: designexits");
-			rs = st.executeQuery("select * from designexits");
-			while(rs.next())
-			{
-				System.out.println("id: " + rs.getString(1) + " targetid: " + rs.getString(2) + " targetname: " + rs.getString(3) + " doc: " + rs.getString(4));
-			}
-			rs.close();
-			System.out.println("Table: streamindex");
-			rs = st.executeQuery("select * from streamindex");
-			while(rs.next())
-			{
-				System.out.println("upstreamid: " + rs.getString(1) + " downstreamid: " + rs.getString(2) + " doc: " + rs.getString(3));
-			}
-			rs.close();
-			System.out.println("Table: elementindex");
-			rs = st.executeQuery("select * from elementindex");
-			while(rs.next())
-			{
-				System.out.println("elementid: " + rs.getString(1) + " doc: " + rs.getString(2));
-			}
-			rs.close();
-			st.close();
-			con.close();
+			indexStructure(document);
 		}
-		catch(Exception ex)
+		for(IDesignDocument document: documents)
 		{
-			ex.printStackTrace();
+			indexExportedData(document);
 		}
+//		try
+//		{
+//			Connection con = createConnection(true);
+//			Statement st = con.createStatement();
+//			System.out.println("Table: designdocuments");
+//			ResultSet rs = st.executeQuery("select * from designdocuments");
+//			while(rs.next())
+//			{
+//				System.out.println("id: " + rs.getString(1) + " path: " + rs.getString(2));
+//			}
+//			rs.close();
+//			System.out.println("Table: workflowentries");
+//			rs = st.executeQuery("select * from workflowentries");
+//			while(rs.next())
+//			{
+//				System.out.println("id: " + rs.getString(1) + " name: " + rs.getString(2) + " doc: " + rs.getString(3));
+//			}
+//			rs.close();
+//			System.out.println("Table: variables");
+//			rs = st.executeQuery("select * from variables");
+//			while(rs.next())
+//			{
+//				System.out.println("name: " + rs.getString(1) + " type: " + rs.getString(2) + " basetype: " + rs.getString(3) + " elementid: " + rs.getString(5) + " doc: " + rs.getString(6));
+//			}
+//			rs.close();
+//			System.out.println("Table: workflowexits");
+//			rs = st.executeQuery("select * from workflowexits");
+//			while(rs.next())
+//			{
+//				System.out.println("id: " + rs.getString(1) + " name: " + rs.getString(2) + " type: " + rs.getString(3) + " doc: " + rs.getString(4));
+//			}
+//			rs.close();
+//			System.out.println("Table: workflowreferences");
+//			rs = st.executeQuery("select * from workflowreferences");
+//			while(rs.next())
+//			{
+//				System.out.println("id: " + rs.getString(1) + " target: " + rs.getString(2) + " entry: " + rs.getString(3) + " doc: " + rs.getString(4));
+//			}
+//			rs.close();
+//			System.out.println("Table: designentries");
+//			rs = st.executeQuery("select * from designentries");
+//			while(rs.next())
+//			{
+//				System.out.println("id: " + rs.getString(1) + " name: " + rs.getString(2) + " doc: " + rs.getString(3));
+//			}
+//			rs.close();
+//			System.out.println("Table: designexits");
+//			rs = st.executeQuery("select * from designexits");
+//			while(rs.next())
+//			{
+//				System.out.println("id: " + rs.getString(1) + " targetid: " + rs.getString(2) + " targetname: " + rs.getString(3) + " doc: " + rs.getString(4));
+//			}
+//			rs.close();
+//			System.out.println("Table: streamindex");
+//			rs = st.executeQuery("select * from streamindex");
+//			while(rs.next())
+//			{
+//				System.out.println("upstreamid: " + rs.getString(1) + " downstreamid: " + rs.getString(2) + " doc: " + rs.getString(3));
+//			}
+//			rs.close();
+//			System.out.println("Table: elementindex");
+//			rs = st.executeQuery("select * from elementindex");
+//			while(rs.next())
+//			{
+//				System.out.println("elementid: " + rs.getString(1) + " doc: " + rs.getString(2));
+//			}
+//			rs.close();
+//			st.close();
+//			con.close();
+//		}
+//		catch(Exception ex)
+//		{
+//			ex.printStackTrace();
+//		}
 	}
 	
 	public void indexExportedData()
@@ -849,6 +860,20 @@ public class WorkflowIndex
 		IOpenVXMLProject wproject = WorkflowCore.getDefault().getWorkflowModel().convertToWorkflowProject(project);
 		IWorkflowProjectAspect aspect = (IWorkflowProjectAspect)wproject.getProjectAspect(IWorkflowProjectAspect.ASPECT_ID);
 		indexExportedData(aspect.getDesignRootFolder());
+	}
+	
+	private void collectDocuments(IDesignItemContainer container, List<IDesignDocument> documents)
+	{
+		List<IDesignDocument> docs = container.getDesignDocuments();
+		for(IDesignDocument doc : docs)
+		{
+			documents.add(doc);
+		}
+		List<IDesignFolder> folders = container.getDesignFolders();
+		for(IDesignFolder folder : folders)
+		{
+			collectDocuments(folder, documents);
+		}
 	}
 	
 	public void indexStructure(IDesignItemContainer container)
@@ -884,6 +909,7 @@ public class WorkflowIndex
 		validated = false;
 		System.out.println("indexing externals: " + designDocument.getUnderlyingFile().getProjectRelativePath());
 		long t = System.currentTimeMillis();
+		System.out.println("Document: " + designDocument + " is working: " + designDocument.isWorkingCopy());
 		if(!designDocument.isWorkingCopy())
 		{
 			designDocument.becomeWorkingCopy(false);
@@ -933,6 +959,7 @@ public class WorkflowIndex
 		validated = false;
 		System.out.println("indexing: " + designDocument.getUnderlyingFile().getProjectRelativePath());
 		long t = System.currentTimeMillis();
+		System.out.println("Document: " + designDocument + " is working: " + designDocument.isWorkingCopy());
 		if(!designDocument.isWorkingCopy())
 		{
 			designDocument.becomeWorkingCopy(false);
