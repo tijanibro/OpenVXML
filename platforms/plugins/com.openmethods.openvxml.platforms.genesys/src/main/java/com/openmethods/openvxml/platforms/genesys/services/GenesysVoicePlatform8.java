@@ -102,6 +102,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		VXMLDocument document = new VXMLDocument();
 		document.setProperty("documentmaxage", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 		document.setProperty("documentmaxstale", "0"); //$NON-NLS-1$ //$NON-NLS-2$
+		document.setProperty("com.genesyslab.externalevents.enable", "true");
 		Script jsonInclude = new Script();
 		jsonInclude.setSrc(links.createIncludeLink(Activator.getDefault().getBundle().getSymbolicName() + "/includes/json.js").toString());
 		document.addScript(jsonInclude);
