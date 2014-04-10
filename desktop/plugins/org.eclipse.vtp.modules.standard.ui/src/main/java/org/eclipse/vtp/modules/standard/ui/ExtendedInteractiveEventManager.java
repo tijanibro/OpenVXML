@@ -1,4 +1,4 @@
-package org.eclipse.vtp.modules.interactive.ui;
+package org.eclipse.vtp.modules.standard.ui;
 
 import java.util.ArrayList;
 import java.util.List;

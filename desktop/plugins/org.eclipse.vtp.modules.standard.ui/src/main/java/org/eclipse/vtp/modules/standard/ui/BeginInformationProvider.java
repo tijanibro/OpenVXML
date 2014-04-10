@@ -63,6 +63,11 @@ public class BeginInformationProvider extends PrimitiveInformationProvider imple
 		super(element);
 		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 		connectorRecords.add(new ConnectorRecord(element, "error.disconnect.hangup", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
+		List<String> events = ExtendedInteractiveEventManager.getDefault().getExtendedEvents();
+		for(String event : events)
+		{
+			connectorRecords.add(new ConnectorRecord(element, event, IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
+		}
 		variableDeclarations = new ArrayList<VariableDeclaration>();
 	}
 	

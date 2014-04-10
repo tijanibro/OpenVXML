@@ -22,6 +22,7 @@ import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
 import org.eclipse.vtp.desktop.model.interactive.core.internal.MenuChoice;
 import org.eclipse.vtp.framework.util.XMLUtilities;
 import org.eclipse.vtp.modules.interactive.ui.properties.MenuChoiceBindingManager;
+import org.eclipse.vtp.modules.standard.ui.ExtendedInteractiveEventManager;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
