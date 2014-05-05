@@ -416,7 +416,6 @@ public class AvpWithIDriverPlatform extends VoicePlatform
 	protected IDocument renderEndMessage(ILinkFactory links,
 			EndMessageCommand endMessageCommand)
 	{
-		new Exception().printStackTrace();
 		IDocument ret = super.renderEndMessage(links, endMessageCommand);
 		Long port = (Long)this.context.getRootAttribute("idriver.port");
 		if(port != null)
