@@ -87,7 +87,9 @@ public class IDriverInitAction implements IAction
 				Method instanceMethod = driverClass.getMethod("getInstance", null);
 				Object instanceObject = instanceMethod.invoke(null, new Object[0]);
 				Method startCallMethod = driverClass.getMethod("startCall", new Class[] { long.class, String.class, String.class, String.class});
-				startCallMethod.invoke(instanceObject, port, callId, dnis, ani);
+				Boolean callStarted = (Boolean)startCallMethod.invoke(instanceObject, port, callId, dnis, ani);
+				if(!callStarted)
+					return context.createResult("error.nodriver");
 				context.setRootAttribute("idriver.port", new Long(port));
 				Method getConnIdMethod = driverClass.getMethod("getConnId", new Class[] {long.class});
 				String connId = (String)getConnIdMethod.invoke(instanceObject, port);
