@@ -53,6 +53,10 @@ public class FinalAction extends ExitAction
 	 */
 	public IActionResult execute()
 	{
+		for(String att : context.getAttributeNames())
+		{
+			context.info(att + " = " + context.getAttribute(att).toString());
+		}
 		if ("true".equals(context.getAttribute("subdialog")))
 		{
 			if(context.isReportingEnabled())
