@@ -410,8 +410,11 @@ public class DeploymentSession implements ISessionDescriptor
 			for (Enumeration<String> e = httpSession.getAttributeNames(); e.hasMoreElements();)
 			{
 				String name = e.nextElement();
-				if (name.startsWith(qualifier[depth]))
-					list.add(name.substring(qualifier[depth].length()));
+				for(String q : qualifier)
+				{
+					if (name.startsWith(q))
+						list.add(name.substring(q.length()));
+				}
 			}
 		}
 		return list.toArray(new String[list.size()]);

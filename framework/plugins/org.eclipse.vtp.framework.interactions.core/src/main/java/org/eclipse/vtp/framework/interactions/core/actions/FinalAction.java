@@ -53,6 +53,7 @@ public class FinalAction extends ExitAction
 	 */
 	public IActionResult execute()
 	{
+		context.info("Current Attributes for FinalAction");
 		for(String att : context.getAttributeNames())
 		{
 			context.info(att + " = " + context.getAttribute(att).toString());
