@@ -56,7 +56,7 @@ public class FinalAction extends ExitAction
 		context.info("Current Attributes for FinalAction");
 		for(String att : context.getAttributeNames())
 		{
-			context.info(att + " = " + context.getAttribute(att).toString());
+			context.info(att + " = " + String.valueOf(context.getAttribute(att)));
 		}
 		if ("true".equals(context.getAttribute("subdialog")))
 		{
