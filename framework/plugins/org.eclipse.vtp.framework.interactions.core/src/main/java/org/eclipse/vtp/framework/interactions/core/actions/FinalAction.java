@@ -58,6 +58,7 @@ public class FinalAction extends ExitAction
 		{
 			context.info(att + " = " + String.valueOf(context.getAttribute(att)));
 		}
+		context.info("fragment:true comparison " + "true".equals(context.getAttribute("fragment")));
 		if ("true".equals(context.getAttribute("subdialog")))
 		{
 			if(context.isReportingEnabled())
