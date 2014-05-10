@@ -53,12 +53,12 @@ public class FinalAction extends ExitAction
 	 */
 	public IActionResult execute()
 	{
-		context.info("Current Attributes for FinalAction");
-		for(String att : context.getAttributeNames())
-		{
-			context.info(att + " = " + String.valueOf(context.getAttribute(att)));
-		}
-		context.info("fragment:true comparison " + "true".equals(context.getAttribute("fragment")));
+//		context.info("Current Attributes for FinalAction");
+//		for(String att : context.getAttributeNames())
+//		{
+//			context.info(att + " = " + String.valueOf(context.getAttribute(att)));
+//		}
+//		context.info("fragment:true comparison " + "true".equals(context.getAttribute("fragment")));
 		if ("true".equals(context.getAttribute("subdialog")))
 		{
 			if(context.isReportingEnabled())
@@ -77,8 +77,12 @@ public class FinalAction extends ExitAction
 			return context.createResult(IActionResult.RESULT_NAME_ABORT);
 		}
 		else if ("true".equals(context.getAttribute("fragment")))
+		{
+//			context.info("Is Fragment");
 			return super.execute();
-		else {
+		}
+		else
+		{
 			conversation.createEndMessage(configurations).enqueue();
 			return context.createResult(IActionResult.RESULT_NAME_ABORT);
 		}

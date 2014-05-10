@@ -1766,6 +1766,11 @@ public class Conversation implements IConversation {
 	private final class EndMessage extends AbstractInteraction implements
 			IEndMessage
 	{
+		public EndMessage()
+		{
+			super();
+		}
+		
 		private final Map<String, String> variables = new HashMap<String, String>();
 
 		public void setVariableValue(String variableName, String variableValue)

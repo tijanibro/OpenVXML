@@ -193,6 +193,8 @@ public class DeploymentExecution implements IExecutionDescriptor, ILinkFactory,
 			}
 			interactionTypeRegistry = (IInteractionTypeRegistry)execution
 					.lookupService(IInteractionTypeRegistry.class.getName());
+			variableRegistry = (IVariableRegistry)execution
+					.lookupService(IVariableRegistry.class.getName());
 			IPlatformSelector selector = (IPlatformSelector)execution
 					.lookupService(IPlatformSelector.class.getName());
 			if (selector == null)
@@ -208,6 +210,7 @@ public class DeploymentExecution implements IExecutionDescriptor, ILinkFactory,
 		{
 			platform = null;
 			interactionTypeRegistry = null;
+			variableRegistry = null;
 			execution.dispose();
 		}
 	}

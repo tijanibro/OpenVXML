@@ -179,7 +179,7 @@ public class Deployment implements IProcessDescriptor, IResourceManagerRegistry,
 			session.unlock();
 		}
 		IDocument document = null;
-		if (result == null || result.isTerminated())
+		if (result == null || (result.getDocument() == null && result.isTerminated()))
 			document = abort(httpSession, httpRequest, httpReesponse, prefix, depth,
 					variableValues, parameterValues);
 		if (result != null && result.getDocument() != null)
