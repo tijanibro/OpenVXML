@@ -160,7 +160,6 @@ public class Deployment implements IProcessDescriptor, IResourceManagerRegistry,
 						manager.getMethod("addHttpSessionListener", HttpSessionListener.class).invoke(null, this);
 						unregisterSessionListener = manager.getMethod("removeHttpSessionListener", HttpSessionListener.class);
 					} catch (Exception e) {
-						e.printStackTrace();
 					}
 				}
 			}
