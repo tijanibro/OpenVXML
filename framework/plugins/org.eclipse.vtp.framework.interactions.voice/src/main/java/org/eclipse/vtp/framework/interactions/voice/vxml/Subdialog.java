@@ -51,6 +51,7 @@ public class Subdialog extends FormElement
 	private final LinkedList<EventHandler> eventHandlers = new LinkedList<EventHandler>();
 	
 	private String nameList = null;
+	private String method = METHOD_GET;
 
 	/**
 	 * Creates a new instance of Subdialog with the specified name.
@@ -136,6 +137,11 @@ public class Subdialog extends FormElement
 	{
 		return nameList;
 	}
+	
+	public String getMethod()
+	{
+		return method;
+	}
 
 	/**
 	 * Returns the list of parameters for this subdialog.
@@ -186,6 +192,16 @@ public class Subdialog extends FormElement
 		this.nameList = nameList;
 		if (nameList != null && nameList.length() == 0)
 			this.nameList = null;
+	}
+
+	public void setMethod(String method) throws IllegalArgumentException,
+			NullPointerException
+	{
+		if (method == null)
+			throw new NullPointerException("method"); //$NON-NLS-1$
+		if (method.length() == 0)
+			throw new IllegalArgumentException("method"); //$NON-NLS-1$
+		this.method = method;
 	}
 
 	/**
@@ -310,8 +326,10 @@ public class Subdialog extends FormElement
 		super.writeAttributes(attributes);
 		if (sourceURI != null)
 			writeAttribute(attributes, null, null, NAME_SRC, TYPE_CDATA, sourceURI);
-		if(nameList != null)
+		if (nameList != null)
 			writeAttribute(attributes, null, null, NAME_NAMELIST, TYPE_CDATA, nameList);
+		if (method != null)
+			writeAttribute(attributes, null, null, NAME_METHOD, TYPE_CDATA, method);
 	}
 
 	/**
