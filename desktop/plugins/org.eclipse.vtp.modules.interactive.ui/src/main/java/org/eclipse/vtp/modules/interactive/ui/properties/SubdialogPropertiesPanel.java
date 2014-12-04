@@ -106,6 +106,7 @@ public class SubdialogPropertiesPanel extends DesignElementPropertiesPanel
 	/** A Label used to label the Text field for the name of the subdialog*/
 	Label nameLabel = null;
 	Composite container = null;
+	
 	Composite destinationContainer = null;
 	Combo destinationType = null;
 	Composite destinationComp = null;
@@ -116,6 +117,18 @@ public class SubdialogPropertiesPanel extends DesignElementPropertiesPanel
 	Text destinationExpr = null;
 	Composite destinationTreeComp = null;
 	TreeViewer destinationTree = null;
+	
+	Composite methodContainer = null;
+	Combo methodSelectionType = null;
+	Composite methodComp = null;
+	StackLayout methodLayout = null;
+	Composite methodComboComp = null;
+	Combo methodCombo = null;
+	Composite methodExprComp = null;
+	Text methodExpr = null;
+	Composite methodTreeComp = null;
+	TreeViewer methodTree = null;
+	
 	/** A UI table of all SubdialogInput objects configured in this Subdialog module*/
 	TableViewer inputTable = null;
 	/** A UI table of all SubdialogOutput objects configured in this Subdialog module*/
@@ -268,13 +281,90 @@ outer:	for(Variable v : vars)
 		fd.right = new FormAttachment(100);
 		fd.bottom = new FormAttachment(100);
 		fd.height = 10;
-		destinationTree.getControl().setLayoutData(
-				fd);
+		destinationTree.getControl().setLayoutData(fd);
 		destinationTree.setContentProvider(new VariableContentProvider());
 		destinationTree.setLabelProvider(new VariableLabelProvider());
 		destinationTree.setInput(this);
 		destinationLayout.topControl = destinationValueComp;
 		destinationComp.layout();
+
+		
+		Label methodLabel = new Label(container, SWT.NONE);
+		methodLabel.setText("Method: ");
+		methodLabel.setBackground(container.getBackground());
+
+		gd3 = new GridData();
+		gd3.verticalAlignment = SWT.TOP;
+		methodLabel.setLayoutData(gd3);
+		
+		methodContainer = new Composite(container, SWT.NONE);
+		methodContainer.setBackground(container.getBackground());
+		gridLayout = new GridLayout(2, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		methodContainer.setLayout(gridLayout);
+		gd2 = new GridData(SWT.FILL, SWT.FILL, true, true);
+		methodContainer.setLayoutData(gd2);
+
+		methodSelectionType = new Combo(methodContainer, SWT.DROP_DOWN | SWT.READ_ONLY);
+		gd4 = new GridData();
+		gd4.verticalAlignment = SWT.TOP;
+		methodSelectionType.setLayoutData(gd4);
+		methodSelectionType.add("Selection");
+		methodSelectionType.add("Expression");
+		methodSelectionType.add("Variable");
+		methodSelectionType.select(0);
+		methodSelectionType.addSelectionListener(new SelectionListener()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				methodSelectionTypeChanged();
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e)
+			{
+			}
+		});
+		methodComp = new Composite(methodContainer, SWT.NONE);
+		methodComp.setBackground(container.getBackground());
+		methodComp.setLayout(methodLayout = new StackLayout());
+		methodComp.setLayoutData(new GridData(GridData.FILL_BOTH));
+		methodComboComp = new Composite(methodComp, SWT.NONE);
+		methodComboComp.setBackground(methodComp.getBackground());
+		layout = new GridLayout(1, false);
+		layout.marginWidth = layout.marginHeight = 0;
+		methodComboComp.setLayout(layout);
+		methodCombo = new Combo(methodComboComp, SWT.DROP_DOWN | SWT.READ_ONLY);
+		methodCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		methodCombo.add("GET");
+		methodCombo.add("POST");
+		methodCombo.select(0);
+		methodExprComp = new Composite(methodComp, SWT.NONE);
+		methodExprComp.setBackground(methodComp.getBackground());
+		layout = new GridLayout(1, false);
+		layout.marginWidth = layout.marginHeight = 0;
+		methodExprComp.setLayout(layout);
+		methodExpr = new Text(methodExprComp, SWT.SINGLE | SWT.BORDER);
+		methodExpr.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		methodTreeComp = new Composite(methodComp, SWT.NONE);
+		methodTreeComp.setBackground(methodComp.getBackground());
+		fl = new FormLayout();
+		methodTreeComp.setLayout(fl);
+		methodTree = new TreeViewer(methodTreeComp, SWT.H_SCROLL
+				| SWT.V_SCROLL | SWT.BORDER | SWT.SINGLE);
+		fd = new FormData();
+		fd.left = new FormAttachment(0);
+		fd.top = new FormAttachment(0);
+		fd.right = new FormAttachment(100);
+		fd.bottom = new FormAttachment(100);
+		fd.height = 10;
+		methodTree.getControl().setLayoutData(fd);
+		methodTree.setContentProvider(new VariableContentProvider());
+		methodTree.setLabelProvider(new VariableLabelProvider());
+		methodTree.setInput(this);
+		methodLayout.topControl = methodComboComp;
+		methodComp.layout();
+
 		
 		Group paramsGroup = new Group(container, SWT.NONE);
 		paramsGroup.setBackground(container.getBackground());
@@ -616,6 +706,30 @@ outer:	for(Variable v : vars)
 		destinationTreeComp.layout();
 		destinationComp.layout();
 		destinationContainer.layout();
+		container.layout();
+	}
+
+	/**
+	 * Sets which controls are visible based on the method selection type
+	 */
+	private void methodSelectionTypeChanged()
+	{
+		((FormData)methodTree.getControl().getLayoutData()).height = 10;
+		switch (methodSelectionType.getSelectionIndex())
+		{
+		case 2:
+			methodLayout.topControl = methodTreeComp;
+			((FormData)methodTree.getControl().getLayoutData()).height = 175;
+			break;
+		case 1:
+			methodLayout.topControl = methodExprComp;
+			break;
+		default:
+			methodLayout.topControl = methodComboComp;
+		}
+		methodTreeComp.layout();
+		methodComp.layout();
+		methodContainer.layout();
 		container.layout();
 	}
 
@@ -1936,6 +2050,48 @@ outer:	for(Variable v : vars)
 			}
 		}
 		destinationTypeChanged();
+		
+		
+		
+		
+		
+		 //TODO clean up system.out items
+		interactionBinding = bindingManager.getInteractionBinding("");
+		namedBinding = interactionBinding.getNamedBinding("method");
+		languageBinding = namedBinding.getLanguageBinding("");
+		brandBinding = languageBinding.getBrandBinding(currentBrand);
+		System.out.println(currentBrand.getId());
+		valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
+		if(valuePropertyItem == null)
+		{
+			System.out.println("Value item is null");
+			valuePropertyItem = new PropertyBindingItem();
+		}
+		System.out.println("VALUE TYPE: " + valuePropertyItem.getValueType());
+		if (valuePropertyItem.getValue() != null)
+		{
+			if(valuePropertyItem.getValueType().equals(PropertyBindingItem.STATIC))
+			{
+				methodSelectionType.select(0);
+				methodCombo.select("POST".equalsIgnoreCase(valuePropertyItem.getValue()) ? 1 : 0);
+			}
+			else if(valuePropertyItem.getValueType().equals(PropertyBindingItem.EXPRESSION))
+			{
+				methodSelectionType.select(1);
+				methodExpr.setText(valuePropertyItem.getValue());
+			}
+			else
+			{
+				methodSelectionType.select(2);
+				ObjectDefinition od =
+						VariableHelper.getObjectDefinitionFromVariables(variables, valuePropertyItem.getValue());
+				StructuredSelection ss =
+						(od == null) ? StructuredSelection.EMPTY
+								: new StructuredSelection(od);
+				methodTree.setSelection(ss);
+			}
+		}
+		methodSelectionTypeChanged();
 	}
 	
 	private void storeBindings()
@@ -1974,6 +2130,44 @@ outer:	for(Variable v : vars)
 				valuePropertyItem.setValue(destinationValue.getText());
 			}
 			brandBinding.setBindingItem(valuePropertyItem);
+			
+			
+			
+			
+			namedBinding = interactionBinding.getNamedBinding("method"); //TODO verify this matches
+			languageBinding = namedBinding.getLanguageBinding("");
+			brandBinding = languageBinding.getBrandBinding(currentBrand);
+			valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
+			if(valuePropertyItem == null)
+				valuePropertyItem = new PropertyBindingItem();
+			else
+				valuePropertyItem = (PropertyBindingItem)valuePropertyItem.clone();
+			switch (methodSelectionType.getSelectionIndex())
+			{
+			case 2:
+				ISelection selection = methodTree.getSelection();
+				if((selection != null) && !selection.isEmpty()
+						&& selection instanceof IStructuredSelection)
+				{
+					Object selObj = ((IStructuredSelection)selection).getFirstElement();
+					if(selObj instanceof ObjectDefinition)
+					{
+						valuePropertyItem.setVariable(((ObjectDefinition)selObj).getPath());
+						break;
+					}
+				}
+				valuePropertyItem.setVariable("");
+				break;
+			case 1:
+				valuePropertyItem.setExpression(methodExpr.getText());
+				break;
+			default:
+				valuePropertyItem.setValue(methodCombo.getSelectionIndex() == 1 ? "POST" : "GET");
+			}
+			brandBinding.setBindingItem(valuePropertyItem);
+			
+
+			
 			
 		}
 		catch (Exception ex)
