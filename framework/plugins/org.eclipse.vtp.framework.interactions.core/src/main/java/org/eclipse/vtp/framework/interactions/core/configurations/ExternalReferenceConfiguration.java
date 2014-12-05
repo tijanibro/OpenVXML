@@ -28,12 +28,9 @@ import org.w3c.dom.NodeList;
 public class ExternalReferenceConfiguration implements IConfiguration,
 		InteractionsConstants
 {
-	/** Comment for name. */
 	private String name = ""; //$NON-NLS-1$
 	private MediaConfiguration mediaConfiguration = null;
-	/** Comment for outputs. */
 	private final Map inputs = new HashMap();
-	/** Comment for outputs. */
 	private final Map outputs = new HashMap();
 	private final Map urlParameters = new HashMap();
 	private final IContentFactory contentFactory;

@@ -51,6 +51,7 @@ public class Subdialog extends FormElement
 	private final LinkedList<EventHandler> eventHandlers = new LinkedList<EventHandler>();
 	
 	private String nameList = null;
+	//TODO
 	private String method = METHOD_GET;
 
 	/**
@@ -201,7 +202,12 @@ public class Subdialog extends FormElement
 			throw new NullPointerException("method"); //$NON-NLS-1$
 		if (method.length() == 0)
 			throw new IllegalArgumentException("method"); //$NON-NLS-1$
-		this.method = method;
+		if(VXMLConstants.METHOD_POST.equalsIgnoreCase(method))
+			this.method = VXMLConstants.METHOD_POST;
+		else if(VXMLConstants.METHOD_GET.equalsIgnoreCase(method))
+			this.method = VXMLConstants.METHOD_GET;
+		else
+			throw new IllegalArgumentException("method"); //$NON-NLS-1$
 	}
 
 	/**

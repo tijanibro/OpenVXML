@@ -37,6 +37,8 @@ public final class ExternalReferenceCommand extends ConversationCommand
 	private String badFetchResultValue = null;
 	/** The URL of the external reference. */
 	private String referenceURI = null;
+	/** The method to use for fetching the external reference. */
+	private String method = null;
 	/** The arguments to pass to the external entity. */
 	private final Map inputArguments = new HashMap();
 	/** The arguments to accept from the external entity. */
@@ -175,6 +177,24 @@ public final class ExternalReferenceCommand extends ConversationCommand
 	{
 		this.referenceURI = referenceURI;
 	}
+	
+	/**
+	 * @return Returns the method of the fetch
+	 */
+	public String getMethod()
+	{
+		return method;
+	}
+	
+
+	/**
+	 * @param method - Sets the method of the fetch
+	 */
+	public void setMethod(String method)
+	{
+		this.method = method;
+	}
+	
 
 	/**
 	 * Returns the names of the arguments the resource takes as input.
@@ -380,7 +400,8 @@ public final class ExternalReferenceCommand extends ConversationCommand
 			parameters.add((String)entry.getKey());
 			parameters.add((String)entry.getValue());
 		}
-		return new Object[] { referenceName, referenceURI,
+		
+		return new Object[] { referenceName, referenceURI, method,
 				inputArguments.toArray(new String[inputArguments.size()]),
 				outputArguments.toArray(new String[outputArguments.size()]),
 				parameters.toArray(new String[parameters.size()]) };
@@ -396,21 +417,22 @@ public final class ExternalReferenceCommand extends ConversationCommand
 	{
 		Object[] array = (Object[])contents;
 		referenceName = (String)array[0];
-		referenceURI = (String)array[1];
+		referenceURI = (String)array[1]; 
+		method = (String)array[2];
 		this.inputArguments.clear();
-		String[] inputArguments = (String[])array[2];
+		String[] inputArguments = (String[])array[3];
 		for (int i = 0; i < inputArguments.length; i += 2)
 			this.inputArguments.put(inputArguments[i], inputArguments[i + 1]);
 		this.urlParameters.clear();
-		String[] urlArguments = (String[])array[2];
+		String[] urlArguments = (String[])array[3];
 		for (int i = 0; i < urlArguments.length; i += 2)
 			this.urlParameters.put(urlArguments[i], urlArguments[i + 1]);
 		this.outputArguments.clear();
-		String[] outputArguments = (String[])array[3];
+		String[] outputArguments = (String[])array[4];
 		for (int i = 0; i < outputArguments.length; i += 2)
 			this.outputArguments.put(outputArguments[i], outputArguments[i + 1]);
 		this.parameters.clear();
-		String[] parameters = (String[])array[4];
+		String[] parameters = (String[])array[5];
 		for (int i = 0; i < parameters.length; i += 2)
 			this.parameters.put(parameters[i], parameters[i + 1]);
 	}

@@ -1547,8 +1547,9 @@ public class Conversation implements IConversation {
 			command.setFilledResultValue(RESULT_NAME_FILLED);
 			command.setHangupResultValue(RESULT_NAME_HANGUP);
 			command.setBadFetchResultValue(RESULT_NAME_BAD_FETCH);
-			
 			command.setReferenceURI(resolveProperty(mediaConfiguration.getPropertyConfiguration("destination"), false, false));
+			command.setMethod(resolveProperty(mediaConfiguration.getPropertyConfiguration("method"), false, false));
+			
 			String[] keys = configuration.getInputNames();
 			for (int i = 0; i < keys.length; ++i) {
 				if (!configuration.isInputVariable(keys[i])) // this determines

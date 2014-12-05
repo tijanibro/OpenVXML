@@ -35,6 +35,7 @@ public class SubdialogInformationProvider extends PrimitiveInformationProvider
 	private List<SubdialogOutput> outputs = new ArrayList<SubdialogOutput>();
 	private List<SubdialogParameter> urlParameters = new ArrayList<SubdialogParameter>();
 	private String url = "";
+	private String method = "";
 
 	/**
 	 * @param name
@@ -90,10 +91,21 @@ public class SubdialogInformationProvider extends PrimitiveInformationProvider
 	{
 		this.url = url;
 	}
+	
+	public String getMethod()
+	{
+		return method;
+	}
+
+	public void setMethod(String method)
+	{
+		this.method = method;
+	}
 
 	public void writeConfiguration(org.w3c.dom.Element configuration)
 	{
 		configuration.setAttribute("url", XMLUtilities.encodeAttribute(url));
+		configuration.setAttribute("method", XMLUtilities.encodeAttribute(method));
 		org.w3c.dom.Element paramsElement = configuration.getOwnerDocument().createElement("params");
 		configuration.appendChild(paramsElement);
 		for(int i = 0; i < urlParameters.size(); i++)
@@ -131,6 +143,7 @@ public class SubdialogInformationProvider extends PrimitiveInformationProvider
 	public void readConfiguration(org.w3c.dom.Element configuration)
 	{
 		url = configuration.getAttribute("url");
+		method = configuration.getAttribute("method");
 		NodeList nl = configuration.getElementsByTagName("inputs");
 		if(nl.getLength() > 0)
 		{

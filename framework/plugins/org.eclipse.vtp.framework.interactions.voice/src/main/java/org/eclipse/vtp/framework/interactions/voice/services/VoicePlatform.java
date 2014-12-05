@@ -1149,6 +1149,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		Subdialog subdialog = new Subdialog(externalReferenceCommand
 				.getReferenceName());
 		subdialog.setSourceURI(externalReferenceCommand.getReferenceURI());
+		subdialog.setMethod(externalReferenceCommand.getMethod());
 		StringBuffer nameListBuffer = new StringBuffer();
 		String[] sourceParameters = externalReferenceCommand.getURLParameterNames();
 		for(int i = 0; i < sourceParameters.length; i++)
