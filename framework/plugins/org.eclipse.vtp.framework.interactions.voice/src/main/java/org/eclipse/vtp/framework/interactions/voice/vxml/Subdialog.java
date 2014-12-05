@@ -198,16 +198,20 @@ public class Subdialog extends FormElement
 	public void setMethod(String method) throws IllegalArgumentException,
 			NullPointerException
 	{
-		if (method == null)
-			throw new NullPointerException("method"); //$NON-NLS-1$
-		if (method.length() == 0)
-			throw new IllegalArgumentException("method"); //$NON-NLS-1$
+//		if (method == null)
+//			throw new NullPointerException("method"); //$NON-NLS-1$
+//		if (method.length() == 0)
+//			throw new IllegalArgumentException("method"); //$NON-NLS-1$
 		if(VXMLConstants.METHOD_POST.equalsIgnoreCase(method))
 			this.method = VXMLConstants.METHOD_POST;
 		else if(VXMLConstants.METHOD_GET.equalsIgnoreCase(method))
 			this.method = VXMLConstants.METHOD_GET;
 		else
-			throw new IllegalArgumentException("method"); //$NON-NLS-1$
+		{
+			this.method = VXMLConstants.METHOD_GET;
+			System.out.println("Expecting \"post\" or \"get\". Got " + method + " instead");
+		}
+			
 	}
 
 	/**
