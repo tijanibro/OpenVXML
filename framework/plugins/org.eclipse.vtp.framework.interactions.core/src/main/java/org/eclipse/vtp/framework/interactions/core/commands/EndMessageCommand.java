@@ -24,6 +24,15 @@ import java.util.Map;
  */
 public final class EndMessageCommand extends ConversationCommand
 {
+	/** A flag that allows this to function as Submit-Next */
+	private boolean subdialog = false;
+	
+	/** URL Parameters for use with Submit-Next */
+	private final Map<String,String> urlParameters = new HashMap<String,String>();
+	
+	/** The method to use for Submit-Next. */
+	private String method = null;
+	
 	/** The parameters to set when the process resumes. */
 	private final Map<String, String> variables = new HashMap<String, String>();
 
@@ -120,4 +129,55 @@ public final class EndMessageCommand extends ConversationCommand
 		for (int i = 0; i < array.length; i += 2)
 			this.variables.put(array[i], array[i + 1]);
 	}
+
+	public boolean isSubdialog() {
+		return subdialog;
+	}
+
+	public void setSubdialog(boolean subdialog) {
+		this.subdialog = subdialog;
+	}
+	
+	public String[] getURLParameterNames()
+	{
+		return (String[])urlParameters.keySet().toArray(
+				new String[urlParameters.size()]);
+	}
+
+	public String getURLParameterValue(String name)
+	{
+		if (name == null)
+			return null;
+		return (String)urlParameters.get(name);
+	}
+
+	public void setURLParameterValue(String name, String value)
+	{
+		if (name == null)
+			return;
+		if (value == null)
+			urlParameters.remove(name);
+		else
+			urlParameters.put(name, value);
+	}
+
+	/**
+	 * @return Returns the method of the fetch
+	 */
+	public String getMethod()
+	{
+		return method;
+	}
+	
+
+	/**
+	 * @param method - Sets the method of the fetch
+	 */
+	public void setMethod(String method)
+	{
+		this.method = method;
+	}
+	
+
+
 }
