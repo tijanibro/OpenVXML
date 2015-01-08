@@ -30,6 +30,7 @@ import org.eclipse.vtp.framework.interactions.core.commands.MetaDataMessageComma
 import org.eclipse.vtp.framework.interactions.core.commands.MetaDataRequestCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.OutputMessageCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.SelectionRequestCommand;
+import org.eclipse.vtp.framework.interactions.core.commands.SubmitCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.TransferMessageCommand;
 import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataConfiguration;
 import org.eclipse.vtp.framework.interactions.core.platforms.IDocument;
@@ -230,6 +231,12 @@ public abstract class AbstractPlatform implements IPlatform
 		return null;
 	}
 
+	protected IDocument renderSubmit(ILinkFactory links,
+			SubmitCommand submitCommand)
+	{
+		return null;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -445,6 +452,12 @@ public abstract class AbstractPlatform implements IPlatform
 		{
 			return renderFinalDocument(links, finalCommand);
 		}
+		
+		public Object visitSubmit(SubmitCommand submitCommand)
+		{
+			return renderSubmit(links, submitCommand);
+		}
+		
 
 		/*
 		 * (non-Javadoc)
@@ -457,5 +470,5 @@ public abstract class AbstractPlatform implements IPlatform
 		{
 			return null;
 		}
-	}
+
 }
