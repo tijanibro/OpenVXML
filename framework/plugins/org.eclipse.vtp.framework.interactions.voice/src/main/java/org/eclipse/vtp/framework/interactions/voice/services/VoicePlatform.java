@@ -34,7 +34,7 @@ import org.eclipse.vtp.framework.interactions.core.commands.InitialCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.InputRequestCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.OutputMessageCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.SelectionRequestCommand;
-import org.eclipse.vtp.framework.interactions.core.commands.SubmitCommand;
+import org.eclipse.vtp.framework.interactions.core.commands.SubmitNextCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.TransferMessageCommand;
 import org.eclipse.vtp.framework.interactions.core.media.IMediaProvider;
 import org.eclipse.vtp.framework.interactions.core.media.IMediaProviderRegistry;
@@ -1421,23 +1421,37 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		return document;
 	}
 
-	protected IDocument renderSubmit(ILinkFactory links, SubmitCommand submitNextCommand)
+	protected IDocument renderSubmitNext(ILinkFactory links, SubmitNextCommand submitNextCommand)
 	{
 		Form form = new Form("SubmitNextForm"); //$NON-NLS-1$
-		Submit submitNext = new Submit(submitNextCommand.getReferenceName(), submitNextCommand.getURLParameterNames());
+		Submit submitNext = new Submit(submitNextCommand
+				.getReferenceName());
 		submitNext.setTargetURI(submitNextCommand.getReferenceURI());
 		submitNext.setMethod(submitNextCommand.getMethod());
-
+		
+		
+		
+		
+		StringBuffer nameListBuffer = new StringBuffer();
+		String[] sourceParameters = submitNextCommand.getURLParameterNames();
+		for(int i = 0; i < sourceParameters.length; i++)
+		{
+			String sourceParameterValue = submitNextCommand.getURLParameterValue(sourceParameters[i]);
+			form.addVariable(new Variable(sourceParameters[i], sourceParameterValue));
+			nameListBuffer.append(sourceParameters[i]);
+			if(i != sourceParameters.length - 1)
+				nameListBuffer.append(' ');
+		}
+		submitNext.setNameList(nameListBuffer.toString());
+		
+		
+		
 		String[] inputArgNames = submitNextCommand.getInputArgumentNames();
 		for (int i = 0; i < inputArgNames.length; ++i)
 			submitNext.addParameter(new Parameter(inputArgNames[i],
 					submitNextCommand.getInputArgumentValue(inputArgNames[i])));
-		
-//		ILink nextLink = links.createNextLink();
-//		Filled filled = new Filled();
-		
-		Block block = new Block("SubmitNextBlock");
-		
+		ILink nextLink = links.createNextLink();
+		Filled filled = new Filled();
 		List<String> submitNames = new ArrayList<String>();
 		String[] parameterNames = submitNextCommand.getParameterNames();
 		for (int i = 0; i < parameterNames.length; ++i)
@@ -1454,23 +1468,22 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 					paramBuffer.append(',');
 				}
 			}
-			block.addVariable(new Variable(parameterNames[i], "'" + paramBuffer.toString() + "'"));
+			filled.addVariable(new Variable(parameterNames[i], "'" + paramBuffer.toString() + "'"));
 		}
 		submitNames.add(submitNextCommand.getResultName());
-		
-		
-		block.addVariable(new Variable(submitNextCommand.getResultName(), "'" + submitNextCommand.getFilledResultValue() + "'"));
+		filled.addVariable(new Variable(submitNextCommand.getResultName(), "'" + submitNextCommand.getFilledResultValue() + "'"));
 		
 		
 		
 		
 		
-//		Submit submit = new Submit(nextLink.toString(), submitNames.toArray(new String[submitNames.size()]));
-		submitNext.setMethod(VXMLConstants.METHOD_POST); //TODO add method specified in UI
-		submitNext.setEncodingType("multipart/form-data");
-		block.addAction(submitNext);
-//		submitNext.addFilledHandler(filled);
-		form.addFormElement(block);
+		Submit submit = new Submit(nextLink.toString(), submitNames.toArray(new String[submitNames.size()]));
+		submit.setMethod(VXMLConstants.METHOD_POST);
+		submit.setEncodingType("multipart/form-data");
+		filled.addAction(submit);
+		submitNext.addFilledHandler(filled);
+		form.addFormElement(submitNext);
+		
 		
 		//TODO is hangup actually needed?
 		ILink hangupLink = links.createNextLink();
@@ -1482,14 +1495,15 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		Catch disconnectCatch = new Catch("connection.disconnect.hangup");
 		disconnectCatch.addAction(new Goto(hangupLink.toString()));
 		form.addEventHandler(disconnectCatch);
-		
-		
 		ILink fetchLink = links.createNextLink();
 		for (int i = 0; i < parameterNames.length; ++i)
 			fetchLink.setParameters(parameterNames[i], submitNextCommand
 					.getParameterValues(parameterNames[i]));
 		fetchLink.setParameter(submitNextCommand.getResultName(),
 				submitNextCommand.getBadFetchResultValue());
+
+		
+		
 		Catch badFetchCatch = new Catch("error.badfetch");
 		badFetchCatch.addAction(new Goto(fetchLink.toString()));
 		form.addEventHandler(badFetchCatch);

@@ -129,6 +129,4 @@ public interface IConversationCommandVisitor extends ICommandVisitor
 	 * @return An implementation-specific result.
 	 */
 	Object visitFinal(FinalCommand finalCommand);
-	
-	Object visitSubmit(SubmitCommand submitCommand);
 }

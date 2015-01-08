@@ -35,8 +35,6 @@ public class Submit extends Goto
 	private String encodingType = null;
 	/** List of variable names to pass to the next document */
 	private final LinkedList<String> names = new LinkedList<String>();
-	/** The parameters to pass to the next document. */
-	private final LinkedList<Parameter> parameters = new LinkedList<Parameter>();
 
 	/**
 	 * Creates a new Submit object that will transfer execution to the given URI.
@@ -98,16 +96,6 @@ public class Submit extends Goto
 	public String[] getNames()
 	{
 		return names.toArray(new String[names.size()]);
-	}
-
-	/**
-	 * Returns the list of parameters.
-	 * 
-	 * @return The list of parameters.
-	 */
-	public Parameter[] getParameters()
-	{
-		return parameters.toArray(new Parameter[parameters.size()]);
 	}
 
 	/**
@@ -175,38 +163,6 @@ public class Submit extends Goto
 		names.remove(name);
 	}
 
-	
-	/**
-	 * Adds the specified parameter to the set of parameters.
-	 * 
-	 * @param parameter The parameter to add.
-	 * @throws NullPointerException If the supplied parameter is <code>null</code>.
-	 */
-	public void addParameter(Parameter parameter) throws NullPointerException
-	{
-		if (parameter == null)
-			throw new NullPointerException("parameter"); //$NON-NLS-1$
-		parameters.add(parameter);
-	}
-
-	/**
-	 * Removes the specified parameter from the set of parameters
-	 * 
-	 * @param parameter The parameter to remove.
-	 * @throws NullPointerException If the supplied parameter is <code>null</code>.
-	 */
-	public void removeParameter(Parameter parameter) throws NullPointerException
-	{
-		if (parameter == null)
-			throw new NullPointerException("parameter"); //$NON-NLS-1$
-		parameters.remove(parameter);
-	}
-
-
-	
-	
-	
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -252,20 +208,4 @@ public class Submit extends Goto
 					.toString());
 		}
 	}
-	
-	/**
-	 * Write the parameters in this subdialog to the specified content handler.
-	 * 
-	 * @param outputHandler The content handler to write to.
-	 * @throws NullPointerException If the supplied content handler is
-	 *           <code>null</code>.
-	 * @throws SAXException If the writing of one of the parameters fails.
-	 */
-	protected void writeParameters(ContentHandler outputHandler)
-			throws NullPointerException, SAXException
-	{
-		writeChildren(outputHandler, parameters);
-	}
-
-
 }

@@ -23,7 +23,7 @@ import java.util.Map;
  * 
  * @author Lonnie Pryor
  */
-public final class SubmitCommand extends ConversationCommand
+public final class SubmitNextCommand extends ConversationCommand
 {
 	/** The name of the external reference being called. */
 	private String referenceName = null;
@@ -41,6 +41,8 @@ public final class SubmitCommand extends ConversationCommand
 	private String method = null;
 	/** The arguments to pass to the external entity. */
 	private final Map inputArguments = new HashMap();
+	/** The arguments to accept from the external entity. */
+	private final Map outputArguments = new HashMap();
 	/** The parameters to set when the process resumes. */
 	private final Map parameters = new HashMap();
 	private final Map urlParameters = new HashMap();
@@ -48,7 +50,7 @@ public final class SubmitCommand extends ConversationCommand
 	/**
 	 * Creates a new ExternalReferenceCommand.
 	 */
-	public SubmitCommand()
+	public SubmitNextCommand()
 	{
 	}
 
@@ -234,6 +236,46 @@ public final class SubmitCommand extends ConversationCommand
 			inputArguments.put(name, value);
 	}
 
+	/**
+	 * Returns the names of the arguments the resource returns as output.
+	 * 
+	 * @return The names of the arguments the resource returns as output.
+	 */
+	public String[] getOutputArgumentNames()
+	{
+		return (String[])outputArguments.keySet().toArray(
+				new String[outputArguments.size()]);
+	}
+
+	/**
+	 * Returns the value of an argument the resource returns as output.
+	 * 
+	 * @param name The name of the argument to be returned.
+	 * @return The value of an argument the resource returns as output.
+	 */
+	public String getOutputArgumentValue(String name)
+	{
+		if (name == null)
+			return null;
+		return (String)outputArguments.get(name);
+	}
+
+	/**
+	 * Configures the value of an argument the resource returns as output.
+	 * 
+	 * @param name The name of the argument to return.
+	 * @param value The value of the argument.
+	 */
+	public void setOutputArgumentValue(String name, String value)
+	{
+		if (name == null)
+			return;
+		if (value == null)
+			outputArguments.remove(name);
+		else
+			outputArguments.put(name, value);
+	}
+
 	public String[] getURLParameterNames()
 	{
 		return (String[])urlParameters.keySet().toArray(
@@ -320,7 +362,7 @@ public final class SubmitCommand extends ConversationCommand
 	 */
 	Object accept(IConversationCommandVisitor visitor)
 	{
-		return visitor.visitSubmit(this);
+		return visitor.visitExternalReference(this);
 	}
 
 	/*
@@ -344,6 +386,13 @@ public final class SubmitCommand extends ConversationCommand
 			urlArguments.add((String)entry.getKey());
 			urlArguments.add((String)entry.getValue());
 		}
+		List outputArguments = new ArrayList(this.outputArguments.size() * 2);
+		for (Iterator i = this.outputArguments.entrySet().iterator(); i.hasNext();)
+		{
+			Map.Entry entry = (Map.Entry)i.next();
+			outputArguments.add((String)entry.getKey());
+			outputArguments.add((String)entry.getValue());
+		}
 		List parameters = new ArrayList(this.parameters.size() * 2);
 		for (Iterator i = this.parameters.entrySet().iterator(); i.hasNext();)
 		{
@@ -354,6 +403,7 @@ public final class SubmitCommand extends ConversationCommand
 		
 		return new Object[] { referenceName, referenceURI, method,
 				inputArguments.toArray(new String[inputArguments.size()]),
+				outputArguments.toArray(new String[outputArguments.size()]),
 				parameters.toArray(new String[parameters.size()]) };
 	}
 
@@ -377,8 +427,12 @@ public final class SubmitCommand extends ConversationCommand
 		String[] urlArguments = (String[])array[3];
 		for (int i = 0; i < urlArguments.length; i += 2)
 			this.urlParameters.put(urlArguments[i], urlArguments[i + 1]);
+		this.outputArguments.clear();
+		String[] outputArguments = (String[])array[4];
+		for (int i = 0; i < outputArguments.length; i += 2)
+			this.outputArguments.put(outputArguments[i], outputArguments[i + 1]);
 		this.parameters.clear();
-		String[] parameters = (String[])array[4];
+		String[] parameters = (String[])array[5];
 		for (int i = 0; i < parameters.length; i += 2)
 			this.parameters.put(parameters[i], parameters[i + 1]);
 	}
