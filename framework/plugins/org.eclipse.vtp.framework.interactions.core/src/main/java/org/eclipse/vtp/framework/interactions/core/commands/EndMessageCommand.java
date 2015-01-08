@@ -25,13 +25,16 @@ import java.util.Map;
 public final class EndMessageCommand extends ConversationCommand
 {
 	/** A flag that allows this to function as Submit-Next */
-	private boolean subdialog = false;
+	private boolean submit = false;
 	
 	/** URL Parameters for use with Submit-Next */
 	private final Map<String,String> urlParameters = new HashMap<String,String>();
 	
 	/** The method to use for Submit-Next. */
 	private String method = null;
+	
+	/** The url to use for Submit-Next. */
+	private String url = null;
 	
 	/** The parameters to set when the process resumes. */
 	private final Map<String, String> variables = new HashMap<String, String>();
@@ -130,12 +133,12 @@ public final class EndMessageCommand extends ConversationCommand
 			this.variables.put(array[i], array[i + 1]);
 	}
 
-	public boolean isSubdialog() {
-		return subdialog;
+	public boolean isSubmit() {
+		return submit;
 	}
 
-	public void setSubdialog(boolean subdialog) {
-		this.subdialog = subdialog;
+	public void setSubmit(boolean submit) {
+		this.submit = submit;
 	}
 	
 	public String[] getURLParameterNames()
@@ -176,6 +179,14 @@ public final class EndMessageCommand extends ConversationCommand
 	public void setMethod(String method)
 	{
 		this.method = method;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
 

@@ -1386,14 +1386,58 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 	protected IDocument renderEndMessage(ILinkFactory links,
 			EndMessageCommand endMessageCommand)
 	{
-		Form form = new Form("EndMessageForm"); //$NON-NLS-1$
-		String[] variables = endMessageCommand.getVariableNames();
-		for (int i = 0; i < variables.length; ++i)
-			form.addVariable(new Variable(variables[i], "'"
-					+ endMessageCommand.getVariable(variables[i]) + "'"));
-		Block block = new Block("EndMessageBlock"); //$NON-NLS-1$
-		block.addAction(new Exit(variables));
-		form.addFormElement(block);
+		Form form;
+		if(endMessageCommand.isSubmit())
+		{
+			form = new Form("SubmitForm");
+			
+			String[] variables = endMessageCommand.getVariableNames();
+			for (int i = 0; i < variables.length; ++i)
+				form.addVariable(new Variable(variables[i], "'" + endMessageCommand.getVariable(variables[i]) + "'"));
+			
+			Block block = new Block("SubmitBlock"); //$NON-NLS-1$
+			Exit exit = new Exit(variables);
+			exit.setUrl(endMessageCommand.getUrl());
+			
+			//TODO set exit's urlParameters
+			//TODO adapt this for submit
+			//TODO does the variables item passed in on the constructor take care of this already?
+
+//			StringBuffer nameListBuffer = new StringBuffer();
+//			String[] sourceParameters = endMessageCommand.getURLParameterNames();
+//			for(int i = 0; i < sourceParameters.length; i++)
+//			{
+//				String sourceParameterValue = endMessageCommand.getURLParameterValue(sourceParameters[i]);
+//				form.addVariable(new Variable(sourceParameters[i], sourceParameterValue));
+//				nameListBuffer.append(sourceParameters[i]);
+//				if(i != sourceParameters.length - 1)
+//					nameListBuffer.append(' ');
+//			}
+//			exit.setNameList(nameListBuffer.toString());
+//
+			
+			
+			
+			
+			exit.setMethod(endMessageCommand.getMethod());
+			exit.setSubmit(endMessageCommand.isSubmit());
+			
+			block.addAction(exit);
+			form.addFormElement(block);
+			
+		}
+		else
+		{
+			form = new Form("EndMessageForm"); //$NON-NLS-1$
+			String[] variables = endMessageCommand.getVariableNames();
+			for (int i = 0; i < variables.length; ++i)
+				form.addVariable(new Variable(variables[i], "'"
+						+ endMessageCommand.getVariable(variables[i]) + "'"));
+			Block block = new Block("EndMessageBlock"); //$NON-NLS-1$
+			block.addAction(new Exit(variables));
+			form.addFormElement(block);
+		}
+		
 		VXMLDocument document = createVXMLDocument(links, form);
 		return document;
 	}
@@ -1421,6 +1465,9 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		return document;
 	}
 
+	
+	//TODO clean this up after submit support is implemented in exit and endMessage mechanisms
+	/*
 	protected IDocument renderSubmitNext(ILinkFactory links, SubmitNextCommand submitNextCommand)
 	{
 		Form form = new Form("SubmitNextForm"); //$NON-NLS-1$
@@ -1523,6 +1570,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		}
 		return createVXMLDocument(links, form);
 	}
+	*/
 	
 	/*
 	 * (non-Javadoc)

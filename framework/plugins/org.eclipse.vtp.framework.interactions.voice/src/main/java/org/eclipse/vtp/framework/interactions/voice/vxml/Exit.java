@@ -11,8 +11,10 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.framework.interactions.voice.vxml;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -29,6 +31,18 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public class Exit extends Action
 {
+	/** A flag that allows this to function as Submit-Next */
+	private boolean submit = false;
+	
+	/** URL Parameters for use with Submit-Next */
+//	private final LinkedList<String> urlParameters = new LinkedList<String>();
+	
+	/** The method to use for Submit-Next. */
+	private String method = null;
+	
+	/** The url to use for Submit-Next. */
+	private String url = null;
+	
 	/** The list of variables to return. */
 	private final LinkedList<String> names = new LinkedList<String>();
 
@@ -42,6 +56,41 @@ public class Exit extends Action
 			for(String name : names)
 				this.names.add(name);
 		}
+	}
+
+	public boolean isSubmit() {
+		return submit;
+	}
+
+	public void setSubmit(boolean submit) {
+		this.submit = submit;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+//	public LinkedList<String> getUrlParameters() {
+//		return urlParameters;
+//	}
+	
+	//TODO add and remove parameter methods
+	
+
+	public LinkedList<String> getNames() {
+		return names;
 	}
 
 	/**
@@ -79,7 +128,7 @@ public class Exit extends Action
 			throw new IllegalArgumentException("name"); //$NON-NLS-1$
 		names.remove(name);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -89,6 +138,7 @@ public class Exit extends Action
 	public void writeWidget(ContentHandler outputHandler)
 			throws NullPointerException, SAXException
 	{
+		//TODO set up for submit
 		if (outputHandler == null)
 			throw new NullPointerException("outputHandler"); //$NON-NLS-1$
 		// Start and end the element.
@@ -108,6 +158,7 @@ public class Exit extends Action
 	 */
 	protected void writeAttributes(AttributesImpl attributes)
 	{
+		//TODO set up for submit
 		if (names.size() > 0)
 		{
 			StringBuffer buffer = new StringBuffer();
@@ -121,4 +172,5 @@ public class Exit extends Action
 					.toString());
 		}
 	}
+	
 }
