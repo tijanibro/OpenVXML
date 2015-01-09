@@ -123,16 +123,16 @@ public class SubmitPropertiesPanel extends DesignElementPropertiesPanel
 	Composite methodTreeComp = null;
 	TreeViewer methodTree = null;
 	
-	Composite timeoutContainer = null;
-	Combo timeoutSelectionType = null;
-	Composite timeoutComp = null;
-	StackLayout timeoutLayout = null;
-	Composite timeoutValueComp = null;
-	Text timeoutValue = null;
-	Composite timeoutExprComp = null;
-	Text timeoutExpr = null;
-	Composite timeoutTreeComp = null;
-	TreeViewer timeoutTree = null;	
+//	Composite timeoutContainer = null;
+//	Combo timeoutSelectionType = null;
+//	Composite timeoutComp = null;
+//	StackLayout timeoutLayout = null;
+//	Composite timeoutValueComp = null;
+//	Text timeoutValue = null;
+//	Composite timeoutExprComp = null;
+//	Text timeoutExpr = null;
+//	Composite timeoutTreeComp = null;
+//	TreeViewer timeoutTree = null;	
 
 	/** A UI table of all SubmitInput objects configured in this Submit module*/
 	TableViewer inputTable = null;
@@ -365,79 +365,78 @@ outer:	for(Variable v : vars)
 		methodComp.layout();
 
 		
-		Label timeoutLabel = new Label(container, SWT.NONE);
-		timeoutLabel.setText("Timeout: ");
-		timeoutLabel.setBackground(container.getBackground());
-
-		gd3 = new GridData();
-		gd3.verticalAlignment = SWT.TOP;
-		timeoutLabel.setLayoutData(gd3);
+//		Label timeoutLabel = new Label(container, SWT.NONE);
+//		timeoutLabel.setText("Timeout: ");
+//		timeoutLabel.setBackground(container.getBackground());
+//
+//		gd3 = new GridData();
+//		gd3.verticalAlignment = SWT.TOP;
+//		timeoutLabel.setLayoutData(gd3);
 		
-		
-		timeoutContainer = new Composite(container, SWT.NONE);
-		timeoutContainer.setBackground(container.getBackground());
-		gridLayout = new GridLayout(2, false);
-		gridLayout.marginWidth = 0;
-		gridLayout.marginHeight = 0;
-		timeoutContainer.setLayout(gridLayout);
-		gd2 = new GridData(SWT.FILL, SWT.FILL, true, true);
-		timeoutContainer.setLayoutData(gd2);
-
-		timeoutSelectionType = new Combo(timeoutContainer, SWT.DROP_DOWN | SWT.READ_ONLY);
-		gd4 = new GridData();
-		gd4.verticalAlignment = SWT.TOP;
-		timeoutSelectionType.setLayoutData(gd4);
-		timeoutSelectionType.add("Value");
-		timeoutSelectionType.add("Expression");
-		timeoutSelectionType.add("Variable");
-		timeoutSelectionType.select(0);
-		timeoutSelectionType.addSelectionListener(new SelectionListener()
-		{
-			public void widgetSelected(SelectionEvent e)
-			{
-				timeoutSelectionTypeChanged();
-			}
-
-			public void widgetDefaultSelected(SelectionEvent e)
-			{
-			}
-		});
-		timeoutComp = new Composite(timeoutContainer, SWT.NONE);
-		timeoutComp.setBackground(container.getBackground());
-		timeoutComp.setLayout(timeoutLayout = new StackLayout());
-		timeoutComp.setLayoutData(new GridData(GridData.FILL_BOTH));
-		timeoutValueComp = new Composite(timeoutComp, SWT.NONE);
-		timeoutValueComp.setBackground(timeoutComp.getBackground());
-		layout = new GridLayout(1, false);
-		layout.marginWidth = layout.marginHeight = 0;
-		timeoutValueComp.setLayout(layout);
-		timeoutValue = new Text(timeoutValueComp, SWT.SINGLE | SWT.BORDER);
-		timeoutValue.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		timeoutExprComp = new Composite(timeoutComp, SWT.NONE);
-		timeoutExprComp.setBackground(timeoutComp.getBackground());
-		layout = new GridLayout(1, false);
-		layout.marginWidth = layout.marginHeight = 0;
-		timeoutExprComp.setLayout(layout);
-		timeoutExpr = new Text(timeoutExprComp, SWT.SINGLE | SWT.BORDER);
-		timeoutExpr.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		timeoutTreeComp = new Composite(timeoutComp, SWT.NONE);
-		timeoutTreeComp.setBackground(timeoutComp.getBackground());
-		fl = new FormLayout();
-		timeoutTreeComp.setLayout(fl);
-		timeoutTree = new TreeViewer(timeoutTreeComp, SWT.H_SCROLL
-				| SWT.V_SCROLL | SWT.BORDER | SWT.SINGLE);
-		fd = new FormData();
-		fd.left = new FormAttachment(0);
-		fd.top = new FormAttachment(0);
-		fd.right = new FormAttachment(100);
-		fd.bottom = new FormAttachment(100);
-		fd.height = 10;
-		timeoutTree.getControl().setLayoutData(fd);
-		timeoutTree.setContentProvider(new VariableContentProvider());
-		timeoutTree.setLabelProvider(new VariableLabelProvider());
-		timeoutTree.setInput(this);
-		timeoutLayout.topControl = timeoutValueComp;
-		timeoutComp.layout();
+//		timeoutContainer = new Composite(container, SWT.NONE);
+//		timeoutContainer.setBackground(container.getBackground());
+//		gridLayout = new GridLayout(2, false);
+//		gridLayout.marginWidth = 0;
+//		gridLayout.marginHeight = 0;
+//		timeoutContainer.setLayout(gridLayout);
+//		gd2 = new GridData(SWT.FILL, SWT.FILL, true, true);
+//		timeoutContainer.setLayoutData(gd2);
+//
+//		timeoutSelectionType = new Combo(timeoutContainer, SWT.DROP_DOWN | SWT.READ_ONLY);
+//		gd4 = new GridData();
+//		gd4.verticalAlignment = SWT.TOP;
+//		timeoutSelectionType.setLayoutData(gd4);
+//		timeoutSelectionType.add("Value");
+//		timeoutSelectionType.add("Expression");
+//		timeoutSelectionType.add("Variable");
+//		timeoutSelectionType.select(0);
+//		timeoutSelectionType.addSelectionListener(new SelectionListener()
+//		{
+//			public void widgetSelected(SelectionEvent e)
+//			{
+//				timeoutSelectionTypeChanged();
+//			}
+//
+//			public void widgetDefaultSelected(SelectionEvent e)
+//			{
+//			}
+//		});
+//		timeoutComp = new Composite(timeoutContainer, SWT.NONE);
+//		timeoutComp.setBackground(container.getBackground());
+//		timeoutComp.setLayout(timeoutLayout = new StackLayout());
+//		timeoutComp.setLayoutData(new GridData(GridData.FILL_BOTH));
+//		timeoutValueComp = new Composite(timeoutComp, SWT.NONE);
+//		timeoutValueComp.setBackground(timeoutComp.getBackground());
+//		layout = new GridLayout(1, false);
+//		layout.marginWidth = layout.marginHeight = 0;
+//		timeoutValueComp.setLayout(layout);
+//		timeoutValue = new Text(timeoutValueComp, SWT.SINGLE | SWT.BORDER);
+//		timeoutValue.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		timeoutExprComp = new Composite(timeoutComp, SWT.NONE);
+//		timeoutExprComp.setBackground(timeoutComp.getBackground());
+//		layout = new GridLayout(1, false);
+//		layout.marginWidth = layout.marginHeight = 0;
+//		timeoutExprComp.setLayout(layout);
+//		timeoutExpr = new Text(timeoutExprComp, SWT.SINGLE | SWT.BORDER);
+//		timeoutExpr.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		timeoutTreeComp = new Composite(timeoutComp, SWT.NONE);
+//		timeoutTreeComp.setBackground(timeoutComp.getBackground());
+//		fl = new FormLayout();
+//		timeoutTreeComp.setLayout(fl);
+//		timeoutTree = new TreeViewer(timeoutTreeComp, SWT.H_SCROLL
+//				| SWT.V_SCROLL | SWT.BORDER | SWT.SINGLE);
+//		fd = new FormData();
+//		fd.left = new FormAttachment(0);
+//		fd.top = new FormAttachment(0);
+//		fd.right = new FormAttachment(100);
+//		fd.bottom = new FormAttachment(100);
+//		fd.height = 10;
+//		timeoutTree.getControl().setLayoutData(fd);
+//		timeoutTree.setContentProvider(new VariableContentProvider());
+//		timeoutTree.setLabelProvider(new VariableLabelProvider());
+//		timeoutTree.setInput(this);
+//		timeoutLayout.topControl = timeoutValueComp;
+//		timeoutComp.layout();
 
 		
 		Group inputsGroup = new Group(container, SWT.NONE);
@@ -598,26 +597,26 @@ outer:	for(Variable v : vars)
 	/**
 	 * Sets which controls are visible based on the timeout selection type
 	 */
-	private void timeoutSelectionTypeChanged()
-	{
-		((FormData)timeoutTree.getControl().getLayoutData()).height = 10;
-		switch (timeoutSelectionType.getSelectionIndex())
-		{
-		case 2:
-			timeoutLayout.topControl = timeoutTreeComp;
-			((FormData)timeoutTree.getControl().getLayoutData()).height = 175;
-			break;
-		case 1:
-			timeoutLayout.topControl = timeoutExprComp;
-			break;
-		default:
-			timeoutLayout.topControl = timeoutValueComp;
-		}
-		timeoutTreeComp.layout();
-		timeoutComp.layout();
-		timeoutContainer.layout();
-		container.layout();
-	}
+//	private void timeoutSelectionTypeChanged()
+//	{
+//		((FormData)timeoutTree.getControl().getLayoutData()).height = 10;
+//		switch (timeoutSelectionType.getSelectionIndex())
+//		{
+//		case 2:
+//			timeoutLayout.topControl = timeoutTreeComp;
+//			((FormData)timeoutTree.getControl().getLayoutData()).height = 175;
+//			break;
+//		case 1:
+//			timeoutLayout.topControl = timeoutExprComp;
+//			break;
+//		default:
+//			timeoutLayout.topControl = timeoutValueComp;
+//		}
+//		timeoutTreeComp.layout();
+//		timeoutComp.layout();
+//		timeoutContainer.layout();
+//		container.layout();
+//	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.vtp.desktop.ui.app.editor.model.ComponentPropertiesPanel#save()
@@ -1155,14 +1154,11 @@ outer:	for(Variable v : vars)
 		NamedBinding namedBinding = interactionBinding.getNamedBinding("url");
 		LanguageBinding languageBinding = namedBinding.getLanguageBinding("");
 		BrandBinding brandBinding = languageBinding.getBrandBinding(currentBrand);
-		System.out.println(currentBrand.getId());
 		PropertyBindingItem valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
 		if(valuePropertyItem == null)
 		{
-			System.out.println("Value item is null");
 			valuePropertyItem = new PropertyBindingItem();
 		}
-		System.out.println("VALUE TYPE: " + valuePropertyItem.getValueType());
 		if (valuePropertyItem.getValue() != null)
 		{
 			if(valuePropertyItem.getValueType().equals(PropertyBindingItem.STATIC))
@@ -1189,19 +1185,15 @@ outer:	for(Variable v : vars)
 		destinationTypeChanged();
 		
 		
-		//TODO clean up system.out items
 		interactionBinding = bindingManager.getInteractionBinding("");
 		namedBinding = interactionBinding.getNamedBinding("method");
 		languageBinding = namedBinding.getLanguageBinding("");
 		brandBinding = languageBinding.getBrandBinding(currentBrand);
-		System.out.println(currentBrand.getId());
 		valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
 		if(valuePropertyItem == null)
 		{
-			System.out.println("Value item is null");
 			valuePropertyItem = new PropertyBindingItem();
 		}
-		System.out.println("VALUE TYPE: " + valuePropertyItem.getValueType());
 		if (valuePropertyItem.getValue() != null)
 		{
 			if(valuePropertyItem.getValueType().equals(PropertyBindingItem.STATIC))
@@ -1227,43 +1219,39 @@ outer:	for(Variable v : vars)
 		}
 		methodSelectionTypeChanged();
 		
-		//TODO clean up system.out items
-		interactionBinding = bindingManager.getInteractionBinding("");
-		namedBinding = interactionBinding.getNamedBinding("timeout");
-		languageBinding = namedBinding.getLanguageBinding("");
-		brandBinding = languageBinding.getBrandBinding(currentBrand);
-		System.out.println(currentBrand.getId());
-		valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
-		if(valuePropertyItem == null)
-		{
-			System.out.println("Value item is null");
-			valuePropertyItem = new PropertyBindingItem();
-		}
-		System.out.println("VALUE TYPE: " + valuePropertyItem.getValueType());
-		if (valuePropertyItem.getValue() != null)
-		{
-			if(valuePropertyItem.getValueType().equals(PropertyBindingItem.STATIC))
-			{
-				timeoutSelectionType.select(0);
-				timeoutValue.setText(valuePropertyItem.getValue());
-			}
-			else if(valuePropertyItem.getValueType().equals(PropertyBindingItem.EXPRESSION))
-			{
-				timeoutSelectionType.select(1);
-				timeoutExpr.setText(valuePropertyItem.getValue());
-			}
-			else
-			{
-				timeoutSelectionType.select(2);
-				ObjectDefinition od =
-						VariableHelper.getObjectDefinitionFromVariables(variables, valuePropertyItem.getValue());
-				StructuredSelection ss =
-						(od == null) ? StructuredSelection.EMPTY
-								: new StructuredSelection(od);
-				timeoutTree.setSelection(ss);
-			}
-		}
-		timeoutSelectionTypeChanged();
+//		interactionBinding = bindingManager.getInteractionBinding("");
+//		namedBinding = interactionBinding.getNamedBinding("timeout");
+//		languageBinding = namedBinding.getLanguageBinding("");
+//		brandBinding = languageBinding.getBrandBinding(currentBrand);
+//		valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
+//		if(valuePropertyItem == null)
+//		{
+//			valuePropertyItem = new PropertyBindingItem();
+//		}
+//		if (valuePropertyItem.getValue() != null)
+//		{
+//			if(valuePropertyItem.getValueType().equals(PropertyBindingItem.STATIC))
+//			{
+//				timeoutSelectionType.select(0);
+//				timeoutValue.setText(valuePropertyItem.getValue());
+//			}
+//			else if(valuePropertyItem.getValueType().equals(PropertyBindingItem.EXPRESSION))
+//			{
+//				timeoutSelectionType.select(1);
+//				timeoutExpr.setText(valuePropertyItem.getValue());
+//			}
+//			else
+//			{
+//				timeoutSelectionType.select(2);
+//				ObjectDefinition od =
+//						VariableHelper.getObjectDefinitionFromVariables(variables, valuePropertyItem.getValue());
+//				StructuredSelection ss =
+//						(od == null) ? StructuredSelection.EMPTY
+//								: new StructuredSelection(od);
+//				timeoutTree.setSelection(ss);
+//			}
+//		}
+//		timeoutSelectionTypeChanged();
 	}
 	
 	private void storeBindings()
@@ -1335,37 +1323,37 @@ outer:	for(Variable v : vars)
 			}
 			brandBinding.setBindingItem(valuePropertyItem);
 			
-			namedBinding = interactionBinding.getNamedBinding("timeout");
-			languageBinding = namedBinding.getLanguageBinding("");
-			brandBinding = languageBinding.getBrandBinding(currentBrand);
-			valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
-			if(valuePropertyItem == null)
-				valuePropertyItem = new PropertyBindingItem();
-			else
-				valuePropertyItem = (PropertyBindingItem)valuePropertyItem.clone();
-			switch (timeoutSelectionType.getSelectionIndex())
-			{
-			case 2:
-				ISelection selection = timeoutTree.getSelection();
-				if((selection != null) && !selection.isEmpty()
-						&& selection instanceof IStructuredSelection)
-				{
-					Object selObj = ((IStructuredSelection)selection).getFirstElement();
-					if(selObj instanceof ObjectDefinition)
-					{
-						valuePropertyItem.setVariable(((ObjectDefinition)selObj).getPath());
-						break;
-					}
-				}
-				valuePropertyItem.setVariable("");
-				break;
-			case 1:
-				valuePropertyItem.setExpression(timeoutExpr.getText());
-				break;
-			default:
-				valuePropertyItem.setValue(timeoutValue.getText());
-			}
-			brandBinding.setBindingItem(valuePropertyItem);
+//			namedBinding = interactionBinding.getNamedBinding("timeout");
+//			languageBinding = namedBinding.getLanguageBinding("");
+//			brandBinding = languageBinding.getBrandBinding(currentBrand);
+//			valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
+//			if(valuePropertyItem == null)
+//				valuePropertyItem = new PropertyBindingItem();
+//			else
+//				valuePropertyItem = (PropertyBindingItem)valuePropertyItem.clone();
+//			switch (timeoutSelectionType.getSelectionIndex())
+//			{
+//			case 2:
+//				ISelection selection = timeoutTree.getSelection();
+//				if((selection != null) && !selection.isEmpty()
+//						&& selection instanceof IStructuredSelection)
+//				{
+//					Object selObj = ((IStructuredSelection)selection).getFirstElement();
+//					if(selObj instanceof ObjectDefinition)
+//					{
+//						valuePropertyItem.setVariable(((ObjectDefinition)selObj).getPath());
+//						break;
+//					}
+//				}
+//				valuePropertyItem.setVariable("");
+//				break;
+//			case 1:
+//				valuePropertyItem.setExpression(timeoutExpr.getText());
+//				break;
+//			default:
+//				valuePropertyItem.setValue(timeoutValue.getText());
+//			}
+//			brandBinding.setBindingItem(valuePropertyItem);
 			
 		}
 		catch (Exception ex)
