@@ -4,8 +4,8 @@ import org.eclipse.vtp.desktop.export.IConfigurationExporter;
 import org.eclipse.vtp.desktop.export.IDefinitionBuilder;
 import org.eclipse.vtp.desktop.export.IFlowElement;
 import org.eclipse.vtp.desktop.model.interactive.core.content.ContentLoadingManager;
-import org.eclipse.vtp.framework.interactions.core.configurations.ExternalReferenceConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.MediaConfiguration;
+import org.eclipse.vtp.framework.interactions.core.configurations.SubmitConfiguration;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -17,7 +17,7 @@ public class SubmitConfigurationExporter implements IConfigurationExporter
 
 	public void exportConfiguration(IFlowElement flowElement, Element actionElement)
 	{
-		ExternalReferenceConfiguration config = new ExternalReferenceConfiguration(ContentLoadingManager.getInstance());
+		SubmitConfiguration config = new SubmitConfiguration(ContentLoadingManager.getInstance());
 		config.setName(flowElement.getName());
 		String uri = "http://www.eclipse.org/vtp/namespaces/config"; //$NON-NLS-1$
 		Element custom = (Element)flowElement.getConfiguration().getElementsByTagNameNS(uri,
