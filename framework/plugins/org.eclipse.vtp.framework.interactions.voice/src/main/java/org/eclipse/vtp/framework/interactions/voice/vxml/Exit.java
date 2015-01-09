@@ -32,9 +32,6 @@ public class Exit extends Action
 	/** A flag that allows this to function as Submit-Next */
 	private boolean submit = false;
 	
-	/** URL Parameters for use with Submit-Next */
-//	private final LinkedList<Parameter> parameters = new LinkedList<Parameter>();
-	
 	/** The method to use for Submit-Next. */
 	private String method = null;
 	
@@ -120,20 +117,6 @@ public class Exit extends Action
 		names.remove(name);
 	}
 
-//	public void addParameter(Parameter parameter) throws NullPointerException
-//	{
-//		if (parameter == null)
-//			throw new NullPointerException("parameter"); //$NON-NLS-1$
-//		parameters.add(parameter);
-//	}
-//	
-//	public void removeParameter(Parameter parameter) throws NullPointerException
-//	{
-//		if (parameter == null)
-//			throw new NullPointerException("parameter"); //$NON-NLS-1$
-//		parameters.remove(parameter);
-//	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -152,7 +135,6 @@ public class Exit extends Action
 		if(submit)
 		{
 			outputHandler.startElement(NAMESPACE_URI_VXML, NAME_SUBMIT, NAME_SUBMIT, attributes);
-//			writeChildren(outputHandler, parameters);
 			outputHandler.endElement(NAMESPACE_URI_VXML, NAME_SUBMIT, NAME_SUBMIT);
 		}
 		else

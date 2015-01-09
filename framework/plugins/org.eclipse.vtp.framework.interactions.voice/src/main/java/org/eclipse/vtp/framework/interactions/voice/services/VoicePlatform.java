@@ -1400,10 +1400,6 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 			exit.setMethod(endMessageCommand.getMethod());
 			exit.setSubmit(endMessageCommand.isSubmit());
 			
-//			String[] parameters = endMessageCommand.getURLParameterNames();
-//			for (int i = 0; i < variables.length; ++i)
-//				exit.addParameter(new Parameter(parameters[i], "'" + endMessageCommand.getURLParameterValue(parameters[i]) + "'"));
-			
 			block.addAction(exit);
 			form.addFormElement(block);
 			
@@ -1447,113 +1443,6 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		return document;
 	}
 
-	
-	//TODO clean this up after submit support is implemented in exit and endMessage mechanisms
-	/*
-	protected IDocument renderSubmitNext(ILinkFactory links, SubmitNextCommand submitNextCommand)
-	{
-		Form form = new Form("SubmitNextForm"); //$NON-NLS-1$
-		Submit submitNext = new Submit(submitNextCommand
-				.getReferenceName());
-		submitNext.setTargetURI(submitNextCommand.getReferenceURI());
-		submitNext.setMethod(submitNextCommand.getMethod());
-		
-		
-		
-		
-		StringBuffer nameListBuffer = new StringBuffer();
-		String[] sourceParameters = submitNextCommand.getURLParameterNames();
-		for(int i = 0; i < sourceParameters.length; i++)
-		{
-			String sourceParameterValue = submitNextCommand.getURLParameterValue(sourceParameters[i]);
-			form.addVariable(new Variable(sourceParameters[i], sourceParameterValue));
-			nameListBuffer.append(sourceParameters[i]);
-			if(i != sourceParameters.length - 1)
-				nameListBuffer.append(' ');
-		}
-		submitNext.setNameList(nameListBuffer.toString());
-		
-		
-		
-		String[] inputArgNames = submitNextCommand.getInputArgumentNames();
-		for (int i = 0; i < inputArgNames.length; ++i)
-			submitNext.addParameter(new Parameter(inputArgNames[i],
-					submitNextCommand.getInputArgumentValue(inputArgNames[i])));
-		ILink nextLink = links.createNextLink();
-		Filled filled = new Filled();
-		List<String> submitNames = new ArrayList<String>();
-		String[] parameterNames = submitNextCommand.getParameterNames();
-		for (int i = 0; i < parameterNames.length; ++i)
-		{
-			submitNames.add(parameterNames[i]);
-			String[] parameterValues = submitNextCommand.getParameterValues(parameterNames[i]);
-			StringBuffer paramBuffer = new StringBuffer();
-			for(int p = 0; p < parameterValues.length; p++)
-			{
-				String val = parameterValues[p];
-				paramBuffer.append(val);
-				if(p < parameterValues.length - 1)
-				{
-					paramBuffer.append(',');
-				}
-			}
-			filled.addVariable(new Variable(parameterNames[i], "'" + paramBuffer.toString() + "'"));
-		}
-		submitNames.add(submitNextCommand.getResultName());
-		filled.addVariable(new Variable(submitNextCommand.getResultName(), "'" + submitNextCommand.getFilledResultValue() + "'"));
-		
-		
-		
-		
-		
-		Submit submit = new Submit(nextLink.toString(), submitNames.toArray(new String[submitNames.size()]));
-		submit.setMethod(VXMLConstants.METHOD_POST);
-		submit.setEncodingType("multipart/form-data");
-		filled.addAction(submit);
-		submitNext.addFilledHandler(filled);
-		form.addFormElement(submitNext);
-		
-		
-		//TODO is hangup actually needed?
-		ILink hangupLink = links.createNextLink();
-		for (int i = 0; i < parameterNames.length; ++i)
-			hangupLink.setParameters(parameterNames[i], submitNextCommand
-					.getParameterValues(parameterNames[i]));
-		hangupLink.setParameter(submitNextCommand.getResultName(),
-				submitNextCommand.getHangupResultValue());
-		Catch disconnectCatch = new Catch("connection.disconnect.hangup");
-		disconnectCatch.addAction(new Goto(hangupLink.toString()));
-		form.addEventHandler(disconnectCatch);
-		ILink fetchLink = links.createNextLink();
-		for (int i = 0; i < parameterNames.length; ++i)
-			fetchLink.setParameters(parameterNames[i], submitNextCommand
-					.getParameterValues(parameterNames[i]));
-		fetchLink.setParameter(submitNextCommand.getResultName(),
-				submitNextCommand.getBadFetchResultValue());
-
-		
-		
-		Catch badFetchCatch = new Catch("error.badfetch");
-		badFetchCatch.addAction(new Goto(fetchLink.toString()));
-		form.addEventHandler(badFetchCatch);
-		
-		
-		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
-		for(String event : events)
-		{
-			ILink eventLink = links.createNextLink();
-			for (int i = 0; i < parameterNames.length; ++i)
-				eventLink.setParameters(parameterNames[i], submitNextCommand
-						.getParameterValues(parameterNames[i]));
-			eventLink.setParameter(submitNextCommand.getResultName(), event);
-			Catch eventCatch = new Catch(event);
-			eventCatch.addAction(new Goto(eventLink.toString()));
-			form.addEventHandler(eventCatch);
-		}
-		return createVXMLDocument(links, form);
-	}
-	*/
-	
 	/*
 	 * (non-Javadoc)
 	 * 

@@ -65,11 +65,6 @@ public class SubmitAction implements IAction
 		for(String name:inputNames)
 			endMessage.setVariableValue(name, submitConfiguration.getInputValue(name));
 		
-//		List<String> paramNames = new ArrayList<String>();
-//		paramNames.addAll(Arrays.asList(submitConfiguration.getURLParameterNames()));
-//		for(String name:paramNames)
-//			endMessage.setVariableValue("*submit_addParameter", name + ":" + submitConfiguration.getURLParameterValue(name));
-		
 		endMessage.enqueue();
 		
 		return context.createResult(IActionResult.RESULT_NAME_ABORT);

@@ -32,7 +32,6 @@ public class SubmitInformationProvider extends PrimitiveInformationProvider
 {
 	List<ConnectorRecord> connectorRecords = new ArrayList<ConnectorRecord>();
 	private List<SubmitInput> inputs = new ArrayList<SubmitInput>();
-//	private List<SubmitParameter> urlParameters = new ArrayList<SubmitParameter>();
 	private String url = "";
 	private String method = "";
 
@@ -42,7 +41,6 @@ public class SubmitInformationProvider extends PrimitiveInformationProvider
 	public SubmitInformationProvider(PrimitiveElement element)
 	{
 		super(element);
-//		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 //		connectorRecords.add(new ConnectorRecord(element, "error.submit", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
 //		connectorRecords.add(new ConnectorRecord(element, "error.disconnect.hangup", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
 //		connectorRecords.add(new ConnectorRecord(element, "error.badfetch", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
@@ -105,17 +103,6 @@ public class SubmitInformationProvider extends PrimitiveInformationProvider
 	{
 		configuration.setAttribute("url", XMLUtilities.encodeAttribute(url));
 		configuration.setAttribute("method", XMLUtilities.encodeAttribute(method));
-//		org.w3c.dom.Element paramsElement = configuration.getOwnerDocument().createElement("params");
-//		configuration.appendChild(paramsElement);
-//		for(int i = 0; i < urlParameters.size(); i++)
-//		{
-//			SubmitParameter sp = urlParameters.get(i);
-//			org.w3c.dom.Element paramElement = configuration.getOwnerDocument().createElement("param");
-//			paramsElement.appendChild(paramElement);
-//			paramElement.setAttribute("name", sp.name);
-//			paramElement.setAttribute("type", Integer.toString(sp.type));
-//			paramElement.setAttribute("value", sp.value);
-//		}
 		org.w3c.dom.Element inputsElement = configuration.getOwnerDocument().createElement("inputs");
 		configuration.appendChild(inputsElement);
 		for(int i = 0; i < inputs.size(); i++)
@@ -147,20 +134,6 @@ public class SubmitInformationProvider extends PrimitiveInformationProvider
 				inputs.add(new SubmitInput(inputName, inputType, inputValue));
 			}
 		}
-//		nl = configuration.getElementsByTagName("params");
-//		if(nl.getLength() > 0)
-//		{
-//			org.w3c.dom.Element paramsElement = (org.w3c.dom.Element)nl.item(0);
-//			nl = paramsElement.getElementsByTagName("param");
-//			for(int i = 0; i < nl.getLength(); i++)
-//			{
-//				org.w3c.dom.Element paramElement = (org.w3c.dom.Element)nl.item(i);
-//				String varName = paramElement.getAttribute("name");
-//				int inputType = Integer.parseInt(paramElement.getAttribute("type"));
-//				String valueName = paramElement.getAttribute("value");
-//				urlParameters.add(new SubmitParameter(varName, inputType, valueName));
-//			}
-//		}
 	}
 	
 	public List<SubmitInput> getInputs()
@@ -173,31 +146,6 @@ public class SubmitInformationProvider extends PrimitiveInformationProvider
 		this.inputs = inputs;
 	}
 	
-//	public List<SubmitParameter> getURLParameters()
-//	{
-//		return urlParameters;
-//	}
-//	
-//	public void setURLParameters(List<SubmitParameter> urlParameters)
-//	{
-//		this.urlParameters = urlParameters;
-//	}
-	
-//	public class SubmitParameter
-//	{
-//		public String name = "";
-//		public int type = 0;
-//		public String value = "";
-//		
-//		public SubmitParameter(String name, int type, String value)
-//		{
-//			super();
-//			this.name = name;
-//			this.type = type;
-//			this.value = value;
-//		}
-//	}
-
 	public class SubmitInput
 	{
 		public String name = "";
