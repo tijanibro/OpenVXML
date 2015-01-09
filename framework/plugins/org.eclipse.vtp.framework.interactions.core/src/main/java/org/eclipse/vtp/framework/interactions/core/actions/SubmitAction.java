@@ -55,7 +55,7 @@ public class SubmitAction extends ExitAction
 	{
 		IEndMessage endMessage = conversation.createEndMessage(configurations);
 		MediaConfiguration mediaConfig = submitConfiguration.getMediaConfiguration();
-		endMessage.setVariableValue("*submit_destination", conversation.resolveProperty(mediaConfig.getPropertyConfiguration("destination"), false, false));
+		endMessage.setVariableValue("*submit_url", conversation.resolveProperty(mediaConfig.getPropertyConfiguration("url"), false, false));
 		endMessage.setVariableValue("*submit_method", conversation.resolveProperty(mediaConfig.getPropertyConfiguration("method"), false, false));
 		endMessage.setVariableValue("*submit_isSubmit", "true");
 		endMessage.enqueue();

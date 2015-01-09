@@ -1813,7 +1813,7 @@ public class Conversation implements IConversation {
 
 		public void setVariableValue(String variableName, String variableValue)
 		{
-			if("*submit_destination".equals(variableName))
+			if("*submit_url".equals(variableName))
 				setUrl(variableValue);
 			else if("*submit_method".equals(variableName))
 				setMethod(variableValue);
