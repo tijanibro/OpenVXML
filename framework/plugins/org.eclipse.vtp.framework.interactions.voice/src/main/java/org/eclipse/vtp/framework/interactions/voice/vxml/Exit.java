@@ -84,7 +84,7 @@ public class Exit extends Action
 //		return urlParameters;
 //	}
 	
-	//TODO add and remove parameter methods
+	//TODO add and remove parameter methods?
 	
 
 	public LinkedList<String> getNames() {
@@ -136,15 +136,27 @@ public class Exit extends Action
 	public void writeWidget(ContentHandler outputHandler)
 			throws NullPointerException, SAXException
 	{
-		//TODO set up for submit
 		if (outputHandler == null)
 			throw new NullPointerException("outputHandler"); //$NON-NLS-1$
 		// Start and end the element.
 		AttributesImpl attributes = new AttributesImpl();
 		writeAttributes(attributes);
-		outputHandler.startElement(NAMESPACE_URI_VXML, NAME_EXIT, NAME_EXIT,
-				attributes);
-		outputHandler.endElement(NAMESPACE_URI_VXML, NAME_EXIT, NAME_EXIT);
+		
+		if(submit)
+		{
+			outputHandler.startElement(NAMESPACE_URI_VXML, NAME_SUBMIT, NAME_SUBMIT, attributes);
+			// Write the children.
+//			writeParameters(outputHandler);
+//			writeEventHandlers(outputHandler);
+
+			outputHandler.endElement(NAMESPACE_URI_VXML, NAME_SUBMIT, NAME_SUBMIT);
+		}
+		else
+		{
+			outputHandler.startElement(NAMESPACE_URI_VXML, NAME_EXIT, NAME_EXIT,
+					attributes);
+			outputHandler.endElement(NAMESPACE_URI_VXML, NAME_EXIT, NAME_EXIT);
+		}
 	}
 
 	/**
@@ -156,7 +168,9 @@ public class Exit extends Action
 	 */
 	protected void writeAttributes(AttributesImpl attributes)
 	{
-		//TODO set up for submit
+		if(submit && method != null)
+			writeAttribute(attributes, null, null, NAME_METHOD, TYPE_CDATA, method);
+
 		if (names.size() > 0)
 		{
 			StringBuffer buffer = new StringBuffer();
@@ -169,6 +183,9 @@ public class Exit extends Action
 			writeAttribute(attributes, null, null, NAME_NAMELIST, TYPE_CDATA, buffer
 					.toString());
 		}
+		
+		if(submit && method != null)
+			writeAttribute(attributes, null, null, NAME_METHOD, TYPE_CDATA, method);
 	}
 	
 }
