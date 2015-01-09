@@ -26,7 +26,7 @@ public class SubmitConfiguration implements IConfiguration,
 	private String name = ""; //$NON-NLS-1$
 	private MediaConfiguration mediaConfiguration = null;
 	private final Map inputs = new HashMap();
-	private final Map urlParameters = new HashMap();
+//	private final Map urlParameters = new HashMap();
 	private final IContentFactory contentFactory;
 
 	/**
@@ -136,56 +136,56 @@ public class SubmitConfiguration implements IConfiguration,
 		inputs.remove(name);
 	}
 
-	public String[] getURLParameterNames()
-	{
-		return (String[])urlParameters.keySet().toArray(new String[urlParameters.size()]);
-	}
-
-	/**
-	 * isInputVariable.
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public boolean isURLParameterVariable(String name)
-	{
-		URLParameter input = (URLParameter)urlParameters.get(name);
-		return input != null && input.variable;
-	}
-
-	/**
-	 * getInputValue.
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public String getURLParameterValue(String name)
-	{
-		URLParameter input = (URLParameter)urlParameters.get(name);
-		return input == null ? null : input.value;
-	}
-
-	/**
-	 * setInput.
-	 * 
-	 * @param name
-	 * @param variable
-	 * @param value
-	 */
-	public void setURLParameter(String name, boolean variable, String value)
-	{
-		urlParameters.put(name, new URLParameter(variable, value));
-	}
-
-	/**
-	 * removeInput.
-	 * 
-	 * @param name
-	 */
-	public void removeURLParameter(String name)
-	{
-		urlParameters.remove(name);
-	}
+//	public String[] getURLParameterNames()
+//	{
+//		return (String[])urlParameters.keySet().toArray(new String[urlParameters.size()]);
+//	}
+//
+//	/**
+//	 * isInputVariable.
+//	 * 
+//	 * @param name
+//	 * @return
+//	 */
+//	public boolean isURLParameterVariable(String name)
+//	{
+//		URLParameter input = (URLParameter)urlParameters.get(name);
+//		return input != null && input.variable;
+//	}
+//
+//	/**
+//	 * getInputValue.
+//	 * 
+//	 * @param name
+//	 * @return
+//	 */
+//	public String getURLParameterValue(String name)
+//	{
+//		URLParameter input = (URLParameter)urlParameters.get(name);
+//		return input == null ? null : input.value;
+//	}
+//
+//	/**
+//	 * setInput.
+//	 * 
+//	 * @param name
+//	 * @param variable
+//	 * @param value
+//	 */
+//	public void setURLParameter(String name, boolean variable, String value)
+//	{
+//		urlParameters.put(name, new URLParameter(variable, value));
+//	}
+//
+//	/**
+//	 * removeInput.
+//	 * 
+//	 * @param name
+//	 */
+//	public void removeURLParameter(String name)
+//	{
+//		urlParameters.remove(name);
+//	}
 
 	/*
 	 * (non-Javadoc)
@@ -216,17 +216,17 @@ public class SubmitConfiguration implements IConfiguration,
 			String value = itemElement.getAttribute(NAME_VALUE);
 			inputs.put(key, new Input("variable".equals(type), value)); //$NON-NLS-1$
 		}
-		urlParameters.clear();
-		itemElements = configurationElement.getElementsByTagNameNS(
-				NAMESPACE_URI, NAME_URL_PARAMETER_ITEM);
-		for (int i = 0; i < itemElements.getLength(); ++i)
-		{
-			Element itemElement = (Element)itemElements.item(i);
-			String key = itemElement.getAttribute(NAME_KEY);
-			String type = itemElement.getAttribute(NAME_TYPE);
-			String value = itemElement.getAttribute(NAME_VALUE);
-			urlParameters.put(key, new URLParameter("variable".equals(type), value)); //$NON-NLS-1$
-		}
+//		urlParameters.clear();
+//		itemElements = configurationElement.getElementsByTagNameNS(
+//				NAMESPACE_URI, NAME_URL_PARAMETER_ITEM);
+//		for (int i = 0; i < itemElements.getLength(); ++i)
+//		{
+//			Element itemElement = (Element)itemElements.item(i);
+//			String key = itemElement.getAttribute(NAME_KEY);
+//			String type = itemElement.getAttribute(NAME_TYPE);
+//			String value = itemElement.getAttribute(NAME_VALUE);
+//			urlParameters.put(key, new URLParameter("variable".equals(type), value)); //$NON-NLS-1$
+//		}
 	}
 
 	/*
@@ -265,17 +265,17 @@ public class SubmitConfiguration implements IConfiguration,
 			element.setAttribute(NAME_VALUE, input.value);
 			configurationElement.appendChild(element);
 		}
-		for (Iterator i = urlParameters.entrySet().iterator(); i.hasNext();)
-		{
-			Map.Entry entry = (Map.Entry)i.next();
-			Element element = configurationElement.getOwnerDocument()
-					.createElementNS(NAMESPACE_URI, NAME_URL_PARAMETER_ITEM);
-			element.setAttribute(NAME_KEY, (String)entry.getKey());
-			URLParameter input = (URLParameter)entry.getValue();
-			element.setAttribute(NAME_TYPE, input.variable ? "variable" : "static"); //$NON-NLS-1$ //$NON-NLS-2$
-			element.setAttribute(NAME_VALUE, input.value);
-			configurationElement.appendChild(element);
-		}
+//		for (Iterator i = urlParameters.entrySet().iterator(); i.hasNext();)
+//		{
+//			Map.Entry entry = (Map.Entry)i.next();
+//			Element element = configurationElement.getOwnerDocument()
+//					.createElementNS(NAMESPACE_URI, NAME_URL_PARAMETER_ITEM);
+//			element.setAttribute(NAME_KEY, (String)entry.getKey());
+//			URLParameter input = (URLParameter)entry.getValue();
+//			element.setAttribute(NAME_TYPE, input.variable ? "variable" : "static"); //$NON-NLS-1$ //$NON-NLS-2$
+//			element.setAttribute(NAME_VALUE, input.value);
+//			configurationElement.appendChild(element);
+//		}
 	}
 
 	/**
@@ -303,24 +303,24 @@ public class SubmitConfiguration implements IConfiguration,
 		}
 	}
 	
-	private static final class URLParameter
-	{
-		/** Comment for variable. */
-		final boolean variable;
-		/** Comment for value. */
-		final String value;
-
-		/**
-		 * Creates a new Input.
-		 * 
-		 * @param variable
-		 * @param value
-		 */
-		URLParameter(boolean variable, String value)
-		{
-			this.variable = variable;
-			this.value = value;
-		}
-	}
+//	private static final class URLParameter
+//	{
+//		/** Comment for variable. */
+//		final boolean variable;
+//		/** Comment for value. */
+//		final String value;
+//
+//		/**
+//		 * Creates a new Input.
+//		 * 
+//		 * @param variable
+//		 * @param value
+//		 */
+//		URLParameter(boolean variable, String value)
+//		{
+//			this.variable = variable;
+//			this.value = value;
+//		}
+//	}
 
 }

@@ -32,14 +32,14 @@ public class SubmitConfigurationExporter implements IConfigurationExporter
 			config.setInput(elem.getAttribute("name"), "1".equals(elem
 					.getAttribute("type")), elem.getAttribute("value"));
 		}
-		list = ((Element)custom.getElementsByTagNameNS(uri, "params")
-				.item(0)).getElementsByTagNameNS(uri, "param");
-		for (int i = 0; i < list.getLength(); ++i)
-		{
-			Element elem = (Element)list.item(i);
-			config.setURLParameter(elem.getAttribute("name"), "1".equals(elem
-					.getAttribute("type")), elem.getAttribute("value"));
-		}
+//		list = ((Element)custom.getElementsByTagNameNS(uri, "params")
+//				.item(0)).getElementsByTagNameNS(uri, "param");
+//		for (int i = 0; i < list.getLength(); ++i)
+//		{
+//			Element elem = (Element)list.item(i);
+//			config.setURLParameter(elem.getAttribute("name"), "1".equals(elem
+//					.getAttribute("type")), elem.getAttribute("value"));
+//		}
 		Element configElement = actionElement.getOwnerDocument().createElementNS(
 				IDefinitionBuilder.NAMESPACE_URI_INTERACTIONS_CORE, "interactions:submit"); //$NON-NLS-1$
 		config.save(configElement);

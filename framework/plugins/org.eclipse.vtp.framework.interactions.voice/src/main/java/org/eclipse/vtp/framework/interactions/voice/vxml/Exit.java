@@ -33,7 +33,7 @@ public class Exit extends Action
 	private boolean submit = false;
 	
 	/** URL Parameters for use with Submit-Next */
-//	private final LinkedList<String> urlParameters = new LinkedList<String>();
+//	private final LinkedList<Parameter> parameters = new LinkedList<Parameter>();
 	
 	/** The method to use for Submit-Next. */
 	private String method = null;
@@ -80,13 +80,6 @@ public class Exit extends Action
 		this.url = url;
 	}
 
-//	public LinkedList<String> getUrlParameters() {
-//		return urlParameters;
-//	}
-	
-	//TODO add and remove parameter methods?
-	
-
 	public LinkedList<String> getNames() {
 		return names;
 	}
@@ -126,7 +119,21 @@ public class Exit extends Action
 			throw new IllegalArgumentException("name"); //$NON-NLS-1$
 		names.remove(name);
 	}
-	
+
+//	public void addParameter(Parameter parameter) throws NullPointerException
+//	{
+//		if (parameter == null)
+//			throw new NullPointerException("parameter"); //$NON-NLS-1$
+//		parameters.add(parameter);
+//	}
+//	
+//	public void removeParameter(Parameter parameter) throws NullPointerException
+//	{
+//		if (parameter == null)
+//			throw new NullPointerException("parameter"); //$NON-NLS-1$
+//		parameters.remove(parameter);
+//	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -145,10 +152,7 @@ public class Exit extends Action
 		if(submit)
 		{
 			outputHandler.startElement(NAMESPACE_URI_VXML, NAME_SUBMIT, NAME_SUBMIT, attributes);
-			// Write the children.
-//			writeParameters(outputHandler);
-//			writeEventHandlers(outputHandler);
-
+//			writeChildren(outputHandler, parameters);
 			outputHandler.endElement(NAMESPACE_URI_VXML, NAME_SUBMIT, NAME_SUBMIT);
 		}
 		else

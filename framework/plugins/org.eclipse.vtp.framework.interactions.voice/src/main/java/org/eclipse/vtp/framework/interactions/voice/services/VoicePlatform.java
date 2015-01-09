@@ -1394,31 +1394,15 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 			for (int i = 0; i < variables.length; ++i)
 				form.addVariable(new Variable(variables[i], "'" + endMessageCommand.getVariable(variables[i]) + "'"));
 			
-			Block block = new Block("SubmitBlock"); //$NON-NLS-1$
+			Block block = new Block("SubmitBlock");
 			Exit exit = new Exit(variables);
 			exit.setUrl(endMessageCommand.getUrl());
 			exit.setMethod(endMessageCommand.getMethod());
 			exit.setSubmit(endMessageCommand.isSubmit());
 			
-			
-			//TODO set exit's urlParameters
-			//TODO adapt this for submit
-			//TODO does the variables item passed in on the constructor take care of this already?
-
-//			StringBuffer nameListBuffer = new StringBuffer();
-//			String[] sourceParameters = endMessageCommand.getURLParameterNames();
-//			for(int i = 0; i < sourceParameters.length; i++)
-//			{
-//				String sourceParameterValue = endMessageCommand.getURLParameterValue(sourceParameters[i]);
-//				form.addVariable(new Variable(sourceParameters[i], sourceParameterValue));
-//				nameListBuffer.append(sourceParameters[i]);
-//				if(i != sourceParameters.length - 1)
-//					nameListBuffer.append(' ');
-//			}
-//			exit.setNameList(nameListBuffer.toString());
-//
-			
-			
+//			String[] parameters = endMessageCommand.getURLParameterNames();
+//			for (int i = 0; i < variables.length; ++i)
+//				exit.addParameter(new Parameter(parameters[i], "'" + endMessageCommand.getURLParameterValue(parameters[i]) + "'"));
 			
 			block.addAction(exit);
 			form.addFormElement(block);

@@ -28,7 +28,7 @@ public final class EndMessageCommand extends ConversationCommand
 	private boolean submit = false;
 	
 	/** URL Parameters for use with Submit-Next */
-	private final Map<String,String> urlParameters = new HashMap<String,String>();
+//	private final Map<String,String> urlParameters = new HashMap<String,String>();
 	
 	/** The method to use for Submit-Next. */
 	private String method = null;
@@ -141,28 +141,28 @@ public final class EndMessageCommand extends ConversationCommand
 		this.submit = submit;
 	}
 	
-	public String[] getURLParameterNames()
-	{
-		return (String[])urlParameters.keySet().toArray(
-				new String[urlParameters.size()]);
-	}
-
-	public String getURLParameterValue(String name)
-	{
-		if (name == null)
-			return null;
-		return (String)urlParameters.get(name);
-	}
-
-	public void setURLParameterValue(String name, String value)
-	{
-		if (name == null)
-			return;
-		if (value == null)
-			urlParameters.remove(name);
-		else
-			urlParameters.put(name, value);
-	}
+//	public String[] getURLParameterNames()
+//	{
+//		return (String[])urlParameters.keySet().toArray(
+//				new String[urlParameters.size()]);
+//	}
+//
+//	public String getURLParameterValue(String name)
+//	{
+//		if (name == null)
+//			return null;
+//		return (String)urlParameters.get(name);
+//	}
+//
+//	public void setURLParameterValue(String name, String value)
+//	{
+//		if (name == null)
+//			return;
+//		if (value == null)
+//			urlParameters.remove(name);
+//		else
+//			urlParameters.put(name, value);
+//	}
 
 	/**
 	 * @return Returns the method of the fetch

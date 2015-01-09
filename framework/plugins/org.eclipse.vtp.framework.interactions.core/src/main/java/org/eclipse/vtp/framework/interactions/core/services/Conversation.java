@@ -1777,7 +1777,7 @@ public class Conversation implements IConversation {
 		private boolean submit = false;
 		
 		/** URL Parameters for use with Submit-Next */
-//		private final LinkedList<String> urlParameters = new LinkedList<String>();
+		private final Map<String, String> urlParameters = new HashMap<String, String>();
 		
 		/** The method to use for Submit-Next. */
 		private String method = null;
@@ -1819,6 +1819,11 @@ public class Conversation implements IConversation {
 				setMethod(variableValue);
 			else if("*submit_isSubmit".equals(variableName))
 				setSubmit(Boolean.parseBoolean(variableValue));
+//			else if("*submit_addParameter".equals(variableName))
+//			{
+//				String[] param = variableValue.split(":");
+//				urlParameters.put(param[0], param[1]);
+//			}
 			else
 				variables.put(variableName, variableValue);
 		}
@@ -1833,9 +1838,10 @@ public class Conversation implements IConversation {
 		ConversationCommand createCommand() {
 			EndMessageCommand command = new EndMessageCommand();
 			for (Map.Entry<String, String> entry : variables.entrySet())
-			{
 				command.addVariable(entry.getKey(), entry.getValue());
-			}
+			
+//			for (Map.Entry<String, String> entry : urlParameters.entrySet())
+//				command.setURLParameterValue(entry.getKey(), entry.getValue());
 			
 			if(submit)
 			{
