@@ -34,7 +34,6 @@ import org.eclipse.vtp.framework.interactions.core.commands.InitialCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.InputRequestCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.OutputMessageCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.SelectionRequestCommand;
-import org.eclipse.vtp.framework.interactions.core.commands.SubmitNextCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.TransferMessageCommand;
 import org.eclipse.vtp.framework.interactions.core.media.IMediaProvider;
 import org.eclipse.vtp.framework.interactions.core.media.IMediaProviderRegistry;
@@ -1398,6 +1397,9 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 			Block block = new Block("SubmitBlock"); //$NON-NLS-1$
 			Exit exit = new Exit(variables);
 			exit.setUrl(endMessageCommand.getUrl());
+			exit.setMethod(endMessageCommand.getMethod());
+			exit.setSubmit(endMessageCommand.isSubmit());
+			
 			
 			//TODO set exit's urlParameters
 			//TODO adapt this for submit
@@ -1417,10 +1419,6 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 //
 			
 			
-			
-			
-			exit.setMethod(endMessageCommand.getMethod());
-			exit.setSubmit(endMessageCommand.isSubmit());
 			
 			block.addAction(exit);
 			form.addFormElement(block);

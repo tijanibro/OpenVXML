@@ -81,6 +81,14 @@ public class FinalAction extends ExitAction
 //			context.info("Is Fragment");
 			return super.execute();
 		}
+		else if ("true".equals(context.getAttribute("submit")))
+		{
+			
+			//TODO make a submitConfiguration and overload createEndMessage or make createSubmit, passing in the submitConfiguration
+			context.info("Is Submit"); //TODO cleanup
+			conversation.createEndMessage(configurations).enqueue(); //TODO should this change to something submit-specific to side-step IEndMessage
+			return context.createResult(IActionResult.RESULT_NAME_ABORT);
+		}
 		else
 		{
 			conversation.createEndMessage(configurations).enqueue();

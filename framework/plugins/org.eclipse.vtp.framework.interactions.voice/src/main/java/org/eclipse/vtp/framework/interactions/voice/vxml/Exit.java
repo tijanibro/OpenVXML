@@ -11,10 +11,8 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.framework.interactions.voice.vxml;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
