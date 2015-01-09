@@ -1,10 +1,8 @@
 package org.eclipse.vtp.framework.interactions.core.actions;
 
-import org.eclipse.vtp.framework.common.IVariableRegistry;
-import org.eclipse.vtp.framework.common.actions.ExitAction;
 import org.eclipse.vtp.framework.common.configurations.AssignmentConfiguration;
-import org.eclipse.vtp.framework.common.configurations.ExitConfiguration;
 import org.eclipse.vtp.framework.common.controller.IController;
+import org.eclipse.vtp.framework.core.IAction;
 import org.eclipse.vtp.framework.core.IActionContext;
 import org.eclipse.vtp.framework.core.IActionResult;
 import org.eclipse.vtp.framework.interactions.core.configurations.MediaConfiguration;
@@ -17,12 +15,13 @@ import org.eclipse.vtp.framework.interactions.core.conversation.IEndMessage;
  * 
  * @author Lonnie Pryor
  */
-public class SubmitAction extends ExitAction
+//public class SubmitAction extends ExitAction
+public class SubmitAction implements IAction
 {
+	/** The context that contains this action. */
+	protected final IActionContext context;
 	/** The conversation to use. */
 	private final IConversation conversation;
-	/** Comment for variableRegistry. */
-	private final IVariableRegistry variableRegistry;
 	/** The configurations to use. */
 	protected final AssignmentConfiguration[] configurations;
 	private final SubmitConfiguration submitConfiguration;
@@ -35,13 +34,11 @@ public class SubmitAction extends ExitAction
 	 * @param configuration
 	 */
 	public SubmitAction(IActionContext context, IController controller,
-			SubmitConfiguration submitConfiguration, ExitConfiguration configuration, IConversation conversation,
-			IVariableRegistry variableRegistry,
+			SubmitConfiguration submitConfiguration, IConversation conversation,
 			AssignmentConfiguration[] configurations)
 	{
-		super(context, controller, configuration, configurations);
+		this.context = context;
 		this.conversation = conversation;
-		this.variableRegistry = variableRegistry;
 		this.configurations = configurations;
 		this.submitConfiguration = submitConfiguration;
 	}

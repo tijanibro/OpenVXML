@@ -41,19 +41,20 @@ public class SubmitConfigurationExporter implements IConfigurationExporter
 					.getAttribute("type")), elem.getAttribute("value"));
 		}
 		Element configElement = actionElement.getOwnerDocument().createElementNS(
-				IDefinitionBuilder.NAMESPACE_URI_INTERACTIONS_CORE, "interactions:external-reference"); //$NON-NLS-1$
+				IDefinitionBuilder.NAMESPACE_URI_INTERACTIONS_CORE, "interactions:submit"); //$NON-NLS-1$
 		config.save(configElement);
 		actionElement.appendChild(configElement);
 	}
 
 	public String getActionId(IFlowElement flowElement)
 	{
-		return "org.eclipse.vtp.framework.interactions.core.actions.external-reference"; //FIXME
+		return "org.eclipse.vtp.framework.interactions.core.actions.submit"; //FIXME
 	}
 
 	public String getDefaultPath(IFlowElement flowElement)
 	{
-		return "Continue";
+//		return "Continue";
+		return null;
 	}
 	
 	public String translatePath(IFlowElement flowElement, String uiPath)

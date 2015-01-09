@@ -42,10 +42,10 @@ public class SubmitInformationProvider extends PrimitiveInformationProvider
 	public SubmitInformationProvider(PrimitiveElement element)
 	{
 		super(element);
-		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
+//		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 //		connectorRecords.add(new ConnectorRecord(element, "error.submit", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
 //		connectorRecords.add(new ConnectorRecord(element, "error.disconnect.hangup", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
-		connectorRecords.add(new ConnectorRecord(element, "error.badfetch", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
+//		connectorRecords.add(new ConnectorRecord(element, "error.badfetch", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
 		List<String> events = ExtendedInteractiveEventManager.getDefault().getExtendedEvents();
 		for(String event : events)
 		{
@@ -230,6 +230,6 @@ public class SubmitInformationProvider extends PrimitiveInformationProvider
 
 	public boolean hasConnectors()
     {
-	    return true;
+	    return false;
     }
 }

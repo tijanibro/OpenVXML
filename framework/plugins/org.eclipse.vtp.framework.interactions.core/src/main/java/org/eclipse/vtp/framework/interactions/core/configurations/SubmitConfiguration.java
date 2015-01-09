@@ -20,11 +20,6 @@ import org.eclipse.vtp.framework.interactions.core.media.IContentFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-/**
- * ExternalReferenceConfiguration.
- * 
- * @author Lonnie Pryor
- */
 public class SubmitConfiguration implements IConfiguration,
 		InteractionsConstants
 {
