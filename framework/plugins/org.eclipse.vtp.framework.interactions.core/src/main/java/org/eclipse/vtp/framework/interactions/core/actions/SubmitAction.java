@@ -1,5 +1,9 @@
 package org.eclipse.vtp.framework.interactions.core.actions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.vtp.framework.common.configurations.AssignmentConfiguration;
 import org.eclipse.vtp.framework.common.controller.IController;
 import org.eclipse.vtp.framework.core.IAction;
@@ -55,6 +59,12 @@ public class SubmitAction implements IAction
 		endMessage.setVariableValue("*submit_url", conversation.resolveProperty(mediaConfig.getPropertyConfiguration("url"), false, false));
 		endMessage.setVariableValue("*submit_method", conversation.resolveProperty(mediaConfig.getPropertyConfiguration("method"), false, false));
 		endMessage.setVariableValue("*submit_isSubmit", "true");
+		
+		List<String> inputNames = new ArrayList<String>();
+		inputNames.addAll(Arrays.asList(submitConfiguration.getInputNames()));
+		for(String name:inputNames)
+			endMessage.setVariableValue(name, submitConfiguration.getInputValue(name));
+		
 		endMessage.enqueue();
 		
 		return context.createResult(IActionResult.RESULT_NAME_ABORT);

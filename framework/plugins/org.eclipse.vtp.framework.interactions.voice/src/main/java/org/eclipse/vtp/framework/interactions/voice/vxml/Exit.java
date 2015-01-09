@@ -168,8 +168,8 @@ public class Exit extends Action
 	 */
 	protected void writeAttributes(AttributesImpl attributes)
 	{
-		if(submit && method != null)
-			writeAttribute(attributes, null, null, NAME_METHOD, TYPE_CDATA, method);
+		if(submit && url != null)
+			writeAttribute(attributes, null, null, NAME_NEXT, TYPE_CDATA, url);
 
 		if (names.size() > 0)
 		{

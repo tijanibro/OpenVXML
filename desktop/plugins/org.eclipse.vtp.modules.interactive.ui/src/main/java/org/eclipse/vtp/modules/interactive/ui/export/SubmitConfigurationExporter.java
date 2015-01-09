@@ -48,7 +48,7 @@ public class SubmitConfigurationExporter implements IConfigurationExporter
 
 	public String getActionId(IFlowElement flowElement)
 	{
-		return "org.eclipse.vtp.framework.interactions.core.actions.submit"; //FIXME
+		return "org.eclipse.vtp.framework.interactions.core.actions.submit";
 	}
 
 	public String getDefaultPath(IFlowElement flowElement)

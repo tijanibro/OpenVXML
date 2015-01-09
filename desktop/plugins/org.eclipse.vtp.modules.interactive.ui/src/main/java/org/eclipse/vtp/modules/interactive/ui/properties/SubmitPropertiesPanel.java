@@ -1722,7 +1722,7 @@ outer:	for(Variable v : vars)
 			return;
 		}
 		InteractionBinding interactionBinding = bindingManager.getInteractionBinding("");
-		NamedBinding namedBinding = interactionBinding.getNamedBinding("destination");
+		NamedBinding namedBinding = interactionBinding.getNamedBinding("url");
 		LanguageBinding languageBinding = namedBinding.getLanguageBinding("");
 		BrandBinding brandBinding = languageBinding.getBrandBinding(currentBrand);
 		System.out.println(currentBrand.getId());
@@ -1841,7 +1841,7 @@ outer:	for(Variable v : vars)
 		try
 		{
 			InteractionBinding interactionBinding = bindingManager.getInteractionBinding("");
-			NamedBinding namedBinding = interactionBinding.getNamedBinding("destination");
+			NamedBinding namedBinding = interactionBinding.getNamedBinding("url");
 			LanguageBinding languageBinding = namedBinding.getLanguageBinding("");
 			BrandBinding brandBinding = languageBinding.getBrandBinding(currentBrand);
 			PropertyBindingItem valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
