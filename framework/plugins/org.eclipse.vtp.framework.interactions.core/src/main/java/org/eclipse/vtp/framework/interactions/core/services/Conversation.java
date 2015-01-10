@@ -1816,6 +1816,13 @@ public class Conversation implements IConversation {
 				setMethod(variableValue);
 			else if("*submit_isSubmit".equals(variableName))
 				setSubmit(Boolean.parseBoolean(variableValue));
+			else if("*submit_inputVariable".equals(variableName))
+			{
+				String[] input = variableValue.split(":");
+				IDataObject obj = variableRegistry.getVariable(input[1]);
+				if (obj != null)
+					variables.put(input[0], obj.toString());
+			}
 			else
 				variables.put(variableName, variableValue);
 		}
