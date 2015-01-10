@@ -33,7 +33,7 @@ public class Exit extends Action
 	private boolean submit = false;
 	
 	/** The method to use for Submit-Next. */
-	private String method = null;
+	private String method = METHOD_GET;
 	
 	/** The url to use for Submit-Next. */
 	private String url = null;
@@ -66,7 +66,16 @@ public class Exit extends Action
 	}
 
 	public void setMethod(String method) {
-		this.method = method;
+		if(VXMLConstants.METHOD_POST.equalsIgnoreCase(method))
+			this.method = VXMLConstants.METHOD_POST;
+		else if(VXMLConstants.METHOD_GET.equalsIgnoreCase(method))
+			this.method = VXMLConstants.METHOD_GET;
+		else
+		{
+			this.method = VXMLConstants.METHOD_GET;
+			System.out.println("Expecting \"post\" or \"get\". Got " + method + " instead");
+		}
+			
 	}
 
 	public String getUrl() {
