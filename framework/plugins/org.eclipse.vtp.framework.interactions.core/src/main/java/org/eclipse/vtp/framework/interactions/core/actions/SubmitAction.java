@@ -63,7 +63,23 @@ public class SubmitAction implements IAction
 		List<String> inputNames = new ArrayList<String>();
 		inputNames.addAll(Arrays.asList(submitConfiguration.getInputNames()));
 		for(String name:inputNames)
-			endMessage.setVariableValue(name, submitConfiguration.getInputValue(name));
+		{
+			if(submitConfiguration.isInputVariable(name))
+				endMessage.setVariableValue("*submit_inputVariable", name + ":" + submitConfiguration.getInputValue(name));
+			else
+				endMessage.setVariableValue(name, submitConfiguration.getInputValue(name));
+		}
+		
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		endMessage.enqueue();
 		
