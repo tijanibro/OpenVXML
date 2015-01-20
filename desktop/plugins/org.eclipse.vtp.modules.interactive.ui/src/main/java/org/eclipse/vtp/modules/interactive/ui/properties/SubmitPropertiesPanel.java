@@ -1287,7 +1287,7 @@ outer:	for(Variable v : vars)
 				valuePropertyItem.setExpression(destinationExpr.getText());
 				break;
 			default:
-				valuePropertyItem.setValue(destinationValue.getText());
+				valuePropertyItem.setStaticValue(destinationValue.getText());
 			}
 			brandBinding.setBindingItem(valuePropertyItem);
 			
@@ -1319,7 +1319,7 @@ outer:	for(Variable v : vars)
 				valuePropertyItem.setExpression(methodExpr.getText());
 				break;
 			default:
-				valuePropertyItem.setValue(methodCombo.getSelectionIndex() == 1 ? "POST" : "GET");
+				valuePropertyItem.setStaticValue(methodCombo.getSelectionIndex() == 1 ? "POST" : "GET");
 			}
 			brandBinding.setBindingItem(valuePropertyItem);
 			

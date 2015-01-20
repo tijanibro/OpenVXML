@@ -2127,14 +2127,14 @@ outer:	for(Variable v : vars)
 				valuePropertyItem.setExpression(destinationExpr.getText());
 				break;
 			default:
-				valuePropertyItem.setValue(destinationValue.getText());
+				valuePropertyItem.setStaticValue(destinationValue.getText());
 			}
 			brandBinding.setBindingItem(valuePropertyItem);
 			
 			
 			
 			
-			namedBinding = interactionBinding.getNamedBinding("method"); //TODO verify this matches
+			namedBinding = interactionBinding.getNamedBinding("method");
 			languageBinding = namedBinding.getLanguageBinding("");
 			brandBinding = languageBinding.getBrandBinding(currentBrand);
 			valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
@@ -2162,7 +2162,7 @@ outer:	for(Variable v : vars)
 				valuePropertyItem.setExpression(methodExpr.getText());
 				break;
 			default:
-				valuePropertyItem.setValue(methodCombo.getSelectionIndex() == 1 ? "POST" : "GET");
+				valuePropertyItem.setStaticValue(methodCombo.getSelectionIndex() == 1 ? "POST" : "GET");
 			}
 			brandBinding.setBindingItem(valuePropertyItem);
 			
