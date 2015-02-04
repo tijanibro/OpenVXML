@@ -639,7 +639,7 @@ outer:	for(Variable v : vars)
 			}
 		});
 		addButton = new Button(outputsGroup, SWT.PUSH);
-		addButton.setText("Add Ouput");
+		addButton.setText("Add Output");
 		gd = new GridData();
 		gd.horizontalAlignment = SWT.RIGHT;
 		addButton.setLayoutData(gd);
