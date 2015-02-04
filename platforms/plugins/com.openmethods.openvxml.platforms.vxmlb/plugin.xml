@@ -23,5 +23,11 @@
          </identifier>
       </service>
    </extension>
+   <extension
+         point="org.eclipse.vtp.framework.interactions.core.extendedEvents">
+      <extended-event
+            name="externalmessage.cpa.machine">
+      </extended-event>
+   </extension>
 
 </plugin>

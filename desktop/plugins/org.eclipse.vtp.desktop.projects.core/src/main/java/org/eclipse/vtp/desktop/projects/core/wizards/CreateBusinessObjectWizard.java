@@ -94,6 +94,7 @@ IExecutableExtension
 		{
 			obj = ((IStructuredSelection)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().getSelection()).getFirstElement();
 		}
+		System.out.println(obj);
 		if(obj instanceof IBusinessObjectSet)
 			this.objectSet = (IBusinessObjectSet)obj;
 		else if(obj instanceof IBusinessObject)
