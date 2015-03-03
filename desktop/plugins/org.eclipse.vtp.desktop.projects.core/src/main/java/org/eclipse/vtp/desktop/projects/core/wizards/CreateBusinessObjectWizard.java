@@ -483,7 +483,7 @@ IExecutableExtension
 		
 	}
 	
-	class ProjectProperties
+	private class ProjectProperties
 	{
 		private String name = "";
 		private String type = "Other";
