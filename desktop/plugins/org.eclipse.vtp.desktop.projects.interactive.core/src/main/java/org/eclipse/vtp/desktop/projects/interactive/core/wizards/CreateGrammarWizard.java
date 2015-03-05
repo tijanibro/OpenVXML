@@ -16,8 +16,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.internal.resources.File;
+import org.eclipse.core.internal.utils.FileUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -120,14 +122,10 @@ IExecutableExtension
 	 */
 	public boolean performFinish()
 	{
-		//TODO cleanup
-		System.out.println("RAW LOC: " + gramFile.getRawLocation());
-		System.out.println("LOC: " + gramFile.getLocation());
 		try
 		{
 			if(gwp.voiceGrammarButton.getSelection())
 			{
-//				gramFile.setContents(getClass().getClassLoader().getResourceAsStream("voice_grammar_template.grxml"), true, false, null);
 				gramFile.create(getClass().getClassLoader().getResourceAsStream("voice_grammar_template.grxml"), true, null);
 			}
 			else
@@ -316,7 +314,6 @@ IExecutableExtension
 			//name field
 			filenameField = new Text(comp, SWT.SINGLE | SWT.BORDER);
 			
-			//TODO revisit filename validation
 			filenameField.addVerifyListener(new VerifyListener()
 			{
 
@@ -325,6 +322,7 @@ IExecutableExtension
 	                String text = e.text;
 	                char[] chars = text.toCharArray();
 					String currentName = filenameField.getText().substring(0, e.start) + e.text + filenameField.getText(e.end, (filenameField.getText().length() - 1));
+					
 	                if(currentName.length() > 255)
 	                {
 	                	e.doit = false;
@@ -351,20 +349,20 @@ IExecutableExtension
 				{
 					public void modifyText(ModifyEvent e)
 					{
-						TreeItem ti = tree.getSelection()[0]; //FIXME array out of bounds exception if nothing is selected. Can also result in no filename being sent to the next page.
+						if(!isVoiceProjectFolderSelected())
+						{
+							setErrorMessage(MESSAGE_NO_FOLDER_SELECTED);
+							setPageComplete(false);
+							return;
+						}
+						
+						TreeItem ti = tree.getSelection()[0];
 						IResource res = (IResource)ti.getData();
 						
 						if(ti.getText(1).endsWith("file"))
 						{
 							tree.deselect(ti);
 							tree.select(ti.getParentItem());
-						}
-						
-						if(!isVoiceProjectFolderSelected())
-						{
-							setErrorMessage(MESSAGE_NO_FOLDER_SELECTED);
-							setPageComplete(false);
-							return;
 						}
 						
 						if(filenameField.getText() == null || filenameField.getText().equals(""))
@@ -384,8 +382,12 @@ IExecutableExtension
 						String filename = filenameField.getText(); 
 						if(filename != null && !filename.endsWith(".grxml"))
 							filename += ".grxml";
-						gwp.grammarNameField.setText(res.getFullPath().toString() + "/" + filename);
-						gramFile = res.getParent().getFolder(res.getFullPath()).getFile(filename);
+						
+						IPath folderPath = res.getLocation();
+						IPath lastSegment = folderPath.removeFirstSegments(folderPath.segmentCount() - 1);
+						
+						gramFile = res.getParent().getFolder(lastSegment).getFile(filename); 
+						gwp.grammarNameField.setText(gramFile.getFullPath().toString());
 						
 						setErrorMessage(null);
 						setPageComplete(true);
@@ -625,6 +627,8 @@ IExecutableExtension
 		 */
 		private boolean isVoiceProjectFolderSelected()
 		{
+			if(tree.getSelection().length == 0)
+				return false;
 			return "Folder".equals(tree.getSelection()[0].getText(1));
 		}
 		
@@ -643,7 +647,11 @@ IExecutableExtension
 			IResource res = (IResource)selection.getData();
 			String proposedPath = res.getFullPath().toString();
 			
-			return !takenURIs.contains(proposedPath + "/" + proposedFilename);
+			if(takenURIs.contains(proposedPath + "/" + proposedFilename) || 
+					takenURIs.contains(proposedPath + "/" + proposedFilename + ".grxml"))
+				return false;
+			
+			return true;
 		}
 		
 		
