@@ -51,7 +51,6 @@ public class Subdialog extends FormElement
 	private final LinkedList<EventHandler> eventHandlers = new LinkedList<EventHandler>();
 	
 	private String nameList = null;
-	//TODO
 	private String method = METHOD_GET;
 
 	/**

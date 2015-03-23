@@ -73,10 +73,8 @@ import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.Name
 import org.eclipse.vtp.desktop.model.interactive.core.configuration.generic.PropertyBindingItem;
 import org.eclipse.vtp.framework.util.QuickSort;
 import org.eclipse.vtp.framework.util.VariableNameValidator;
-import org.eclipse.vtp.modules.interactive.ui.SubdialogInformationProvider;
-import org.eclipse.vtp.modules.interactive.ui.SubdialogInformationProvider.SubdialogInput;
-import org.eclipse.vtp.modules.interactive.ui.SubdialogInformationProvider.SubdialogOutput;
-import org.eclipse.vtp.modules.interactive.ui.SubdialogInformationProvider.SubdialogParameter;
+import org.eclipse.vtp.modules.interactive.ui.SubmitInformationProvider;
+import org.eclipse.vtp.modules.interactive.ui.SubmitInformationProvider.SubmitInput;
 
 import com.openmethods.openvxml.desktop.model.branding.IBrand;
 import com.openmethods.openvxml.desktop.model.branding.internal.BrandContext;
@@ -87,21 +85,17 @@ import com.openmethods.openvxml.desktop.model.workflow.design.Variable;
 import com.openmethods.openvxml.desktop.model.workflow.internal.VariableHelper;
 
 /**
- * The UI used to configure a Subdialog module.
+ * The UI used to configure a Submit module.
  * 
  * @author Trip
  */
-public class SubdialogPropertiesPanel extends DesignElementPropertiesPanel
+public class SubmitPropertiesPanel extends DesignElementPropertiesPanel
 {
 	GenericBindingManager bindingManager;
 	IBrand currentBrand;
-	/** A list of all SubdialogParameter objects configured in this Subdialog module*/
-	List<SubdialogParameter> urlParameters = new ArrayList<SubdialogParameter>();
-	/** A list of all SubdialogInput objects configured in this Subdialog module*/
-	List<SubdialogInput> inputs = new ArrayList<SubdialogInput>();
-	/** A list of all SubdialogOutput objects configured in this Subdialog module*/
-	List<SubdialogOutput> outputs = new ArrayList<SubdialogOutput>();
-	/** A text field used to display/change the name of this particular Subdialog module*/
+	/** A list of all SubmitInput objects configured in this Submit module*/
+	List<SubmitInput> inputs = new ArrayList<SubmitInput>();
+	/** A text field used to display/change the name of this particular Submit module*/
 	Text nameField = null;
 	/** A Label used to label the Text field for the name of the subdialog*/
 	Label nameLabel = null;
@@ -129,30 +123,35 @@ public class SubdialogPropertiesPanel extends DesignElementPropertiesPanel
 	Composite methodTreeComp = null;
 	TreeViewer methodTree = null;
 	
-	/** A UI table of all SubdialogInput objects configured in this Subdialog module*/
+//	Composite timeoutContainer = null;
+//	Combo timeoutSelectionType = null;
+//	Composite timeoutComp = null;
+//	StackLayout timeoutLayout = null;
+//	Composite timeoutValueComp = null;
+//	Text timeoutValue = null;
+//	Composite timeoutExprComp = null;
+//	Text timeoutExpr = null;
+//	Composite timeoutTreeComp = null;
+//	TreeViewer timeoutTree = null;	
+
+	/** A UI table of all SubmitInput objects configured in this Submit module*/
 	TableViewer inputTable = null;
-	/** A UI table of all SubdialogOutput objects configured in this Subdialog module*/
-	TableViewer outputTable = null;
-	/** A UI table of all SubdialogParameter objects configured in this Subdialog module*/
-	TableViewer urlParamTable = null;
 	List<Variable> variables = new ArrayList<Variable>();
-	private SubdialogInformationProvider info = null;
+	private SubmitInformationProvider info = null;
 
 	/**
-	 * Creates a new SubdialogPropertiesPanel
+	 * Creates a new SubmitPropertiesPanel
 	 * 
 	 * @param name
 	 * @param subdialogElement 
 	 */
-	public SubdialogPropertiesPanel(String name, IDesignElement subdialogElement)
+	public SubmitPropertiesPanel(String name, IDesignElement subdialogElement)
 	{
 		super(name, subdialogElement);
 		PrimitiveElement pe = (PrimitiveElement)subdialogElement;
 		bindingManager = (GenericBindingManager)pe.getConfigurationManager(GenericBindingManager.TYPE_ID);
-		info = (SubdialogInformationProvider)pe.getInformationProvider();
+		info = (SubmitInformationProvider)pe.getInformationProvider();
 		inputs.addAll(info.getInputs());
-		outputs.addAll(info.getOutputs());
-		urlParameters.addAll(info.getURLParameters());
 		List<Variable> vars = pe.getDesign().getVariablesFor(pe);
 outer:	for(Variable v : vars)
 		{
@@ -366,116 +365,84 @@ outer:	for(Variable v : vars)
 		methodComp.layout();
 
 		
-		Group paramsGroup = new Group(container, SWT.NONE);
-		paramsGroup.setBackground(container.getBackground());
-		paramsGroup.setText("URL Settings");
-		GridData gd = new GridData(GridData.FILL_BOTH);
-		gd.horizontalSpan = 2;
-		paramsGroup.setLayoutData(gd);
-		paramsGroup.setLayout(new GridLayout(2, true));
-		urlParamTable = new TableViewer(paramsGroup, SWT.FULL_SELECTION | SWT.SINGLE | SWT.V_SCROLL | SWT.BORDER);
-		urlParamTable.getTable().setHeaderVisible(true);
-		urlParamTable.getTable().setLinesVisible(true);
-		TableColumn paramNameColumn = new TableColumn(urlParamTable.getTable(), SWT.NONE);
-		paramNameColumn.setText("Name");
-		paramNameColumn.setWidth(150);
-		TableColumn paramValueColumn = new TableColumn(urlParamTable.getTable(), SWT.NONE);
-		paramValueColumn.setText("Value");
-		paramValueColumn.setWidth(150);
-		urlParamTable.setContentProvider(new ParamTableContentProvider());
-		urlParamTable.setLabelProvider(new ParamTableLabelProvider());
-		urlParamTable.setInput(this);
-		gd = new GridData(GridData.FILL_BOTH);
-		gd.horizontalSpan = 2;
-		gd.heightHint = 90;
-		gd.widthHint = 300;
-		urlParamTable.getTable().setLayoutData(gd);
-		urlParamTable.addDoubleClickListener(new IDoubleClickListener(){
-
-			public void doubleClick(DoubleClickEvent event)
-			{
-				if(!urlParamTable.getSelection().isEmpty())
-				{
-					ParameterValueDialog vd = new ParameterValueDialog(Display.getCurrent().getActiveShell());
-					SubdialogParameter si = (SubdialogParameter)((IStructuredSelection)urlParamTable.getSelection()).getFirstElement();
-					vd.setValue(si);
-					if(vd.open() == SWT.OK)
-					{
-						urlParamTable.refresh();
-					}
-				}
-			}
-			
-		});
-		urlParamTable.getControl().addKeyListener(new KeyListener(){
-
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if(e.character == SWT.DEL && !urlParamTable.getSelection().isEmpty())
-				{
-					SubdialogParameter si = (SubdialogParameter)((IStructuredSelection)urlParamTable.getSelection()).getFirstElement();
-					urlParameters.remove(si);
-					urlParamTable.refresh();
-				}
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e)
-			{
-			}
-		});
-		Button addButton = new Button(paramsGroup, SWT.PUSH);
-		addButton.setText("Add Parameter");
-		gd = new GridData();
-		gd.horizontalAlignment = SWT.RIGHT;
-		addButton.setLayoutData(gd);
-		addButton.addSelectionListener(new SelectionListener(){
-
-			public void widgetDefaultSelected(SelectionEvent e)
-			{
-			}
-
-			public void widgetSelected(SelectionEvent e)
-			{
-				ParameterValueDialog vd = new ParameterValueDialog(Display.getCurrent().getActiveShell());
-				SubdialogParameter si = info.new SubdialogParameter("", 0, "");
-				vd.setValue(si);
-				if(vd.open() == SWT.OK)
-				{
-					urlParameters.add(si);
-					urlParamTable.refresh();
-				}
-			}
-			
-		});
-		Button deleteButton = new Button(paramsGroup, SWT.PUSH);
-		deleteButton.setText("Delete Parameter");
-		deleteButton.addSelectionListener(new SelectionListener(){
-
-			public void widgetDefaultSelected(SelectionEvent e)
-			{
-			}
-
-			public void widgetSelected(SelectionEvent e)
-			{
-				if(!urlParamTable.getSelection().isEmpty())
-				{
-					SubdialogParameter si = (SubdialogParameter)((IStructuredSelection)urlParamTable.getSelection()).getFirstElement();
-					urlParameters.remove(si);
-					urlParamTable.refresh();
-				}
-			}
-			
-		});
-		gd = new GridData();
-		deleteButton.setLayoutData(gd);
+//		Label timeoutLabel = new Label(container, SWT.NONE);
+//		timeoutLabel.setText("Timeout: ");
+//		timeoutLabel.setBackground(container.getBackground());
+//
+//		gd3 = new GridData();
+//		gd3.verticalAlignment = SWT.TOP;
+//		timeoutLabel.setLayoutData(gd3);
 		
+//		timeoutContainer = new Composite(container, SWT.NONE);
+//		timeoutContainer.setBackground(container.getBackground());
+//		gridLayout = new GridLayout(2, false);
+//		gridLayout.marginWidth = 0;
+//		gridLayout.marginHeight = 0;
+//		timeoutContainer.setLayout(gridLayout);
+//		gd2 = new GridData(SWT.FILL, SWT.FILL, true, true);
+//		timeoutContainer.setLayoutData(gd2);
+//
+//		timeoutSelectionType = new Combo(timeoutContainer, SWT.DROP_DOWN | SWT.READ_ONLY);
+//		gd4 = new GridData();
+//		gd4.verticalAlignment = SWT.TOP;
+//		timeoutSelectionType.setLayoutData(gd4);
+//		timeoutSelectionType.add("Value");
+//		timeoutSelectionType.add("Expression");
+//		timeoutSelectionType.add("Variable");
+//		timeoutSelectionType.select(0);
+//		timeoutSelectionType.addSelectionListener(new SelectionListener()
+//		{
+//			public void widgetSelected(SelectionEvent e)
+//			{
+//				timeoutSelectionTypeChanged();
+//			}
+//
+//			public void widgetDefaultSelected(SelectionEvent e)
+//			{
+//			}
+//		});
+//		timeoutComp = new Composite(timeoutContainer, SWT.NONE);
+//		timeoutComp.setBackground(container.getBackground());
+//		timeoutComp.setLayout(timeoutLayout = new StackLayout());
+//		timeoutComp.setLayoutData(new GridData(GridData.FILL_BOTH));
+//		timeoutValueComp = new Composite(timeoutComp, SWT.NONE);
+//		timeoutValueComp.setBackground(timeoutComp.getBackground());
+//		layout = new GridLayout(1, false);
+//		layout.marginWidth = layout.marginHeight = 0;
+//		timeoutValueComp.setLayout(layout);
+//		timeoutValue = new Text(timeoutValueComp, SWT.SINGLE | SWT.BORDER);
+//		timeoutValue.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		timeoutExprComp = new Composite(timeoutComp, SWT.NONE);
+//		timeoutExprComp.setBackground(timeoutComp.getBackground());
+//		layout = new GridLayout(1, false);
+//		layout.marginWidth = layout.marginHeight = 0;
+//		timeoutExprComp.setLayout(layout);
+//		timeoutExpr = new Text(timeoutExprComp, SWT.SINGLE | SWT.BORDER);
+//		timeoutExpr.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		timeoutTreeComp = new Composite(timeoutComp, SWT.NONE);
+//		timeoutTreeComp.setBackground(timeoutComp.getBackground());
+//		fl = new FormLayout();
+//		timeoutTreeComp.setLayout(fl);
+//		timeoutTree = new TreeViewer(timeoutTreeComp, SWT.H_SCROLL
+//				| SWT.V_SCROLL | SWT.BORDER | SWT.SINGLE);
+//		fd = new FormData();
+//		fd.left = new FormAttachment(0);
+//		fd.top = new FormAttachment(0);
+//		fd.right = new FormAttachment(100);
+//		fd.bottom = new FormAttachment(100);
+//		fd.height = 10;
+//		timeoutTree.getControl().setLayoutData(fd);
+//		timeoutTree.setContentProvider(new VariableContentProvider());
+//		timeoutTree.setLabelProvider(new VariableLabelProvider());
+//		timeoutTree.setInput(this);
+//		timeoutLayout.topControl = timeoutValueComp;
+//		timeoutComp.layout();
+
 		
 		Group inputsGroup = new Group(container, SWT.NONE);
 		inputsGroup.setBackground(container.getBackground());
 		inputsGroup.setText("Inputs");
-		gd = new GridData(GridData.FILL_BOTH);
+		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.horizontalSpan = 2;
 		inputsGroup.setLayoutData(gd);
 		inputsGroup.setLayout(new GridLayout(2, true));
@@ -503,7 +470,7 @@ outer:	for(Variable v : vars)
 				if(!inputTable.getSelection().isEmpty())
 				{
 					InputValueDialog vd = new InputValueDialog(Display.getCurrent().getActiveShell());
-					SubdialogInput si = (SubdialogInput)((IStructuredSelection)inputTable.getSelection()).getFirstElement();
+					SubmitInput si = (SubmitInput)((IStructuredSelection)inputTable.getSelection()).getFirstElement();
 					vd.setValue(si);
 					if(vd.open() == SWT.OK)
 					{
@@ -520,7 +487,7 @@ outer:	for(Variable v : vars)
 			{
 				if(e.character == SWT.DEL && !inputTable.getSelection().isEmpty())
 				{
-					SubdialogInput si = (SubdialogInput)((IStructuredSelection)inputTable.getSelection()).getFirstElement();
+					SubmitInput si = (SubmitInput)((IStructuredSelection)inputTable.getSelection()).getFirstElement();
 					inputs.remove(si);
 					inputTable.refresh();
 				}
@@ -532,7 +499,7 @@ outer:	for(Variable v : vars)
 			}
 		});
 
-		addButton = new Button(inputsGroup, SWT.PUSH);
+		Button addButton = new Button(inputsGroup, SWT.PUSH);
 		addButton.setText("Add Input");
 		gd = new GridData();
 		gd.horizontalAlignment = SWT.RIGHT;
@@ -546,7 +513,7 @@ outer:	for(Variable v : vars)
 			public void widgetSelected(SelectionEvent e)
 			{
 				InputValueDialog vd = new InputValueDialog(Display.getCurrent().getActiveShell());
-				SubdialogInput si = info.new SubdialogInput("", 0, "");
+				SubmitInput si = info.new SubmitInput("", 0, "");
 				vd.setValue(si);
 				if(vd.open() == SWT.OK)
 				{
@@ -556,7 +523,7 @@ outer:	for(Variable v : vars)
 			}
 			
 		});
-		deleteButton = new Button(inputsGroup, SWT.PUSH);
+		Button deleteButton = new Button(inputsGroup, SWT.PUSH);
 		deleteButton.setText("Delete Input");
 		deleteButton.addSelectionListener(new SelectionListener(){
 
@@ -568,7 +535,7 @@ outer:	for(Variable v : vars)
 			{
 				if(!inputTable.getSelection().isEmpty())
 				{
-					SubdialogInput si = (SubdialogInput)((IStructuredSelection)inputTable.getSelection()).getFirstElement();
+					SubmitInput si = (SubmitInput)((IStructuredSelection)inputTable.getSelection()).getFirstElement();
 					inputs.remove(si);
 					inputTable.refresh();
 				}
@@ -577,112 +544,6 @@ outer:	for(Variable v : vars)
 		});
 		gd = new GridData();
 		deleteButton.setLayoutData(gd);
-		
-		
-		Group outputsGroup = new Group(container, SWT.NONE);
-		outputsGroup.setBackground(container.getBackground());
-		outputsGroup.setText("Outputs");
-		gd = new GridData(GridData.FILL_BOTH);
-		gd.horizontalSpan = 2;
-		outputsGroup.setLayoutData(gd);
-		outputsGroup.setLayout(new GridLayout(2, true));
-		outputTable = new TableViewer(outputsGroup, SWT.FULL_SELECTION | SWT.SINGLE | SWT.V_SCROLL | SWT.BORDER);
-		outputTable.getTable().setHeaderVisible(true);
-		outputTable.getTable().setLinesVisible(true);
-		TableColumn outputNameColumn = new TableColumn(outputTable.getTable(), SWT.NONE);
-		outputNameColumn.setText("Name");
-		outputNameColumn.setWidth(150);
-		TableColumn outputValueColumn = new TableColumn(outputTable.getTable(), SWT.NONE);
-		outputValueColumn.setText("Value");
-		outputValueColumn.setWidth(150);
-		outputTable.setContentProvider(new OutputTableContentProvider());
-		outputTable.setLabelProvider(new OutputTableLabelProvider());
-		outputTable.setInput(this);
-		gd = new GridData(GridData.FILL_BOTH);
-		gd.horizontalSpan = 2;
-		gd.heightHint = 90;
-		gd.widthHint = 300;
-		outputTable.getTable().setLayoutData(gd);
-		outputTable.addDoubleClickListener(new IDoubleClickListener(){
-
-			public void doubleClick(DoubleClickEvent event)
-			{
-				if(!outputTable.getSelection().isEmpty())
-				{
-					OutputValueDialog vd = new OutputValueDialog(Display.getCurrent().getActiveShell());
-					SubdialogOutput so = (SubdialogOutput)((IStructuredSelection)outputTable.getSelection()).getFirstElement();
-					vd.setValue(so);
-					if(vd.open() == SWT.OK)
-					{
-						outputTable.refresh();
-					}
-				}
-			}
-			
-		});
-		outputTable.getControl().addKeyListener(new KeyListener(){
-
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if(e.character == SWT.DEL && !outputTable.getSelection().isEmpty())
-				{
-					SubdialogOutput so = (SubdialogOutput)((IStructuredSelection)outputTable.getSelection()).getFirstElement();
-					outputs.remove(so);
-					outputTable.refresh();
-				}
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e)
-			{
-			}
-		});
-		addButton = new Button(outputsGroup, SWT.PUSH);
-		addButton.setText("Add Output");
-		gd = new GridData();
-		gd.horizontalAlignment = SWT.RIGHT;
-		addButton.setLayoutData(gd);
-		addButton.addSelectionListener(new SelectionListener(){
-
-			public void widgetDefaultSelected(SelectionEvent e)
-			{
-			}
-
-			public void widgetSelected(SelectionEvent e)
-			{
-				OutputValueDialog vd = new OutputValueDialog(Display.getCurrent().getActiveShell());
-				SubdialogOutput so = info.new SubdialogOutput("", "");
-				vd.setValue(so);
-				if(vd.open() == SWT.OK)
-				{
-					outputs.add(so);
-					outputTable.refresh();
-				}
-			}
-			
-		});
-		deleteButton = new Button(outputsGroup, SWT.PUSH);
-		deleteButton.setText("Delete Output");
-		gd = new GridData();
-		deleteButton.setLayoutData(gd);
-		deleteButton.addSelectionListener(new SelectionListener(){
-
-			public void widgetDefaultSelected(SelectionEvent e)
-			{
-			}
-
-			public void widgetSelected(SelectionEvent e)
-			{
-				if(!outputTable.getSelection().isEmpty())
-				{
-					SubdialogOutput so = (SubdialogOutput)((IStructuredSelection)outputTable.getSelection()).getFirstElement();
-					outputs.remove(so);
-					outputTable.refresh();
-				}
-			}
-			
-		});
 	}
 
 	/**
@@ -733,6 +594,30 @@ outer:	for(Variable v : vars)
 		container.layout();
 	}
 
+	/**
+	 * Sets which controls are visible based on the timeout selection type
+	 */
+//	private void timeoutSelectionTypeChanged()
+//	{
+//		((FormData)timeoutTree.getControl().getLayoutData()).height = 10;
+//		switch (timeoutSelectionType.getSelectionIndex())
+//		{
+//		case 2:
+//			timeoutLayout.topControl = timeoutTreeComp;
+//			((FormData)timeoutTree.getControl().getLayoutData()).height = 175;
+//			break;
+//		case 1:
+//			timeoutLayout.topControl = timeoutExprComp;
+//			break;
+//		default:
+//			timeoutLayout.topControl = timeoutValueComp;
+//		}
+//		timeoutTreeComp.layout();
+//		timeoutComp.layout();
+//		timeoutContainer.layout();
+//		container.layout();
+//	}
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.vtp.desktop.ui.app.editor.model.ComponentPropertiesPanel#save()
 	 */
@@ -742,8 +627,6 @@ outer:	for(Variable v : vars)
 		storeBindings();
 		getElement().commitConfigurationChanges(bindingManager);
 		info.setInputs(inputs);
-		info.setOutputs(outputs);
-		info.setURLParameters(urlParameters);
 	}
 
 	/* (non-Javadoc)
@@ -753,86 +636,7 @@ outer:	for(Variable v : vars)
 	{
 		getElement().rollbackConfigurationChanges(bindingManager);
 	}
-
-	public class ParamTableContentProvider implements IStructuredContentProvider
-	{
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-		 */
-		public Object[] getElements(Object inputElement)
-		{
-			return urlParameters.toArray();
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-		 */
-		public void dispose()
-		{
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
-		 */
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
-		{
-		}
-	}
 	
-	public class ParamTableLabelProvider implements ITableLabelProvider
-	{
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
-		 */
-		public Image getColumnImage(Object element, int columnIndex)
-		{
-			return null;
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
-		 */
-		public String getColumnText(Object element, int columnIndex)
-		{
-			SubdialogParameter si = (SubdialogParameter)element;
-			if(columnIndex == 0)
-				return si.name;
-			return si.value;
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(org.eclipse.jface.viewers.ILabelProviderListener)
-		 */
-		public void addListener(ILabelProviderListener listener)
-		{
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
-		 */
-		public void dispose()
-		{
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(java.lang.Object, java.lang.String)
-		 */
-		public boolean isLabelProperty(Object element, String property)
-		{
-			return false;
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(org.eclipse.jface.viewers.ILabelProviderListener)
-		 */
-		public void removeListener(ILabelProviderListener listener)
-		{
-		}
-		
-	}
-
 	public class InputTableContentProvider implements IStructuredContentProvider
 	{
 
@@ -875,7 +679,7 @@ outer:	for(Variable v : vars)
 		 */
 		public String getColumnText(Object element, int columnIndex)
 		{
-			SubdialogInput si = (SubdialogInput)element;
+			SubmitInput si = (SubmitInput)element;
 			if(columnIndex == 0)
 				return si.name;
 			return si.value;
@@ -911,88 +715,9 @@ outer:	for(Variable v : vars)
 		}
 		
 	}
-
-	public class OutputTableContentProvider implements IStructuredContentProvider
-	{
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-		 */
-		public Object[] getElements(Object inputElement)
-		{
-			return outputs.toArray();
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-		 */
-		public void dispose()
-		{
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
-		 */
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput)
-		{
-		}
-	}
-	
-	public class OutputTableLabelProvider implements ITableLabelProvider
-	{
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnImage(java.lang.Object, int)
-		 */
-		public Image getColumnImage(Object element, int columnIndex)
-		{
-			return null;
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.ITableLabelProvider#getColumnText(java.lang.Object, int)
-		 */
-		public String getColumnText(Object element, int columnIndex)
-		{
-			SubdialogOutput so = (SubdialogOutput)element;
-			if(columnIndex == 0)
-				return so.varName;
-			return so.valueName;
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(org.eclipse.jface.viewers.ILabelProviderListener)
-		 */
-		public void addListener(ILabelProviderListener listener)
-		{
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
-		 */
-		public void dispose()
-		{
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(java.lang.Object, java.lang.String)
-		 */
-		public boolean isLabelProperty(Object element, String property)
-		{
-			return false;
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(org.eclipse.jface.viewers.ILabelProviderListener)
-		 */
-		public void removeListener(ILabelProviderListener listener)
-		{
-		}
-		
-	}
 	
 	/**
-	 * A dialog used to configure the properties of a SubdialogInput object.
+	 * A dialog used to configure the properties of a SubmitInput object.
 	 */
 	public class InputValueDialog extends FramedDialog
 	{
@@ -1001,8 +726,8 @@ outer:	for(Variable v : vars)
 		TreeViewer variableViewer;
 		/** A text field used to display/modify a static value for the variable */
 		Text staticValueField;
-		/** The SubdialogInput object this dialog will modify*/
-		SubdialogInformationProvider.SubdialogInput value;
+		/** The SubmitInput object this dialog will modify*/
+		SubmitInformationProvider.SubmitInput value;
 		Color darkBlue;
 		Color lightBlue;
 		List<ObjectDefinition> vars;
@@ -1050,10 +775,10 @@ outer:	for(Variable v : vars)
 		}
 
 		/**
-		 * Specifies which SubdialogInput object to modify
-		 * @param value - the SubdialogInput object to modify
+		 * Specifies which SubmitInput object to modify
+		 * @param value - the SubmitInput object to modify
 		 */
-		public void setValue(SubdialogInformationProvider.SubdialogInput value)
+		public void setValue(SubmitInformationProvider.SubmitInput value)
 		{
 			this.value = value;
 		}
@@ -1369,595 +1094,6 @@ outer:	for(Variable v : vars)
 		}
 	}
 
-	/**
-	 * A dialog used to configure the properties of a SubdialogOutput object.
-	 */
-	public class OutputValueDialog extends FramedDialog
-	{
-		/** A text field used to display/modify the name of the variable */
-		Text variableNameField;
-		/** A text field used to display/modify a static value for the variable */
-		Text staticValueField;
-		/** The SubdialogOutput object this dialog will modify*/
-		SubdialogInformationProvider.SubdialogOutput value;
-		Color darkBlue;
-		Color lightBlue;
-		Button okButton;
-		Label nameLabel;
-		Label valueLabel;
-
-		/**
-		 * Creates a new OutputValueDialog
-		 * @param shellProvider
-		 */
-		public OutputValueDialog(Shell shell)
-		{
-			super(shell);
-			this.setSideBarSize(40);
-			this.setTitle("Select a value");
-		}
-
-		/**
-		 * Specifies which SubdialogOutput object to modify
-		 * @param value - the SubdialogOutput object to modify
-		 */
-		public void setValue(SubdialogInformationProvider.SubdialogOutput value)
-		{
-			this.value = value;
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.vtp.desktop.core.dialogs.FramedDialog#createButtonBar(org.eclipse.swt.widgets.Composite)
-		 */
-		protected void createButtonBar(Composite parent)
-		{
-			parent.setLayout(new GridLayout(1, true));
-
-			Composite buttons = new Composite(parent, SWT.NONE);
-			buttons.setBackground(parent.getBackground());
-
-			GridData buttonsData = new GridData(GridData.FILL_BOTH);
-			buttonsData.horizontalAlignment = SWT.RIGHT;
-			buttons.setLayoutData(buttonsData);
-
-			RowLayout rl = new RowLayout();
-			rl.pack = false;
-			rl.spacing = 5;
-			buttons.setLayout(rl);
-
-			okButton = new Button(buttons, SWT.PUSH);
-			okButton.setText("Ok");
-			okButton.addSelectionListener(new SelectionListener()
-				{
-					public void widgetSelected(SelectionEvent e)
-					{
-						okPressed();
-					}
-
-					public void widgetDefaultSelected(SelectionEvent e)
-					{
-					}
-				});
-
-			final Button cancelButton = new Button(buttons, SWT.PUSH);
-			cancelButton.setText("Cancel");
-			cancelButton.addSelectionListener(new SelectionListener()
-				{
-					public void widgetSelected(SelectionEvent e)
-					{
-						cancelPressed();
-					}
-
-					public void widgetDefaultSelected(SelectionEvent e)
-					{
-					}
-				});
-
-			if(Display.getCurrent().getDismissalAlignment() == SWT.RIGHT)
-			{
-				cancelButton.moveAbove(okButton);
-			}
-			this.getShell().setDefaultButton(okButton);
-		}
-
-		/**
-		 * Saves any changes made to this object and exits with a return code of SWT.OK
-		 */
-		public void okPressed()
-		{
-			value.varName = variableNameField.getText();
-			value.valueName = staticValueField.getText();
-			this.setReturnCode(SWT.OK);
-			close();
-		}
-
-		/**
-		 * Cancels any changes made to this object and exits with a return code of SWT.CANCEL
-		 */
-		public void cancelPressed()
-		{
-			this.setReturnCode(SWT.CANCEL);
-			close();
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.vtp.desktop.core.dialogs.FramedDialog#createDialogContents(org.eclipse.swt.widgets.Composite)
-		 */
-		protected void createDialogContents(Composite parent)
-		{
-			darkBlue = new Color(parent.getDisplay(), 77, 113, 179);
-			lightBlue = new Color(parent.getDisplay(), 240, 243, 249);
-			parent.addDisposeListener(new DisposeListener()
-				{
-					public void widgetDisposed(DisposeEvent e)
-					{
-						darkBlue.dispose();
-						lightBlue.dispose();
-					}
-				});
-			this.setFrameColor(darkBlue);
-			this.setSideBarColor(lightBlue);
-			parent.setLayout(new GridLayout(2, false));
-
-			nameLabel = new Label(parent, SWT.NONE);
-			nameLabel.setText("Target Variable Name");
-			nameLabel.setBackground(parent.getBackground());
-			GridData gd = new GridData();
-			nameLabel.setLayoutData(gd);
-			
-			variableNameField = new Text(parent, SWT.SINGLE | SWT.BORDER);
-			variableNameField.setText(value.varName);
-			gd = new GridData(GridData.FILL_HORIZONTAL);
-			gd.horizontalSpan = 2;
-			variableNameField.setLayoutData(gd);
-			variableNameField.addVerifyListener(new VerifyListener()
-			{
-				public void verifyText(VerifyEvent e)
-				{
-					String currentName = variableNameField.getText().substring(0, e.start) + e.text + variableNameField.getText(e.end, (variableNameField.getText().length() - 1));
-					if(VariableNameValidator.followsEcmaNamingRules(currentName))
-					{
-						nameLabel.setForeground(nameLabel.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-						variableNameField.setForeground(variableNameField.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-						if(VariableNameValidator.followsEcmaNamingRules(staticValueField.getText()))
-							okButton.setEnabled(true);
-//TODO check for name collisions
-//						for(int b = 0; b < reservedNames.size(); b++)
-//						{
-//							if(currentName.equals(reservedNames.get(b))) //Is this name taken?
-//							{
-//								nameLabel.setForeground(nameLabel.getDisplay().getSystemColor(SWT.COLOR_RED));
-//								variableNameField.setForeground(variableNameField.getDisplay().getSystemColor(SWT.COLOR_RED));
-//								okButton.setEnabled(false);	                		
-//							}
-//						}
-					}
-					else
-					{
-						nameLabel.setForeground(nameLabel.getDisplay().getSystemColor(SWT.COLOR_RED));
-						variableNameField.setForeground(variableNameField.getDisplay().getSystemColor(SWT.COLOR_RED));
-						okButton.setEnabled(false);
-					}
-	            }
-			});
-
-
-			valueLabel = new Label(parent, SWT.NONE);
-			valueLabel.setText("Subdialog Return Value");
-			valueLabel.setBackground(parent.getBackground());
-			gd = new GridData();
-			valueLabel.setLayoutData(gd);
-			
-			staticValueField = new Text(parent, SWT.SINGLE | SWT.BORDER);
-			gd = new GridData(GridData.FILL_HORIZONTAL);
-			gd.horizontalSpan = 2;
-			staticValueField.setLayoutData(gd);
-			staticValueField.setText((value.valueName == null) ? "" : value.valueName);
-			staticValueField.addVerifyListener(new VerifyListener()
-			{
-				public void verifyText(VerifyEvent e)
-				{
-					String currentName = staticValueField.getText().substring(0, e.start) + e.text + staticValueField.getText(e.end, (staticValueField.getText().length() - 1));
-					if(VariableNameValidator.followsEcmaNamingRules(currentName))
-					{
-						valueLabel.setForeground(valueLabel.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-						staticValueField.setForeground(staticValueField.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-						if(VariableNameValidator.followsEcmaNamingRules(variableNameField.getText()))
-							okButton.setEnabled(true);
-					}
-					else
-					{
-						valueLabel.setForeground(valueLabel.getDisplay().getSystemColor(SWT.COLOR_RED));
-						staticValueField.setForeground(staticValueField.getDisplay().getSystemColor(SWT.COLOR_RED));
-						okButton.setEnabled(false);
-					}
-	            }
-			});
-			okButton.setEnabled(VariableNameValidator.followsEcmaNamingRules(variableNameField.getText()) && VariableNameValidator.followsEcmaNamingRules(staticValueField.getText()));
-
-		}
-
-	}
-
-	/**
-	 * A dialog used to configure the properties of a SubdialogParameter object.
-	 */
-	public class ParameterValueDialog extends FramedDialog
-	{
-		/** A text field used to display/modify the name of the variable */
-		Text variableNameField;
-		TreeViewer variableViewer;
-		/** A text field used to display/modify a static value for the variable */
-		Text staticValueField;
-		/** The SubdialogParameter object this dialog will modify*/
-		SubdialogInformationProvider.SubdialogParameter value;
-		Color darkBlue;
-		Color lightBlue;
-		List<ObjectDefinition> vars;
-		Composite staticValueComp;
-		Composite variableTreeComp;
-		Composite valueComp;
-		StackLayout valueLayout;
-		Combo valueType;
-		Label nameLabel;
-		/** The button used to dismiss the dialog and keep the changes */
-		Button okButton;
-
-		/**
-		 * Creates a new ParameterValueDialog
-		 * @param shellProvider
-		 */
-		@SuppressWarnings("unchecked")
-		public ParameterValueDialog(Shell shell)
-		{
-			super(shell);
-			this.setSideBarSize(40);
-			this.setTitle("Select a value");
-
-			List<Variable> unsortedVars = getElement().getDesign().getVariablesFor(getElement());
-			if (unsortedVars == null)
-			{
-				this.vars = null;
-			}
-			else
-			{
-				Comparable<Comparer>[] comp = new Comparable[unsortedVars.size()];
-				for (int b = 0; b < unsortedVars.size(); b++)
-				{
-					Comparer compr = new Comparer(unsortedVars.get(b));
-					comp[b] = compr;
-				}
-				comp = QuickSort.comparableSort(comp);
-				this.vars = new ArrayList<ObjectDefinition>();
-				for (int b = 0; b < comp.length; b++)
-				{
-					this.vars.add(((Comparer)comp[b]).od);
-				}
-			}
-		}
-
-		/**
-		 * Specifies which SubdialogParameter object to modify
-		 * @param value - the SubdialogParameter object to modify
-		 */
-		public void setValue(SubdialogInformationProvider.SubdialogParameter value)
-		{
-			this.value = value;
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.vtp.desktop.core.dialogs.FramedDialog#createButtonBar(org.eclipse.swt.widgets.Composite)
-		 */
-		protected void createButtonBar(Composite parent)
-		{
-			parent.setLayout(new GridLayout(1, true));
-
-			Composite buttons = new Composite(parent, SWT.NONE);
-			buttons.setBackground(parent.getBackground());
-
-			GridData buttonsData = new GridData(GridData.FILL_BOTH);
-			buttonsData.horizontalAlignment = SWT.RIGHT;
-			buttons.setLayoutData(buttonsData);
-
-			RowLayout rl = new RowLayout();
-			rl.pack = false;
-			rl.spacing = 5;
-			buttons.setLayout(rl);
-
-			okButton = new Button(buttons, SWT.PUSH);
-			okButton.setText("Ok");
-			okButton.addSelectionListener(new SelectionListener()
-				{
-					public void widgetSelected(SelectionEvent e)
-					{
-						okPressed();
-					}
-
-					public void widgetDefaultSelected(SelectionEvent e)
-					{
-					}
-				});
-
-			final Button cancelButton = new Button(buttons, SWT.PUSH);
-			cancelButton.setText("Cancel");
-			cancelButton.addSelectionListener(new SelectionListener()
-				{
-					public void widgetSelected(SelectionEvent e)
-					{
-						cancelPressed();
-					}
-
-					public void widgetDefaultSelected(SelectionEvent e)
-					{
-					}
-				});
-
-			if(Display.getCurrent().getDismissalAlignment() == SWT.RIGHT)
-			{
-				cancelButton.moveAbove(okButton);
-			}
-			this.getShell().setDefaultButton(okButton);
-		}
-
-		/**
-		 * Saves any changes made to this object and exits with a return code of SWT.OK
-		 */
-		public void okPressed()
-		{
-			value.name = variableNameField.getText();
-			if(valueType.getSelectionIndex() == 1)
-			{
-				value.type = 1;
-				if(!variableViewer.getSelection().isEmpty())
-				{
-					value.value = ((ObjectDefinition)((IStructuredSelection)variableViewer.getSelection()).getFirstElement()).getPath();
-				}
-				else
-				{
-					value.value = "";
-				}
-			}
-			else
-			{
-				value.type = 0;
-				value.value = staticValueField.getText();
-			}
-			this.setReturnCode(SWT.OK);
-			close();
-		}
-
-		/**
-		 * Cancels any changes made to this object and exits with a return code of SWT.CANCEL
-		 */
-		public void cancelPressed()
-		{
-			this.setReturnCode(SWT.CANCEL);
-			close();
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.vtp.desktop.core.dialogs.FramedDialog#createDialogContents(org.eclipse.swt.widgets.Composite)
-		 */
-		protected void createDialogContents(Composite parent)
-		{
-			darkBlue = new Color(parent.getDisplay(), 77, 113, 179);
-			lightBlue = new Color(parent.getDisplay(), 240, 243, 249);
-			parent.addDisposeListener(new DisposeListener()
-				{
-					public void widgetDisposed(DisposeEvent e)
-					{
-						darkBlue.dispose();
-						lightBlue.dispose();
-					}
-				});
-			this.setFrameColor(darkBlue);
-			this.setSideBarColor(lightBlue);
-			parent.setLayout(new GridLayout(2, false));
-
-			nameLabel = new Label(parent, SWT.NONE);
-			nameLabel.setText("Parameter Name");
-			nameLabel.setBackground(parent.getBackground());
-			GridData gd = new GridData();
-			nameLabel.setLayoutData(gd);
-			
-			variableNameField = new Text(parent, SWT.SINGLE | SWT.BORDER);
-			variableNameField.setText(value.name);
-			gd = new GridData(GridData.FILL_HORIZONTAL);
-			gd.horizontalSpan = 2;
-			variableNameField.setLayoutData(gd);
-			variableNameField.addVerifyListener(new VerifyListener()
-			{
-				public void verifyText(VerifyEvent e)
-				{
-					String currentName = variableNameField.getText().substring(0, e.start) + e.text + variableNameField.getText(e.end, (variableNameField.getText().length() - 1));
-					if(VariableNameValidator.followsEcmaNamingRules(currentName))
-					{
-						nameLabel.setForeground(nameLabel.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-						variableNameField.setForeground(variableNameField.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-						okButton.setEnabled(true);
-//TODO check for name collisions
-//						for(int b = 0; b < reservedNames.size(); b++)
-//						{
-//							if(currentName.equals(reservedNames.get(b))) //Is this name taken?
-//							{
-//								nameLabel.setForeground(nameLabel.getDisplay().getSystemColor(SWT.COLOR_RED));
-//								variableNameField.setForeground(variableNameField.getDisplay().getSystemColor(SWT.COLOR_RED));
-//								okButton.setEnabled(false);	                		
-//							}
-//						}
-					}
-					else
-					{
-						nameLabel.setForeground(nameLabel.getDisplay().getSystemColor(SWT.COLOR_RED));
-						variableNameField.setForeground(variableNameField.getDisplay().getSystemColor(SWT.COLOR_RED));
-						okButton.setEnabled(false);
-					}
-	            }
-			});
-			okButton.setEnabled(VariableNameValidator.followsEcmaNamingRules(variableNameField.getText()));
-
-			valueType = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
-			GridData valueTypeGridData = new GridData();
-			valueTypeGridData.verticalAlignment = SWT.TOP;
-			valueType.setLayoutData(valueTypeGridData);
-			valueType.add("Value");
-			valueType.add("Variable");
-			valueType.select(value.type == 1 ? 1 : 0);
-			valueType.addSelectionListener(new SelectionListener()
-			{
-				public void widgetSelected(SelectionEvent e)
-				{
-					valueTypeChanged();
-				}
-
-				public void widgetDefaultSelected(SelectionEvent e)
-				{
-				}
-			});
-
-			valueComp = new Composite(parent, SWT.None);
-			valueComp.setBackground(parent.getBackground());
-			valueComp.setLayout(valueLayout = new StackLayout());
-			valueComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			
-			staticValueComp = new Composite(valueComp, SWT.NONE);
-			staticValueComp.setBackground(valueComp.getBackground());
-			GridLayout layout = new GridLayout(1, false);
-			layout.marginWidth = layout.marginHeight = 0;
-			staticValueComp.setLayout(layout);
-			
-			variableTreeComp = new Composite(valueComp, SWT.NONE);
-			variableTreeComp.setBackground(valueComp.getBackground());
-			layout = new GridLayout(1, false);
-			layout.marginWidth = layout.marginHeight = 0;
-			variableTreeComp.setLayout(layout);
-			
-			Tree variableTree = new Tree(variableTreeComp, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
-			gd = new GridData(GridData.FILL_BOTH);
-			gd.horizontalIndent = 10;
-			gd.horizontalSpan = 2;
-			variableTree.setLayoutData(gd);
-			variableViewer = new TreeViewer(variableTree);
-			variableViewer.setContentProvider(new VariableContentProvider());
-			variableViewer.setLabelProvider(new VariableLabelProvider());
-			variableViewer.setInput(this);
-			
-			staticValueField = new Text(staticValueComp, SWT.BORDER | SWT.SINGLE);
-			gd = new GridData(GridData.FILL_HORIZONTAL);
-			gd.horizontalSpan = 2;
-
-			if(value.type == 1)
-			{
-				for(int i = 0; i < vars.size(); i++)
-				{
-					Variable v = (Variable)vars.get(i);
-
-					if(v.getName().equals(value.value))
-					{
-						variableViewer.setSelection(new StructuredSelection(v));
-					}
-					else if((value.value != null)
-							&& value.value.startsWith(v.getName()))
-					{
-						List<ObjectField> objectFields = v.getFields();
-
-						for(int f = 0; f < objectFields.size(); f++)
-						{
-							ObjectField of = objectFields.get(f);
-
-							if(of.getPath().equals(value.value))
-							{
-								variableViewer.setSelection(new StructuredSelection(
-										of));
-							}
-						}
-					}
-				}
-			}
-
-			staticValueField.setLayoutData(gd);
-
-			if(value.type == 1)
-			{
-				valueLayout.topControl = variableTreeComp;
-			}
-			else
-			{
-				staticValueField.setText((value.value == null) ? "" : value.value);
-				valueLayout.topControl = staticValueComp;
-			}
-		}
-		
-		/**
-		 * Sets which controls are visible based on the value type
-		 */
-		private void valueTypeChanged()
-		{
-			switch (valueType.getSelectionIndex())
-			{
-			case 1:
-				valueLayout.topControl = variableTreeComp;
-				break;
-			default:
-				valueLayout.topControl = staticValueComp;
-			}
-			valueComp.layout();
-		}
-
-		public class VariableContentProvider implements ITreeContentProvider
-		{
-			public Object[] getElements(Object inputElement)
-			{
-				return vars.toArray();
-			}
-
-			public void dispose()
-			{
-			}
-
-			public void inputChanged(Viewer viewer, Object oldInput,
-				Object newInput)
-			{
-			}
-
-			public Object[] getChildren(Object parentElement)
-			{
-				return ((ObjectDefinition)parentElement).getFields().toArray();
-			}
-
-			public Object getParent(Object element)
-			{
-				if(element instanceof Variable)
-				{
-					return null;
-				}
-				else
-				{
-					return ((ObjectField)element).getParent();
-				}
-			}
-
-			public boolean hasChildren(Object element)
-			{
-				return true;
-			}
-		}
-
-		public class VariableLabelProvider extends LabelProvider
-		{
-			public Image getImage(Object element)
-			{
-				return org.eclipse.vtp.desktop.core.Activator.getDefault().getImageRegistry()
-										  .get("ICON_TINY_SQUARE");
-			}
-
-			public String getText(Object element)
-			{
-				return ((ObjectDefinition)element).getName();
-			}
-		}
-	}
-
 	private class Comparer implements Comparable<Comparer>
 	{
 		ObjectDefinition od = null;
@@ -2015,17 +1151,14 @@ outer:	for(Variable v : vars)
 			return;
 		}
 		InteractionBinding interactionBinding = bindingManager.getInteractionBinding("");
-		NamedBinding namedBinding = interactionBinding.getNamedBinding("destination");
+		NamedBinding namedBinding = interactionBinding.getNamedBinding("url");
 		LanguageBinding languageBinding = namedBinding.getLanguageBinding("");
 		BrandBinding brandBinding = languageBinding.getBrandBinding(currentBrand);
-		System.out.println(currentBrand.getId());
 		PropertyBindingItem valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
 		if(valuePropertyItem == null)
 		{
-			System.out.println("Value item is null");
 			valuePropertyItem = new PropertyBindingItem();
 		}
-		System.out.println("VALUE TYPE: " + valuePropertyItem.getValueType());
 		if (valuePropertyItem.getValue() != null)
 		{
 			if(valuePropertyItem.getValueType().equals(PropertyBindingItem.STATIC))
@@ -2052,22 +1185,15 @@ outer:	for(Variable v : vars)
 		destinationTypeChanged();
 		
 		
-		
-		
-		
-		 //TODO clean up system.out items
 		interactionBinding = bindingManager.getInteractionBinding("");
 		namedBinding = interactionBinding.getNamedBinding("method");
 		languageBinding = namedBinding.getLanguageBinding("");
 		brandBinding = languageBinding.getBrandBinding(currentBrand);
-		System.out.println(currentBrand.getId());
 		valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
 		if(valuePropertyItem == null)
 		{
-			System.out.println("Value item is null");
 			valuePropertyItem = new PropertyBindingItem();
 		}
-		System.out.println("VALUE TYPE: " + valuePropertyItem.getValueType());
 		if (valuePropertyItem.getValue() != null)
 		{
 			if(valuePropertyItem.getValueType().equals(PropertyBindingItem.STATIC))
@@ -2092,6 +1218,40 @@ outer:	for(Variable v : vars)
 			}
 		}
 		methodSelectionTypeChanged();
+		
+//		interactionBinding = bindingManager.getInteractionBinding("");
+//		namedBinding = interactionBinding.getNamedBinding("timeout");
+//		languageBinding = namedBinding.getLanguageBinding("");
+//		brandBinding = languageBinding.getBrandBinding(currentBrand);
+//		valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
+//		if(valuePropertyItem == null)
+//		{
+//			valuePropertyItem = new PropertyBindingItem();
+//		}
+//		if (valuePropertyItem.getValue() != null)
+//		{
+//			if(valuePropertyItem.getValueType().equals(PropertyBindingItem.STATIC))
+//			{
+//				timeoutSelectionType.select(0);
+//				timeoutValue.setText(valuePropertyItem.getValue());
+//			}
+//			else if(valuePropertyItem.getValueType().equals(PropertyBindingItem.EXPRESSION))
+//			{
+//				timeoutSelectionType.select(1);
+//				timeoutExpr.setText(valuePropertyItem.getValue());
+//			}
+//			else
+//			{
+//				timeoutSelectionType.select(2);
+//				ObjectDefinition od =
+//						VariableHelper.getObjectDefinitionFromVariables(variables, valuePropertyItem.getValue());
+//				StructuredSelection ss =
+//						(od == null) ? StructuredSelection.EMPTY
+//								: new StructuredSelection(od);
+//				timeoutTree.setSelection(ss);
+//			}
+//		}
+//		timeoutSelectionTypeChanged();
 	}
 	
 	private void storeBindings()
@@ -2099,7 +1259,7 @@ outer:	for(Variable v : vars)
 		try
 		{
 			InteractionBinding interactionBinding = bindingManager.getInteractionBinding("");
-			NamedBinding namedBinding = interactionBinding.getNamedBinding("destination");
+			NamedBinding namedBinding = interactionBinding.getNamedBinding("url");
 			LanguageBinding languageBinding = namedBinding.getLanguageBinding("");
 			BrandBinding brandBinding = languageBinding.getBrandBinding(currentBrand);
 			PropertyBindingItem valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
@@ -2130,9 +1290,6 @@ outer:	for(Variable v : vars)
 				valuePropertyItem.setStaticValue(destinationValue.getText());
 			}
 			brandBinding.setBindingItem(valuePropertyItem);
-			
-			
-			
 			
 			namedBinding = interactionBinding.getNamedBinding("method");
 			languageBinding = namedBinding.getLanguageBinding("");
@@ -2166,8 +1323,37 @@ outer:	for(Variable v : vars)
 			}
 			brandBinding.setBindingItem(valuePropertyItem);
 			
-
-			
+//			namedBinding = interactionBinding.getNamedBinding("timeout");
+//			languageBinding = namedBinding.getLanguageBinding("");
+//			brandBinding = languageBinding.getBrandBinding(currentBrand);
+//			valuePropertyItem = (PropertyBindingItem)brandBinding.getBindingItem();
+//			if(valuePropertyItem == null)
+//				valuePropertyItem = new PropertyBindingItem();
+//			else
+//				valuePropertyItem = (PropertyBindingItem)valuePropertyItem.clone();
+//			switch (timeoutSelectionType.getSelectionIndex())
+//			{
+//			case 2:
+//				ISelection selection = timeoutTree.getSelection();
+//				if((selection != null) && !selection.isEmpty()
+//						&& selection instanceof IStructuredSelection)
+//				{
+//					Object selObj = ((IStructuredSelection)selection).getFirstElement();
+//					if(selObj instanceof ObjectDefinition)
+//					{
+//						valuePropertyItem.setVariable(((ObjectDefinition)selObj).getPath());
+//						break;
+//					}
+//				}
+//				valuePropertyItem.setVariable("");
+//				break;
+//			case 1:
+//				valuePropertyItem.setExpression(timeoutExpr.getText());
+//				break;
+//			default:
+//				valuePropertyItem.setValue(timeoutValue.getText());
+//			}
+//			brandBinding.setBindingItem(valuePropertyItem);
 			
 		}
 		catch (Exception ex)
