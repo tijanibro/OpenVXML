@@ -53,14 +53,21 @@ public class VXMLBGenesysVoicePlatform extends VoicePlatform
 		return document;
     }
 
-    public List<String> getPlatformVariableNames()
+	public void generateInitialVariableRequests(Map variables)
+    {
+        super.generateInitialVariableRequests(variables);
+        variables.put("genesysUUID", "session.connection.protocol.sip.rawheaders['X-Genesys-CallUUID']");
+    }
+
+	public List<String> getPlatformVariableNames()
     {
         List<String> names = super.getPlatformVariableNames();
         names.add("genesysHeaders");
+        names.add("genesysUUID");
         return names;
     }
     
-	/*
+    /*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.eclipse.vtp.framework.interactions.core.support.AbstractPlatform#

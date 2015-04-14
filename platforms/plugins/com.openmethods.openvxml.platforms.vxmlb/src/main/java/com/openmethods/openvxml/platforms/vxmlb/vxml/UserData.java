@@ -174,7 +174,7 @@ public class UserData extends FormElement
 	protected void writeAttributes(AttributesImpl attributes)
 	{
 		super.writeAttributes(attributes);
-		writeAttribute(attributes, null, null, "classid", TYPE_CDATA, "builtin:sendinfo");
+		writeAttribute(attributes, null, null, "classid", TYPE_CDATA, "builtin:sendinfo?params=genesys");
 	}
 
 	/**
