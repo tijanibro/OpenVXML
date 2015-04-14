@@ -65,7 +65,6 @@ import org.eclipse.vtp.framework.interactions.core.configurations.OutputSwitch;
 import org.eclipse.vtp.framework.interactions.core.configurations.PropertyConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.SelectionChoiceConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.SelectionRequestConfiguration;
-import org.eclipse.vtp.framework.interactions.core.configurations.SubmitConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.TransferMessageConfiguration;
 import org.eclipse.vtp.framework.interactions.core.conversation.IBridgeMessage;
 import org.eclipse.vtp.framework.interactions.core.conversation.IConversation;
