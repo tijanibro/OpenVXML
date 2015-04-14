@@ -244,6 +244,12 @@
          </result>
       </action>
       <action
+            id="org.eclipse.vtp.framework.interactions.core.actions.submit"
+            type="org.eclipse.vtp.framework.interactions.core.actions.SubmitAction"
+            name="Submit Action"
+            blocking="false">
+      </action>
+      <action
             id="org.eclipse.vtp.framework.interactions.core.actions.transfer-message"
             type="org.eclipse.vtp.framework.interactions.core.actions.BridgeMessageAction"
             name="Transfer Message Action"
@@ -491,6 +497,13 @@
             type="org.eclipse.vtp.framework.interactions.core.configurations.ExternalReferenceConfiguration"
             xml-namespace="http://eclipse.org/vtp/xml/framework/interactions/core/configurations"
             xml-tag="external-reference">
+      </configuration>
+      <configuration
+            id="org.eclipse.vtp.framework.interactions.core.configurations.submit"
+            name="Submit Configuration"
+            type="org.eclipse.vtp.framework.interactions.core.configurations.SubmitConfiguration"
+            xml-namespace="http://eclipse.org/vtp/xml/framework/interactions/core/configurations"
+            xml-tag="submit">
       </configuration>
    </extension>
    

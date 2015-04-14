@@ -96,6 +96,13 @@
       </primitive>
       <primitive
             filter="org.eclipse.vtp.modules.interactive.ui.views.InteractiveOnlyPalletItemFilter"
+            icon="icons/subdialog.gif"
+            id="org.eclipse.vtp.modules.interactive.submit"
+            name="Submit">
+         <information_provider class="org.eclipse.vtp.modules.interactive.ui.SubmitInformationProvider"/>
+      </primitive>
+      <primitive
+            filter="org.eclipse.vtp.modules.interactive.ui.views.InteractiveOnlyPalletItemFilter"
             icon="icons/record.png"
             id="org.eclipse.vtp.modules.interactive.record"
             name="Record">
@@ -128,6 +135,10 @@
             class="org.eclipse.vtp.modules.interactive.ui.export.SubdialogConfigurationExporter"
             id="org.eclipse.vtp.modules.interactive.subdialog">
       </primitive-configuration-exporter>
+      <primitive-configuration-exporter
+            class="org.eclipse.vtp.modules.interactive.ui.export.SubmitConfigurationExporter"
+            id="org.eclipse.vtp.modules.interactive.submit">
+      </primitive-configuration-exporter>
    </extension>
    <extension
          point="org.eclipse.vtp.desktop.editors.core.componentPropertiesPanelProvider">
@@ -148,6 +159,9 @@
       </provider>
       <provider
             class="org.eclipse.vtp.modules.interactive.ui.properties.SubdialogComponentPropertiesPanelProvider">
+      </provider>
+      <provider
+            class="org.eclipse.vtp.modules.interactive.ui.properties.SubmitComponentPropertiesPanelProvider">
       </provider>
       <provider
             class="org.eclipse.vtp.modules.interactive.ui.properties.BeginComponentPropertiesPanelProvider">

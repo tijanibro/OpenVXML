@@ -29,6 +29,15 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public class Exit extends Action
 {
+	/** A flag that allows this to function as Submit-Next */
+	private boolean submit = false;
+	
+	/** The method to use for Submit-Next. */
+	private String method = METHOD_GET;
+	
+	/** The url to use for Submit-Next. */
+	private String url = null;
+	
 	/** The list of variables to return. */
 	private final LinkedList<String> names = new LinkedList<String>();
 
@@ -42,6 +51,43 @@ public class Exit extends Action
 			for(String name : names)
 				this.names.add(name);
 		}
+	}
+
+	public boolean isSubmit() {
+		return submit;
+	}
+
+	public void setSubmit(boolean submit) {
+		this.submit = submit;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		if(VXMLConstants.METHOD_POST.equalsIgnoreCase(method))
+			this.method = VXMLConstants.METHOD_POST;
+		else if(VXMLConstants.METHOD_GET.equalsIgnoreCase(method))
+			this.method = VXMLConstants.METHOD_GET;
+		else
+		{
+			this.method = VXMLConstants.METHOD_GET;
+			System.out.println("Expecting \"post\" or \"get\". Got " + method + " instead");
+		}
+			
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public LinkedList<String> getNames() {
+		return names;
 	}
 
 	/**
@@ -94,9 +140,18 @@ public class Exit extends Action
 		// Start and end the element.
 		AttributesImpl attributes = new AttributesImpl();
 		writeAttributes(attributes);
-		outputHandler.startElement(NAMESPACE_URI_VXML, NAME_EXIT, NAME_EXIT,
-				attributes);
-		outputHandler.endElement(NAMESPACE_URI_VXML, NAME_EXIT, NAME_EXIT);
+		
+		if(submit)
+		{
+			outputHandler.startElement(NAMESPACE_URI_VXML, NAME_SUBMIT, NAME_SUBMIT, attributes);
+			outputHandler.endElement(NAMESPACE_URI_VXML, NAME_SUBMIT, NAME_SUBMIT);
+		}
+		else
+		{
+			outputHandler.startElement(NAMESPACE_URI_VXML, NAME_EXIT, NAME_EXIT,
+					attributes);
+			outputHandler.endElement(NAMESPACE_URI_VXML, NAME_EXIT, NAME_EXIT);
+		}
 	}
 
 	/**
@@ -108,6 +163,9 @@ public class Exit extends Action
 	 */
 	protected void writeAttributes(AttributesImpl attributes)
 	{
+		if(submit && url != null)
+			writeAttribute(attributes, null, null, NAME_NEXT, TYPE_CDATA, url);
+
 		if (names.size() > 0)
 		{
 			StringBuffer buffer = new StringBuffer();
@@ -120,5 +178,9 @@ public class Exit extends Action
 			writeAttribute(attributes, null, null, NAME_NAMELIST, TYPE_CDATA, buffer
 					.toString());
 		}
+		
+		if(submit && method != null)
+			writeAttribute(attributes, null, null, NAME_METHOD, TYPE_CDATA, method);
 	}
+	
 }

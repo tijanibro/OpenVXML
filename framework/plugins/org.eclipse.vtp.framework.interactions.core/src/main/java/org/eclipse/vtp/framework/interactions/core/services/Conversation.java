@@ -65,6 +65,7 @@ import org.eclipse.vtp.framework.interactions.core.configurations.OutputSwitch;
 import org.eclipse.vtp.framework.interactions.core.configurations.PropertyConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.SelectionChoiceConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.SelectionRequestConfiguration;
+import org.eclipse.vtp.framework.interactions.core.configurations.SubmitConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.TransferMessageConfiguration;
 import org.eclipse.vtp.framework.interactions.core.conversation.IBridgeMessage;
 import org.eclipse.vtp.framework.interactions.core.conversation.IConversation;
@@ -1772,11 +1773,58 @@ public class Conversation implements IConversation {
 			super();
 		}
 		
+		/** A flag that allows this to function as Submit-Next */
+		private boolean submit = false;
+		
+		/** The method to use for Submit-Next. */
+		private String method = null;
+		
+		/** The url to use for Submit-Next. */
+		private String url = null;
+		
 		private final Map<String, String> variables = new HashMap<String, String>();
+
+		public boolean isSubmit() {
+			return submit;
+		}
+
+		public void setSubmit(boolean submit) {
+			this.submit = submit;
+		}
+
+		public String getMethod() {
+			return method;
+		}
+
+		public void setMethod(String method) {
+			this.method = method;
+		}
+
+		public String getUrl() {
+			return url;
+		}
+
+		public void setUrl(String url) {
+			this.url = url;
+		}
 
 		public void setVariableValue(String variableName, String variableValue)
 		{
-			variables.put(variableName, variableValue);
+			if("*submit_url".equals(variableName))
+				setUrl(variableValue);
+			else if("*submit_method".equals(variableName))
+				setMethod(variableValue);
+			else if("*submit_isSubmit".equals(variableName))
+				setSubmit(Boolean.parseBoolean(variableValue));
+			else if("*submit_inputVariable".equals(variableName))
+			{
+				String[] input = variableValue.split(":");
+				IDataObject obj = variableRegistry.getVariable(input[1]);
+				if (obj != null)
+					variables.put(input[0], obj.toString());
+			}
+			else
+				variables.put(variableName, variableValue);
 		}
 
 		/*
@@ -1789,9 +1837,15 @@ public class Conversation implements IConversation {
 		ConversationCommand createCommand() {
 			EndMessageCommand command = new EndMessageCommand();
 			for (Map.Entry<String, String> entry : variables.entrySet())
-			{
 				command.addVariable(entry.getKey(), entry.getValue());
+			
+			if(submit)
+			{
+				command.setSubmit(submit);
+				command.setMethod(method);
+				command.setUrl(url);
 			}
+			
 			return command;
 		}
 
