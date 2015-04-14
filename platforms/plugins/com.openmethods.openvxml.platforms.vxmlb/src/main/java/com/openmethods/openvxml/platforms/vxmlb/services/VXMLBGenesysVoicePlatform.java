@@ -95,10 +95,10 @@ public class VXMLBGenesysVoicePlatform extends VoicePlatform
 		Script headerScript = new Script();
 		headerScript.appendText("for(var h in session.connection.protocol.sip.rawheaders)\r\n");
 		headerScript.appendText("{\r\n");
-		headerScript.appendText("\tvar genesysHeadersTemp = new Array();\r\n");
-		headerScript.appendText("\tif(h.startsWith('X-Genesys-'))\r\n");
+		headerScript.appendText("\tvar genesysHeadersTemp = new Object();\r\n");
+		headerScript.appendText("\tif(h.substring(0,10) == 'X-Genesys-')\r\n");
 		headerScript.appendText("\t{\r\n");
-		headerScript.appendText("\t\tgenesysHeadersTemp.push(h.substring(10));\r\n");
+		headerScript.appendText("\t\tgenesysHeadersTemp[h.substring(10)] = session.connection.protocol.sip.rawheaders[h];\r\n");
 		headerScript.appendText("\t}\r\n");
 		headerScript.appendText("\tgenesysHeaders = JSON.stringify(genesysHeadersTemp);\r\n");
 		headerScript.appendText("}\r\n");
