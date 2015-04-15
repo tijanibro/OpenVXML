@@ -109,6 +109,7 @@ public class VXMLBGenesysVoicePlatform extends VoicePlatform
 		headerScript.appendText("\t}\r\n");
 		headerScript.appendText("\tgenesysHeaders = JSON.stringify(genesysHeadersTemp);\r\n");
 		headerScript.appendText("}\r\n");
+		block.addAction(headerScript);
 		ILink nextLink = links.createNextLink();
 		String[] parameterNames = initialCommand.getParameterNames();
 		for (int i = 0; i < parameterNames.length; ++i)
