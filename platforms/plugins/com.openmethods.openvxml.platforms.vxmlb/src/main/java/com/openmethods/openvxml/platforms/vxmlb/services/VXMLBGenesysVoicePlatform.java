@@ -100,15 +100,15 @@ public class VXMLBGenesysVoicePlatform extends VoicePlatform
 			block.addAction(new Assignment(key, varMap.get(key)));
 		}
 		Script headerScript = new Script();
+		headerScript.appendText("var genesysHeadersTemp = new Object();\r\n");
 		headerScript.appendText("for(var h in session.connection.protocol.sip.rawheaders)\r\n");
 		headerScript.appendText("{\r\n");
-		headerScript.appendText("\tvar genesysHeadersTemp = new Object();\r\n");
 		headerScript.appendText("\tif(h.substring(0,10) == 'X-Genesys-')\r\n");
 		headerScript.appendText("\t{\r\n");
 		headerScript.appendText("\t\tgenesysHeadersTemp[h.substring(10)] = session.connection.protocol.sip.rawheaders[h];\r\n");
 		headerScript.appendText("\t}\r\n");
-		headerScript.appendText("\tgenesysHeaders = JSON.stringify(genesysHeadersTemp);\r\n");
 		headerScript.appendText("}\r\n");
+		headerScript.appendText("genesysHeaders = JSON.stringify(genesysHeadersTemp);\r\n");
 		block.addAction(headerScript);
 		ILink nextLink = links.createNextLink();
 		String[] parameterNames = initialCommand.getParameterNames();
