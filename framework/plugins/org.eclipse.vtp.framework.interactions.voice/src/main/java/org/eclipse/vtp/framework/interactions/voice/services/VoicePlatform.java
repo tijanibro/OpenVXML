@@ -203,6 +203,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 	protected VXMLDocument createVXMLDocument(ILinkFactory links, Dialog dialog)
 	{
 		VXMLDocument document = new VXMLDocument();
+		document.setCachable(false);
 		document.addDialog(dialog);
 		Catch hangupCatch = new Catch("connection.disconnect.hangup"); //$NON-NLS-1$
 		hangupCatch.addAction(new Goto(links.createAbortLink().toString()));
