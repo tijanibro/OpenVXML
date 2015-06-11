@@ -5,6 +5,7 @@
 
 package com.openmethods.openvxml.platforms.vxmlb.services;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +32,14 @@ import org.eclipse.vtp.framework.interactions.voice.vxml.Submit;
 import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLDocument;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Variable;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.openmethods.openvxml.platforms.vxmlb.vxml.UserData;
 
 public class VXMLBGenesysVoicePlatform extends VoicePlatform
 {
+	private static final ObjectMapper mapper = new ObjectMapper();
 	private IVariableRegistry variableRegistry;
 
     public VXMLBGenesysVoicePlatform(IExecutionContext context, IVariableRegistry variableRegistry)
@@ -67,7 +72,40 @@ public class VXMLBGenesysVoicePlatform extends VoicePlatform
         return names;
     }
     
-    /*
+    /* (non-Javadoc)
+	 * @see org.eclipse.vtp.framework.interactions.core.support.AbstractPlatform#postProcessInitialVariable(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public String postProcessInitialVariable(String name, String originalValue)
+	{
+		if(name.equals("genesysHeaders"))
+		{
+			try
+			{
+				ObjectNode copy = mapper.createObjectNode();
+				ObjectNode root = (ObjectNode)mapper.readTree(originalValue);
+				Iterator<Map.Entry<String,JsonNode>> it = root.fields();
+				while(it.hasNext())
+				{
+					Map.Entry<String, JsonNode> entry = it.next();
+					String key = entry.getKey();
+					JsonNode value = entry.getValue();
+					if(key.startsWith("X-Genesys-"))
+					{
+						copy.put(key.substring(10), value);
+					}
+				}
+				return copy.toString();
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return super.postProcessInitialVariable(name, originalValue);
+	}
+
+	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.eclipse.vtp.framework.interactions.core.support.AbstractPlatform#
@@ -100,15 +138,15 @@ public class VXMLBGenesysVoicePlatform extends VoicePlatform
 			block.addAction(new Assignment(key, varMap.get(key)));
 		}
 		Script headerScript = new Script();
-		headerScript.appendText("var genesysHeadersTemp = new Object();\r\n");
-		headerScript.appendText("for(var h in session.connection.protocol.sip.rawheaders)\r\n");
-		headerScript.appendText("{\r\n");
-		headerScript.appendText("\tif(h.substring(0,10) == 'X-Genesys-')\r\n");
-		headerScript.appendText("\t{\r\n");
-		headerScript.appendText("\t\tgenesysHeadersTemp[h.substring(10)] = session.connection.protocol.sip.rawheaders[h];\r\n");
-		headerScript.appendText("\t}\r\n");
-		headerScript.appendText("}\r\n");
-		headerScript.appendText("genesysHeaders = JSON.stringify(genesysHeadersTemp);\r\n");
+//		headerScript.appendText("var genesysHeadersTemp = new Object();\r\n");
+//		headerScript.appendText("for(var h in session.connection.protocol.sip.rawheaders)\r\n");
+//		headerScript.appendText("{\r\n");
+//		headerScript.appendText("\tif(h.substring(0,10) == 'X-Genesys-')\r\n");
+//		headerScript.appendText("\t{\r\n");
+//		headerScript.appendText("\t\tgenesysHeadersTemp[h.substring(10)] = session.connection.protocol.sip.rawheaders[h];\r\n");
+//		headerScript.appendText("\t}\r\n");
+//		headerScript.appendText("}\r\n");
+		headerScript.appendText("genesysHeaders = JSON.stringify(session.connection.protocol.sip.rawheaders);\r\n");
 		block.addAction(headerScript);
 		ILink nextLink = links.createNextLink();
 		String[] parameterNames = initialCommand.getParameterNames();
