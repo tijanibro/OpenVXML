@@ -21,6 +21,7 @@ import org.eclipse.vtp.framework.common.IMapObject;
 import org.eclipse.vtp.framework.common.IVariableRegistry;
 import org.eclipse.vtp.framework.core.IExecutionContext;
 import org.eclipse.vtp.framework.interactions.core.commands.BridgeMessageCommand;
+import org.eclipse.vtp.framework.interactions.core.commands.InitialCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.InputRequestCommand;
 import org.eclipse.vtp.framework.interactions.core.platforms.IDocument;
 import org.eclipse.vtp.framework.interactions.core.platforms.ILink;
@@ -51,6 +52,8 @@ import org.eclipse.vtp.framework.interactions.voice.vxml.Transfer;
 import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLDocument;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Variable;
 
+import com.openmethods.openvxml.platforms.avp.Activator;
+
 /**
  * A generic implementation of a AVP-specific VXML platform.
  * 
@@ -79,6 +82,7 @@ public class SIPAvpPlatform extends VoicePlatform
 		super.generateInitialVariableRequests(variables);
 		variables.put("avpUCID", "session.avaya.ucid");
         variables.put("avpAAI", "session.connection.aai");
+        variables.put("avpHistoryInfo", "JSON.stringify(session.connection.protocol.sip.historyinfo)");
 	}
 
 	@Override
@@ -86,6 +90,7 @@ public class SIPAvpPlatform extends VoicePlatform
 		List<String> names = super.getPlatformVariableNames();
 		names.add("avpUCID");
         names.add("avpAAI");
+        names.add("avpHistoryInfo");
 		return names;
 	}
 
@@ -112,6 +117,15 @@ public class SIPAvpPlatform extends VoicePlatform
 		document.setProperty("documentmaxstale", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 		return document;
     }
+	@Override
+	protected IDocument renderInitialDocument(ILinkFactory links,
+			InitialCommand initialCommand) {
+		VXMLDocument document = (VXMLDocument)super.renderInitialDocument(links, initialCommand);
+		Script jsonInclude = new Script();
+		jsonInclude.setSrc(links.createIncludeLink(Activator.getDefault().getBundle().getSymbolicName() + "/includes/json.js").toString());
+		document.addScript(jsonInclude);
+		return document;
+	}
 	
 	protected IDocument renderInputRequest(ILinkFactory links,
 			InputRequestCommand inputRequestCommand)
