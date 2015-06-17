@@ -22,6 +22,19 @@
             </qualifier>
          </identifier>
       </service>
+      <service
+            id="com.openmethods.openvxml.platforms.vxmlb.services.platform.genesys"
+            lazy="true"
+            name="VXMLB for Genesys"
+            scope="execution"
+            type="com.openmethods.openvxml.platforms.vxmlb.services.VXMLBGenesysVoicePlatform">
+         <identifier
+               name="org.eclipse.vtp.framework.interactions.core.platforms.IPlatform">
+            <qualifier
+                  name="MODE=IVGGenesys">
+            </qualifier>
+         </identifier>
+      </service>
    </extension>
    <extension
          point="org.eclipse.vtp.framework.interactions.core.extendedEvents">
