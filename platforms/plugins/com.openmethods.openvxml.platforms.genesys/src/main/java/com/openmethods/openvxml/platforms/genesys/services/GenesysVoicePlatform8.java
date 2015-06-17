@@ -50,6 +50,8 @@ import com.openmethods.openvxml.platforms.genesys.vxml.UserData;
 public class GenesysVoicePlatform8 extends VoicePlatform
 {
 
+	private boolean isCtiC = false;
+	
 	/**
 	 * 
 	 */
@@ -88,6 +90,22 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		return names;
 	}
 
+	@Override
+	public String postProcessInitialVariable(String name, String originalValue)
+	{
+		if("gvpUserData".equals(name) && originalValue != null)
+		{
+			System.out.println("gvpUserData: " + originalValue); //TODO cleanup
+			if(originalValue.contains("gvp.rm.cti-call=1"))
+			{
+				System.out.println("Using cti-c"); //TODO cleanup
+				isCtiC = true;
+			}
+		}
+		return super.postProcessInitialVariable(name, originalValue);
+	}
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -237,7 +255,10 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		Send send = new Send();
 		send.setAsync(false);
 		StringBuilder nameList = new StringBuilder();
+		
+		
 		String[] names = metaDataMessageCommand.getMetaDataNames();
+		
 		for(int i = 0; i < names.length; i++)
         {
 			String encodedName = URLEncoder.encode(names[i]);
@@ -255,7 +276,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 //	        nameList.append(names[i]);
         }
 //		send.setNameList(nameList.toString());
-		send.setBody(nameList.toString());
+		send.setBody(nameList.toString() + (isCtiC ? "&Action=AttachData&sub_action=Add": ""));
 		send.setContentType("application/x-www-form-urlencoded;charset=utf-8");
 		Block block = new Block("RedirectBlock");
 		ILink createNextLink = links.createNextLink();
