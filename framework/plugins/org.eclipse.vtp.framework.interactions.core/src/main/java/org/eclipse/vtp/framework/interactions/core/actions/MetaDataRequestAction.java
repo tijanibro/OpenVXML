@@ -111,9 +111,10 @@ public class MetaDataRequestAction implements IAction
 							+ "");
 				}
 				AbstractPlatform platform = (AbstractPlatform)platformSelector.getSelectedPlatform();
-				Map dataMap = platform.processMetaDataResponse(configuration, context);
+				Map dataMap = platform.processMetaDataResponse(configuration, context); ///TODO process string array inside there
 				if (items != null)
 				{
+					//TODO add result to a map instead of individual variables
 					for (int i = 0; i < items.length; ++i)
 					{
 						IDataObject object = variables.getVariable(items[i].getValue());

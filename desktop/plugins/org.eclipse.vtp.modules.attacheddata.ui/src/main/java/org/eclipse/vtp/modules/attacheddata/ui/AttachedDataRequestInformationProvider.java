@@ -30,6 +30,7 @@ public class AttachedDataRequestInformationProvider extends PrimitiveInformation
 	public AttachedDataRequestInformationProvider(PrimitiveElement element)
 	{
 		super(element);
+		System.out.println("ATTACHED DATA REQUEST INFO PROVIDER");
 		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 		connectorRecords.add(new ConnectorRecord(element, "error.disconnect.hangup", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
 	}
