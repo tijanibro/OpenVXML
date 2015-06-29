@@ -103,6 +103,13 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 				isCtiC = true;
 			}
 		}
+		else if ("gvpCtiC".equals(name))
+		{
+			if(originalValue != null && originalValue.contains("gvp.rm.cti-call=1"))
+				return "true";
+			else
+				return "false";
+		}
 		return super.postProcessInitialVariable(name, originalValue);
 	}
 	
@@ -133,7 +140,8 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 			form.addVariable(new Variable(key, "''")); //$NON-NLS-1$
 		}
 		form.addVariable(new Variable("gvpUserData", "JSON.stringify(session.com.genesyslab.userdata)"));
-		form.addVariable(new Variable("gvpCtiC", "(session.com.genesyslab.userdata.indexOf('gvp.rm.cti-call=1') != -1)"));
+//		form.addVariable(new Variable("gvpCtiC", "(session.com.genesyslab.userdata.indexOf('gvp.rm.cti-call=1') != -1)"));
+		form.addVariable(new Variable("gvpCtiC", "JSON.stringify(session.com.genesyslab.userdata)"));
 		String[] variables = initialCommand.getVariableNames();
 		for (int i = 0; i < variables.length; ++i)
 		{
