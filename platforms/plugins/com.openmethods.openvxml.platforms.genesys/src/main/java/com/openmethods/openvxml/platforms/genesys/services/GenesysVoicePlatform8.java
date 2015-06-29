@@ -93,8 +93,8 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 
 	@Override
 	public String postProcessInitialVariable(String name, String originalValue)
-	{
-		if("gvpUserData".equals(name) && originalValue != null)
+	{		
+		if("gvpUserData".equals(name) && originalValue != null) //TODO change this to use the gvpCtiC variable
 		{
 			System.out.println("gvpUserData: " + originalValue); //TODO cleanup
 			if(originalValue.contains("gvp.rm.cti-call=1"))
@@ -162,7 +162,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 					.getParameterValues(parameterNames[i]));
 		nextLink.setParameter(initialCommand.getResultName(), initialCommand
 				.getResultValue());
-		String[] fields = new String[varMap.size() + variables.length + 1];
+		String[] fields = new String[varMap.size() + variables.length + 2];
 		int j = 0;
 		for (String key : varMap.keySet())
 		{
@@ -170,7 +170,8 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 			++j;
 		}
 		System.arraycopy(variables, 0, fields, varMap.size(), variables.length);
-		fields[fields.length - 1] = "gvpUserData";
+		fields[fields.length - 2] = "gvpUserData";
+		fields[fields.length - 1] = "gvpCtiC";
 		Submit submit = new Submit(nextLink.toString(), fields);
 		submit.setMethod("post");
 		block.addAction(submit);
