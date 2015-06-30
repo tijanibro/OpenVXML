@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveInformationProvider;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
+import org.eclipse.vtp.framework.util.XMLUtilities;
 import org.w3c.dom.NodeList;
 
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
@@ -33,7 +34,6 @@ public class ReceiveAttachedDataInformationProvider extends PrimitiveInformation
 	public ReceiveAttachedDataInformationProvider(PrimitiveElement element)
 	{
 		super(element);
-		System.out.println("INFO PROVIDER CONSTRUCTOR"); //TODO cleanup
 		connectorRecords.add(new ConnectorRecord(element, "Continue", IDesignElementConnectionPoint.ConnectionPointType.EXIT_POINT));
 		connectorRecords.add(new ConnectorRecord(element, "error.disconnect.hangup", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
 	}
@@ -73,10 +73,27 @@ public class ReceiveAttachedDataInformationProvider extends PrimitiveInformation
 
 	public void readConfiguration(org.w3c.dom.Element configuration)
 	{
+		NodeList nl = configuration.getElementsByTagName("meta-data-request");
+		org.w3c.dom.Element metaDataRequestElement = null;
+		if(nl.getLength() == 0)
+		{
+			metaDataRequestElement = configuration.getOwnerDocument()
+			.createElement("meta-data-request");
+		}
+		else
+			metaDataRequestElement = (org.w3c.dom.Element)nl.item(0);
+
+		input = metaDataRequestElement.getAttribute("input");
+		output = metaDataRequestElement.getAttribute("output");
 	}
 
 	public void writeConfiguration(org.w3c.dom.Element configuration)
 	{
+		org.w3c.dom.Element comparisonElement = configuration.getOwnerDocument()
+				.createElement("meta-data-request");
+		comparisonElement.setAttribute("input", input);
+		comparisonElement.setAttribute("output", output);
+		configuration.appendChild(comparisonElement);
 	}
 	
 	public List<Variable> getOutgoingVariables(String exitPoint, boolean localOnly)

@@ -29,8 +29,8 @@ import org.eclipse.vtp.framework.core.IAction;
 import org.eclipse.vtp.framework.core.IActionContext;
 import org.eclipse.vtp.framework.core.IActionResult;
 import org.eclipse.vtp.framework.core.IReporter;
-import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataItemConfiguration;
+import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataRequestConfiguration;
 import org.eclipse.vtp.framework.interactions.core.conversation.IConversation;
 import org.eclipse.vtp.framework.interactions.core.platforms.IPlatformSelector;
 import org.eclipse.vtp.framework.interactions.core.support.AbstractPlatform;
@@ -55,7 +55,7 @@ public class MetaDataRequestAction implements IAction
 	/** The conversation to use. */
 	private final IConversation conversation;
 	/** The configuration to use. */
-	private final MetaDataConfiguration configuration;
+	private final MetaDataRequestConfiguration configuration;
 	/** The variable registry to use. */
 	private final IVariableRegistry variables;
 	/** The currently selected brand. */
@@ -71,7 +71,7 @@ public class MetaDataRequestAction implements IAction
 	 * @param variables The variable registry to use.
 	 */
 	public MetaDataRequestAction(IActionContext context,
-			IConversation conversation, MetaDataConfiguration configuration,
+			IConversation conversation, MetaDataRequestConfiguration configuration,
 			IVariableRegistry variables, IBrandSelection brandSelection,
 			IPlatformSelector platformSelector)
 	{
@@ -88,6 +88,10 @@ public class MetaDataRequestAction implements IAction
 	 */
 	public IActionResult execute()
 	{
+		
+		System.out.println("EXECUTING METADATAREQUEST ACTION");//TODO cleanup
+		
+
 		String resultParameterName = ACTION_PREFIX + context.getActionID().replace(':', '_');
 		try
 		{
@@ -107,8 +111,7 @@ public class MetaDataRequestAction implements IAction
 				MetaDataItemConfiguration[] items = null;
 				for (; brand != null && items == null; brand = brand.getParentBrand())
 				{
-					items = configuration.getItem(brand.getId() + ""
-							+ "");
+					items = configuration.getItem(brand.getId() + "" + "");
 				}
 				AbstractPlatform platform = (AbstractPlatform)platformSelector.getSelectedPlatform();
 				Map dataMap = platform.processMetaDataResponse(configuration, context); ///TODO process string array inside there
@@ -175,6 +178,7 @@ public class MetaDataRequestAction implements IAction
 		{
 			return context.createResult("error.meta-data.request", e); //$NON-NLS-1$
 		}
+		
 		return context.createResult("error.meta-data.request"); //$NON-NLS-1$
 	}
 }

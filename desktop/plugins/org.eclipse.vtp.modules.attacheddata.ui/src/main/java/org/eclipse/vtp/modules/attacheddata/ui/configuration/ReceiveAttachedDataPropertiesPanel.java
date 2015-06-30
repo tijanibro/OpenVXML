@@ -165,7 +165,14 @@ public class ReceiveAttachedDataPropertiesPanel extends DesignElementPropertiesP
 		rVarTree.setInput(this);
 		sl2.topControl = rVarTree.getControl();
 
+		ObjectDefinition od = getObjectDefinitionFromVariables(info.getInput());
+		StructuredSelection ss = (od == null) ? StructuredSelection.EMPTY : new StructuredSelection(od);
+		lVarTree.setSelection(ss);
 
+		ObjectDefinition rod = getObjectDefinitionFromVariables(info.getOutput());
+		StructuredSelection rss = (rod == null) ? StructuredSelection.EMPTY : new StructuredSelection(rod);
+		rVarTree.setSelection(rss);
+		
 	}
 
 	/* (non-Javadoc)

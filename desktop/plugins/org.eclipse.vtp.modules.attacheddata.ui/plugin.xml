@@ -29,10 +29,6 @@
          point="org.eclipse.vtp.desktop.model.elements.core.primitiveElementExporter">
       <primitive-configuration-exporter
             class="org.eclipse.vtp.modules.attacheddata.ui.export.AttachedDataRequestConfigurationExporter"
-            id="org.eclipse.vtp.modules.attacheddata.adrequest">
-      </primitive-configuration-exporter>
-      <primitive-configuration-exporter
-            class="org.eclipse.vtp.modules.attacheddata.ui.export.ReceiveAttachedDataConfigurationExporter"
             id="org.eclipse.vtp.framework.interactions.core.actions.meta-data-request">
       </primitive-configuration-exporter>
    </extension>
