@@ -21,6 +21,7 @@ import org.eclipse.vtp.framework.interactions.core.configurations.ExternalRefere
 import org.eclipse.vtp.framework.interactions.core.configurations.InputConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.InputRequestConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataConfiguration;
+import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataRequestConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.OutputConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.OutputMessageConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.PropertyConfiguration;
@@ -48,7 +49,7 @@ public interface IConversation
 
 	IMetaDataMessage createMetaDataMessage(MetaDataConfiguration configuration, String resultParameterName);
 
-	IMetaDataRequest createMetaDataRequest(MetaDataConfiguration configuration, String resultParameterName);
+	IMetaDataRequest createMetaDataRequest(MetaDataRequestConfiguration configuration, String resultParameterName);
 
 	IInputRequest createInputRequest(InputRequestConfiguration configuration,
 			String resultParameterName);

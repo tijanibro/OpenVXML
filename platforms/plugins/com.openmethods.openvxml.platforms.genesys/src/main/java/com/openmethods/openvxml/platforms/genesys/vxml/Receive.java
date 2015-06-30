@@ -9,56 +9,56 @@ import org.xml.sax.helpers.AttributesImpl;
 
 public class Receive extends Action
 {
-	private String contentType = null;
-	private String body = null;
-	private String nameList = null;
-	private boolean async = false;
+//	private String contentType = null;
+//	private String body = null;
+//	private String nameList = null;
+	private String maxtime = "10s";
 
 	public Receive()
 	{
 		super();
 	}
 	
-	public boolean isAsync()
-	{
-		return async;
-	}
 	
-	public void setAsync(boolean async)
-	{
-		this.async = async;
-	}
-	
-	public String getContentType()
-	{
-		return contentType;
-	}
-	
-	public void setContentType(String contentType)
-	{
-		this.contentType = contentType;
-	}
-	
-	public String getBody()
-	{
-		return body;
-	}
-	
-	public void setBody(String body)
-	{
-		this.body = body;
-	}
-	
-	public String getNameList()
-	{
-		return nameList;
-	}
-	
-	public void setNameList(String nameList)
-	{
-		this.nameList = nameList;
-	}
+//	public String getContentType()
+//	{
+//		return contentType;
+//	}
+//	
+//	public void setContentType(String contentType)
+//	{
+//		this.contentType = contentType;
+//	}
+//	
+//	public String getBody()
+//	{
+//		return body;
+//	}
+//	
+//	public void setBody(String body)
+//	{
+//		this.body = body;
+//	}
+//	
+//	public String getNameList()
+//	{
+//		return nameList;
+//	}
+//	
+//	public void setNameList(String nameList)
+//	{
+//		this.nameList = nameList;
+//	}
 
+	public void setMaxtime(String maxtime) {
+		this.maxtime = maxtime;
+	}
+	
+	public String getMaxtime()
+	{
+		return maxtime;
+	}
+	
 	@Override
 	public void writeWidget(ContentHandler outputHandler)
 			throws NullPointerException, SAXException
@@ -77,15 +77,15 @@ public class Receive extends Action
 	protected void writeAttributes(AttributesImpl attributes)
 	{
 //§		super.writeAttributes(attributes);
-		writeAttribute(attributes, null, null, "async", TYPE_CDATA, Boolean.toString(async));
-		if(contentType != null)
-			writeAttribute(attributes, null, null, "contenttype", TYPE_CDATA, contentType);
-		if(body != null)
-		{
-			writeAttribute(attributes, null, null, "body", TYPE_CDATA, body);
-		}
-		else
-			writeAttribute(attributes, null, null, "nameList", TYPE_CDATA, nameList);
+		writeAttribute(attributes, null, null, "maxtime", TYPE_CDATA, maxtime);
+//		if(contentType != null)
+//			writeAttribute(attributes, null, null, "contenttype", TYPE_CDATA, contentType);
+//		if(body != null)
+//		{
+//			writeAttribute(attributes, null, null, "body", TYPE_CDATA, body);
+//		}
+//		else
+//			writeAttribute(attributes, null, null, "nameList", TYPE_CDATA, nameList);
 	}
 
 }

@@ -31,7 +31,7 @@ import org.eclipse.vtp.framework.interactions.core.commands.MetaDataRequestComma
 import org.eclipse.vtp.framework.interactions.core.commands.OutputMessageCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.SelectionRequestCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.TransferMessageCommand;
-import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataConfiguration;
+import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataRequestConfiguration;
 import org.eclipse.vtp.framework.interactions.core.platforms.IDocument;
 import org.eclipse.vtp.framework.interactions.core.platforms.ILinkFactory;
 import org.eclipse.vtp.framework.interactions.core.platforms.IPlatform;
@@ -113,7 +113,7 @@ public abstract class AbstractPlatform implements IPlatform
 		return null;
 	}
 	
-	public Map processMetaDataResponse(MetaDataConfiguration configuration, IActionContext context)
+	public Map processMetaDataResponse(MetaDataRequestConfiguration configuration, IActionContext context)
 	{
 		return Collections.EMPTY_MAP;
 	}

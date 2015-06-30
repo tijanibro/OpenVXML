@@ -56,6 +56,7 @@ import org.eclipse.vtp.framework.interactions.core.configurations.InputRequestCo
 import org.eclipse.vtp.framework.interactions.core.configurations.MediaConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataItemConfiguration;
+import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataRequestConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.OutputCase;
 import org.eclipse.vtp.framework.interactions.core.configurations.OutputConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.OutputContent;
@@ -527,7 +528,7 @@ public class Conversation implements IConversation {
 	 * MetaDataConfiguration)
 	 */
 	public IMetaDataRequest createMetaDataRequest(
-			MetaDataConfiguration configuration, String resultParameterName) {
+			MetaDataRequestConfiguration configuration, String resultParameterName) {
 		return new MetaDataRequest(configuration, resultParameterName);
 	}
 
@@ -951,7 +952,7 @@ public class Conversation implements IConversation {
 	private final class MetaDataRequest extends AbstractInteraction implements
 			IMetaDataRequest {
 		/** The configuration for this interaction. */
-		private final MetaDataConfiguration configuration;
+		private final MetaDataRequestConfiguration configuration;
 		/** The name of the parameter to set the result value to. */
 		private final String resultParameterName;
 		/** The parameters to set when the process resumes. */
@@ -963,7 +964,7 @@ public class Conversation implements IConversation {
 		 * @param configuration
 		 *            The configuration for this interaction.
 		 */
-		MetaDataRequest(MetaDataConfiguration configuration,
+		MetaDataRequest(MetaDataRequestConfiguration configuration,
 				String resultParameterName) {
 			this.configuration = configuration;
 			this.resultParameterName = resultParameterName;
@@ -982,17 +983,28 @@ public class Conversation implements IConversation {
 			command.setFilledResultValue(RESULT_NAME_FILLED);
 			command.setHangupResultValue(RESULT_NAME_HANGUP);
 			command.setDataName("GetAttachedData");
+			
+/*			
 			List metaData = resolveMetaData(configuration);
 			for (Iterator i = metaData.iterator(); i.hasNext();) {
 				MetaDataItemConfiguration item = (MetaDataItemConfiguration) i
 						.next();
 				command.addMetaDataName(item.getName());
 			}
+ */
+			Map<String,IDataObject> kvpMap = configuration.getKvpMap();
+			for(Iterator<String> i = kvpMap.keySet().iterator(); i.hasNext();)
+			{
+				command.addMetaDataName(i.next());
+			}
+			
 			for (Iterator i = parameters.entrySet().iterator(); i.hasNext();) {
 				Map.Entry entry = (Map.Entry) i.next();
 				command.setParameterValues((String) entry.getKey(),
 						(String[]) entry.getValue());
 			}
+			
+			
 			return command;
 		}
 

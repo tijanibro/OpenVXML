@@ -13,23 +13,21 @@
 package org.eclipse.vtp.framework.interactions.core.actions;
 
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.vtp.framework.common.IBooleanObject;
-import org.eclipse.vtp.framework.common.IBrand;
+import org.eclipse.vtp.framework.common.IArrayObject;
 import org.eclipse.vtp.framework.common.IBrandSelection;
 import org.eclipse.vtp.framework.common.IDataObject;
-import org.eclipse.vtp.framework.common.IDateObject;
-import org.eclipse.vtp.framework.common.IDecimalObject;
-import org.eclipse.vtp.framework.common.INumberObject;
+import org.eclipse.vtp.framework.common.IMapObject;
 import org.eclipse.vtp.framework.common.IStringObject;
 import org.eclipse.vtp.framework.common.IVariableRegistry;
 import org.eclipse.vtp.framework.core.IAction;
 import org.eclipse.vtp.framework.core.IActionContext;
 import org.eclipse.vtp.framework.core.IActionResult;
 import org.eclipse.vtp.framework.core.IReporter;
-import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataItemConfiguration;
 import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataRequestConfiguration;
 import org.eclipse.vtp.framework.interactions.core.conversation.IConversation;
 import org.eclipse.vtp.framework.interactions.core.platforms.IPlatformSelector;
@@ -95,8 +93,8 @@ public class MetaDataRequestAction implements IAction
 		String resultParameterName = ACTION_PREFIX + context.getActionID().replace(':', '_');
 		try
 		{
-			if(context.isDebugEnabled()) context.debug(getClass().getName().substring(
-					getClass().getName().lastIndexOf('.') + 1));
+			if(context.isDebugEnabled())
+				context.debug(getClass().getName().substring(getClass().getName().lastIndexOf('.') + 1));			
 			String value = context.getParameter(resultParameterName);
 			context.clearParameter(resultParameterName);
 			if ("success.filled".equals(value))
@@ -107,17 +105,39 @@ public class MetaDataRequestAction implements IAction
 					props.put("event", "metadata.request.filled");
 					context.report(IReporter.SEVERITY_INFO, "Received meta-data.", props);
 				}
+								
+				
+/*
 				IBrand brand = brandSelection.getSelectedBrand();
 				MetaDataItemConfiguration[] items = null;
 				for (; brand != null && items == null; brand = brand.getParentBrand())
 				{
 					items = configuration.getItem(brand.getId() + "" + "");
 				}
+*/
+				
 				AbstractPlatform platform = (AbstractPlatform)platformSelector.getSelectedPlatform();
-				Map dataMap = platform.processMetaDataResponse(configuration, context); ///TODO process string array inside there
+				Map dataMap = platform.processMetaDataResponse(configuration, context);
+
+				IMapObject outputMap;
+				IDataObject ido = variables.getVariable(configuration.getOutput());
+				if(ido instanceof IMapObject)
+					outputMap = (IMapObject) ido;
+				else
+					outputMap = (IMapObject) variables.createVariable(IMapObject.TYPE_NAME);
+	
+				for(Iterator<String> i = configuration.getKvpMap().keySet().iterator();i.hasNext();)
+				{
+					String keyName = i.next();
+					IStringObject so = (IStringObject)variables.createVariable(IStringObject.TYPE_NAME);
+					so.setValue(dataMap.get(keyName));
+					outputMap.setEntry(keyName, so);
+				}
+				variables.setVariable(configuration.getOutput(), outputMap);
+				
+/*
 				if (items != null)
 				{
-					//TODO add result to a map instead of individual variables
 					for (int i = 0; i < items.length; ++i)
 					{
 						IDataObject object = variables.getVariable(items[i].getValue());
@@ -145,6 +165,8 @@ public class MetaDataRequestAction implements IAction
 									.getName()));
 					}
 				}
+*/
+				
 				return context.createResult(IActionResult.RESULT_NAME_DEFAULT);
 			}
 			else if (IConversation.RESULT_NAME_HANGUP.equals(value))
@@ -170,6 +192,25 @@ public class MetaDataRequestAction implements IAction
 					props.put("event", "metadata.request.before");
 					context.report(IReporter.SEVERITY_INFO, "Requesting meta-data.", props);
 				}
+				
+				Map<String,IDataObject> kvpMap = new HashMap<String,IDataObject>();
+				IArrayObject inputStringObjectArray;
+				IDataObject ido = variables.getVariable(configuration.getInput());
+				if(ido instanceof IArrayObject)
+					inputStringObjectArray = (IArrayObject) ido;
+				else
+					inputStringObjectArray = (IArrayObject) variables.createVariable(IArrayObject.TYPE_NAME);
+	
+				for(int b = 0; b < inputStringObjectArray.getLength().getValue(); b++)
+				{
+					String keyName = inputStringObjectArray.getElement(b).toString();
+					kvpMap.put(keyName, null);
+				}
+				configuration.setKvpMap(kvpMap);
+				
+				
+				
+				
 				if (conversation.createMetaDataRequest(configuration, resultParameterName).enqueue())
 					return context.createResult(IActionResult.RESULT_NAME_REPEAT);
 			}

@@ -15,7 +15,7 @@ import org.eclipse.vtp.framework.core.IExecutionContext;
 import org.eclipse.vtp.framework.interactions.core.commands.InitialCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.MetaDataMessageCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.MetaDataRequestCommand;
-import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataConfiguration;
+import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataRequestConfiguration;
 import org.eclipse.vtp.framework.interactions.core.platforms.IDocument;
 import org.eclipse.vtp.framework.interactions.core.platforms.ILink;
 import org.eclipse.vtp.framework.interactions.core.platforms.ILinkFactory;
@@ -25,13 +25,10 @@ import org.eclipse.vtp.framework.interactions.voice.vxml.Assignment;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Block;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Catch;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Dialog;
-import org.eclipse.vtp.framework.interactions.voice.vxml.Filled;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Form;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Goto;
-import org.eclipse.vtp.framework.interactions.voice.vxml.Parameter;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Script;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Submit;
-import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLConstants;
 import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLDocument;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Variable;
 import org.eclipse.vtp.framework.util.XMLUtilities;
@@ -40,8 +37,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.openmethods.openvxml.platforms.genesys.Activator;
+import com.openmethods.openvxml.platforms.genesys.vxml.Receive;
 import com.openmethods.openvxml.platforms.genesys.vxml.Send;
-import com.openmethods.openvxml.platforms.genesys.vxml.UserData;
 
 /**
  * @author trip
@@ -213,6 +210,56 @@ public class GenesysVoicePlatform8 extends VoicePlatform
             MetaDataRequestCommand metaDataMessageRequest)
     {
 		Form form = new Form("SetAttachedDataForm");
+		Send send = new Send();
+		send.setAsync(false);
+		Receive receive = new Receive();
+		receive.setMaxtime("10s");
+		StringBuilder nameList = new StringBuilder();
+		
+		
+		String[] names = metaDataMessageRequest.getMetaDataNames();
+		
+		for(int i = 0; i < names.length; i++)
+        {
+			String encodedName = "Keyname" + (i+1);
+			nameList.append(encodedName);
+			nameList.append('=');
+			String encodedValue = URLEncoder.encode(names[i]);
+			encodedValue = encodedValue.replaceAll("\\+", "%20");
+			nameList.append(encodedValue);
+			if(i < names.length -1)
+				nameList.append('&');
+//	        form.addVariable(new Variable(names[i], "'"+metaDataMessageCommand.getMetaDataValue(names[i])+"'"));
+//	        if(i != 0)
+//	        	nameList.append(' ');
+//	        nameList.append(names[i]);
+        }
+//		send.setNameList(nameList.toString());
+		send.setBody(nameList.toString() + "&Action=GetData");
+		send.setContentType("application/x-www-form-urlencoded;charset=utf-8");
+		Block block = new Block("RedirectBlock");
+		ILink createNextLink = links.createNextLink();
+		createNextLink.setParameter(metaDataMessageRequest.getResultName(), metaDataMessageRequest.getFilledResultValue());
+		String[] params = metaDataMessageRequest.getParameterNames();
+		for(int i = 0; i < params.length; i++)
+        {
+			createNextLink.setParameters(params[i], metaDataMessageRequest.getParameterValues(params[i]));
+        }
+		block.addAction(send);
+		block.addAction(receive);
+		block.addAction(new Goto(createNextLink.toString()));
+		form.addFormElement(block);
+		ILink hangupLink = links.createNextLink();
+		hangupLink.setParameter(metaDataMessageRequest.getResultName(),
+				metaDataMessageRequest.getHangupResultValue());
+		Catch disconnectCatch = new Catch("connection.disconnect.hangup");
+		disconnectCatch.addAction(new Goto(hangupLink.toString()));
+		form.addEventHandler(disconnectCatch);
+	    return this.createVXMLDocument(links, form);
+  	
+    	
+/*
+		Form form = new Form("SetAttachedDataForm");
 		UserData userData = new UserData("GetAttachedData");
 		userData.setDoGet(true);
 		String[] names = metaDataMessageRequest.getMetaDataNames();
@@ -257,6 +304,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		disconnectCatch.addAction(new Goto(hangupLink.toString()));
 		form.addEventHandler(disconnectCatch);
 	    return this.createVXMLDocument(links, form);
+*/
     }
 
 
@@ -311,20 +359,22 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 
 
 	@Override
-    public Map processMetaDataResponse(MetaDataConfiguration configuration,
+    public Map processMetaDataResponse(MetaDataRequestConfiguration configuration,
             IActionContext context)
     {
 		Map dataMap = new HashMap();
 		String attachedDataContent = context.getParameter("GetAttachedData");
-		System.out.println(attachedDataContent);
+		System.out.println("AttachedDataContent: " + attachedDataContent);
 		try
         {
 	        ByteArrayInputStream bais = new ByteArrayInputStream(attachedDataContent.getBytes());
 	        Document attachedDataDocument = XMLUtilities.getDocumentBuilder().parse(bais);
+	        context.debug("AttachedDataDocument: " + attachedDataDocument);
 	        NodeList dataList = attachedDataDocument.getDocumentElement().getElementsByTagName("key");
 	        for(int i = 0; i < dataList.getLength(); i++)
 	        {
 	        	Element dataElement = (Element)dataList.item(i);
+		        context.debug("KVP received - key: " + dataElement.getAttribute("name") + " value: " + dataElement.getAttribute("value"));
 	        	dataMap.put(dataElement.getAttribute("name"), dataElement.getAttribute("value"));
 	        }
         }

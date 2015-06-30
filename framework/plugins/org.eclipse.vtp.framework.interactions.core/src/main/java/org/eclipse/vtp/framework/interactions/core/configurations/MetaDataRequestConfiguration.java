@@ -11,6 +11,10 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.framework.interactions.core.configurations;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.vtp.framework.common.IDataObject;
 import org.eclipse.vtp.framework.core.IConfiguration;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -23,6 +27,9 @@ public class MetaDataRequestConfiguration implements IConfiguration, Interaction
 	private String input = "";
 	/** The value to use for the right-hand side of the operation. */
 	private String output = "";
+	/** A map of the key names and, after the request completes, their 
+	 * associated value as IDataObjects.*/
+	private Map<String,IDataObject> kvpMap = new HashMap<String,IDataObject>();
 
 	public MetaDataRequestConfiguration()
 	{
@@ -49,6 +56,14 @@ public class MetaDataRequestConfiguration implements IConfiguration, Interaction
 	public void setOutput(String output)
 	{
 		this.output = output == null ? "" : output;
+	}
+
+	public Map<String,IDataObject> getKvpMap() {
+		return kvpMap;
+	}
+
+	public void setKvpMap(Map<String,IDataObject> kvpMap) {
+		this.kvpMap = kvpMap;
 	}
 
 	/*
