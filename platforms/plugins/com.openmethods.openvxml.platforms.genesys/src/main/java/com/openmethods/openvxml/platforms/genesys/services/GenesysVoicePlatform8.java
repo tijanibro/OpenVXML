@@ -364,6 +364,11 @@ public class GenesysVoicePlatform8 extends VoicePlatform
     {
 		Map dataMap = new HashMap();
 		String attachedDataContent = context.getParameter("GetAttachedData");
+		for(String parameterName : context.getParameterNames())
+		{
+			System.out.println("parameterName: " + parameterName);
+		}
+		
 		System.out.println("AttachedDataContent: " + attachedDataContent);
 		try
         {
