@@ -3,12 +3,12 @@ package org.eclipse.vtp.modules.attacheddata.ui.export;
 import org.eclipse.vtp.desktop.export.IConfigurationExporter;
 import org.eclipse.vtp.desktop.export.IDefinitionBuilder;
 import org.eclipse.vtp.desktop.export.IFlowElement;
-import org.eclipse.vtp.framework.common.configurations.CommonConstants;
+import org.eclipse.vtp.framework.interactions.core.configurations.InteractionsConstants;
 import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataRequestConfiguration;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class AttachedDataRequestConfigurationExporter implements IConfigurationExporter, CommonConstants
+public class AttachedDataRequestConfigurationExporter implements IConfigurationExporter, InteractionsConstants
 {
 
 	public AttachedDataRequestConfigurationExporter()
@@ -31,7 +31,7 @@ public class AttachedDataRequestConfigurationExporter implements IConfigurationE
 			config.setInput(metadataRequestElement.getAttribute("input"));
 			config.setOutput(metadataRequestElement.getAttribute("output"));
 			Element configElement = actionElement.getOwnerDocument().createElementNS(
-					IDefinitionBuilder.NAMESPACE_URI_COMMON, "common:meta-data-request");
+					IDefinitionBuilder.NAMESPACE_URI_INTERACTIONS_CORE, "common:meta-data-request");
 			config.save(configElement);
 			actionElement.appendChild(configElement);
 		}
