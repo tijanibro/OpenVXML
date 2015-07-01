@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.eclipse.vtp.desktop.model.elements.core.PrimitiveInformationProvider;
 import org.eclipse.vtp.desktop.model.elements.core.internal.PrimitiveElement;
-import org.eclipse.vtp.framework.util.XMLUtilities;
 import org.w3c.dom.NodeList;
 
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
