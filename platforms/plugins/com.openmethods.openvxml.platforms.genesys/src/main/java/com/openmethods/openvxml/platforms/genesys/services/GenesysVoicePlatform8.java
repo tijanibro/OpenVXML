@@ -247,7 +247,13 @@ public class GenesysVoicePlatform8 extends VoicePlatform
         }
 		block.addAction(send);
 		block.addAction(receive);
-		block.addAction(new Goto(createNextLink.toString()));
+		
+		block.addVariable(new Variable("GetMessageData", "application.lastmessage$.content"));
+		
+//		block.addAction(new Goto(createNextLink.toString()));
+		block.addAction(new Submit(createNextLink.toString(), new String[]{"GetMessageData"}));
+		
+		
 		form.addFormElement(block);
 		ILink hangupLink = links.createNextLink();
 		hangupLink.setParameter(metaDataMessageRequest.getResultName(),
@@ -363,7 +369,8 @@ public class GenesysVoicePlatform8 extends VoicePlatform
             IActionContext context)
     {
 		Map dataMap = new HashMap();
-		String attachedDataContent = context.getParameter("GetAttachedData");
+//		String attachedDataContent = context.getParameter("GetAttachedData");
+		String attachedDataContent = context.getParameter("GetMessageData");
 		for(String parameterName : context.getParameterNames())
 		{
 			System.out.println("parameterName: " + parameterName);
