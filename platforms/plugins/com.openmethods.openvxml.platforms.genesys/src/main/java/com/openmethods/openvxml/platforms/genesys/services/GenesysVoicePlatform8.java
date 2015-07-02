@@ -245,13 +245,18 @@ public class GenesysVoicePlatform8 extends VoicePlatform
         {
 			createNextLink.setParameters(params[i], metaDataMessageRequest.getParameterValues(params[i]));
         }
+		send.setNamespace("http://www.genesyslab.com/2006/vxml21-extension");
+		receive.setNamespace("http://www.genesyslab.com/2006/vxml21-extension");
 		block.addAction(send);
 		block.addAction(receive);
 		
 		block.addVariable(new Variable("GetMessageData", "application.lastmessage$.content"));
 		
 //		block.addAction(new Goto(createNextLink.toString()));
-		block.addAction(new Submit(createNextLink.toString(), new String[]{"GetMessageData"}));
+		
+		Submit submit = new Submit(createNextLink.toString(), new String[]{"GetMessageData"});
+		submit.setMethod(METHOD_POST);
+		block.addAction(submit);
 		
 		
 		form.addFormElement(block);

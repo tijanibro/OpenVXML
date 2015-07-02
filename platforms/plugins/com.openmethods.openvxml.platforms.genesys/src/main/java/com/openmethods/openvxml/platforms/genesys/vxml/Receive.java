@@ -13,6 +13,7 @@ public class Receive extends Action
 //	private String body = null;
 //	private String nameList = null;
 	private String maxtime = "10s";
+	private String namespace = NAMESPACE_URI_VXML;
 
 	public Receive()
 	{
@@ -59,15 +60,25 @@ public class Receive extends Action
 		return maxtime;
 	}
 	
+	public String getNamespace() {
+		return namespace;
+	}
+
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
+	}
+
+
 	@Override
 	public void writeWidget(ContentHandler outputHandler)
 			throws NullPointerException, SAXException
 	{
 		AttributesImpl attributes = new AttributesImpl();
 		writeAttributes(attributes);
-		outputHandler.startElement(NAMESPACE_URI_VXML, "receive", "receive",
+		outputHandler.startElement(namespace, "receive", "receive",
 				attributes);
-		outputHandler.endElement(NAMESPACE_URI_VXML, "receive", "receive");
+		outputHandler.endElement(namespace, "receive", "receive");
 	}
 
 	/**
@@ -77,6 +88,8 @@ public class Receive extends Action
 	protected void writeAttributes(AttributesImpl attributes)
 	{
 //§		super.writeAttributes(attributes);
+		if(!NAMESPACE_URI_VXML.equals(namespace))
+			writeAttribute(attributes, null, null, "xmlns", TYPE_CDATA, namespace);
 		writeAttribute(attributes, null, null, "maxtime", TYPE_CDATA, maxtime);
 //		if(contentType != null)
 //			writeAttribute(attributes, null, null, "contenttype", TYPE_CDATA, contentType);

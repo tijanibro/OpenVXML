@@ -13,6 +13,7 @@ public class Send extends Action
 	private String body = null;
 	private String nameList = null;
 	private boolean async = false;
+	private String namespace = NAMESPACE_URI_VXML;
 
 	public Send()
 	{
@@ -59,15 +60,23 @@ public class Send extends Action
 		this.nameList = nameList;
 	}
 
+	public String getNamespace() {
+		return namespace;
+	}
+
+	public void setNamespace(String namespace) {
+		this.namespace = namespace;
+	}
+
 	@Override
 	public void writeWidget(ContentHandler outputHandler)
 			throws NullPointerException, SAXException
 	{
 		AttributesImpl attributes = new AttributesImpl();
 		writeAttributes(attributes);
-		outputHandler.startElement(NAMESPACE_URI_VXML, "send", "send",
+		outputHandler.startElement(namespace, "send", "send",
 				attributes);
-		outputHandler.endElement(NAMESPACE_URI_VXML, "send", "send");
+		outputHandler.endElement(namespace, "send", "send");
 	}
 
 	/**
@@ -77,6 +86,9 @@ public class Send extends Action
 	protected void writeAttributes(AttributesImpl attributes)
 	{
 //§		super.writeAttributes(attributes);
+		if(!NAMESPACE_URI_VXML.equals(namespace))
+			writeAttribute(attributes, null, null, "xmlns", TYPE_CDATA, namespace);
+		
 		writeAttribute(attributes, null, null, "async", TYPE_CDATA, Boolean.toString(async));
 		if(contentType != null)
 			writeAttribute(attributes, null, null, "contenttype", TYPE_CDATA, contentType);
