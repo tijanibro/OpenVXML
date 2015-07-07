@@ -13,8 +13,13 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.framework.interactions.voice.vxml;
 
+import static org.eclipse.vtp.framework.interactions.voice.vxml.VXMLConstants.EMPTY;
+
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.vtp.framework.interactions.core.support.WidgetDocument;
 import org.xml.sax.ContentHandler;
@@ -44,6 +49,8 @@ public class VXMLDocument extends WidgetDocument implements VXMLConstants
 	private final List<Dialog> dialogs = new LinkedList<Dialog>();
 	/** The list of event handlers for this document. */
 	private final List<EventHandler> eventHandlers = new LinkedList<EventHandler>();
+	/** The list of additional namespaces to declare*/
+	private Map<String,String> otherNamespaces = new HashMap<String,String>();
 
 	/**
 	 * Creates a new VXMLDocument object.
@@ -310,6 +317,20 @@ public class VXMLDocument extends WidgetDocument implements VXMLConstants
 		eventHandlers.remove(eventHandler);
 	}
 
+	public Map<String, String> getOtherNamespaces() {
+		return otherNamespaces;
+	}
+
+	public void setOtherNamespaces(Map<String, String> otherNamespaces) {
+		this.otherNamespaces = otherNamespaces;
+	}
+	
+	public void addOtherNamespace(String key, String value)
+	{
+		System.out.println("adding: " + key + " : " + value);//TODO 
+		otherNamespaces.put(key, value);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -336,6 +357,12 @@ public class VXMLDocument extends WidgetDocument implements VXMLConstants
 		outputHandler.startDocument();
 		// Start the VXML name space mapping.
 		outputHandler.startPrefixMapping(EMPTY, NAMESPACE_URI_VXML);
+		System.out.println("otherNamespaces.size(): " + otherNamespaces.size());//TODO 
+		for(String key : otherNamespaces.keySet())
+		{
+			System.out.println("rendering: " + key);//TODO 
+			outputHandler.startPrefixMapping(key, otherNamespaces.get(key));
+		}
 		// Start the root element.
 		AttributesImpl attributes = new AttributesImpl();
 		writeAttributes(attributes);

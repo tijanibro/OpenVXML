@@ -14,6 +14,7 @@ public class Receive extends Action
 //	private String nameList = null;
 	private String maxtime = "10s";
 	private String namespace = NAMESPACE_URI_VXML;
+	private boolean gvpPrefix = false;
 
 	public Receive()
 	{
@@ -69,6 +70,11 @@ public class Receive extends Action
 		this.namespace = namespace;
 	}
 
+	public void setGvpPrefix(boolean gvpPrefix)
+	{
+		this.gvpPrefix = gvpPrefix;
+	}
+
 
 	@Override
 	public void writeWidget(ContentHandler outputHandler)
@@ -76,9 +82,20 @@ public class Receive extends Action
 	{
 		AttributesImpl attributes = new AttributesImpl();
 		writeAttributes(attributes);
-		outputHandler.startElement(namespace, "receive", "receive",
-				attributes);
-		outputHandler.endElement(namespace, "receive", "receive");
+		if(gvpPrefix)
+		{
+			outputHandler.startElement(namespace, "gvp:receive", "gvp:receive",
+					attributes);
+			outputHandler.endElement(namespace, "gvp:receive", "gvp:receive");
+			
+		}
+		else
+		{
+			outputHandler.startElement(namespace, "receive", "receive",
+					attributes);
+			outputHandler.endElement(namespace, "receive", "receive");
+			
+		}
 	}
 
 	/**
@@ -88,8 +105,8 @@ public class Receive extends Action
 	protected void writeAttributes(AttributesImpl attributes)
 	{
 //§		super.writeAttributes(attributes);
-		if(!NAMESPACE_URI_VXML.equals(namespace))
-			writeAttribute(attributes, null, null, "xmlns", TYPE_CDATA, namespace);
+//		if(!NAMESPACE_URI_VXML.equals(namespace))
+//			writeAttribute(attributes, null, null, "xmlns", TYPE_CDATA, namespace);
 		writeAttribute(attributes, null, null, "maxtime", TYPE_CDATA, maxtime);
 //		if(contentType != null)
 //			writeAttribute(attributes, null, null, "contenttype", TYPE_CDATA, contentType);

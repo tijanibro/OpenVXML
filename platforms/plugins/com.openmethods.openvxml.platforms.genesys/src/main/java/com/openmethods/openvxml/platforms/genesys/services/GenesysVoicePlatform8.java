@@ -66,6 +66,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		document.setProperty("documentmaxstale", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 		document.setProperty("fetchaudio", "");
 		document.setProperty("com.genesyslab.externalevents.enable", "true");
+		document.addOtherNamespace("gvp", "http://www.genesyslab.com/2006/vxml21-extension");
 //		document.setProperty("com.genesyslab.externalevents.queue", "false");
 		return document;
     }
@@ -245,16 +246,18 @@ public class GenesysVoicePlatform8 extends VoicePlatform
         {
 			createNextLink.setParameters(params[i], metaDataMessageRequest.getParameterValues(params[i]));
         }
-		send.setNamespace("http://www.genesyslab.com/2006/vxml21-extension");
-		receive.setNamespace("http://www.genesyslab.com/2006/vxml21-extension");
+//		send.setNamespace("http://www.genesyslab.com/2006/vxml21-extension");
+//		receive.setNamespace("http://www.genesyslab.com/2006/vxml21-extension");
+		send.setGvpPrefix(true);
+		receive.setGvpPrefix(true);
 		block.addAction(send);
 		block.addAction(receive);
 		
-		block.addVariable(new Variable("GetMessageData", "application.lastmessage$.content"));
+		block.addVariable(new Variable("GetDataMessage", "application.lastmessage$.content"));
 		
 //		block.addAction(new Goto(createNextLink.toString()));
 		
-		Submit submit = new Submit(createNextLink.toString(), new String[]{"GetMessageData"});
+		Submit submit = new Submit(createNextLink.toString(), new String[]{"GetDataMessage"});
 		submit.setMethod(METHOD_POST);
 		block.addAction(submit);
 		
@@ -375,7 +378,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
     {
 		Map dataMap = new HashMap();
 //		String attachedDataContent = context.getParameter("GetAttachedData");
-		String attachedDataContent = context.getParameter("GetMessageData");
+		String attachedDataContent = context.getParameter("GetDataMessage");
 		for(String parameterName : context.getParameterNames())
 		{
 			System.out.println("parameterName: " + parameterName);
