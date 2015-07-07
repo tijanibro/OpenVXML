@@ -82,9 +82,9 @@ public class Send extends Action
 		writeAttributes(attributes);
 		if(gvpPrefix)
 		{
-			outputHandler.startElement(namespace, "gvp:send", "gvp:send",
+			outputHandler.startElement(null, "gvp:send", "gvp:send",
 					attributes);
-			outputHandler.endElement(namespace, "gvp:send", "gvp:send");
+			outputHandler.endElement(null, "gvp:send", "gvp:send");
 			
 		}
 		else

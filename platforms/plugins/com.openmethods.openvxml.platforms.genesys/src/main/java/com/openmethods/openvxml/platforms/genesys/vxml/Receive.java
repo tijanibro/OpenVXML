@@ -84,9 +84,9 @@ public class Receive extends Action
 		writeAttributes(attributes);
 		if(gvpPrefix)
 		{
-			outputHandler.startElement(namespace, "gvp:receive", "gvp:receive",
+			outputHandler.startElement(null, "gvp:receive", "gvp:receive",
 					attributes);
-			outputHandler.endElement(namespace, "gvp:receive", "gvp:receive");
+			outputHandler.endElement(null, "gvp:receive", "gvp:receive");
 			
 		}
 		else
