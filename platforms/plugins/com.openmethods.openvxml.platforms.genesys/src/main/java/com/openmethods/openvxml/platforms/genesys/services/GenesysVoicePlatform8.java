@@ -239,7 +239,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		send.setBody(nameList.toString() + "&Action=GetData");
 		send.setContentType("application/x-www-form-urlencoded;charset=utf-8");
 		
-		form.addVariable(new Variable("GetDataMessage", "")); //TODO
+		form.addVariable(new Variable("GetDataMessage", ""));
 		
 		Block block = new Block("RedirectBlock");
 		ILink createNextLink = links.createNextLink();
@@ -249,22 +249,22 @@ public class GenesysVoicePlatform8 extends VoicePlatform
         {
 			createNextLink.setParameters(params[i], metaDataMessageRequest.getParameterValues(params[i]));
         }
-//		send.setNamespace("http://www.genesyslab.com/2006/vxml21-extension");
-//		receive.setNamespace("http://www.genesyslab.com/2006/vxml21-extension");
+
+		Script jsonInclude = new Script();
+		jsonInclude.setSrc(links.createIncludeLink(Activator.getDefault().getBundle().getSymbolicName() + "/includes/json.js").toString());
+		block.addAction(jsonInclude);
+		
 		send.setGvpPrefix(true);
 		receive.setGvpPrefix(true);
 		block.addAction(send);
 		block.addAction(receive);
 		
-		block.addAction(new Assignment("GetDataMessage", "application.lastmessage$.content"));
-		
-//		block.addAction(new Goto(createNextLink.toString()));
+//		block.addAction(new Assignment("GetDataMessage", "application.lastmessage$.content"));
+		block.addAction(new Assignment("GetDataMessage", "JSON.stringify(application.lastmessage$)"));
 		
 		Submit submit = new Submit(createNextLink.toString(), new String[]{"GetDataMessage"});
 		submit.setMethod(METHOD_POST);
 		block.addAction(submit);
-		
-		
 		form.addFormElement(block);
 		ILink hangupLink = links.createNextLink();
 		hangupLink.setParameter(metaDataMessageRequest.getResultName(),

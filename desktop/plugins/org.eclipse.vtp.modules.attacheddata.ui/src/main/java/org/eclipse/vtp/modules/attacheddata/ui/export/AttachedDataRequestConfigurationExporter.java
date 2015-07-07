@@ -13,17 +13,13 @@ public class AttachedDataRequestConfigurationExporter implements IConfigurationE
 
 	public AttachedDataRequestConfigurationExporter()
 	{
-		System.out.println("CONSTRUCTING CONFIGURATION"); //TODO cleanup
 	}
 
 	public void exportConfiguration(IFlowElement flowElement, Element actionElement)
 	{
-		
-		System.out.println("EXPORTING CONFIGURATION"); //TODO cleanup
 		String uri = "http://www.eclipse.org/vtp/namespaces/config";
 		NodeList metadataRequestNodeList = ((Element)flowElement.getConfiguration().getElementsByTagNameNS(
 				uri, "custom-config").item(0)).getElementsByTagNameNS(uri, "meta-data-request");
-		System.out.println("METADATAREQUESTNODELIST.GETLENGTH(): " + metadataRequestNodeList.getLength()); //TODO cleanup
 		if (metadataRequestNodeList.getLength() > 0)
 		{
 			Element metadataRequestElement = (Element)metadataRequestNodeList.item(0);

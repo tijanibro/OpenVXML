@@ -327,7 +327,6 @@ public class VXMLDocument extends WidgetDocument implements VXMLConstants
 	
 	public void addOtherNamespace(String key, String value)
 	{
-		System.out.println("adding: " + key + " : " + value);//TODO 
 		otherNamespaces.put(key, value);
 	}
 
@@ -357,10 +356,8 @@ public class VXMLDocument extends WidgetDocument implements VXMLConstants
 		outputHandler.startDocument();
 		// Start the VXML name space mapping.
 		outputHandler.startPrefixMapping(EMPTY, NAMESPACE_URI_VXML);
-		System.out.println("otherNamespaces.size(): " + otherNamespaces.size());//TODO 
 		for(String key : otherNamespaces.keySet())
 		{
-			System.out.println("rendering: " + key);//TODO 
 			outputHandler.startPrefixMapping(key, otherNamespaces.get(key));
 		}
 		// Start the root element.

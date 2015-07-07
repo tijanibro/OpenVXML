@@ -33,8 +33,6 @@ public class MetaDataRequestConfiguration implements IConfiguration, Interaction
 
 	public MetaDataRequestConfiguration()
 	{
-		System.out.println("CONSTRUCTING CONFIGURATION"); //TODO cleanup
-
 	}
 
 	public String getInput()
@@ -74,13 +72,9 @@ public class MetaDataRequestConfiguration implements IConfiguration, Interaction
 	 */
 	public void load(Element configurationElement)
 	{
-		System.out.println("CONFIG IS LOADING"); //TODO cleanup
-
 		input = "";
 		NodeList inputList = configurationElement.getElementsByTagNameNS(
 				NAMESPACE_URI, inputTagName);
-		System.out.println("INPUTLIST.GETLENGTH(): "+ inputList.getLength()); //TODO cleanup
-
 		if (inputList.getLength() > 0)
 		{
 			Element inputElement = (Element)inputList.item(0);
@@ -90,7 +84,6 @@ public class MetaDataRequestConfiguration implements IConfiguration, Interaction
 		output = "";
 		NodeList outputList = configurationElement.getElementsByTagNameNS(
 				NAMESPACE_URI, outputTagName);
-		System.out.println("OUTPUTLIST.GETLENGTH():" + outputList.getLength()); //TODO cleanup
 		if (outputList.getLength() > 0)
 		{
 			Element outputElement = (Element)outputList.item(0);
@@ -106,8 +99,6 @@ public class MetaDataRequestConfiguration implements IConfiguration, Interaction
 	 */
 	public void save(Element configurationElement)
 	{
-		System.out.println("CONFIG IS SAVING"); //TODO cleanup
-
 		String inName = inputTagName;
 		String outName = outputTagName;
 		String prefix = configurationElement.getPrefix();

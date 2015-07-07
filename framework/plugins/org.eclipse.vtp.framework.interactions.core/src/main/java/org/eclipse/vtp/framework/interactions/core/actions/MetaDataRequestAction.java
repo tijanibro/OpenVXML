@@ -86,10 +86,6 @@ public class MetaDataRequestAction implements IAction
 	 */
 	public IActionResult execute()
 	{
-		
-		System.out.println("EXECUTING METADATAREQUEST ACTION");//TODO cleanup
-		
-
 		String resultParameterName = ACTION_PREFIX + context.getActionID().replace(':', '_');
 		try
 		{
