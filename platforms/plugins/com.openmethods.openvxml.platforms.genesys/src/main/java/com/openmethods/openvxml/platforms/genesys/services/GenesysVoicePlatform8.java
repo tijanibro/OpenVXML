@@ -238,6 +238,9 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 //		send.setNameList(nameList.toString());
 		send.setBody(nameList.toString() + "&Action=GetData");
 		send.setContentType("application/x-www-form-urlencoded;charset=utf-8");
+		
+		form.addVariable(new Variable("GetDataMessage", "")); //TODO
+		
 		Block block = new Block("RedirectBlock");
 		ILink createNextLink = links.createNextLink();
 		createNextLink.setParameter(metaDataMessageRequest.getResultName(), metaDataMessageRequest.getFilledResultValue());
@@ -253,7 +256,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		block.addAction(send);
 		block.addAction(receive);
 		
-		block.addVariable(new Variable("GetDataMessage", "application.lastmessage$.content"));
+		block.addAction(new Assignment("GetDataMessage", "application.lastmessage$.content"));
 		
 //		block.addAction(new Goto(createNextLink.toString()));
 		
