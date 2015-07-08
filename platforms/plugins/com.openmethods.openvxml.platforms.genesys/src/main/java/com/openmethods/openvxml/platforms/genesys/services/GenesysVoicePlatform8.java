@@ -59,11 +59,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		super(context);
 		this.context = context;
 		if(context.getAttribute("isCtiC") != null)
-		{
-			System.out.println("seting isCtiC from context: " + context.getAttribute("isCtiC")); //TODO cleanup
 			isCtiC = Boolean.parseBoolean((String)context.getAttribute("isCtiC"));
-		}
-		System.out.println("isCtiC: " + isCtiC); //TODO cleanup
 	}
 
 
@@ -84,7 +80,6 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 			document.setProperty("com.genesyslab.externalevents.enable", "true");
     	}
 		document.addOtherNamespace("gvp", "http://www.genesyslab.com/2006/vxml21-extension");
-//		document.setProperty("com.genesyslab.externalevents.queue", "false");
 		return document;
     }
 	
@@ -161,7 +156,6 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 			form.addVariable(new Variable(key, "''")); //$NON-NLS-1$
 		}
 		form.addVariable(new Variable("gvpUserData", "JSON.stringify(session.com.genesyslab.userdata)"));
-//		form.addVariable(new Variable("gvpCtiC", "(session.com.genesyslab.userdata.indexOf('gvp.rm.cti-call=1') != -1)"));
 		form.addVariable(new Variable("gvpCtiC", "JSON.stringify(session.com.genesyslab.userdata)"));
 		String[] variables = initialCommand.getVariableNames();
 		for (int i = 0; i < variables.length; ++i)
@@ -386,6 +380,12 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 			createNextLink.setParameters(params[i], metaDataMessageCommand.getParameterValues(params[i]));
         }
 		block.addAction(send);
+		if(isCtiC)
+		{
+			Receive receive = new Receive();
+			receive.setGvpPrefix(true);
+			block.addAction(receive);
+		}
 		block.addAction(new Goto(createNextLink.toString()));
 		form.addFormElement(block);
 		ILink hangupLink = links.createNextLink();
@@ -405,12 +405,12 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		Map dataMap = new HashMap();
 //		String attachedDataContent = context.getParameter("GetAttachedData");
 		String attachedDataContent = context.getParameter("GetDataMessage");
-		for(String parameterName : context.getParameterNames())
+		for(String parameterName : context.getParameterNames()) //TODO cleanup
 		{
 			System.out.println("parameterName: " + parameterName);
 		}
 		
-		System.out.println("AttachedDataContent: " + attachedDataContent);
+		System.out.println("AttachedDataContent: " + attachedDataContent); //TODO cleanup
 		try
         {
 	        ByteArrayInputStream bais = new ByteArrayInputStream(attachedDataContent.getBytes());
