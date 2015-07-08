@@ -48,6 +48,8 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 {
 
 	private boolean isCtiC = false;
+	private IExecutionContext context;
+	
 	
 	/**
 	 * 
@@ -55,6 +57,13 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 	public GenesysVoicePlatform8(IExecutionContext context)
 	{
 		super(context);
+		this.context = context;
+		if(context.getAttribute("isCtiC") != null)
+		{
+			System.out.println("seting isCtiC from context: " + context.getAttribute("isCtiC")); //TODO cleanup
+			isCtiC = Boolean.parseBoolean((String)context.getAttribute("isCtiC"));
+		}
+		System.out.println("isCtiC: " + isCtiC); //TODO cleanup
 	}
 
 
@@ -65,7 +74,15 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		document.setProperty("documentmaxage", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 		document.setProperty("documentmaxstale", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 		document.setProperty("fetchaudio", "");
-		document.setProperty("com.genesyslab.externalevents.enable", "true");
+		if(isCtiC)
+		{
+			document.setProperty("com.genesyslab.externalevents.enable", "false");
+			document.setProperty("com.genesyslab.externalevents.queue", "true");
+		}
+		else
+		{
+			document.setProperty("com.genesyslab.externalevents.enable", "true");
+    	}
 		document.addOtherNamespace("gvp", "http://www.genesyslab.com/2006/vxml21-extension");
 //		document.setProperty("com.genesyslab.externalevents.queue", "false");
 		return document;
@@ -98,15 +115,21 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 			if(originalValue.contains("gvp.rm.cti-call=1"))
 			{
 				System.out.println("Using cti-c"); //TODO cleanup
+				context.setAttribute("isCtiC", "true");
 				isCtiC = true;
 			}
 		}
 		else if ("gvpCtiC".equals(name))
 		{
 			if(originalValue != null && originalValue.contains("gvp.rm.cti-call=1"))
+			{
+				context.setAttribute("isCtiC", "true");
 				return "true";
+			}
 			else
+			{
 				return "false";
+			}
 		}
 		return super.postProcessInitialVariable(name, originalValue);
 	}
