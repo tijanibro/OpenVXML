@@ -3,7 +3,10 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Genesys Plug-in
 Bundle-SymbolicName: com.openmethods.openvxml.platforms.genesys;singleton:=true
 Bundle-Version: 5.0.0.qualifier
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ jackson-annotations-2.3.0.jar,
+ jackson-core-2.3.1.jar,
+ jackson-databind-2.3.1.jar
 Bundle-Activator: com.openmethods.openvxml.platforms.genesys.Activator
 Bundle-Vendor: OPENMETHODS
 Bundle-Localization: plugin

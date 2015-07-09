@@ -114,7 +114,7 @@ public class MetaDataRequestAction implements IAction
 				
 				AbstractPlatform platform = (AbstractPlatform)platformSelector.getSelectedPlatform();
 				Map dataMap = platform.processMetaDataResponse(configuration, context);
-
+				
 				IMapObject outputMap;
 				IDataObject ido = variables.getVariable(configuration.getOutput());
 				if(ido instanceof IMapObject)

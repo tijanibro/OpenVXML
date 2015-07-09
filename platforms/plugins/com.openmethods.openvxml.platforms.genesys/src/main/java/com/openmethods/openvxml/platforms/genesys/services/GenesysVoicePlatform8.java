@@ -3,7 +3,7 @@
  */
 package com.openmethods.openvxml.platforms.genesys.services;
 
-import java.io.ByteArrayInputStream;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -31,11 +31,10 @@ import org.eclipse.vtp.framework.interactions.voice.vxml.Script;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Submit;
 import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLDocument;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Variable;
-import org.eclipse.vtp.framework.util.XMLUtilities;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openmethods.openvxml.platforms.genesys.Activator;
 import com.openmethods.openvxml.platforms.genesys.vxml.Receive;
 import com.openmethods.openvxml.platforms.genesys.vxml.Send;
@@ -49,6 +48,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 
 	private boolean isCtiC = false;
 	private IExecutionContext context;
+	private ObjectMapper mapper = new ObjectMapper();
 	
 	
 	/**
@@ -403,14 +403,33 @@ public class GenesysVoicePlatform8 extends VoicePlatform
             IActionContext context)
     {
 		Map dataMap = new HashMap();
-//		String attachedDataContent = context.getParameter("GetAttachedData");
+		//		String attachedDataContent = context.getParameter("GetAttachedData");
 		String attachedDataContent = context.getParameter("GetDataMessage");
-		for(String parameterName : context.getParameterNames()) //TODO cleanup
-		{
-			System.out.println("parameterName: " + parameterName);
-		}
 		
-		System.out.println("AttachedDataContent: " + attachedDataContent); //TODO cleanup
+		try
+		{
+			JsonFactory jsonFactory = new JsonFactory();
+			JsonParser jp = jsonFactory.createJsonParser(attachedDataContent);
+			Map<String,Object> userData = mapper.readValue(jp, Map.class);
+
+			//Result=SUCCESS&Action=UserDataResp&Sub_Action=AttachData&VH_Result=theResult&vh_transferdestination=someXfer&vht_vis_segment=VHT_Test_Segment
+			if(userData.containsKey("content"))
+			{
+				String contentString = (String)userData.get("content");
+				String contentArray[] = contentString.split("&");
+				for(String kvpString : contentArray)
+				{
+					String kvpArray [] = kvpString.split("=", 2);
+					dataMap.put(kvpArray[0], URLDecoder.decode((String)kvpArray[1]));
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		/*		
 		try
         {
 	        ByteArrayInputStream bais = new ByteArrayInputStream(attachedDataContent.getBytes());
@@ -428,6 +447,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
         {
 	        e.printStackTrace();
         }
+*/
 		return dataMap;
     }
 
