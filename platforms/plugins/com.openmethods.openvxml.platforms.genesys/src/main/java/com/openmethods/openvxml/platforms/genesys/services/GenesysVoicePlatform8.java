@@ -58,8 +58,8 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 	{
 		super(context);
 		this.context = context;
-		if(context.getAttribute("isCtiC") != null)
-			isCtiC = Boolean.parseBoolean((String)context.getAttribute("isCtiC"));
+		if(context.getRootAttribute("isCtiC") != null)
+			isCtiC = Boolean.parseBoolean((String)context.getRootAttribute("isCtiC"));
 	}
 
 
@@ -110,7 +110,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 			if(originalValue.contains("gvp.rm.cti-call=1"))
 			{
 				System.out.println("Using cti-c"); //TODO cleanup
-				context.setAttribute("isCtiC", "true");
+				context.setRootAttribute("isCtiC", "true");
 				isCtiC = true;
 			}
 		}
@@ -118,7 +118,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		{
 			if(originalValue != null && originalValue.contains("gvp.rm.cti-call=1"))
 			{
-				context.setAttribute("isCtiC", "true");
+				context.setRootAttribute("isCtiC", "true");
 				return "true";
 			}
 			else
