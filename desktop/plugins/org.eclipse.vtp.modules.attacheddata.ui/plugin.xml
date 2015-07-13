@@ -21,13 +21,26 @@
       <provider
             class="org.eclipse.vtp.modules.attacheddata.ui.configuration.ConnectorPropertiesPanelProvider">
       </provider>
+      <provider
+            class="org.eclipse.vtp.modules.attacheddata.ui.configuration.ReceiveAttachedDataComponentPropertiesPanelProvider">
+      </provider>
    </extension>
    <extension
          point="org.eclipse.vtp.desktop.model.elements.core.primitiveElementExporter">
       <primitive-configuration-exporter
             class="org.eclipse.vtp.modules.attacheddata.ui.export.AttachedDataRequestConfigurationExporter"
-            id="org.eclipse.vtp.modules.attacheddata.adrequest">
+            id="org.eclipse.vtp.framework.interactions.core.actions.meta-data-request">
       </primitive-configuration-exporter>
+   </extension>
+   <extension
+         point="org.eclipse.vtp.desktop.model.elements.core.primitiveElement">
+      <primitive
+            id="org.eclipse.vtp.framework.interactions.core.actions.meta-data-request"
+            name="Receive Attached Data">
+         <information_provider
+               class="org.eclipse.vtp.modules.attacheddata.ui.ReceiveAttachedDataInformationProvider">
+         </information_provider>
+      </primitive>
    </extension>
 
 </plugin>

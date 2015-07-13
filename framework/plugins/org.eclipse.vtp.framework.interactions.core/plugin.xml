@@ -436,6 +436,13 @@
             name="Media Provider Binding Configuration">
       </configuration>
       <configuration
+            id="org.eclipse.vtp.framework.interactions.core.configurations.meta-data-request"
+            name="VTP Framework Meta-data Request Configuration"
+            type="org.eclipse.vtp.framework.interactions.core.configurations.MetaDataRequestConfiguration"
+            xml-namespace="http://eclipse.org/vtp/xml/framework/interactions/core/configurations"
+            xml-tag="meta-data-request">
+      </configuration>
+      <configuration
             id="org.eclipse.vtp.framework.interactions.core.configurations.meta-data"
             name="VTP Framework Meta-data Configuration"
             type="org.eclipse.vtp.framework.interactions.core.configurations.MetaDataConfiguration"

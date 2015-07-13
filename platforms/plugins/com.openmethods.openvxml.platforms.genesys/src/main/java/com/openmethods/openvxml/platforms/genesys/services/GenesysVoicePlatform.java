@@ -11,7 +11,7 @@ import org.eclipse.vtp.framework.core.IActionContext;
 import org.eclipse.vtp.framework.core.IExecutionContext;
 import org.eclipse.vtp.framework.interactions.core.commands.MetaDataMessageCommand;
 import org.eclipse.vtp.framework.interactions.core.commands.MetaDataRequestCommand;
-import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataConfiguration;
+import org.eclipse.vtp.framework.interactions.core.configurations.MetaDataRequestConfiguration;
 import org.eclipse.vtp.framework.interactions.core.platforms.IDocument;
 import org.eclipse.vtp.framework.interactions.core.platforms.ILink;
 import org.eclipse.vtp.framework.interactions.core.platforms.ILinkFactory;
@@ -167,7 +167,7 @@ public class GenesysVoicePlatform extends VoicePlatform
 
 
 	@Override
-    public Map processMetaDataResponse(MetaDataConfiguration configuration,
+    public Map processMetaDataResponse(MetaDataRequestConfiguration configuration,
             IActionContext context)
     {
 		Map dataMap = new HashMap();
