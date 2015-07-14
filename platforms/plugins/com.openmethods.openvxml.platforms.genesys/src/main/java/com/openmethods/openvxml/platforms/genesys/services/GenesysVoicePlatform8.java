@@ -369,7 +369,9 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 //	        nameList.append(names[i]);
         }
 //		send.setNameList(nameList.toString());
-		send.setBody(nameList.toString() + (isCtiC ? "&Action=AttachData&sub_action=Add": ""));
+		
+//		send.setBody(nameList.toString() + (isCtiC ? "&Action=AttachData&sub_action=Add": ""));
+		send.setBody(nameList.toString() + (isCtiC ? "&Action=AttachData&sub_action=Replace": ""));
 		send.setContentType("application/x-www-form-urlencoded;charset=utf-8");
 		Block block = new Block("RedirectBlock");
 		ILink createNextLink = links.createNextLink();
