@@ -305,8 +305,9 @@ public class CvpPlatform extends VoicePlatform
 									}
 									in.close();
 									String contents = baos.toString();
+									System.out.println(contents);
 									RegexGrammar rg = new RegexGrammar("dtmf");
-									rg.setContents(contents);
+									rg.setContents(contents.replaceAll("null", "0"));
 									field.addGrammar(rg);
 								}
 								catch (IOException e)
@@ -606,6 +607,12 @@ public class CvpPlatform extends VoicePlatform
 			nextLink.setParameter(selectionRequestCommand.getSelectionName(),
 					selectionRequestCommand.getOption(i));
 			String dtmf = selectionRequestCommand.getOptionProperty(i, "dtmf"); //$NON-NLS-1$
+			System.out.println(dtmf);
+			if (dtmf == null || "null".equals(dtmf))
+			{
+				System.out.println("Replacing " + dtmf + " with 0");
+				dtmf = "0";
+			}
 			if(i == 0)
 			{
 				ifElement = new If(selectionRequestCommand.getSelectionName() + " == " + dtmf);
