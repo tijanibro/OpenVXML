@@ -605,7 +605,7 @@ public class CvpPlatform extends VoicePlatform
 		{
 			nextLink.setParameter(selectionRequestCommand.getSelectionName(),
 					selectionRequestCommand.getOption(i));
-			String dtmf = selectionRequestCommand.getOptionProperty(i, "dtmf"); //TODO this is coming back either null or "null" in some cases
+			String dtmf = selectionRequestCommand.getOptionProperty(i, "dtmf");
 			if(dtmf == null)
 				dtmf = "0";
 			if(i == 0)
