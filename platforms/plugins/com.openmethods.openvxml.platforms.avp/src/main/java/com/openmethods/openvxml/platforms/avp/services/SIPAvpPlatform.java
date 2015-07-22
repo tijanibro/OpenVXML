@@ -82,7 +82,7 @@ public class SIPAvpPlatform extends VoicePlatform
 		super.generateInitialVariableRequests(variables);
 		variables.put("avpUCID", "session.avaya.ucid");
         variables.put("avpAAI", "session.connection.aai");
-        variables.put("avpHistoryInfo", "JSON.stringify(session.connection.protocol.sip.historyinfo)"); // need to rethink for H323
+        variables.put("avpHistoryInfo", "if ('protocol' in session.connection && 'sip' in session.connection.protocol && 'historyinfo' in session.connection.protocol.sip) { JSON.stringify(session.connection.protocol.sip.historyinfo); }");
 	}
 
 	@Override
