@@ -5,6 +5,7 @@ package com.openmethods.openvxml.platforms.genesys.services;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.eclipse.vtp.framework.interactions.voice.vxml.Catch;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Dialog;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Form;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Goto;
+import org.eclipse.vtp.framework.interactions.voice.vxml.If;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Script;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Submit;
 import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLDocument;
@@ -209,17 +211,66 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		disconnectCatch.addAction(new Goto(hangupLink.toString()));
 		form.addEventHandler(disconnectCatch);
 		document.addDialog(form);
+		
 		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
-		for(String event : events)
+		String cpaPrefix = "externalmessage.cpa";
+		if(events.contains(cpaPrefix))
 		{
-			ILink eventLink = links.createNextLink();
+			List<String> cpaEvents = new ArrayList<String>();
+			for(String event : events)
+			{
+				if(event.startsWith(cpaPrefix))
+					cpaEvents.add(event);
+				else
+				{
+					ILink eventLink = links.createNextLink();
+					for (int i = 0; i < parameterNames.length; ++i)
+						eventLink.setParameters(parameterNames[i], initialCommand
+								.getParameterValues(parameterNames[i]));
+					eventLink.setParameter(initialCommand.getResultName(), event);
+					Catch eventCatch = new Catch(event);
+					eventCatch.addAction(new Goto(eventLink.toString()));
+					form.addEventHandler(eventCatch);
+				}
+			}
+			//cpa events
+			Catch cpaCatch = new Catch(cpaPrefix);
+			
+			for(String cpaEvent : cpaEvents)
+			{
+				if(!cpaPrefix.equals(cpaEvent))
+				{
+					ILink eventLink = links.createNextLink();
+					for (int i = 0; i < parameterNames.length; ++i)
+						eventLink.setParameters(parameterNames[i], initialCommand
+								.getParameterValues(parameterNames[i]));
+					eventLink.setParameter(initialCommand.getResultName(), cpaEvent);
+					If eventIf = new If("_event==Õ" + cpaEvent + "Õ");
+					eventIf.addAction(new Goto(eventLink.toString()));
+					cpaCatch.addIfClause(eventIf);
+				}
+			}
+			ILink cpaLink = links.createNextLink();
 			for (int i = 0; i < parameterNames.length; ++i)
-				eventLink.setParameters(parameterNames[i], initialCommand
+				cpaLink.setParameters(parameterNames[i], initialCommand
 						.getParameterValues(parameterNames[i]));
-			eventLink.setParameter(initialCommand.getResultName(), event);
-			Catch eventCatch = new Catch(event);
-			eventCatch.addAction(new Goto(eventLink.toString()));
-			form.addEventHandler(eventCatch);
+			cpaLink.setParameter(initialCommand.getResultName(), cpaPrefix);
+			cpaCatch.addAction(new Goto(cpaLink.toString()));
+			form.addEventHandler(cpaCatch);
+		}
+		else
+		{
+			for(String event : events)
+			{
+				ILink eventLink = links.createNextLink();
+				for (int i = 0; i < parameterNames.length; ++i)
+					eventLink.setParameters(parameterNames[i], initialCommand
+							.getParameterValues(parameterNames[i]));
+				eventLink.setParameter(initialCommand.getResultName(), event);
+				Catch eventCatch = new Catch(event);
+				eventCatch.addAction(new Goto(eventLink.toString()));
+				form.addEventHandler(eventCatch);
+			}
 		}
 		return document;
 	}
