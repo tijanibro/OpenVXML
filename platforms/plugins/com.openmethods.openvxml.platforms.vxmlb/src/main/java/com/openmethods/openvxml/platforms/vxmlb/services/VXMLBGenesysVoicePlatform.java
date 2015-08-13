@@ -259,7 +259,8 @@ public class VXMLBGenesysVoicePlatform extends VoicePlatform
 	{
 		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
 		String cpaPrefix = "externalmessage.cpa";
-		if(events.contains(cpaPrefix))
+//		if(events.contains(cpaPrefix))
+		if(false)
 		{
 			List<String> cpaEvents = new ArrayList<String>();
 			for(String event : events)
