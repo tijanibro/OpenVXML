@@ -5,10 +5,13 @@
 
 package com.openmethods.openvxml.platforms.vxmlb.services;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.vtp.framework.common.IVariableRegistry;
 import org.eclipse.vtp.framework.core.IExecutionContext;
@@ -26,6 +29,7 @@ import org.eclipse.vtp.framework.interactions.voice.vxml.Dialog;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Filled;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Form;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Goto;
+import org.eclipse.vtp.framework.interactions.voice.vxml.If;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Parameter;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Script;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Submit;
@@ -183,18 +187,25 @@ public class VXMLBGenesysVoicePlatform extends VoicePlatform
 		Script jsonInclude = new Script();
 		jsonInclude.setSrc(links.createIncludeLink("com.openmethods.openvxml.platforms.genesys/includes/json.js").toString());
 		document.addScript(jsonInclude);
-		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
-		for(String event : events)
+		
+		Map<String,String[]> parameterMap = new HashMap<String,String[]>();
+		for (int i = 0; i < parameterNames.length; ++i)
 		{
-			ILink eventLink = links.createNextLink();
-			for (int i = 0; i < parameterNames.length; ++i)
-				eventLink.setParameters(parameterNames[i], initialCommand
-						.getParameterValues(parameterNames[i]));
-			eventLink.setParameter(initialCommand.getResultName(), event);
-			Catch eventCatch = new Catch(event);
-			eventCatch.addAction(new Goto(eventLink.toString()));
-			form.addEventHandler(eventCatch);
+			parameterMap.put(parameterNames[i], initialCommand.getParameterValues(parameterNames[i]));
 		}
+		form = (Form)addExtendedEvents(links, initialCommand.getResultName(), parameterMap, form);
+//		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
+//		for(String event : events)
+//		{
+//			ILink eventLink = links.createNextLink();
+//			for (int i = 0; i < parameterNames.length; ++i)
+//				eventLink.setParameters(parameterNames[i], initialCommand
+//						.getParameterValues(parameterNames[i]));
+//			eventLink.setParameter(initialCommand.getResultName(), event);
+//			Catch eventCatch = new Catch(event);
+//			eventCatch.addAction(new Goto(eventLink.toString()));
+//			form.addEventHandler(eventCatch);
+//		}
 		return document;
 	}
 
@@ -243,4 +254,67 @@ public class VXMLBGenesysVoicePlatform extends VoicePlatform
 		form.addEventHandler(disconnectCatch);
 	    return this.createVXMLDocument(links, form);
     }
+	
+	private Dialog addExtendedEvents(ILinkFactory links, String resultName, Map<String, String[]> parameterMap, Dialog form)
+	{
+		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
+		String cpaPrefix = "externalmessage.cpa";
+		if(events.contains(cpaPrefix))
+		{
+			List<String> cpaEvents = new ArrayList<String>();
+			for(String event : events)
+			{
+				if(event.startsWith(cpaPrefix))
+					cpaEvents.add(event);
+				else
+				{
+					ILink eventLink = links.createNextLink();
+					eventLink.setParameter(resultName, event);
+					Catch eventCatch = new Catch(event);
+					eventCatch.addAction(new Goto(eventLink.toString()));
+					form.addEventHandler(eventCatch);
+				}
+			}
+			//cpa events
+			Catch cpaCatch = new Catch(cpaPrefix);
+			
+			for(String cpaEvent : cpaEvents)
+			{
+				if(!cpaPrefix.equals(cpaEvent))
+				{
+					ILink eventLink = links.createNextLink();
+					if(null != parameterMap)
+						for(Entry<String, String[]> entry: parameterMap.entrySet()) 
+							eventLink.setParameters(entry.getKey(), entry.getValue());
+					eventLink.setParameter(resultName, cpaEvent);
+//					If eventIf = new If("_event==Õ" + cpaEvent + "Õ");
+					If eventIf = new If("_event=='" + cpaEvent + "'");
+					eventIf.addAction(new Goto(eventLink.toString()));
+					cpaCatch.addIfClause(eventIf);
+				}
+			}
+			ILink cpaLink = links.createNextLink();
+			if(null != parameterMap)
+				for(Entry<String, String[]> entry: parameterMap.entrySet()) 
+					cpaLink.setParameters(entry.getKey(), entry.getValue());
+			cpaLink.setParameter(resultName, cpaPrefix);
+			cpaCatch.addAction(new Goto(cpaLink.toString()));
+			form.addEventHandler(cpaCatch);
+		}
+		else
+		{
+			for(String event : events)
+			{
+				ILink eventLink = links.createNextLink();
+				if(null != parameterMap)
+					for(Entry<String, String[]> entry: parameterMap.entrySet()) 
+						eventLink.setParameters(entry.getKey(), entry.getValue());
+				eventLink.setParameter(resultName, event);
+				Catch eventCatch = new Catch(event);
+				eventCatch.addAction(new Goto(eventLink.toString()));
+				form.addEventHandler(eventCatch);
+			}
+		}
+		return form;
+	}
 }
