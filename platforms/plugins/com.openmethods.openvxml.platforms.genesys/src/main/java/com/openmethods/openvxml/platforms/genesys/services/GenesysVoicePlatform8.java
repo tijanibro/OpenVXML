@@ -245,7 +245,8 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 						eventLink.setParameters(parameterNames[i], initialCommand
 								.getParameterValues(parameterNames[i]));
 					eventLink.setParameter(initialCommand.getResultName(), cpaEvent);
-					If eventIf = new If("_event==Õ" + cpaEvent + "Õ");
+//					If eventIf = new If("_event==Õ" + cpaEvent + "Õ");
+					If eventIf = new If("_event=='" + cpaEvent + "'");
 					eventIf.addAction(new Goto(eventLink.toString()));
 					cpaCatch.addIfClause(eventIf);
 				}
