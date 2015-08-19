@@ -11,10 +11,12 @@
 		<display-name>Equinox Bridge Servlet</display-name>
 		<description>Equinox Bridge Servlet</description>
 		<servlet-class>org.eclipse.equinox.servletbridge.BridgeServlet</servlet-class>
+		<!--
 		<init-param>
 			<param-name>commandline</param-name>
 			<param-value>-console 12345 -consoleLog</param-value>			
 		</init-param>		
+		  -->
 		<!--
 		<init-param>
 			<param-name>enableFrameworkControls</param-name>
