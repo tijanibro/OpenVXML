@@ -64,6 +64,11 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 			isCtiC = Boolean.parseBoolean((String)context.getRootAttribute("isCtiC"));
 	}
 
+	protected void setIsCtiC(String value)
+	{
+		isCtiC = Boolean.parseBoolean(value);
+		context.setRootAttribute("isCtiC", value);
+	}
 
 	@Override
     protected VXMLDocument createVXMLDocument(ILinkFactory links, Dialog dialog)

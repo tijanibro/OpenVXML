@@ -30,6 +30,19 @@
             </qualifier>
          </identifier>
       </service>
+      <service
+            id="com.openmethods.openvxml.platforms.genesys.services.platform8cti"
+            lazy="true"
+            name="GVP 8 CTI Platform"
+            scope="execution"
+            type="com.openmethods.openvxml.platforms.genesys.services.GenesysVoicePlatform8CTI">
+         <identifier
+               name="org.eclipse.vtp.framework.interactions.core.platforms.IPlatform">
+            <qualifier
+                  name="MODE=GVP8CTI">
+            </qualifier>
+         </identifier>
+      </service>
    </extension>
    <extension
          point="org.eclipse.vtp.framework.interactions.core.extendedEvents">
