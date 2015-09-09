@@ -51,6 +51,7 @@ public class RecordInformationProvider extends PrimitiveInformationProvider impl
 		connectorRecords.add(new ConnectorRecord(element, "error.input.nomatch", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
 		connectorRecords.add(new ConnectorRecord(element, "error.input.noinput", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
 		connectorRecords.add(new ConnectorRecord(element, "error.disconnect.hangup", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
+		connectorRecords.add(new ConnectorRecord(element, "error.data.request", IDesignElementConnectionPoint.ConnectionPointType.ERROR_POINT));
 		List<String> events = ExtendedInteractiveEventManager.getDefault().getExtendedEvents();
 		for(String event : events)
 		{
