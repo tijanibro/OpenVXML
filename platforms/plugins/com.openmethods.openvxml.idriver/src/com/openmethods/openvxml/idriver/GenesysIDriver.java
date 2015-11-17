@@ -126,6 +126,10 @@ public class GenesysIDriver implements Runnable
 				t.setName("IDriver Port Monitor");
 				t.setDaemon(true);
 				t.start();
+				Thread hb = new Thread(new Heartbeat());
+				hb.setName("IDriver Heartbeat");
+				hb.setDaemon(true);
+				hb.start();
 			}
 		}
 		catch (Throwable e)
@@ -578,5 +582,24 @@ public class GenesysIDriver implements Runnable
 	{
 		System.out.println("Starting");
 //		getInstance();
+	}
+	
+	public class Heartbeat implements Runnable
+	{
+		public void run()
+		{
+			while(running)
+			{
+				try
+				{
+					NativeLong result = iDriver.ilWatch(new NativeLong(1000));
+					Thread.sleep(1000);
+				}
+				catch(Exception ex)
+				{
+					
+				}
+			}
+		}
 	}
 }

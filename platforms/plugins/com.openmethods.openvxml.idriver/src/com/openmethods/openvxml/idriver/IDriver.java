@@ -31,4 +31,5 @@ public interface IDriver extends Library
 	NativeLong ilGetProcessingState();
 	NativeLong ilSRqGetCallInfo(NativeLong requestId, NativeLong port, int type);
 	NativeLong ilGetLastPortError(NativeLong port, int type);
+	NativeLong ilWatch(NativeLong time);
 }
