@@ -11,6 +11,7 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.desktop.editors.themes.attraction;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,10 +26,13 @@ import org.eclipse.vtp.desktop.editors.themes.core.ConnectorFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.ElementFrame;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.CommandListener;
 import org.eclipse.vtp.desktop.editors.themes.core.commands.StartMove;
+import org.eclipse.vtp.modules.attacheddata.ui.configuration.post.AttachedDataBinding;
+import org.eclipse.vtp.modules.attacheddata.ui.configuration.post.AttachedDataManager;
 
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnector;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnectorLabel;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnectorMidpoint;
+import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
 
 /**
@@ -55,6 +59,8 @@ public class AttractionConnectorFrame extends AttractionComponentFrame implement
 	ElementFrame destination;
 	/**	The current size of the rectangle that contains this connector's label */
 	Point labelSize = null;
+	/** A list of paths that have attached data */
+	List<String> adList = new ArrayList<String>();
 	
 	/**
 	 * Creates a new connector frame instance that represents the provided ui
@@ -73,6 +79,7 @@ public class AttractionConnectorFrame extends AttractionComponentFrame implement
 		this.uiConnector = uiConnector;
 		uiConnector.addListener(this);
 		uiConnector.addPropertyListener(this);
+		listAttachedData();
 	}
 
 	/* (non-Javadoc)
@@ -277,8 +284,14 @@ public class AttractionConnectorFrame extends AttractionComponentFrame implement
 			int nh = 0;
 			for(IDesignElementConnectionPoint cr : uiConnector.getConnectionPoints())
 			{
+				String crName = cr.getName();
+				if(adList.contains(crName))
+				{
+					crName += " <Attached Data>";
+				}
+				
 				org.eclipse.swt.graphics.Point np =
-					gc.stringExtent(cr.getName());
+					gc.stringExtent(crName);
 				nw = Math.max(nw, np.x);
 				nh = nh + 2 + np.y;
 			}
@@ -304,8 +317,14 @@ public class AttractionConnectorFrame extends AttractionComponentFrame implement
 					gc.setForeground(labelExitColor);
 				}
 
-				Point np = gc.stringExtent(cr.getName());
-				gc.drawString(cr.getName(), labelUpperLeft.x + 2, ry, true);
+				String crName = cr.getName();
+				if(adList.contains(crName))
+				{
+					crName += " <Attached Data>";
+				}
+				
+				Point np = gc.stringExtent(crName);
+				gc.drawString(crName, labelUpperLeft.x + 2, ry, true);
 				ry += np.y;
 				ry += 2;
 			}
@@ -435,4 +454,21 @@ public class AttractionConnectorFrame extends AttractionComponentFrame implement
 		uiConnector.insertMidpoint(index, x, y);
 	}
 
+	private void listAttachedData()
+	{
+		List <AttachedDataBinding> bindings = new ArrayList<AttachedDataBinding>();
+		IDesignElement uiElement = source.getDesignElement();		
+		AttachedDataManager adManager = (AttachedDataManager)uiElement.getConfigurationManager("org.eclipse.vtp.configuration.attacheddata").clone();
+		bindings.addAll(adManager.listBindings());
+		uiElement.rollbackConfigurationChanges(adManager);
+		
+		for(int b = 0; b < bindings.size(); b++)
+		{
+			if(bindings.get(b).hasEntries())
+			{
+				adList.add(bindings.get(b).getName());
+			}
+		}
+	}
+	
 }

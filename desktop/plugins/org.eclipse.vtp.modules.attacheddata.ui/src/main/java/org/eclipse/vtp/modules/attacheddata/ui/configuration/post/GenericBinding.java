@@ -100,7 +100,14 @@ public abstract class GenericBinding implements BrandManagerListener
 		}
 		return bindingItemObject;
 	}
-
+	
+	protected Map<String,GenericBindingItem> getBindingItems()
+	{
+		Map<String,GenericBindingItem> ret = new HashMap<String,GenericBindingItem>();
+		ret.putAll(bindingItems);
+		return ret;
+	}
+	
 	/**
 	 * Adds the provided binding item to this binding and associates it with the
 	 * given brand name, interaction type, and language name.  If there was
