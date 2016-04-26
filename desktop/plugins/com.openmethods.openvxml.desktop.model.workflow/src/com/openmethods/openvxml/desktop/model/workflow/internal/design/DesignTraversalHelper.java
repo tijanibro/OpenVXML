@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
+
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignConnector;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElement;
 import com.openmethods.openvxml.desktop.model.workflow.design.IDesignElementConnectionPoint;
@@ -40,7 +44,37 @@ public class DesignTraversalHelper
 		List<IDesignConnector> connectors = startElement.getIncomingConnectors();
 		for(IDesignConnector connector : connectors)
 		{
+			
 			IDesignElement sourceElement = connector.getOrigin();
+			if(connector.getOrigin().getConnectorRecords().isEmpty())
+			{
+				final String projectName = connector.getDesign().getDocument().getProject().getName();
+				final String documentName = connector.getDesign().getName();
+				final String sourceName = connector.getOrigin().getName();
+				final String destinationName = connector.getDestination().getName();
+				final String connectorId = connector.getId();
+				System.err.println("Found empty connector in \r\n" + 
+							"Project: " + projectName + "\r\n" +
+							"Document: " + documentName + "\r\n" +
+							"Source element: " + sourceName + "\r\n" +
+							"Destination element: " + destinationName + "\r\n" +
+							"ID: " + connectorId);
+				Display.getDefault().syncExec(new Runnable(){
+					public void run(){
+						Shell shell = Display.getCurrent().getActiveShell();
+						MessageBox mbox = new MessageBox(shell);
+						mbox.setText("Warning - Empty Connector");
+						mbox.setMessage("Found empty connector in \r\n" + 
+							"Project: " + projectName + "\r\n" +
+							"Document: " + documentName + "\r\n" +
+							"Source element: " + sourceName + "\r\n" +
+							"Destination element: " + destinationName + "\r\n" +
+							"ID: " + connectorId
+						);
+						mbox.open();
+					}
+				});
+			}
 			@SuppressWarnings("unchecked")
 			T adapter = (T)sourceElement.getAdapter(destinationType);
 			if(adapter != null)

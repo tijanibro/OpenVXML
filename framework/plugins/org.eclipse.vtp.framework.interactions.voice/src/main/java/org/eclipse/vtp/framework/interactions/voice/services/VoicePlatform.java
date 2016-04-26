@@ -13,10 +13,12 @@ package org.eclipse.vtp.framework.interactions.voice.services;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -282,18 +284,24 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		disconnectCatch.addAction(new Goto(hangupLink.toString()));
 		form.addEventHandler(disconnectCatch);
 		form.addFormElement(block);
-		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
-		for(String event : events)
+		Map<String,String[]> parameterMap = new HashMap<String,String[]>();
+		for (int i = 0; i < parameterNames.length; ++i)
 		{
-			ILink eventLink = links.createNextLink();
-			for (int i = 0; i < parameterNames.length; ++i)
-				eventLink.setParameters(parameterNames[i], outputMessageCommand
-						.getParameterValues(parameterNames[i]));
-			eventLink.setParameter(outputMessageCommand.getResultName(), event);
-			Catch eventCatch = new Catch(event);
-			eventCatch.addAction(new Goto(eventLink.toString()));
-			form.addEventHandler(eventCatch);
+			parameterMap.put(parameterNames[i], outputMessageCommand.getParameterValues(parameterNames[i]));
 		}
+		form = (Form)addExtendedEvents(links, outputMessageCommand.getResultName(), parameterMap, form);
+//		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
+//		for(String event : events)
+//		{
+//			ILink eventLink = links.createNextLink();
+//			for (int i = 0; i < parameterNames.length; ++i)
+//				eventLink.setParameters(parameterNames[i], outputMessageCommand
+//						.getParameterValues(parameterNames[i]));
+//			eventLink.setParameter(outputMessageCommand.getResultName(), event);
+//			Catch eventCatch = new Catch(event);
+//			eventCatch.addAction(new Goto(eventLink.toString()));
+//			form.addEventHandler(eventCatch);
+//		}
 		return createVXMLDocument(links, form);
 	}
 
@@ -359,18 +367,25 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		VXMLDocument document = createVXMLDocument(links, form);
 		document.setProperty("documentmaxage", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 		document.setProperty("documentmaxstale", "0"); //$NON-NLS-1$ //$NON-NLS-2$
-		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
-		for(String event : events)
+		Map<String,String[]> parameterMap = new HashMap<String,String[]>();
+		for (int i = 0; i < parameterNames.length; ++i)
 		{
-			ILink eventLink = links.createNextLink();
-			for (int i = 0; i < parameterNames.length; ++i)
-				eventLink.setParameters(parameterNames[i], initialCommand
-						.getParameterValues(parameterNames[i]));
-			eventLink.setParameter(initialCommand.getResultName(), event);
-			Catch eventCatch = new Catch(event);
-			eventCatch.addAction(new Goto(eventLink.toString()));
-			form.addEventHandler(eventCatch);
+			parameterMap.put(parameterNames[i], initialCommand.getParameterValues(parameterNames[i]));
 		}
+		form = (Form)addExtendedEvents(links, initialCommand.getResultName(), parameterMap, form);
+//		
+//		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
+//		for(String event : events)
+//		{
+//			ILink eventLink = links.createNextLink();
+//			for (int i = 0; i < parameterNames.length; ++i)
+//				eventLink.setParameters(parameterNames[i], initialCommand
+//						.getParameterValues(parameterNames[i]));
+//			eventLink.setParameter(initialCommand.getResultName(), event);
+//			Catch eventCatch = new Catch(event);
+//			eventCatch.addAction(new Goto(eventLink.toString()));
+//			form.addEventHandler(eventCatch);
+//		}
 		return document;
 	}
 
@@ -700,18 +715,24 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		disconnectCatch.addAction(new Goto(hangupLink.toString()));
 		field.addEventHandler(disconnectCatch);
 		form.addFormElement(field);
-		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
-		for(String event : events)
+		Map<String,String[]> parameterMap = new HashMap<String,String[]>();
+		for (int i = 0; i < parameterNames.length; ++i)
 		{
-			ILink eventLink = links.createNextLink();
-			for (int i = 0; i < parameterNames.length; ++i)
-				eventLink.setParameters(parameterNames[i], inputRequestCommand
-						.getParameterValues(parameterNames[i]));
-			eventLink.setParameter(inputRequestCommand.getResultName(), event);
-			Catch eventCatch = new Catch(event);
-			eventCatch.addAction(new Goto(eventLink.toString()));
-			form.addEventHandler(eventCatch);
+			parameterMap.put(parameterNames[i], inputRequestCommand.getParameterValues(parameterNames[i]));
 		}
+		form = (Form)addExtendedEvents(links, inputRequestCommand.getResultName(), parameterMap, form);
+//		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
+//		for(String event : events)
+//		{
+//			ILink eventLink = links.createNextLink();
+//			for (int i = 0; i < parameterNames.length; ++i)
+//				eventLink.setParameters(parameterNames[i], inputRequestCommand
+//						.getParameterValues(parameterNames[i]));
+//			eventLink.setParameter(inputRequestCommand.getResultName(), event);
+//			Catch eventCatch = new Catch(event);
+//			eventCatch.addAction(new Goto(eventLink.toString()));
+//			form.addEventHandler(eventCatch);
+//		}
 		return createVXMLDocument(links, form);
 	}
 
@@ -947,18 +968,25 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		Catch disconnectCatch = new Catch("connection.disconnect.hangup");
 		disconnectCatch.addAction(new Goto(hangupLink.toString()));
 		menu.addEventHandler(disconnectCatch);
-		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
-		for(String event : events)
+		
+		Map<String,String[]> parameterMap = new HashMap<String,String[]>();
+		for (int i = 0; i < parameterNames.length; ++i)
 		{
-			ILink eventLink = links.createNextLink();
-			for (int i = 0; i < parameterNames.length; ++i)
-				eventLink.setParameters(parameterNames[i], selectionRequestCommand
-						.getParameterValues(parameterNames[i]));
-			eventLink.setParameter(selectionRequestCommand.getResultName(), event);
-			Catch eventCatch = new Catch(event);
-			eventCatch.addAction(new Goto(eventLink.toString()));
-			menu.addEventHandler(eventCatch);
+			parameterMap.put(parameterNames[i], selectionRequestCommand.getParameterValues(parameterNames[i]));
 		}
+		menu = (Menu)addExtendedEvents(links, selectionRequestCommand.getResultName(), parameterMap, menu);
+//		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
+//		for(String event : events)
+//		{
+//			ILink eventLink = links.createNextLink();
+//			for (int i = 0; i < parameterNames.length; ++i)
+//				eventLink.setParameters(parameterNames[i], selectionRequestCommand
+//						.getParameterValues(parameterNames[i]));
+//			eventLink.setParameter(selectionRequestCommand.getResultName(), event);
+//			Catch eventCatch = new Catch(event);
+//			eventCatch.addAction(new Goto(eventLink.toString()));
+//			menu.addEventHandler(eventCatch);
+//		}
 		return createVXMLDocument(links, menu);
 	}
 
@@ -1119,18 +1147,24 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		disconnectSubmit.setEncodingType("multipart/form-data");
 		disconnectCatch.addAction(disconnectSubmit);
 		recording.addEventHandler(disconnectCatch);
-		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
-		for(String event : events)
+		Map<String,String[]> parameterMap = new HashMap<String,String[]>();
+		for (int i = 0; i < parameterNames.length; ++i)
 		{
-			ILink eventLink = links.createNextLink();
-			for (int i = 0; i < parameterNames.length; ++i)
-				eventLink.setParameters(parameterNames[i], dataRequestCommand
-						.getParameterValues(parameterNames[i]));
-			eventLink.setParameter(dataRequestCommand.getResultName(), event);
-			Catch eventCatch = new Catch(event);
-			eventCatch.addAction(new Goto(eventLink.toString()));
-			form.addEventHandler(eventCatch);
+			parameterMap.put(parameterNames[i], dataRequestCommand.getParameterValues(parameterNames[i]));
 		}
+		form = (Form)addExtendedEvents(links, dataRequestCommand.getResultName(), parameterMap, form);
+//		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
+//		for(String event : events)
+//		{
+//			ILink eventLink = links.createNextLink();
+//			for (int i = 0; i < parameterNames.length; ++i)
+//				eventLink.setParameters(parameterNames[i], dataRequestCommand
+//						.getParameterValues(parameterNames[i]));
+//			eventLink.setParameter(dataRequestCommand.getResultName(), event);
+//			Catch eventCatch = new Catch(event);
+//			eventCatch.addAction(new Goto(eventLink.toString()));
+//			form.addEventHandler(eventCatch);
+//		}
 		return createVXMLDocument(links, form);
 	}
 
@@ -1221,18 +1255,24 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		Catch badFetchCatch = new Catch("error.badfetch");
 		badFetchCatch.addAction(new Goto(fetchLink.toString()));
 		form.addEventHandler(badFetchCatch);
-		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
-		for(String event : events)
+		Map<String,String[]> parameterMap = new HashMap<String,String[]>();
+		for (int i = 0; i < parameterNames.length; ++i)
 		{
-			ILink eventLink = links.createNextLink();
-			for (int i = 0; i < parameterNames.length; ++i)
-				eventLink.setParameters(parameterNames[i], externalReferenceCommand
-						.getParameterValues(parameterNames[i]));
-			eventLink.setParameter(externalReferenceCommand.getResultName(), event);
-			Catch eventCatch = new Catch(event);
-			eventCatch.addAction(new Goto(eventLink.toString()));
-			form.addEventHandler(eventCatch);
+			parameterMap.put(parameterNames[i], externalReferenceCommand.getParameterValues(parameterNames[i]));
 		}
+		form = (Form)addExtendedEvents(links, externalReferenceCommand.getResultName(), parameterMap, form);
+//		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
+//		for(String event : events)
+//		{
+//			ILink eventLink = links.createNextLink();
+//			for (int i = 0; i < parameterNames.length; ++i)
+//				eventLink.setParameters(parameterNames[i], externalReferenceCommand
+//						.getParameterValues(parameterNames[i]));
+//			eventLink.setParameter(externalReferenceCommand.getResultName(), event);
+//			Catch eventCatch = new Catch(event);
+//			eventCatch.addAction(new Goto(eventLink.toString()));
+//			form.addEventHandler(eventCatch);
+//		}
 		return createVXMLDocument(links, form);
 	}
 
@@ -1362,15 +1402,16 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 		tx.addEventHandler(disconnectCatch);
 		
 		form.addFormElement(tx);
-		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
-		for(String event : events)
-		{
-			ILink eventLink = links.createNextLink();
-			eventLink.setParameter(bridgeMessageCommand.getResultName(), event);
-			Catch eventCatch = new Catch(event);
-			eventCatch.addAction(new Goto(eventLink.toString()));
-			form.addEventHandler(eventCatch);
-		}
+		form = (Form)addExtendedEvents(links, bridgeMessageCommand.getResultName(), null, form);
+//		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();		
+//		for(String event : events)
+//		{
+//			ILink eventLink = links.createNextLink();
+//			eventLink.setParameter(bridgeMessageCommand.getResultName(), event);
+//			Catch eventCatch = new Catch(event);
+//			eventCatch.addAction(new Goto(eventLink.toString()));
+//			form.addEventHandler(eventCatch);
+//		}
 		return createVXMLDocument(links, form);
 	}
 
@@ -1467,5 +1508,71 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants
 			ret = Boolean.FALSE.toString();
 		}
 		return ret;
+	}
+	
+	
+	private Dialog addExtendedEvents(ILinkFactory links, String resultName, Map<String, String[]> parameterMap, Dialog form)
+	{
+		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
+		String cpaPrefix = "externalmessage.cpa";
+//		if(events.contains(cpaPrefix))
+		if(false)
+		{
+			List<String> cpaEvents = new ArrayList<String>();
+			for(String event : events)
+			{
+				if(event.startsWith(cpaPrefix))
+					cpaEvents.add(event);
+				else
+				{
+					ILink eventLink = links.createNextLink();
+					eventLink.setParameter(resultName, event);
+					Catch eventCatch = new Catch(event);
+					eventCatch.addAction(new Goto(eventLink.toString()));
+					form.addEventHandler(eventCatch);
+				}
+			}
+			//cpa events
+			Catch cpaCatch = new Catch(cpaPrefix);
+			
+			for(String cpaEvent : cpaEvents)
+			{
+				if(!cpaPrefix.equals(cpaEvent))
+				{
+					ILink eventLink = links.createNextLink();
+					if(null != parameterMap)
+						for(Entry<String, String[]> entry: parameterMap.entrySet()) 
+							eventLink.setParameters(entry.getKey(), entry.getValue());
+					eventLink.setParameter(resultName, cpaEvent);
+//					If eventIf = new If("_event==Õ" + cpaEvent + "Õ");
+					If eventIf = new If("_event=='" + cpaEvent + "'");
+					eventIf.addAction(new Goto(eventLink.toString()));
+					cpaCatch.addIfClause(eventIf);
+				}
+			}
+			ILink cpaLink = links.createNextLink();
+			if(null != parameterMap)
+				for(Entry<String, String[]> entry: parameterMap.entrySet()) 
+					cpaLink.setParameters(entry.getKey(), entry.getValue());
+			cpaLink.setParameter(resultName, cpaPrefix);
+			cpaCatch.addAction(new Goto(cpaLink.toString()));
+			form.addEventHandler(cpaCatch);
+		}
+		else
+		{
+			for(String event : events)
+			{
+				ILink eventLink = links.createNextLink();
+				if(null != parameterMap)
+					for(Entry<String, String[]> entry: parameterMap.entrySet()) 
+						eventLink.setParameters(entry.getKey(), entry.getValue());
+				eventLink.setParameter(resultName, event);
+				Catch eventCatch = new Catch(event);
+				eventCatch.addAction(new Goto(eventLink.toString()));
+				form.addEventHandler(eventCatch);
+			}
+			
+		}
+		return form;
 	}
 }

@@ -86,10 +86,6 @@ public class MetaDataRequestAction implements IAction
 	 */
 	public IActionResult execute()
 	{
-		
-		System.out.println("EXECUTING METADATAREQUEST ACTION");//TODO cleanup
-		
-
 		String resultParameterName = ACTION_PREFIX + context.getActionID().replace(':', '_');
 		try
 		{
@@ -118,7 +114,7 @@ public class MetaDataRequestAction implements IAction
 				
 				AbstractPlatform platform = (AbstractPlatform)platformSelector.getSelectedPlatform();
 				Map dataMap = platform.processMetaDataResponse(configuration, context);
-
+				
 				IMapObject outputMap;
 				IDataObject ido = variables.getVariable(configuration.getOutput());
 				if(ido instanceof IMapObject)

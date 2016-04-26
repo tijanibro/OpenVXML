@@ -39,6 +39,9 @@
       <extended-event
             name="externalmessage.cpa.beep">
       </extended-event>
+      <extended-event
+            name="externalmessage.cpa">
+      </extended-event>
    </extension>
 
 </plugin>

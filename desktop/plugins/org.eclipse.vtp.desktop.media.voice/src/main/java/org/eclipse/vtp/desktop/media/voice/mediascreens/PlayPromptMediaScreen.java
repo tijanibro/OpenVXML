@@ -119,7 +119,7 @@ public class PlayPromptMediaScreen extends MediaConfigurationScreen implements P
 		Composite containerComp = createWrapperComposite(comp, 100);
 		promptViewer.createControls(containerComp);
 		List<ContentPlaceholder> placeholders = new ArrayList<ContentPlaceholder>();
-		placeholders.add(new ContentPlaceholder("Test Placeholder", "This is the description kds jflj sfkl jlskfj lfkj sdlkfjsldkjf lksdj lfkjls"));
+//		placeholders.add(new ContentPlaceholder("Test Placeholder", "This is the description kds jflj sfkl jlskfj lfkj sdlkfjsldkjf lksdj lfkjls"));
 		promptViewer.setPlaceholders(placeholders);
 		promptViewer.addListener(this);
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_END);

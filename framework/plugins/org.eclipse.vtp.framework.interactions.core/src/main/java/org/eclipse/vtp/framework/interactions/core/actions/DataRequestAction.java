@@ -207,6 +207,10 @@ public class DataRequestAction implements IAction
 				}
 				return context.createResult(IConversation.RESULT_NAME_NO_MATCH);
 			}
+			else if("".equals(result))
+			{
+				throw new IllegalArgumentException("Data Request received empty Action parameter: " + result);
+			}
 			else if(result != null)
 			{
 				return context.createResult(result);

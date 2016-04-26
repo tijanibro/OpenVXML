@@ -3,8 +3,9 @@
  */
 package com.openmethods.openvxml.platforms.genesys.services;
 
-import java.io.ByteArrayInputStream;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,15 +28,15 @@ import org.eclipse.vtp.framework.interactions.voice.vxml.Catch;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Dialog;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Form;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Goto;
+import org.eclipse.vtp.framework.interactions.voice.vxml.If;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Script;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Submit;
 import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLDocument;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Variable;
-import org.eclipse.vtp.framework.util.XMLUtilities;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openmethods.openvxml.platforms.genesys.Activator;
 import com.openmethods.openvxml.platforms.genesys.vxml.Receive;
 import com.openmethods.openvxml.platforms.genesys.vxml.Send;
@@ -48,6 +49,9 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 {
 
 	private boolean isCtiC = false;
+	private IExecutionContext context;
+	private ObjectMapper mapper = new ObjectMapper();
+	
 	
 	/**
 	 * 
@@ -55,6 +59,9 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 	public GenesysVoicePlatform8(IExecutionContext context)
 	{
 		super(context);
+		this.context = context;
+		if(context.getRootAttribute("isCtiC") != null)
+			isCtiC = Boolean.parseBoolean((String)context.getRootAttribute("isCtiC"));
 	}
 
 
@@ -65,8 +72,16 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		document.setProperty("documentmaxage", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 		document.setProperty("documentmaxstale", "0"); //$NON-NLS-1$ //$NON-NLS-2$
 		document.setProperty("fetchaudio", "");
-		document.setProperty("com.genesyslab.externalevents.enable", "true");
-//		document.setProperty("com.genesyslab.externalevents.queue", "false");
+		if(isCtiC)
+		{
+			document.setProperty("com.genesyslab.externalevents.enable", "false");
+			document.setProperty("com.genesyslab.externalevents.queue", "true");
+		}
+		else
+		{
+			document.setProperty("com.genesyslab.externalevents.enable", "true");
+    	}
+		document.addOtherNamespace("gvp", "http://www.genesyslab.com/2006/vxml21-extension");
 		return document;
     }
 	
@@ -97,15 +112,21 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 			if(originalValue.contains("gvp.rm.cti-call=1"))
 			{
 				System.out.println("Using cti-c"); //TODO cleanup
+				context.setRootAttribute("isCtiC", "true");
 				isCtiC = true;
 			}
 		}
 		else if ("gvpCtiC".equals(name))
 		{
 			if(originalValue != null && originalValue.contains("gvp.rm.cti-call=1"))
+			{
+				context.setRootAttribute("isCtiC", "true");
 				return "true";
+			}
 			else
+			{
 				return "false";
+			}
 		}
 		return super.postProcessInitialVariable(name, originalValue);
 	}
@@ -137,7 +158,6 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 			form.addVariable(new Variable(key, "''")); //$NON-NLS-1$
 		}
 		form.addVariable(new Variable("gvpUserData", "JSON.stringify(session.com.genesyslab.userdata)"));
-//		form.addVariable(new Variable("gvpCtiC", "(session.com.genesyslab.userdata.indexOf('gvp.rm.cti-call=1') != -1)"));
 		form.addVariable(new Variable("gvpCtiC", "JSON.stringify(session.com.genesyslab.userdata)"));
 		String[] variables = initialCommand.getVariableNames();
 		for (int i = 0; i < variables.length; ++i)
@@ -191,17 +211,67 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 		disconnectCatch.addAction(new Goto(hangupLink.toString()));
 		form.addEventHandler(disconnectCatch);
 		document.addDialog(form);
+		
 		List<String> events = ExtendedActionEventManager.getDefault().getExtendedEvents();
-		for(String event : events)
+		String cpaPrefix = "externalmessage.cpa";
+		if(events.contains(cpaPrefix))
 		{
-			ILink eventLink = links.createNextLink();
+			List<String> cpaEvents = new ArrayList<String>();
+			for(String event : events)
+			{
+				if(event.startsWith(cpaPrefix))
+					cpaEvents.add(event);
+				else
+				{
+					ILink eventLink = links.createNextLink();
+					for (int i = 0; i < parameterNames.length; ++i)
+						eventLink.setParameters(parameterNames[i], initialCommand
+								.getParameterValues(parameterNames[i]));
+					eventLink.setParameter(initialCommand.getResultName(), event);
+					Catch eventCatch = new Catch(event);
+					eventCatch.addAction(new Goto(eventLink.toString()));
+					form.addEventHandler(eventCatch);
+				}
+			}
+			//cpa events
+			Catch cpaCatch = new Catch(cpaPrefix);
+			
+			for(String cpaEvent : cpaEvents)
+			{
+				if(!cpaPrefix.equals(cpaEvent))
+				{
+					ILink eventLink = links.createNextLink();
+					for (int i = 0; i < parameterNames.length; ++i)
+						eventLink.setParameters(parameterNames[i], initialCommand
+								.getParameterValues(parameterNames[i]));
+					eventLink.setParameter(initialCommand.getResultName(), cpaEvent);
+					If eventIf = new If("_event==Õ" + cpaEvent + "Õ");
+//					If eventIf = new If("_event=='" + cpaEvent + "'");
+					eventIf.addAction(new Goto(eventLink.toString()));
+					cpaCatch.addIfClause(eventIf);
+				}
+			}
+			ILink cpaLink = links.createNextLink();
 			for (int i = 0; i < parameterNames.length; ++i)
-				eventLink.setParameters(parameterNames[i], initialCommand
+				cpaLink.setParameters(parameterNames[i], initialCommand
 						.getParameterValues(parameterNames[i]));
-			eventLink.setParameter(initialCommand.getResultName(), event);
-			Catch eventCatch = new Catch(event);
-			eventCatch.addAction(new Goto(eventLink.toString()));
-			form.addEventHandler(eventCatch);
+			cpaLink.setParameter(initialCommand.getResultName(), cpaPrefix);
+			cpaCatch.addAction(new Goto(cpaLink.toString()));
+			form.addEventHandler(cpaCatch);
+		}
+		else
+		{
+			for(String event : events)
+			{
+				ILink eventLink = links.createNextLink();
+				for (int i = 0; i < parameterNames.length; ++i)
+					eventLink.setParameters(parameterNames[i], initialCommand
+							.getParameterValues(parameterNames[i]));
+				eventLink.setParameter(initialCommand.getResultName(), event);
+				Catch eventCatch = new Catch(event);
+				eventCatch.addAction(new Goto(eventLink.toString()));
+				form.addEventHandler(eventCatch);
+			}
 		}
 		return document;
 	}
@@ -237,6 +307,9 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 //		send.setNameList(nameList.toString());
 		send.setBody(nameList.toString() + "&Action=GetData");
 		send.setContentType("application/x-www-form-urlencoded;charset=utf-8");
+		
+		form.addVariable(new Variable("GetDataMessage", ""));
+		
 		Block block = new Block("RedirectBlock");
 		ILink createNextLink = links.createNextLink();
 		createNextLink.setParameter(metaDataMessageRequest.getResultName(), metaDataMessageRequest.getFilledResultValue());
@@ -245,20 +318,22 @@ public class GenesysVoicePlatform8 extends VoicePlatform
         {
 			createNextLink.setParameters(params[i], metaDataMessageRequest.getParameterValues(params[i]));
         }
-		send.setNamespace("http://www.genesyslab.com/2006/vxml21-extension");
-		receive.setNamespace("http://www.genesyslab.com/2006/vxml21-extension");
+
+		Script jsonInclude = new Script();
+		jsonInclude.setSrc(links.createIncludeLink(Activator.getDefault().getBundle().getSymbolicName() + "/includes/json.js").toString());
+		block.addAction(jsonInclude);
+		
+		send.setGvpPrefix(true);
+		receive.setGvpPrefix(true);
 		block.addAction(send);
 		block.addAction(receive);
 		
-		block.addVariable(new Variable("GetMessageData", "application.lastmessage$.content"));
+//		block.addAction(new Assignment("GetDataMessage", "application.lastmessage$.content"));
+		block.addAction(new Assignment("GetDataMessage", "JSON.stringify(application.lastmessage$)"));
 		
-//		block.addAction(new Goto(createNextLink.toString()));
-		
-		Submit submit = new Submit(createNextLink.toString(), new String[]{"GetMessageData"});
+		Submit submit = new Submit(createNextLink.toString(), new String[]{"GetDataMessage"});
 		submit.setMethod(METHOD_POST);
 		block.addAction(submit);
-		
-		
 		form.addFormElement(block);
 		ILink hangupLink = links.createNextLink();
 		hangupLink.setParameter(metaDataMessageRequest.getResultName(),
@@ -346,7 +421,9 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 //	        nameList.append(names[i]);
         }
 //		send.setNameList(nameList.toString());
-		send.setBody(nameList.toString() + (isCtiC ? "&Action=AttachData&sub_action=Add": ""));
+		
+//		send.setBody(nameList.toString() + (isCtiC ? "&Action=AttachData&sub_action=Add": ""));
+		send.setBody(nameList.toString() + (isCtiC ? "&Action=AttachData&sub_action=Replace": ""));
 		send.setContentType("application/x-www-form-urlencoded;charset=utf-8");
 		Block block = new Block("RedirectBlock");
 		ILink createNextLink = links.createNextLink();
@@ -357,6 +434,12 @@ public class GenesysVoicePlatform8 extends VoicePlatform
 			createNextLink.setParameters(params[i], metaDataMessageCommand.getParameterValues(params[i]));
         }
 		block.addAction(send);
+		if(isCtiC)
+		{
+			Receive receive = new Receive();
+			receive.setGvpPrefix(true);
+			block.addAction(receive);
+		}
 		block.addAction(new Goto(createNextLink.toString()));
 		form.addFormElement(block);
 		ILink hangupLink = links.createNextLink();
@@ -374,14 +457,33 @@ public class GenesysVoicePlatform8 extends VoicePlatform
             IActionContext context)
     {
 		Map dataMap = new HashMap();
-//		String attachedDataContent = context.getParameter("GetAttachedData");
-		String attachedDataContent = context.getParameter("GetMessageData");
-		for(String parameterName : context.getParameterNames())
-		{
-			System.out.println("parameterName: " + parameterName);
-		}
+		//		String attachedDataContent = context.getParameter("GetAttachedData");
+		String attachedDataContent = context.getParameter("GetDataMessage");
 		
-		System.out.println("AttachedDataContent: " + attachedDataContent);
+		try
+		{
+			JsonFactory jsonFactory = new JsonFactory();
+			JsonParser jp = jsonFactory.createJsonParser(attachedDataContent);
+			Map<String,Object> userData = mapper.readValue(jp, Map.class);
+
+			//Result=SUCCESS&Action=UserDataResp&Sub_Action=AttachData&VH_Result=theResult&vh_transferdestination=someXfer&vht_vis_segment=VHT_Test_Segment
+			if(userData.containsKey("content"))
+			{
+				String contentString = (String)userData.get("content");
+				String contentArray[] = contentString.split("&");
+				for(String kvpString : contentArray)
+				{
+					String kvpArray [] = kvpString.split("=", 2);
+					dataMap.put(kvpArray[0], URLDecoder.decode((String)kvpArray[1]));
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		/*		
 		try
         {
 	        ByteArrayInputStream bais = new ByteArrayInputStream(attachedDataContent.getBytes());
@@ -399,6 +501,7 @@ public class GenesysVoicePlatform8 extends VoicePlatform
         {
 	        e.printStackTrace();
         }
+*/
 		return dataMap;
     }
 

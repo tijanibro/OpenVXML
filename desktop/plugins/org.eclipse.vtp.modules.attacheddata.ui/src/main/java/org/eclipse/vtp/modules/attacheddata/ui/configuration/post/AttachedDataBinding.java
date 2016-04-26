@@ -12,6 +12,8 @@
 package org.eclipse.vtp.modules.attacheddata.ui.configuration.post;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -64,6 +66,24 @@ public class AttachedDataBinding extends GenericBinding
 			attachedDataBinding = new AttachedDataBindingItem();
 		}
 		return attachedDataBinding;
+	}
+
+	public boolean hasEntries()
+	{
+		Map <String,GenericBindingItem> items = super.getBindingItems();
+		if(items != null)
+		{
+			for(Map.Entry<String, GenericBindingItem> entry : items.entrySet())
+			{
+				if(entry.getValue() != null)
+				{
+					List<AttachedDataItemEntry> entries = ((AttachedDataBindingItem)entry.getValue()).getEntries();
+					if(entries.size() > 0)
+						return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**

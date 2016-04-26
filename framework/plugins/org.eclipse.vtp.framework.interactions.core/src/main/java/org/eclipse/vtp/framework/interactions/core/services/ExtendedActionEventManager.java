@@ -35,7 +35,8 @@ public class ExtendedActionEventManager
 		for(int i = 0; i < extensions.length; i++)
 		{
 			String name = extensions[i].getAttribute("name");
-			extendedEvents.add(name);
+			if(!extendedEvents.contains(name))
+				extendedEvents.add(name);
 		}
 	}
 	
