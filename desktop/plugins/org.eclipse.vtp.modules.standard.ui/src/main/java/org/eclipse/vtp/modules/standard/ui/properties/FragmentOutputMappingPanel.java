@@ -116,7 +116,7 @@ outer:	for(Variable var : inc)
 		mappingViewer.setColumnProperties(new String[] {"Field", "Value"});
 		mappingViewer.setCellModifier(new MappingCellModifier());
 		comboEditor = new ComboBoxViewerCellEditor(mappingTable);
-		//comboEditor.setContentProvider(new VariableContentProvider());
+		comboEditor.setContentProvider(new VariableContentProvider());
 		comboEditor.setLabelProvider(new VariableLabelProvider());
 		comboEditor.setInput(this);
 		mappingViewer.setCellEditors(new CellEditor[] {null, comboEditor});
