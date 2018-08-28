@@ -131,7 +131,7 @@
   </rm:searchPath>
   <rm:searchPath name="epp">
   	<rm:provider readerType="p2" componentTypes="osgi.bundle,eclipse.feature,buckminster" source="false" mutable="false">
-  		<rm:uri format="http://download.eclipse.org/technology/epp/packages/helios?importType=bindary"/>
+  		<rm:uri format="http://download.eclipse.org/technology/epp/packages/helios?importType=binary"/>
   	</rm:provider>
   </rm:searchPath>
   <rm:searchPath name="Elements">
