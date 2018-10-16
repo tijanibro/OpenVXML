@@ -124,14 +124,14 @@
       <rm:uri format="http://archive.eclipse.org/tools/orbit/downloads/drops/R20100519200754/updateSite?importType=binary"/>
     </rm:provider>
   </rm:searchPath>
-  <rm:searchPath name="helios-release">
+  <rm:searchPath name="indigo-release">
   	<rm:provider readerType="p2" componentTypes="osgi.bundle,eclipse.feature,buckminster" source="false" mutable="false">
-  		<rm:uri format="http://download.eclipse.org/releases/helios?importType=binary"/>
+  		<rm:uri format="http://download.eclipse.org/releases/indigo?importType=binary"/>
   	</rm:provider>
   </rm:searchPath>
   <rm:searchPath name="epp">
   	<rm:provider readerType="p2" componentTypes="osgi.bundle,eclipse.feature,buckminster" source="false" mutable="false">
-  		<rm:uri format="http://download.eclipse.org/technology/epp/packages/helios?importType=binary"/>
+  		<rm:uri format="http://download.eclipse.org/technology/epp/packages/indigo?importType=binary"/>
   	</rm:provider>
   </rm:searchPath>
   <rm:searchPath name="Elements">
@@ -144,5 +144,5 @@
   <rm:locator searchPathRef="nebula-pshelf" failOnError="false"/>
   <rm:locator searchPathRef="nebula" failOnError="false"/>
   <rm:locator searchPathRef="epp" failOnError="false"/>
-  <rm:locator searchPathRef="helios-release"/>
+  <rm:locator searchPathRef="indigo-release"/>
 </rm:rmap>
