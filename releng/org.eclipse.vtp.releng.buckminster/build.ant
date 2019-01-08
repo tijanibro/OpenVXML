@@ -22,7 +22,59 @@
     <property name="perform.commands.file" location="${projects.location}/openvxml/releng/org.eclipse.vtp.releng.buckminster/headless-perform-commands.txt" />
     <property name="target.platform" value="target.platform" />
 
-    <target name="buckminster" depends="cleanup" description="description">
+
+    <!-- 
+        Install director and with needed dependencies
+    -->
+    <property name="build.dir" location="${WORKSPACE}/build/" />
+    <property name="director.dir" location="${build.dir}/director/" />
+    <property name="buckminster.home" location="${build.dir}/buckminster-headless/" />
+    <property name="workspace.dir" location="${build.dir}/workspace" />
+
+    <target name="install.p2.director">
+		<condition property="p2.director.installed">
+			<available file="${director.dir}" />
+		</condition>
+		<antcall target="install.p2.director.internal" />
+	</target>
+
+	<target name="install.p2.director.internal" unless="p2.director.installed">
+		<unzip dest="${build.dir}" src="director_latest.zip" />
+	</target>
+
+	<target name="install-buckminster-headless">
+		<condition property="buckminster.headless.installed">
+			<available file="${buckminster.home}" />
+		</condition>
+		<antcall target="install-buckminster-headless-internal" />
+	</target>
+
+	<target name="install-buckminster-headless-internal" unless="buckminster.headless.installed" depends="install.p2.director">
+		<java fork="true" dir="${director.dir}" logError="true" classname="org.eclipse.core.launcher.Main" failonerror="true">
+			<classpath>
+                <fileset dir="${director.dir}/plugins">
+					<include name="org.eclipse.equinox.launcher_*.jar" />
+				</fileset>
+			</classpath>
+			<arg line='-data "${director.dir}/workspace"' />
+			<arg line="-r http://download.eclipse.org/tools/buckminster/headless-4.2" />
+			<arg line='-d "${buckminster.home}"' />
+			<arg line="-p Buckminster" />
+			<arg line="-i org.eclipse.buckminster.cmdline.product" />
+			<arg line="-i org.eclipse.buckminster.core.headless.feature.feature.group" />
+			<arg line="-i org.eclipse.buckminster.pde.headless.feature.feature.group" />
+			<arg line="-i org.eclipse.buckminster.git.headless.feature.feature.group" />
+			<arg line="-i org.apache.commons.logging" />
+		</java>
+	</target>
+
+ <!-- 
+        Install director and with needed dependencies
+    -->
+
+
+
+    <target name="buckminster" depends="cleanup,install-buckminster-headless-internal" description="description">
         <fail unless="buckminster.home" message="buckminster.home must be specified." />
 
         <echo message="IMPORTANT: Populating an empty target platform may took over 10 minutes." />
