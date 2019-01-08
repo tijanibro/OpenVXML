@@ -17,9 +17,9 @@
     <property name="WORKSPACE" location="${ant.file}/../../../../" />
     <property name="build.root" location="${WORKSPACE}/buildroot" />
     <!-- <property name="buckminster.home" location="/Users⁩/phanikar⁩/Desktop⁩/buckminster_installed" /> -->
-    <property name="projects.location" location="${WORKSPACE}/OpenVXML" />
-    <property name="resolve.commands.file" location="${projects.location}/releng/org.eclipse.vtp.releng.buckminster/headless-resolve-commands.txt" />
-    <property name="perform.commands.file" location="${projects.location}/releng/org.eclipse.vtp.releng.buckminster/headless-perform-commands.txt" />
+    <property name="projects.location" location="${WORKSPACE}" />
+    <property name="resolve.commands.file" location="${projects.location}/openvxml/releng/org.eclipse.vtp.releng.buckminster/headless-resolve-commands.txt" />
+    <property name="perform.commands.file" location="${projects.location}/openvxml/releng/org.eclipse.vtp.releng.buckminster/headless-perform-commands.txt" />
     <property name="target.platform" value="target.platform" />
 
     <target name="buckminster" depends="cleanup" description="description">
@@ -34,7 +34,8 @@
                 </fileset>
             </classpath>
             <arg line='-update' />
-            <arg line='-data "${build.root}/buckminster.workspace"' />
+            <arg line='--loglevel debug' />
+            <arg line='-data "${projects.location}"' />
             <arg line='-configuration "${build.root}/configuration"' />
             <arg line='--script "${resolve.commands.file}"' />
             <sysproperty key="projects.location" value="${projects.location}" />
@@ -51,7 +52,7 @@
                 </fileset>
             </classpath>
             <arg line='-update' />
-            <arg line='-data "${build.root}/buckminster.workspace"' />
+            <arg line='-data "${projects.location}"' />
             <arg line='-configuration "${build.root}/configuration"' />
             <arg line='--script "${perform.commands.file}"' />
             <sysproperty key="projects.location" value="${projects.location}" />
