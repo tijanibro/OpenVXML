@@ -67,7 +67,7 @@
 			<arg line="-i org.apache.commons.logging" />
 		</java>
 	</target>
-    --!>
+    -->
 
  <!-- 
         Install director and with needed dependencies
