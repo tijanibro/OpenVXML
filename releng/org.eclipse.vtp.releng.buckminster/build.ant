@@ -75,7 +75,7 @@
 
 
 
-    <target name="buckminster" depends="cleanup,install-buckminster-headless-internal" description="description">
+    <target name="buckminster" depends="cleanup" description="description">
         <fail unless="buckminster.home" message="buckminster.home must be specified." />
 
         <echo message="IMPORTANT: Populating an empty target platform may took over 10 minutes." />
