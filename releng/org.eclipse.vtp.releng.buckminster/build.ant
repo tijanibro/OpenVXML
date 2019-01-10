@@ -16,7 +16,6 @@
 <project name="Buckminster Headless" default="buckminster">
     <property name="WORKSPACE" location="${ant.file}/../../../../" />
     <property name="build.root" location="${WORKSPACE}/buildroot" />
-    <!-- <property name="buckminster.home" location="/Users⁩/phanikar⁩/Desktop⁩/buckminster_installed" /> -->
     <property name="projects.location" location="${WORKSPACE}" />
     <property name="resolve.commands.file" location="${projects.location}/openvxml/releng/org.eclipse.vtp.releng.buckminster/headless-resolve-commands.txt" />
     <property name="perform.commands.file" location="${projects.location}/openvxml/releng/org.eclipse.vtp.releng.buckminster/headless-perform-commands.txt" />
@@ -26,6 +25,7 @@
     <!-- 
         Install director and with needed dependencies
     -->
+    <!--
     <property name="build.dir" location="${WORKSPACE}/build/" />
     <property name="director.dir" location="${build.dir}/director/" />
     <property name="buckminster.home" location="${build.dir}/buckminster-headless/" />
@@ -56,7 +56,6 @@
 					<include name="org.eclipse.equinox.launcher_*.jar" />
 				</fileset>
 			</classpath>
-            <arg line='--loglevel debug' />
 			<arg line='-data "${director.dir}/workspace"' />
 			<arg line="-r http://download.eclipse.org/tools/buckminster/headless-4.2" />
 			<arg line='-d "${buckminster.home}"' />
@@ -68,6 +67,7 @@
 			<arg line="-i org.apache.commons.logging" />
 		</java>
 	</target>
+    --!>
 
  <!-- 
         Install director and with needed dependencies
