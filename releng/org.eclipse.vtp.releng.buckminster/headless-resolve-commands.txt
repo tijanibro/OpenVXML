@@ -1,2 +1,0 @@
-lsprefs
-import "${projects.location}/openvxml/releng/org.eclipse.vtp.releng.buckminster/p2site_feature-git.cquery"
