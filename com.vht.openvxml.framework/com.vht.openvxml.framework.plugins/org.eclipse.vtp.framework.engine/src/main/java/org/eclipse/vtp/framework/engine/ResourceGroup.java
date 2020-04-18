@@ -146,6 +146,7 @@ public class ResourceGroup implements IResourceManager,
 									br.close();
 									index = localIndex;
 									connected = true;
+                                    bundleList.put(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"), ture);
 									server.setStatus(true);
 									break;
 								} catch (Exception e) {
