@@ -418,7 +418,7 @@ public class Conversation implements IConversation {
 			for(int i=0; i<s.length; i++)
 				System.out.println("i  == " + s[i]);
 			result = variableRegistry.getVariable(value.getValue()) != null ?
-					variableRegistry.getVariable(value.getValue()).toString()
+					variableRegistry.getVariable(value.getValue().replaceFirst("com.virtualhold.toolkit.", "")).toString()
 					: "";
 		} else if (PropertyConfiguration.EXPRESSION.equals(value.getType())) {
 			result = String.valueOf(scriptingService.createScriptingEngine(
