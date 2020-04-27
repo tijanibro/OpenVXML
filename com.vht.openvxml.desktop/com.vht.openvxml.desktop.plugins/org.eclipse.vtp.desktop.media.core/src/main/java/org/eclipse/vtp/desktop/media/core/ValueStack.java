@@ -85,7 +85,7 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 		this.elementType = elementType;
 		this.flags = flags;
 		this.ultimateDefault = ultimateDefault;
-        this.custom = custom;
+		this.custom = custom;
 	}
 
 	/**
@@ -173,8 +173,8 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 			gd.horizontalIndent = 4;
 			expressionText.setLayoutData(gd);
 		}
-        if(this.custom)
-            cols++;
+		if(this.custom)
+			cols++;
 
 		stackLayout.topControl = staticComp != null ? staticComp
 				: valueComp != null ? valueComp
@@ -190,7 +190,7 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 		buttonComp.setLayoutData(new GridData());
 
 		GridData gridData = null;
-        if(this.custom)	{
+		if(this.custom)	{
 			customButton = new ToggleButton(buttonComp);
 			customButton.setBackground(parent.getBackground());
 			customButton.setText("C");
@@ -200,7 +200,7 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 			customButton.setLayoutData(gridData);
 			customButton.setToggleDownOnly(true);
 			customButton.addSelectionListener(this);
-        }
+		}
 
 		staticButton = new ToggleButton(buttonComp);
 		staticButton.setBackground(parent.getBackground());
@@ -335,7 +335,6 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 				variableButton.setSelected(true);
 				if((flags & EXPRESSION) > 0)
 					expressionButton.setSelected(false);
-				System.out.println("pbi.getValue() == " + pbi.getValue());
 				variableCombo.select(variableCombo.indexOf(pbi.getValue()));
 			} else {
 				stackLayout.topControl = expressionComp;
