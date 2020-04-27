@@ -414,6 +414,9 @@ public class Conversation implements IConversation {
 			System.out.println("value.getType() === "+value.getType());
 			System.out.println("value.getValue() === "+value.getValue());
 			System.out.println("value.variableRegistry() === "+variableRegistry.getVariable(value.getValue()));
+			String[] s = variableRegistry.getVariableNames();
+			for(int i=0; i<s.length; i++)
+				System.out.println("i  == " + s[i]);
 			result = variableRegistry.getVariable(value.getValue()) != null ?
 					variableRegistry.getVariable(value.getValue()).toString()
 					: "";
