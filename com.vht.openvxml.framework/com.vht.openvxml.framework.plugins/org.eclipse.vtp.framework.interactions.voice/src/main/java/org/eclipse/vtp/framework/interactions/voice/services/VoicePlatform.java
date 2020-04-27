@@ -1071,6 +1071,8 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 		if (initialTimeout != null && initialTimeout.length() > 0) {
 			System.out.println("initialTimeout === " + initialTimeout);
 			recording.setTimeout(initialTimeout + "s"); //$NON-NLS-1$
+		} else {
+			recording.setTimeout("6s"); //set 5sec default value
 		}
 		if (finalSilence != null && finalSilence.length() > 0) {
 			recording.setFinalSilence(finalSilence + "s"); //$NON-NLS-1$

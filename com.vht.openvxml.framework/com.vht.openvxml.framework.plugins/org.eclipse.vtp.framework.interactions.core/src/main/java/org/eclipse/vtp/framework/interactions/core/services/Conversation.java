@@ -411,7 +411,12 @@ public class Conversation implements IConversation {
 		if (value == null)
 			return null;
 		if (PropertyConfiguration.VARIABLE.equals(value.getType())) {
-			result = variableRegistry.getVariable(value.getValue()).toString();
+			System.out.println("value.getType() === "+value.getType());
+			System.out.println("value.getValue() === "+value.getValue());
+			System.out.println("value.variableRegistry() === "+variableRegistry.getVariable(value.getValue()));
+			result = variableRegistry.getVariable(value.getValue()) != null ?
+					variableRegistry.getVariable(value.getValue()).toString()
+					: "";
 		} else if (PropertyConfiguration.EXPRESSION.equals(value.getType())) {
 			result = String.valueOf(scriptingService.createScriptingEngine(
 					"JavaScript").execute(value.getValue()));
