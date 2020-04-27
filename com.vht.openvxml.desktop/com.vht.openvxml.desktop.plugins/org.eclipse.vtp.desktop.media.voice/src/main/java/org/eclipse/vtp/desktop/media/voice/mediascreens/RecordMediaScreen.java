@@ -289,7 +289,7 @@ public class RecordMediaScreen extends MediaConfigurationScreen implements
 						+ "a NoInput event.");
 		containerComp = createWrapperComposite(settingsComposite);
 		lastStack = new ValueStack("initial-timeout", getInteractionType(),
-				elementType, "3", 0, true);
+				elementType, "3", 1);
 		lastStack.createControls(containerComp);
 		containerComp = lastStack.getValueComposite();
 		valueStacks.put("initial-timeout", lastStack);

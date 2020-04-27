@@ -402,7 +402,8 @@ public class Conversation implements IConversation {
 			value = configuration
 					.getItem(
 							brand.getId(),
-							useInteractionType ? interactionTypeID : "", useLanguage ? languageID : ""); //$NON-NLS-1$
+							useInteractionType ? interactionTypeID : "",
+							useLanguage ? languageID : ""); //$NON-NLS-1$
 			if (value != null)
 				break;
 			brand = brand.getParentBrand();
@@ -414,6 +415,8 @@ public class Conversation implements IConversation {
 		} else if (PropertyConfiguration.EXPRESSION.equals(value.getType())) {
 			result = String.valueOf(scriptingService.createScriptingEngine(
 					"JavaScript").execute(value.getValue()));
+		} else if (PropertyConfiguration.CUSTOM.equals(value.getType())) {
+			result = variableRegistry.getVariable(value.getValue()).toString();
 		} else {
 			result = value.getValue();
 		}

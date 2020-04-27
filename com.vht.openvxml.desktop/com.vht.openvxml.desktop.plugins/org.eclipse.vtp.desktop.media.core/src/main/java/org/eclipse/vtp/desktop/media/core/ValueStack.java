@@ -149,6 +149,7 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 			variableCombo = new Combo(variableComp, SWT.DROP_DOWN
 					| SWT.READ_ONLY);
 			variableCombo.add("variable");
+			variableCombo.add("com.virtualhold.toolkit.namefilerecordinginitialtimeout");
 			variableCombo.select(0);
 			gd = new GridData(GridData.FILL_BOTH);
 			gd.verticalAlignment = SWT.CENTER;
@@ -332,12 +333,15 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 				stackLayout.topControl = variableComp;
 				staticButton.setSelected(false);
 				variableButton.setSelected(true);
-				expressionButton.setSelected(false);
-				// valueControl.setValue(pbi.getValue());
+				if((flags & EXPRESSION) > 0)
+					expressionButton.setSelected(false);
+				System.out.println("pbi.getValue() == " + pbi.getValue());
+				variableCombo.select(variableCombo.indexOf(pbi.getValue()));
 			} else {
 				stackLayout.topControl = expressionComp;
 				staticButton.setSelected(false);
-				variableButton.setSelected(false);
+				if((flags & VARIABLE) > 0)
+					variableButton.setSelected(false);
 				expressionButton.setSelected(true);
 				expressionText.setText(pbi.getValue());
 			}
@@ -375,7 +379,7 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 				pbi = new PropertyBindingItem();
 			}
 			pbi.setValueType(PropertyBindingItem.CUSTOM);
-			pbi.setValue(valueControl.getValue());
+			pbi.setValue("custom");
 			setting.setBindingItem(pbi);
 		} else {
 			PropertyBindingItem pbi = (PropertyBindingItem) setting
