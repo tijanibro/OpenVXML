@@ -421,6 +421,7 @@ public class Conversation implements IConversation {
 			result = String.valueOf(scriptingService.createScriptingEngine(
 					"JavaScript").execute(value.getValue()));
 		} else if (PropertyConfiguration.CUSTOM.equals(value.getType())) {
+			// customValue is equal to variable registry key
 			result = variableRegistry.getVariable(value.getValue()).toString();
 		} else {
 			result = value.getValue();

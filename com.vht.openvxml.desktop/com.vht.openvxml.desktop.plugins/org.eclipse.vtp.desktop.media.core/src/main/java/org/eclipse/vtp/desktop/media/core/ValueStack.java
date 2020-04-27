@@ -47,6 +47,7 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 	private List<ValueStackListener> listeners = new LinkedList<ValueStackListener>();
 	private String ultimateDefault = "";
 	private boolean custom = false;
+	private String customValue = "";
 
 	/**
 	 * @param settingName
@@ -76,7 +77,7 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
      * @param custom
 	 */
 	public ValueStack(String settingName, String interactionType,
-			String elementType, String ultimateDefault, int flags, boolean custom) {
+			String elementType, String ultimateDefault, int flags, boolean custom, String customValue) {
 		if (flags < 0 || flags > 3) {
 			throw new IllegalArgumentException("Invalid flags: " + flags);
 		}
@@ -86,6 +87,7 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 		this.flags = flags;
 		this.ultimateDefault = ultimateDefault;
 		this.custom = custom;
+		this.customValue = customValue;
 	}
 
 	/**
@@ -378,7 +380,7 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 				pbi = new PropertyBindingItem();
 			}
 			pbi.setValueType(PropertyBindingItem.CUSTOM);
-			pbi.setValue("custom");
+			pbi.setValue(this.customValue);
 			setting.setBindingItem(pbi);
 		} else {
 			PropertyBindingItem pbi = (PropertyBindingItem) setting
