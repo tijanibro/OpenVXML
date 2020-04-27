@@ -411,14 +411,9 @@ public class Conversation implements IConversation {
 		if (value == null)
 			return null;
 		if (PropertyConfiguration.VARIABLE.equals(value.getType())) {
-			System.out.println("value.getType() === "+value.getType());
-			System.out.println("value.getValue() === "+value.getValue());
-			System.out.println("value.variableRegistry() === "+variableRegistry.getVariable(value.getValue()));
-			String[] s = variableRegistry.getVariableNames();
-			for(int i=0; i<s.length; i++)
-				System.out.println("i  == " + s[i]);
+			// Variable registry won't allow dots in key names
+			// Need to remove com.virtualhold.toolkit from variable name
 			String val = value.getValue().replaceFirst("com.virtualhold.toolkit.", "");
-			System.out.println("val === " + val);
 			result = variableRegistry.getVariable(val) != null ?
 					variableRegistry.getVariable(val).toString()
 					: "";
