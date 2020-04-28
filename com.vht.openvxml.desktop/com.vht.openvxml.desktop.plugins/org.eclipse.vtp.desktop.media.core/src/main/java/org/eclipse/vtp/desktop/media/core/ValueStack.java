@@ -386,16 +386,6 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 				variableButton.setSelected(false);
 			}
 			defaultButton.setSelected(false);
-		} 
-		else if(button == staticButton) {
-			stackLayout.topControl = valueComp;
-			defaultButton.setSelected(false);
-			if ((flags & VARIABLE) > 0) {
-				variableButton.setSelected(false);
-			}
-			if ((flags & EXPRESSION) > 0) {
-				expressionButton.setSelected(false);
-			}			
 		} else {
 			stackLayout.topControl = null;
 			defaultButton.setSelected(false);
