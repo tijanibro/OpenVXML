@@ -30,7 +30,6 @@ public class PropertyBindingItem implements BindingItem {
 	public static final String EXPRESSION = "expression";
 	/** Constant indicating the value is a variable name */
 	public static final String VARIABLE = "variable";
-	public static final String CUSTOM = "custom";
 
 	/** The type of value contained by this property */
 	private String valueType = STATIC;

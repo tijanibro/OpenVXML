@@ -33,7 +33,6 @@ public class PropertyConfiguration implements IConfiguration,
 	public static final String EXPRESSION = "expression";
 	/** Constant indicating the value is a variable name */
 	public static final String VARIABLE = "variable";
-	public static final String CUSTOM = "custom";
 	/** Index of values by brand, interaction type, and language. */
 	private final Map<String, Value> items = new HashMap<String, Value>();
 

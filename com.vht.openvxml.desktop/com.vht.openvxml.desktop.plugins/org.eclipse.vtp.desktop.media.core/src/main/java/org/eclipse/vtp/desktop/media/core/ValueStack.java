@@ -20,7 +20,6 @@ import org.eclipse.vtp.desktop.model.interactive.core.mediadefaults.IMediaDefaul
 public class ValueStack implements ToggleButton.ToggleButtonListener {
 	public static final int VARIABLE = 1;
 	public static final int EXPRESSION = 2;
-	public static final int CUSTOM = 2;
 	private String settingName = null;
 	private StackLayout stackLayout = null;
 	private Composite mainComp = null;
@@ -36,7 +35,6 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 	private Composite buttonComp = null;
 	private ToggleButton defaultButton = null;
 	private ToggleButton staticButton = null;
-	private ToggleButton customButton = null;
 	private ToggleButton variableButton = null;
 	private ToggleButton expressionButton = null;
 	private IMediaDefaultSetting defaultSetting = null;
@@ -46,8 +44,6 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 	private int flags = 3;
 	private List<ValueStackListener> listeners = new LinkedList<ValueStackListener>();
 	private String ultimateDefault = "";
-	private boolean custom = false;
-	private String customValue = "";
 
 	/**
 	 * @param settingName
@@ -66,28 +62,6 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 		this.elementType = elementType;
 		this.flags = flags;
 		this.ultimateDefault = ultimateDefault;
-	}
-
-	/**
-	 * @param settingName
-	 * @param interactionType
-	 * @param elementType
-	 * @param ultimateDefault
-	 * @param flags
-     * @param custom
-	 */
-	public ValueStack(String settingName, String interactionType,
-			String elementType, String ultimateDefault, int flags, boolean custom, String customValue) {
-		if (flags < 0 || flags > 3) {
-			throw new IllegalArgumentException("Invalid flags: " + flags);
-		}
-		this.settingName = settingName;
-		this.interactionType = interactionType;
-		this.elementType = elementType;
-		this.flags = flags;
-		this.ultimateDefault = ultimateDefault;
-		this.custom = custom;
-		this.customValue = customValue;
 	}
 
 	/**
@@ -175,8 +149,6 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 			gd.horizontalIndent = 4;
 			expressionText.setLayoutData(gd);
 		}
-		if(this.custom)
-			cols++;
 
 		stackLayout.topControl = staticComp != null ? staticComp
 				: valueComp != null ? valueComp
@@ -192,17 +164,6 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 		buttonComp.setLayoutData(new GridData());
 
 		GridData gridData = null;
-		if(this.custom)	{
-			customButton = new ToggleButton(buttonComp);
-			customButton.setBackground(parent.getBackground());
-			customButton.setText("C");
-			gridData = new GridData();
-			gridData.widthHint = 16;
-			gridData.heightHint = 16;
-			customButton.setLayoutData(gridData);
-			customButton.setToggleDownOnly(true);
-			customButton.addSelectionListener(this);
-		}
 
 		staticButton = new ToggleButton(buttonComp);
 		staticButton.setBackground(parent.getBackground());
@@ -373,15 +334,6 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 			pbi.setValueType(PropertyBindingItem.EXPRESSION);
 			pbi.setValue(expressionText.getText());
 			setting.setBindingItem(pbi);
-		} else if (customButton != null && customButton.isSelected()) {
-			PropertyBindingItem pbi = (PropertyBindingItem) setting
-					.getBindingItem();
-			if (pbi == null || setting.isInherited()) {
-				pbi = new PropertyBindingItem();
-			}
-			pbi.setValueType(PropertyBindingItem.CUSTOM);
-			pbi.setValue(this.customValue);
-			setting.setBindingItem(pbi);
 		} else {
 			PropertyBindingItem pbi = (PropertyBindingItem) setting
 					.getBindingItem();
@@ -414,8 +366,6 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 			setting.setBindingItem(currentItem);
 			stackLayout.topControl = staticComp;
 			staticButton.setSelected(false);
-			if(customButton != null)
-				customButton.setSelected(false);
 			if ((flags & VARIABLE) > 0) {
 				variableButton.setSelected(false);
 			}
@@ -426,8 +376,6 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 			stackLayout.topControl = variableComp;
 			staticButton.setSelected(false);
 			defaultButton.setSelected(false);
-			if(customButton != null)
-				customButton.setSelected(false);
 			if ((flags & EXPRESSION) > 0) {
 				expressionButton.setSelected(false);
 			}
@@ -438,36 +386,20 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 				variableButton.setSelected(false);
 			}
 			defaultButton.setSelected(false);
-			if(customButton != null)
-				customButton.setSelected(false);
 		} 
 		else if(button == staticButton) {
 			stackLayout.topControl = valueComp;
 			defaultButton.setSelected(false);
-			if(customButton != null)
-				customButton.setSelected(false);
 			if ((flags & VARIABLE) > 0) {
 				variableButton.setSelected(false);
 			}
 			if ((flags & EXPRESSION) > 0) {
 				expressionButton.setSelected(false);
 			}			
-		} else  if(button == customButton){
-			stackLayout.topControl = null;
-			defaultButton.setSelected(false);
-			staticButton.setSelected(false);
-			customButton.setSelected(true);
-			if ((flags & VARIABLE) > 0) {
-				variableButton.setSelected(false);
-			}
-			if ((flags & EXPRESSION) > 0) {
-				expressionButton.setSelected(false);
-			}
 		} else {
 			stackLayout.topControl = null;
 			defaultButton.setSelected(false);
 			staticButton.setSelected(false);
-			customButton.setSelected(false);
 			if ((flags & VARIABLE) > 0) {
 				variableButton.setSelected(false);
 			}

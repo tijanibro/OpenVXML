@@ -402,8 +402,7 @@ public class Conversation implements IConversation {
 			value = configuration
 					.getItem(
 							brand.getId(),
-							useInteractionType ? interactionTypeID : "",
-							useLanguage ? languageID : ""); //$NON-NLS-1$
+							useInteractionType ? interactionTypeID : "", useLanguage ? languageID : ""); //$NON-NLS-1$
 			if (value != null)
 				break;
 			brand = brand.getParentBrand();
@@ -411,18 +410,10 @@ public class Conversation implements IConversation {
 		if (value == null)
 			return null;
 		if (PropertyConfiguration.VARIABLE.equals(value.getType())) {
-			// Variable registry won't allow dots in key names
-			// Need to remove com.virtualhold.toolkit from variable name
-			String val = value.getValue().replaceFirst("com.virtualhold.toolkit.", "");
-			result = variableRegistry.getVariable(val) != null ?
-					variableRegistry.getVariable(val).toString()
-					: "";
+			result = variableRegistry.getVariable(value.getValue()).toString();
 		} else if (PropertyConfiguration.EXPRESSION.equals(value.getType())) {
 			result = String.valueOf(scriptingService.createScriptingEngine(
 					"JavaScript").execute(value.getValue()));
-		} else if (PropertyConfiguration.CUSTOM.equals(value.getType())) {
-			// customValue is equal to variable registry key
-			result = variableRegistry.getVariable(value.getValue()).toString();
 		} else {
 			result = value.getValue();
 		}
