@@ -125,7 +125,6 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 			variableCombo = new Combo(variableComp, SWT.DROP_DOWN
 					| SWT.READ_ONLY);
 			variableCombo.add("variable");
-			variableCombo.add("com.virtualhold.toolkit.namefilerecordinginitialtimeout");
 			variableCombo.select(0);
 			gd = new GridData(GridData.FILL_BOTH);
 			gd.verticalAlignment = SWT.CENTER;
@@ -164,7 +163,6 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 		buttonComp.setLayoutData(new GridData());
 
 		GridData gridData = null;
-
 		staticButton = new ToggleButton(buttonComp);
 		staticButton.setBackground(parent.getBackground());
 		staticButton.setText("S");
@@ -387,9 +385,8 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 			}
 			defaultButton.setSelected(false);
 		} else {
-			stackLayout.topControl = null;
+			stackLayout.topControl = valueComp;
 			defaultButton.setSelected(false);
-			staticButton.setSelected(false);
 			if ((flags & VARIABLE) > 0) {
 				variableButton.setSelected(false);
 			}
