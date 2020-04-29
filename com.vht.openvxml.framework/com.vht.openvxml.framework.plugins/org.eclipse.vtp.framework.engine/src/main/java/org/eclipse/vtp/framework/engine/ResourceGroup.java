@@ -18,9 +18,11 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
@@ -46,6 +48,7 @@ public class ResourceGroup implements IResourceManager,
 	private final String path;
 	private Object lock = new Object();
 	private HashSet<String> index = new HashSet<String>();
+	private static Map<String, Boolean> bundleList = new HashMap<String, Boolean> ();
 
 	/**
 	 * Creates a new ResourceGroup.
@@ -64,6 +67,9 @@ public class ResourceGroup implements IResourceManager,
 		this.path = path;
 		URL indexURL = bundle.getResource("files.index");
 		if (indexURL != null) {
+			if(!bundleList.containsKey(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"))){
+				bundleList.put(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"), true);
+			}
 			try {
 				BufferedReader br = new BufferedReader(new InputStreamReader(
 						indexURL.openConnection().getInputStream()));
@@ -140,30 +146,35 @@ public class ResourceGroup implements IResourceManager,
 									br.close();
 									index = localIndex;
 									connected = true;
+                                    					bundleList.put(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"), true);
 									server.setStatus(true);
 									break;
 								} catch (Exception e) {
-									switch (logging) {
-									case FIRSTFAILURE:
-										if (!server.lastStatus()) {
-											break;
+									if (logging == ExternalServerManager.Logging.ALWAYS || (logging == ExternalServerManager.Logging.FIRSTFAILURE && bundleList.get(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name")))){
+										switch (logging) {
+										case FIRSTFAILURE:
+											if (!server.lastStatus()) {
+												break;
+											}
+										case ALWAYS:
+											System.out
+													.println("Unable to connect to external media server @ "
+															+ location);
+											e.printStackTrace();
 										}
-									case ALWAYS:
-										System.out
-												.println("Unable to connect to external media server @ "
-														+ location);
-										e.printStackTrace();
 									}
 									server.setStatus(false);
 								}
 							}
 							if (!connected
-									&& logging != ExternalServerManager.Logging.NONE) {
+									&& logging != ExternalServerManager.Logging.NONE
+									&&((logging == ExternalServerManager.Logging.FIRSTFAILURE && bundleList.get(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"))))) {
 								System.out.println("Unable to load index for "
 										+ ResourceGroup.this.bundle
 												.getHeaders()
 												.get("Bundle-Name")
 										+ " from any external media servers");
+								bundleList.put(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"), false);
 							}
 						}
 						try {
