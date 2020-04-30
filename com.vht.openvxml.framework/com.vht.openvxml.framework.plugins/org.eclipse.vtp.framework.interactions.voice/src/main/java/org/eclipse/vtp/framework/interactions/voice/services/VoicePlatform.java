@@ -1069,7 +1069,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 					.booleanValue());
 		}
 		if (initialTimeout != null && initialTimeout.length() > 0
-				&& initialTimeout != "0" && initialTimeout.matches("\\d+")) {
+				&& !initialTimeout.equals("0") && initialTimeout.matches("\\d+")) {
 			recording.setTimeout(initialTimeout + "s"); //$NON-NLS-1$
 		} else {
 			recording.setTimeout("5s"); //Set 5sec default value
