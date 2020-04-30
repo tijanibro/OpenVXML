@@ -1068,8 +1068,11 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 			recording.setDtmfTermEnabled(Boolean.valueOf(dtmfTerm)
 					.booleanValue());
 		}
-		if (initialTimeout != null && initialTimeout.length() > 0) {
+		if (initialTimeout != null && initialTimeout.length() > 0
+				&& !initialTimeout.equals("0") && initialTimeout.matches("\\d+")) {
 			recording.setTimeout(initialTimeout + "s"); //$NON-NLS-1$
+		} else {
+			recording.setTimeout("5s"); //Set 5sec default value
 		}
 		if (finalSilence != null && finalSilence.length() > 0) {
 			recording.setFinalSilence(finalSilence + "s"); //$NON-NLS-1$

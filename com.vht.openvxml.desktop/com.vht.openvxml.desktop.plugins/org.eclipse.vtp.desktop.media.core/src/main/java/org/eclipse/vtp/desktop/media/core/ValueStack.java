@@ -294,12 +294,14 @@ public class ValueStack implements ToggleButton.ToggleButtonListener {
 				stackLayout.topControl = variableComp;
 				staticButton.setSelected(false);
 				variableButton.setSelected(true);
-				expressionButton.setSelected(false);
-				// valueControl.setValue(pbi.getValue());
+				if((flags & EXPRESSION) > 0)
+					expressionButton.setSelected(false);
+				variableCombo.select(variableCombo.indexOf(pbi.getValue()));
 			} else {
 				stackLayout.topControl = expressionComp;
 				staticButton.setSelected(false);
-				variableButton.setSelected(false);
+				if((flags & VARIABLE) > 0)
+					variableButton.setSelected(false);
 				expressionButton.setSelected(true);
 				expressionText.setText(pbi.getValue());
 			}
