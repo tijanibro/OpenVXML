@@ -165,8 +165,8 @@ public class ResourceGroup implements IResourceManager,
 												.getHeaders()
 												.get("Bundle-Name")
 										+ " from any external media servers");
-								bundleList.put(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"), false);
 							}
+							bundleList.put(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"), false);
 						}
 						try {
 							synchronized (lock) {
