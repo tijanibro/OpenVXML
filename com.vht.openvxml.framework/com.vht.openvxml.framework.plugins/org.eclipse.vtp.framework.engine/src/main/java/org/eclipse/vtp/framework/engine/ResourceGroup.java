@@ -150,7 +150,8 @@ public class ResourceGroup implements IResourceManager,
 									server.setStatus(true);
 									break;
 								} catch (Exception e) {
-									if (logging == ExternalServerManager.Logging.ALWAYS || (logging == ExternalServerManager.Logging.FIRSTFAILURE && bundleList.get(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name")))){
+									if (logging == ExternalServerManager.Logging.ALWAYS || 
+											(logging == ExternalServerManager.Logging.FIRSTFAILURE && bundleList.get(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"))&& !connected)){
 										System.out.println("Unable to connect to external media server @ "+ location);
 										e.printStackTrace();
 									}
@@ -165,8 +166,8 @@ public class ResourceGroup implements IResourceManager,
 												.getHeaders()
 												.get("Bundle-Name")
 										+ " from any external media servers");
-								bundleList.put(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"), false);
 							}
+							bundleList.put(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"), false);
 						}
 						try {
 							synchronized (lock) {
