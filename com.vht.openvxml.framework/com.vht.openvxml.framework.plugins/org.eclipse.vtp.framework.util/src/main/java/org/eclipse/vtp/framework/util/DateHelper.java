@@ -8,8 +8,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import org.junit.Test;
-
 public class DateHelper {
 	private static String[] datePatterns = new String[] { "M/d/yyyy",
 			"M-d-yyyy", "M.d.yyyy" };
@@ -89,10 +87,10 @@ public class DateHelper {
 		return null;
 	}
 
-	@Test
-	public void testParseDateZdt() {
-		System.out.println(parseDateZDT("7/9/2020 1:44:45 PM IST"));
-	}
+//	@Test
+//	public void testParseDateZdt() {
+//		System.out.println(parseDateZDT("7/9/2020 1:44:45 PM IST"));
+//	}
 
 	public static String toDateString(Calendar cal) {
 		SimpleDateFormat sdf = new SimpleDateFormat(datePatterns[0] + " "
@@ -107,10 +105,10 @@ public class DateHelper {
 		return zdt.format(dtf);
 	}
 
-	@Test
-	public void testToDateString() {
-		System.out
-				.println("With Cal:\t" + toDateString(Calendar.getInstance()));
-		System.out.println("With Zdt:\t" + toDateString(ZonedDateTime.now()));
-	}
+//	@Test
+//	public void testToDateString() {
+//		System.out
+//				.println("With Cal:\t" + toDateString(Calendar.getInstance()));
+//		System.out.println("With Zdt:\t" + toDateString(ZonedDateTime.now()));
+//	}
 }
