@@ -28,13 +28,14 @@ import org.eclipse.vtp.framework.spi.ISessionDescriptor;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class AbstractSessionContext extends AbstractContext implements
 		ISessionContext {
 	/** The service identifiers that will return this context. */
-	protected static final Set RESERVED_SERVICE_IDENTIFIERS;
+	protected static final Set<String> RESERVED_SERVICE_IDENTIFIERS;
 
 	static {
-		Set identifiers = new HashSet(
+		Set<String> identifiers = new HashSet<String>(
 				AbstractProcessContext.RESERVED_SERVICE_IDENTIFIERS.size() + 1);
 		identifiers.addAll(AbstractProcessContext.RESERVED_SERVICE_IDENTIFIERS);
 		identifiers.add(ISessionContext.class.getName());

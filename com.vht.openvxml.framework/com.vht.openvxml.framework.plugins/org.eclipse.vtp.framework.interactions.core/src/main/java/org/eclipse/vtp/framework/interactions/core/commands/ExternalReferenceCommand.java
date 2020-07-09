@@ -23,6 +23,8 @@ import java.util.Map;
  * 
  * @author Lonnie Pryor
  */
+
+@SuppressWarnings({"rawtypes", "unchecked"})
 public final class ExternalReferenceCommand extends ConversationCommand {
 	/** The name of the external reference being called. */
 	private String referenceName = null;

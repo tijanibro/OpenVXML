@@ -28,6 +28,7 @@ import org.eclipse.vtp.framework.interactions.core.conversation.IConversation;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class OutputMessageAction implements IAction {
 	/** The context to use. */
 	private final IActionContext context;

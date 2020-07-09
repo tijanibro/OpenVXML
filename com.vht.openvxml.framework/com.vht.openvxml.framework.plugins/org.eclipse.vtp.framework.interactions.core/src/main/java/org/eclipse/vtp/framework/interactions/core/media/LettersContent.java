@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class LettersContent extends FormattableContent {
 	public static final String ELEMENT_NAME = "letters-content"; //$NON-NLS-1$
 

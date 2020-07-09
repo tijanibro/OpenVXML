@@ -47,9 +47,8 @@ import org.eclipse.vtp.framework.util.Guid;
  * 
  * Use the UUIDecoder project that is an OVXML 'dependency' jar instead.
  */
-
+@SuppressWarnings({ "unchecked", "rawtypes", "unused" })
 public class VXMLBInitialAction extends InitialAction {
-
 	private static final Set INITAL_TYPES = Collections
 			.unmodifiableSet(new HashSet(Arrays.asList(new String[] {
 					IBooleanObject.TYPE_NAME, IDateObject.TYPE_NAME,

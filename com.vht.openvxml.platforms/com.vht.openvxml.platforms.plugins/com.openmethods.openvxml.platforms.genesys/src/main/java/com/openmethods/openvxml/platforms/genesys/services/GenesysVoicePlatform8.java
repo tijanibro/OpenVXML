@@ -45,6 +45,7 @@ import com.openmethods.openvxml.platforms.genesys.vxml.Send;
  * @author trip
  *
  */
+@SuppressWarnings({"rawtypes", "unchecked", "deprecation"})
 public class GenesysVoicePlatform8 extends VoicePlatform {
 
 	private boolean isCtiC = false;

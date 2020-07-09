@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
+@SuppressWarnings("rawtypes")
 public class ReferencedContent extends Content {
 	public static final int STATIC_REF = 1;
 	public static final int VARIABLE_REF = 2;
@@ -96,6 +97,7 @@ public class ReferencedContent extends Content {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List resolve(IMediaProvider mediaProvider) {
 		List ret = new LinkedList();

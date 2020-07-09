@@ -27,13 +27,14 @@ import org.eclipse.vtp.framework.core.IExecutionContext;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class AbstractActionContext extends AbstractContext implements
 		IActionContext {
 	/** The service identifiers that will return this context. */
 	protected static final Set RESERVED_SERVICE_IDENTIFIERS;
 
 	static {
-		Set identifiers = new HashSet(
+		Set identifiers = new HashSet<String>(
 				AbstractExecutionContext.RESERVED_SERVICE_IDENTIFIERS.size() + 1);
 		identifiers
 				.addAll(AbstractExecutionContext.RESERVED_SERVICE_IDENTIFIERS);

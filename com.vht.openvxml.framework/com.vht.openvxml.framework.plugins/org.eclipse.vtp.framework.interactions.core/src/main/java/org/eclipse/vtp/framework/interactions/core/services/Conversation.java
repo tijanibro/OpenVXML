@@ -100,6 +100,7 @@ import org.eclipse.vtp.framework.spi.ICommandProcessor;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class Conversation implements IConversation {
 	/** The queue to add commands to. */
 	private final ICommandProcessor commandProcessor;
@@ -1795,24 +1796,12 @@ public class Conversation implements IConversation {
 		
 		private final Map<String, String> variables = new HashMap<String, String>();
 
-		public boolean isSubmit() {
-			return submit;
-		}
-
 		public void setSubmit(boolean submit) {
 			this.submit = submit;
 		}
 
-		public String getMethod() {
-			return method;
-		}
-
 		public void setMethod(String method) {
 			this.method = method;
-		}
-
-		public String getUrl() {
-			return url;
 		}
 
 		public void setUrl(String url) {

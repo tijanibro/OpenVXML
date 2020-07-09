@@ -37,6 +37,7 @@ import org.w3c.dom.NodeList;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class InputRequestAction implements IAction {
 	private static final BigDecimal BD_100 = new BigDecimal(100);
 	/** The context to use. */

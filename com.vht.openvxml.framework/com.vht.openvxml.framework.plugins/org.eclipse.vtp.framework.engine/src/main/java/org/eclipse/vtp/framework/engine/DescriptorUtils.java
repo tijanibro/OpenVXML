@@ -18,6 +18,7 @@ import java.lang.reflect.Modifier;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public final class DescriptorUtils {
 	/**
 	 * Returns true if the specified type is a public, concrete class with at

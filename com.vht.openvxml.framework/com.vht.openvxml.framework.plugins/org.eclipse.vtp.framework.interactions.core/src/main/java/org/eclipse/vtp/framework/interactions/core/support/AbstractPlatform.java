@@ -43,6 +43,7 @@ import org.eclipse.vtp.framework.spi.ICommand;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public abstract class AbstractPlatform implements IPlatform {
 	/**
 	 * Creates a new AbstractPlatform.

@@ -26,6 +26,7 @@ import java.util.Map;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class Scope {
 	/** The implicit service index. */
 	private final Map implicitServices = new HashMap();

@@ -40,6 +40,7 @@ import org.osgi.service.log.LogService;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public final class ProcessEngineManager extends SingletonTracker {
 	/** The log to use. */
 	private final LogService log;

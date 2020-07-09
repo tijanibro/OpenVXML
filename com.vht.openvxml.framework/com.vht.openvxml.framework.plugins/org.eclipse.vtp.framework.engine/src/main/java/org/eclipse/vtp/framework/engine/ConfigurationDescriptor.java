@@ -18,6 +18,7 @@ import org.eclipse.vtp.framework.core.IConfiguration;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public final class ConfigurationDescriptor {
 	/** The ID of this configuration format. */
 	private final String id;

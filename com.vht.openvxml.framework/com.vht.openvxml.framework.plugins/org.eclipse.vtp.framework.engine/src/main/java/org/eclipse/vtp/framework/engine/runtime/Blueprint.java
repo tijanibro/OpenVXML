@@ -34,6 +34,7 @@ import org.w3c.dom.Element;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class Blueprint {
 	private final Map configurationIndex;
 	private final Map processServiceIndex;

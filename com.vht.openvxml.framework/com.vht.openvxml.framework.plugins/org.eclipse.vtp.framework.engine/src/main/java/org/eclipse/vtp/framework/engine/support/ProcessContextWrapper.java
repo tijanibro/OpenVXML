@@ -20,6 +20,7 @@ import org.eclipse.vtp.framework.core.IProcessContext;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public abstract class ProcessContextWrapper implements IProcessContext {
 	/**
 	 * Creates a new ProcessContextWrapper.

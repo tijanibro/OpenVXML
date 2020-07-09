@@ -19,6 +19,7 @@ import org.eclipse.vtp.framework.interactions.core.conversation.IFinal;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class FinalAction extends ExitAction {
 	/** The conversation to use. */
 	private final IConversation conversation;

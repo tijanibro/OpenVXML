@@ -26,6 +26,7 @@ import org.w3c.dom.NodeList;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class InputConfiguration implements IConfiguration,
 		InteractionsConstants {
 	/** The input factory to use. */

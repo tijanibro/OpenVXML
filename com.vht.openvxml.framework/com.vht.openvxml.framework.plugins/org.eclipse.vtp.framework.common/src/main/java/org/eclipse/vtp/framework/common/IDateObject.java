@@ -28,5 +28,7 @@ public interface IDateObject extends IValueObject {
 	 * @return The current value of this data object.
 	 */
 	Calendar getValue();
+	
+	Calendar getValueFromZDT();
 
 }

@@ -20,6 +20,7 @@ import org.eclipse.vtp.framework.core.IContext;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class AbstractContext extends AbstractLogger implements
 		IContext {
 	/**

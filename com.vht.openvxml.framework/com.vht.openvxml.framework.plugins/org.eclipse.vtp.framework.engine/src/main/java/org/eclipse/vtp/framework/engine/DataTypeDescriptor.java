@@ -19,6 +19,7 @@ import java.util.Map;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public final class DataTypeDescriptor {
 	/** The name of this type. */
 	private final String name;

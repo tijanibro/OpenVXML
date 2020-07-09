@@ -45,6 +45,7 @@ import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrary;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProject;
 import org.eclipse.vtp.desktop.model.interactive.core.InteractiveWorkflowCore;
 
+@SuppressWarnings("rawtypes")
 public class VoiceExportWizard extends Wizard implements IExportWizard {
 	private VoiceSelectionPage voicePage = null;
 	private LocationPage locationPage = null;

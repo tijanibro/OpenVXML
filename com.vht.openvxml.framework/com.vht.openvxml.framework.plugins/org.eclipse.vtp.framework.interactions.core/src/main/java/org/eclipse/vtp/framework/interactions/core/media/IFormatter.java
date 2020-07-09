@@ -12,6 +12,7 @@
 package org.eclipse.vtp.framework.interactions.core.media;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Currency;
 import java.util.Date;
@@ -87,6 +88,9 @@ public interface IFormatter {
 	 *         objects that contain the formatted elements of the provided date.
 	 */
 	List<Content> formatDate(Calendar date, String formatDefinition,
+			String formatOptions, IResourceManager resourceManager);
+	
+	List<Content> formatDate(ZonedDateTime zdt, String formatDefinition,
 			String formatOptions, IResourceManager resourceManager);
 
 	/**

@@ -9,6 +9,7 @@ import org.eclipse.vtp.framework.interactions.voice.services.VoicePlatform;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Dialog;
 import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLDocument;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class DialogicPlatform extends VoicePlatform {
 
 	public DialogicPlatform(IExecutionContext context) {

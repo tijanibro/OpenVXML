@@ -28,6 +28,7 @@ import org.eclipse.vtp.framework.interactions.voice.vxml.If;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Transfer;
 import org.eclipse.vtp.framework.interactions.voice.vxml.VXMLDocument;
 
+@SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class ProphecyVoicePlatform extends VoicePlatform {
 	private IVariableRegistry variableRegistry;
 

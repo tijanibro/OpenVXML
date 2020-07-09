@@ -39,6 +39,7 @@ import org.eclipse.vtp.framework.interactions.core.media.ISharedContentProvider;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class MediaProviderRegistry implements IMediaProviderRegistry {
 	/** The media providers by ID. */
 	private final Map mediaProviders;

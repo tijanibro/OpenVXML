@@ -35,6 +35,7 @@ import org.eclipse.vtp.framework.interactions.core.media.InputGrammar;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public interface IConversation {
 	String RESULT_NAME_FILLED = "success.filled"; //$NON-NLS-1$
 	String RESULT_NAME_NO_INPUT = "error.input.noinput"; //$NON-NLS-1$

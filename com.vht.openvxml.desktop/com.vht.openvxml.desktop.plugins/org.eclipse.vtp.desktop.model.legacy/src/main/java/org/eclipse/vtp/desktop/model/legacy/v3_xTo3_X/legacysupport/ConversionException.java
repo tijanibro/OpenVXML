@@ -1,5 +1,6 @@
 package org.eclipse.vtp.desktop.model.legacy.v3_xTo3_X.legacysupport;
 
+@SuppressWarnings("serial")
 public class ConversionException extends Exception {
 
 	public ConversionException() {

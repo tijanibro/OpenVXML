@@ -31,6 +31,7 @@ import org.w3c.dom.Element;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class Configurable extends Component {
 	/** Index of objects returned by configuration queries. */
 	private final Map configurationIndex;

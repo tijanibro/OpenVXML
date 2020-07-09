@@ -11,8 +11,6 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.framework.interactions.voice.vxml;
 
-import static org.eclipse.vtp.framework.interactions.voice.vxml.VXMLConstants.EMPTY;
-
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 

@@ -49,6 +49,7 @@ import org.eclipse.vtp.framework.spi.ISessionDescriptor;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class DeploymentSession implements ISessionDescriptor {
 	/** The name of the session attribute the execution ID is stored in. */
 	private static final String EXECUTION_ID = "execution.id";

@@ -28,13 +28,14 @@ import org.eclipse.vtp.framework.spi.IExecutionDescriptor;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class AbstractExecutionContext extends AbstractContext
 		implements IExecutionContext {
 	/** The service identifiers that will return this context. */
 	protected static final Set RESERVED_SERVICE_IDENTIFIERS;
 
 	static {
-		Set identifiers = new HashSet(
+		Set identifiers = new HashSet<String>(
 				AbstractSessionContext.RESERVED_SERVICE_IDENTIFIERS.size() + 1);
 		identifiers.addAll(AbstractSessionContext.RESERVED_SERVICE_IDENTIFIERS);
 		identifiers.add(IExecutionContext.class.getName());

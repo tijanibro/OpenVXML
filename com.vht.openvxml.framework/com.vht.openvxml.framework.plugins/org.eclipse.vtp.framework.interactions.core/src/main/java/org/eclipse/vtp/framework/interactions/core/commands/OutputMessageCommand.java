@@ -24,6 +24,7 @@ import java.util.Set;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public final class OutputMessageCommand extends ConversationCommand {
 	/** The properties of the interaction. */
 	private final Map properties = new HashMap();

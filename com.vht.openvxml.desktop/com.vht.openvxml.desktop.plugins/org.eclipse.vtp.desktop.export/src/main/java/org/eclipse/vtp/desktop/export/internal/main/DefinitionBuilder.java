@@ -96,6 +96,7 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 
 	private FlowModel mainModel = null;
 	private Map<String, FlowModel> dialogModels = new HashMap<String, FlowModel>();
+	@SuppressWarnings("unused")
 	private IOpenVXMLProject project;
 	private IBrandingProjectAspect brandingAspect;
 	private IWorkflowProjectAspect workflowAspect;
@@ -175,6 +176,7 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 	 * @throws Exception
 	 *             If the services cannot be built.
 	 */
+	@SuppressWarnings("unused")
 	private void buildServices(IProject project, IBrand defaultBrand,
 			Map<String, String> formatterIDsByLanguage,
 			Map<String, String> resourceManagerIDsByLanguage,

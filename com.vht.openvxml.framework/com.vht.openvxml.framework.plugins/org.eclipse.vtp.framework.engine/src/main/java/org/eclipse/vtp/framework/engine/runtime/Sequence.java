@@ -21,6 +21,7 @@ import org.eclipse.vtp.framework.engine.support.AbstractActionContext;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public class Sequence extends Scope {
 	/** The attribute name for the current position in the process. */
 	private static final String SEQUENCE_POSITION = "engine.sequence.position"; //$NON-NLS-1$

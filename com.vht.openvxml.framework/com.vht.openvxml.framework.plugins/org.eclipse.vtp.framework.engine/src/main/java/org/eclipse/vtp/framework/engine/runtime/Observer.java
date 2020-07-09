@@ -23,6 +23,7 @@ import org.w3c.dom.Element;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 public class Observer extends Executable {
 	/** The descriptor of the observer. */
 	private final ObserverDescriptor descriptor;
@@ -60,8 +61,7 @@ public class Observer extends Executable {
 		super(blueprint, descriptor.getType(), elements, instanceID);
 		if (descriptor == null) {
 			throw new NullPointerException("descriptor"); //$NON-NLS-1$
-		}
-		if (observed == null) {
+		} else if (observed == null) {
 			throw new NullPointerException("observed"); //$NON-NLS-1$
 		}
 		this.descriptor = descriptor;

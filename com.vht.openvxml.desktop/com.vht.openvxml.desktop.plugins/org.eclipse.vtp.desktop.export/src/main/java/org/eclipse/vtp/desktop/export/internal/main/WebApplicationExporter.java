@@ -103,6 +103,7 @@ public class WebApplicationExporter {
 	private final Collection<ExportAgent> agents;
 	private String uniqueToken = null;
 	private ExportWriter output = null;
+	@SuppressWarnings("unused")
 	private ExportWriter mediaOutput = null;
 	private Collection<WorkflowExporter> workflowExporters = null;
 	private Collection<MediaExporter> mediaExporters = null;

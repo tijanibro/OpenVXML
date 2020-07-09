@@ -24,6 +24,7 @@ import org.eclipse.vtp.framework.core.IContext;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class Builder {
 	/** The registry created for the scope. */
 	private IContext registry = null;

@@ -33,6 +33,7 @@ import org.w3c.dom.Element;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ContentManager implements IContentTypeRegistry, IContentFactory {
 	/** The content types. */
 	private final Map contentTypes;

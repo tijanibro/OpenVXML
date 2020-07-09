@@ -21,6 +21,7 @@ import org.eclipse.vtp.framework.core.ISessionContext;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public abstract class SessionContextWrapper implements ISessionContext {
 	/**
 	 * Creates a new SessionContextWrapper.

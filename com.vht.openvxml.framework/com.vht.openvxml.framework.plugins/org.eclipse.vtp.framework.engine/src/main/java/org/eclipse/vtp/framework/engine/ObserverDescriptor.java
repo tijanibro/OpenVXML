@@ -16,6 +16,7 @@ package org.eclipse.vtp.framework.engine;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public final class ObserverDescriptor {
 	/** The ID of this service. */
 	private final String id;

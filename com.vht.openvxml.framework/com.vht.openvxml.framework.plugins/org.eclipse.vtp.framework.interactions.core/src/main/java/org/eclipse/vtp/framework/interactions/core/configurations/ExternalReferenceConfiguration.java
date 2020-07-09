@@ -25,6 +25,8 @@ import org.w3c.dom.NodeList;
  * 
  * @author Lonnie Pryor
  */
+
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ExternalReferenceConfiguration implements IConfiguration,
 		InteractionsConstants {
 	private String name = ""; //$NON-NLS-1$

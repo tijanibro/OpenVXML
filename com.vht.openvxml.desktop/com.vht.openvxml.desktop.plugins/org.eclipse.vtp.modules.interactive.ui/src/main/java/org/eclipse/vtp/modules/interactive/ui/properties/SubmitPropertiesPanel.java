@@ -89,6 +89,7 @@ import com.openmethods.openvxml.desktop.model.workflow.internal.VariableHelper;
  * 
  * @author Trip
  */
+@SuppressWarnings("restriction")
 public class SubmitPropertiesPanel extends DesignElementPropertiesPanel {
 	GenericBindingManager bindingManager;
 	IBrand currentBrand;

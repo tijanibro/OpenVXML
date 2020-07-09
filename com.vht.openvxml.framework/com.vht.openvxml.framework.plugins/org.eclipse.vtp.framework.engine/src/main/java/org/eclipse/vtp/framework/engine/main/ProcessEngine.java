@@ -37,6 +37,7 @@ import org.eclipse.vtp.framework.spi.IProcessEngineObserver;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ProcessEngine implements IProcessEngine {
 	/** An empty array of observers. */
 	private static final IProcessEngineObserver[] NO_OBSERVERS = new IProcessEngineObserver[0];

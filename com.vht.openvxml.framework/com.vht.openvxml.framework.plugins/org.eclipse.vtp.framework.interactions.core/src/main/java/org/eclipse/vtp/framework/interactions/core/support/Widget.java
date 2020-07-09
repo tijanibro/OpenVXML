@@ -14,7 +14,6 @@ package org.eclipse.vtp.framework.interactions.core.support;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -30,6 +29,7 @@ import org.xml.sax.helpers.AttributesImpl;
  * @author Lonnie Pryor
  * @version 2.0
  */
+@SuppressWarnings("rawtypes")
 public abstract class Widget {
 	/** An empty string. */
 	private static final String EMPTY = new String();
@@ -186,7 +186,6 @@ public abstract class Widget {
 	 */
 	@Override
 	public String toString() {
-		StringWriter writer = new StringWriter();
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
 			writeWidget(baos);

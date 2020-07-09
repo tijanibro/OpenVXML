@@ -31,6 +31,7 @@ import org.w3c.dom.Element;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class InputManager implements IInputGrammarFactory {
 	/** The input types. */
 	// private final Map inputTypes;
@@ -154,10 +155,12 @@ public class InputManager implements IInputGrammarFactory {
 			}
 		}
 
+		@SuppressWarnings("unused")
 		public String getId() {
 			return id;
 		}
 
+		@SuppressWarnings("unused")
 		public String getName() {
 			return name;
 		}

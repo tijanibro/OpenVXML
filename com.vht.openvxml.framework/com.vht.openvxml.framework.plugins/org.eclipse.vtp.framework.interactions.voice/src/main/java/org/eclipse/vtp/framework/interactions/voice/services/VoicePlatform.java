@@ -1069,10 +1069,11 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 					.booleanValue());
 		}
 		if (initialTimeout != null && initialTimeout.length() > 0
-				&& !initialTimeout.equals("0") && initialTimeout.matches("\\d+")) {
+				&& !initialTimeout.equals("0")
+				&& initialTimeout.matches("\\d+")) {
 			recording.setTimeout(initialTimeout + "s"); //$NON-NLS-1$
 		} else {
-			recording.setTimeout("5s"); //Set 5sec default value
+			recording.setTimeout("5s"); // Set 5sec default value
 		}
 		if (finalSilence != null && finalSilence.length() > 0) {
 			recording.setFinalSilence(finalSilence + "s"); //$NON-NLS-1$
@@ -1118,8 +1119,10 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 				+ dataRequestCommand.getFilledResultValue() + "'"));
 		filled.addVariable(new Variable(dataRequestCommand.getDataName()
 				+ "_termchar", dataRequestCommand.getDataName() + "$.termchar"));
-		filled.addVariable(new Variable(dataRequestCommand.getDataName() + "_duration", dataRequestCommand.getDataName() + "$.duration"));
-		filled.addVariable(new Variable(dataRequestCommand.getDataName() + "_size", dataRequestCommand.getDataName() + "$.size"));
+		filled.addVariable(new Variable(dataRequestCommand.getDataName()
+				+ "_duration", dataRequestCommand.getDataName() + "$.duration"));
+		filled.addVariable(new Variable(dataRequestCommand.getDataName()
+				+ "_size", dataRequestCommand.getDataName() + "$.size"));
 		for (int i = 0; i < parameterNames.length; ++i) {
 			submitVars[i + 6] = parameterNames[i];
 			String[] values = dataRequestCommand
@@ -1591,65 +1594,20 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 			Map<String, String[]> parameterMap, Dialog form) {
 		List<String> events = ExtendedActionEventManager.getDefault()
 				.getExtendedEvents();
-		String cpaPrefix = "externalmessage.cpa";
+		// String cpaPrefix = "externalmessage.cpa";
 		// if(events.contains(cpaPrefix))
-		if (false) {
-			List<String> cpaEvents = new ArrayList<String>();
-			for (String event : events) {
-				if (event.startsWith(cpaPrefix)) {
-					cpaEvents.add(event);
-				} else {
-					ILink eventLink = links.createNextLink();
-					eventLink.setParameter(resultName, event);
-					Catch eventCatch = new Catch(event);
-					eventCatch.addAction(new Goto(eventLink.toString()));
-					form.addEventHandler(eventCatch);
-				}
-			}
-			// cpa events
-			Catch cpaCatch = new Catch(cpaPrefix);
 
-			for (String cpaEvent : cpaEvents) {
-				if (!cpaPrefix.equals(cpaEvent)) {
-					ILink eventLink = links.createNextLink();
-					if (null != parameterMap) {
-						for (Entry<String, String[]> entry : parameterMap
-								.entrySet()) {
-							eventLink.setParameters(entry.getKey(),
-									entry.getValue());
-						}
-					}
-					eventLink.setParameter(resultName, cpaEvent);
-					// If eventIf = new If("_event==Õ" + cpaEvent + "Õ");
-					If eventIf = new If("_event=='" + cpaEvent + "'");
-					eventIf.addAction(new Goto(eventLink.toString()));
-					cpaCatch.addIfClause(eventIf);
-				}
-			}
-			ILink cpaLink = links.createNextLink();
+		for (String event : events) {
+			ILink eventLink = links.createNextLink();
 			if (null != parameterMap) {
 				for (Entry<String, String[]> entry : parameterMap.entrySet()) {
-					cpaLink.setParameters(entry.getKey(), entry.getValue());
+					eventLink.setParameters(entry.getKey(), entry.getValue());
 				}
 			}
-			cpaLink.setParameter(resultName, cpaPrefix);
-			cpaCatch.addAction(new Goto(cpaLink.toString()));
-			form.addEventHandler(cpaCatch);
-		} else {
-			for (String event : events) {
-				ILink eventLink = links.createNextLink();
-				if (null != parameterMap) {
-					for (Entry<String, String[]> entry : parameterMap
-							.entrySet()) {
-						eventLink.setParameters(entry.getKey(),
-								entry.getValue());
-					}
-				}
-				eventLink.setParameter(resultName, event);
-				Catch eventCatch = new Catch(event);
-				eventCatch.addAction(new Goto(eventLink.toString()));
-				form.addEventHandler(eventCatch);
-			}
+			eventLink.setParameter(resultName, event);
+			Catch eventCatch = new Catch(event);
+			eventCatch.addAction(new Goto(eventLink.toString()));
+			form.addEventHandler(eventCatch);
 
 		}
 		return form;

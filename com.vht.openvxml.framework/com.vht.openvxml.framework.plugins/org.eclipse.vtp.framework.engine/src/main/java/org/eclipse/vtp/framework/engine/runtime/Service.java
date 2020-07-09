@@ -37,6 +37,7 @@ import org.w3c.dom.Element;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class Service extends Configurable {
 	/** The descriptor this service is based on. */
 	private final ServiceDescriptor descriptor;

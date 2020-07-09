@@ -37,6 +37,7 @@ import org.w3c.dom.NodeList;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class DataRequestAction implements IAction {
 	/** The context to use. */
 	private final IActionContext context;

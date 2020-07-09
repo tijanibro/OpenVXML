@@ -531,6 +531,7 @@ public class CvpPlatform extends VoicePlatform {
 		return createVXMLDocument(links, form);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	protected IDocument renderSelectionRequest(ILinkFactory links,
 			SelectionRequestCommand selectionRequestCommand) {

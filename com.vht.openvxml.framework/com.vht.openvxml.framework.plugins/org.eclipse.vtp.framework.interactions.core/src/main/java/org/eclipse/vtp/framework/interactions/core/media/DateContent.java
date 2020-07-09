@@ -19,6 +19,7 @@ import java.util.List;
 import org.eclipse.vtp.framework.util.DateHelper;
 import org.w3c.dom.Element;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class DateContent extends FormattableContent {
 	public static final String ELEMENT_NAME = "date-content"; //$NON-NLS-1$
 

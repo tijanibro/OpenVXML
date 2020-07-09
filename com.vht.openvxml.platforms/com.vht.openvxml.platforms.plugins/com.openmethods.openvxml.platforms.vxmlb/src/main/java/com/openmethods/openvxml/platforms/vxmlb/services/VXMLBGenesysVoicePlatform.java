@@ -5,7 +5,6 @@
 
 package com.openmethods.openvxml.platforms.vxmlb.services;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -29,7 +28,6 @@ import org.eclipse.vtp.framework.interactions.voice.vxml.Dialog;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Filled;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Form;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Goto;
-import org.eclipse.vtp.framework.interactions.voice.vxml.If;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Parameter;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Script;
 import org.eclipse.vtp.framework.interactions.voice.vxml.Submit;
@@ -41,6 +39,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.openmethods.openvxml.platforms.vxmlb.vxml.UserData;
 
+@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 public class VXMLBGenesysVoicePlatform extends VoicePlatform {
 	private static final ObjectMapper mapper = new ObjectMapper();
 	private IVariableRegistry variableRegistry;
@@ -263,63 +262,18 @@ public class VXMLBGenesysVoicePlatform extends VoicePlatform {
 				.getExtendedEvents();
 		String cpaPrefix = "externalmessage.cpa";
 		// if(events.contains(cpaPrefix))
-		if (false) {
-			List<String> cpaEvents = new ArrayList<String>();
-			for (String event : events) {
-				if (event.startsWith(cpaPrefix)) {
-					cpaEvents.add(event);
-				} else {
-					ILink eventLink = links.createNextLink();
-					eventLink.setParameter(resultName, event);
-					Catch eventCatch = new Catch(event);
-					eventCatch.addAction(new Goto(eventLink.toString()));
-					form.addEventHandler(eventCatch);
-				}
-			}
-			// cpa events
-			Catch cpaCatch = new Catch(cpaPrefix);
 
-			for (String cpaEvent : cpaEvents) {
-				if (!cpaPrefix.equals(cpaEvent)) {
-					ILink eventLink = links.createNextLink();
-					if (null != parameterMap) {
-						for (Entry<String, String[]> entry : parameterMap
-								.entrySet()) {
-							eventLink.setParameters(entry.getKey(),
-									entry.getValue());
-						}
-					}
-					eventLink.setParameter(resultName, cpaEvent);
-					// If eventIf = new If("_event==Õ" + cpaEvent + "Õ");
-					If eventIf = new If("_event=='" + cpaEvent + "'");
-					eventIf.addAction(new Goto(eventLink.toString()));
-					cpaCatch.addIfClause(eventIf);
-				}
-			}
-			ILink cpaLink = links.createNextLink();
+		for (String event : events) {
+			ILink eventLink = links.createNextLink();
 			if (null != parameterMap) {
 				for (Entry<String, String[]> entry : parameterMap.entrySet()) {
-					cpaLink.setParameters(entry.getKey(), entry.getValue());
+					eventLink.setParameters(entry.getKey(), entry.getValue());
 				}
 			}
-			cpaLink.setParameter(resultName, cpaPrefix);
-			cpaCatch.addAction(new Goto(cpaLink.toString()));
-			form.addEventHandler(cpaCatch);
-		} else {
-			for (String event : events) {
-				ILink eventLink = links.createNextLink();
-				if (null != parameterMap) {
-					for (Entry<String, String[]> entry : parameterMap
-							.entrySet()) {
-						eventLink.setParameters(entry.getKey(),
-								entry.getValue());
-					}
-				}
-				eventLink.setParameter(resultName, event);
-				Catch eventCatch = new Catch(event);
-				eventCatch.addAction(new Goto(eventLink.toString()));
-				form.addEventHandler(eventCatch);
-			}
+			eventLink.setParameter(resultName, event);
+			Catch eventCatch = new Catch(event);
+			eventCatch.addAction(new Goto(eventLink.toString()));
+			form.addEventHandler(eventCatch);
 		}
 		return form;
 	}

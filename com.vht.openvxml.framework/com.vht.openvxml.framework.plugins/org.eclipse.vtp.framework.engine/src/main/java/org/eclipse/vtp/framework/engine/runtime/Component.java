@@ -24,6 +24,7 @@ import java.util.List;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class Component {
 	/** A comparator that sorts constructors by number of arguments. */
 	private static final Comparator CONSTRUCTOR_SORT = new Comparator() {

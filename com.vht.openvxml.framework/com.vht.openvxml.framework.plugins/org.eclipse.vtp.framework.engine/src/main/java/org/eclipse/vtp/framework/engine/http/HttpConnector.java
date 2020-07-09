@@ -66,6 +66,7 @@ import org.osgi.service.log.LogService;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public class HttpConnector {
 	/** The path prefix for reserved commands. */
 	public static final String PATH_PREFIX = "/-/"; //$NON-NLS-1$
@@ -118,7 +119,6 @@ public class HttpConnector {
 	/** The available resources definitions. */
 	private final Map<String, ResourceGroup> resourcesByID = new HashMap<String, ResourceGroup>();
 	/** The currently configured properties. */
-	@SuppressWarnings("rawtypes")
 	private Dictionary properties = null;
 	/** The currently configured registration path. */
 	private String servletPath = null;
@@ -211,8 +211,7 @@ public class HttpConnector {
 	 * @param properties
 	 *            The basic configuration properties.
 	 */
-	public synchronized void configure(
-			@SuppressWarnings("rawtypes") Dictionary properties) {
+	public synchronized void configure(Dictionary properties) {
 		close();
 		this.properties = properties;
 		open();
@@ -226,8 +225,7 @@ public class HttpConnector {
 	 * @param properties
 	 *            The properties of the deployment.
 	 */
-	public synchronized void deploy(String key,
-			@SuppressWarnings("rawtypes") Dictionary properties) {
+	public synchronized void deploy(String key, Dictionary properties) {
 		Deployment deployment = deploymentsByKey.remove(key);
 		if (deployment != null) {
 			deploymentsByPath.remove(deployment.getPath());
@@ -512,14 +510,11 @@ public class HttpConnector {
 	 * @throws IOException
 	 * @throws ServletException
 	 */
-	private void invokeProcessEngine(
-			HttpServletRequest req,
-			HttpServletResponse res,
-			HttpSession httpSession,
-			String pathInfo,
+	private void invokeProcessEngine(HttpServletRequest req,
+			HttpServletResponse res, HttpSession httpSession, String pathInfo,
 			Map<Object, Object> variableValues,
-			@SuppressWarnings("rawtypes") Map<String, String[]> parameterValues,
-			boolean embeddedInvocation) throws IOException, ServletException {
+			Map<String, String[]> parameterValues, boolean embeddedInvocation)
+			throws IOException, ServletException {
 		boolean newSession = false;
 		Integer depth = (Integer) httpSession.getAttribute("connector.depth");
 		if (depth == null) {
@@ -703,8 +698,7 @@ public class HttpConnector {
 					}
 				}
 				deployment.end(httpSession, prefix, depth.intValue());
-				for (@SuppressWarnings("rawtypes")
-				Enumeration e = httpSession.getAttributeNames(); e
+				for (Enumeration e = httpSession.getAttributeNames(); e
 						.hasMoreElements();) {
 					String name = (String) e.nextElement();
 					if (name.startsWith(oldFullPrefix)) {
@@ -796,7 +790,6 @@ public class HttpConnector {
 	 * @return The MIME type for the specified resource.
 	 */
 	public String getMimeType(String resourcePath) {
-		@SuppressWarnings("rawtypes")
 		Dictionary properties = this.properties;
 		if (properties == null) {
 			return null;

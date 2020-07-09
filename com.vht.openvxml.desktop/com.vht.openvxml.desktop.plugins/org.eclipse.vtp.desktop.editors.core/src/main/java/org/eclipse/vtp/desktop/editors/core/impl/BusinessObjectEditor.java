@@ -628,6 +628,9 @@ public class BusinessObjectEditor extends EditorPart {
 						return new Integer(5);
 					case MAP:
 						return new Integer(6);
+					case ANY:
+					default:
+						break;
 					}
 				} else {
 					return new Integer(sel);

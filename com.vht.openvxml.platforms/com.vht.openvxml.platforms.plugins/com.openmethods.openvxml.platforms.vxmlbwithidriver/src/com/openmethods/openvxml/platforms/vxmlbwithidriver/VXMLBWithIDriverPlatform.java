@@ -34,6 +34,7 @@ import com.openmethods.openvxml.idriver.GenesysIDriver;
  * 
  * @author Trip Gilman
  */
+@SuppressWarnings("unused")
 public class VXMLBWithIDriverPlatform extends VoicePlatform {
 	private final IVariableRegistry variables;
 	private IExecutionContext context;

@@ -25,6 +25,7 @@ import org.w3c.dom.NodeList;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class MediaProviderConfiguration implements IConfiguration,
 		InteractionsConstants {
 	/** The content factory to use. */

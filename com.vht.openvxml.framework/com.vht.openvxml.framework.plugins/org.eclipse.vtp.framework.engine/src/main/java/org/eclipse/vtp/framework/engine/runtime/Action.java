@@ -29,6 +29,7 @@ import org.w3c.dom.Element;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class Action extends Executable {
 	/** The name of the action. */
 	private final String name;

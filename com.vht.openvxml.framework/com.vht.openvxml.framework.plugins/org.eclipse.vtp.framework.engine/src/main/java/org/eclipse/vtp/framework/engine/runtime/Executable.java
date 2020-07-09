@@ -21,6 +21,7 @@ import org.w3c.dom.Element;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public abstract class Executable extends Configurable {
 	/** The ID of this instance of the executable. */
 	private final String instanceID;

@@ -58,6 +58,8 @@ import org.eclipse.vtp.framework.spi.IRunnableCommandVisitor;
  * 
  * @author Lonnie Pryor
  */
+
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class DeploymentExecution implements IExecutionDescriptor, ILinkFactory,
 		IRenderingQueue, IRunnableCommandVisitor, IControllerCommandVisitor,
 		IInteractionTypeSelection {

@@ -13,6 +13,7 @@ package org.eclipse.vtp.framework.common.services;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -902,6 +903,9 @@ public class VariableRegistry implements IVariableRegistry, IScriptable,
 			if (obj == null) {
 				return cal;
 			}
+			if (obj instanceof ZonedDateTime) {
+				return DateHelper.toCalendar((ZonedDateTime) obj);
+			}
 			if (obj instanceof Calendar) {
 				return (Calendar) obj;
 			}
@@ -950,6 +954,14 @@ public class VariableRegistry implements IVariableRegistry, IScriptable,
 			final String val = (String) load();
 			cal = DateHelper.parseDate(val);
 			return cal;
+		}
+
+		@Override
+		public Calendar getValueFromZDT() {
+			ZonedDateTime zdt = ZonedDateTime.now();
+			final String val = (String) load();
+			zdt = DateHelper.parseDateZDT(val);
+			return DateHelper.toCalendar(zdt);
 		}
 
 		/*

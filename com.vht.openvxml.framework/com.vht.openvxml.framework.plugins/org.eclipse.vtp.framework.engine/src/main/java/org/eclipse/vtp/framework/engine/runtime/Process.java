@@ -26,6 +26,7 @@ import org.eclipse.vtp.framework.spi.ISessionDescriptor;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public class Process extends Scope implements IProcess {
 	/** The process blueprint. */
 	public final Blueprint blueprint;

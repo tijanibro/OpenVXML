@@ -19,6 +19,7 @@ import java.util.Set;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public final class IdentifierDescriptor {
 	/** The name of this identifier. */
 	private final String name;

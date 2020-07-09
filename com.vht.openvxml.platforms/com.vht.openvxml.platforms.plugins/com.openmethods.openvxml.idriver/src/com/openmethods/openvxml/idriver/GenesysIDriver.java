@@ -588,6 +588,7 @@ public class GenesysIDriver implements Runnable {
 	}
 
 	public class Heartbeat implements Runnable {
+		@SuppressWarnings("unused")
 		@Override
 		public void run() {
 			while (running) {

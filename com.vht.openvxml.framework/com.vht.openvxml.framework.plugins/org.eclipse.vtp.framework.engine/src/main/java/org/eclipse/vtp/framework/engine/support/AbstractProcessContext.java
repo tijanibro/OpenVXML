@@ -29,13 +29,14 @@ import org.eclipse.vtp.framework.spi.IProcessDescriptor;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class AbstractProcessContext extends AbstractContext implements
 		IProcessContext {
 	/** The service identifiers that will return this context. */
-	protected static final Set RESERVED_SERVICE_IDENTIFIERS;
+	protected static final Set<String> RESERVED_SERVICE_IDENTIFIERS;
 
 	static {
-		Set identifiers = new HashSet(4);
+		Set<String> identifiers = new HashSet<String>(4);
 		identifiers.add(IReporter.class.getName());
 		identifiers.add(ILogger.class.getName());
 		identifiers.add(IContext.class.getName());

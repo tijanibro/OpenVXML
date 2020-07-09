@@ -21,6 +21,7 @@ import org.eclipse.vtp.framework.core.IExecutionContext;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public abstract class ExecutionContextWrapper implements IExecutionContext {
 	/**
 	 * Creates a new ExecutionContextWrapper.

@@ -25,6 +25,7 @@ import org.w3c.dom.NodeList;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class MetaDataConfiguration implements IConfiguration,
 		InteractionsConstants {
 	/** Index of meta data items by brand, interaction type, and language. */

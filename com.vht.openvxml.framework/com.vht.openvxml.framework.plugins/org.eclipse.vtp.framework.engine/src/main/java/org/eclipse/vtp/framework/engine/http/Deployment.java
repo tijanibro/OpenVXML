@@ -39,6 +39,7 @@ import org.osgi.framework.Bundle;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class Deployment implements IProcessDescriptor,
 		IResourceManagerRegistry, HttpSessionListener {
 	/** The process instance. */

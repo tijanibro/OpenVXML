@@ -38,6 +38,7 @@ import org.xml.sax.XMLReader;
  * @author Lonnie Pryor
  * @version 2.0
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class WidgetDocument extends Widget implements IDocument {
 	private boolean secured = false;
 	/** Determines if the receiving browser should cache this document */

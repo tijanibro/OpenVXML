@@ -28,6 +28,7 @@ import org.w3c.dom.Element;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class Configuration extends Component {
 	/** The data this configuration is bound to. */
 	private Element data;

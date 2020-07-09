@@ -121,6 +121,7 @@ public class CreateWorkflowProjectWizard extends Wizard implements INewWizard,
 	 * 
 	 * @see org.eclipse.jface.wizard.IWizard#performFinish()
 	 */
+	@SuppressWarnings("unused")
 	@Override
 	public boolean performFinish() {
 		OpenVXMLProject workflowProject = (OpenVXMLProject) WorkflowCore

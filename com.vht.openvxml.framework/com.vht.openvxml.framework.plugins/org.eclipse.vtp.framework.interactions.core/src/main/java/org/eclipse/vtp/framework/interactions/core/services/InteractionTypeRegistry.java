@@ -27,6 +27,7 @@ import org.eclipse.vtp.framework.interactions.core.IInteractionTypeRegistry;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class InteractionTypeRegistry implements IInteractionTypeRegistry {
 	/** The interaction types by ID. */
 	private final Map interactionTypes;

@@ -22,6 +22,7 @@ import org.w3c.dom.Element;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public final class RuntimeUtils {
 	/**
 	 * Generates a unique string from the supplied qualifier and identifier.

@@ -18,6 +18,7 @@ import org.eclipse.vtp.framework.core.IAction;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public final class ActionDescriptor {
 	/** The ID of this action. */
 	private final String id;

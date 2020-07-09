@@ -21,6 +21,7 @@ import org.eclipse.vtp.framework.core.ILogger;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public abstract class AbstractLogger extends AbstractReporter implements
 		ILogger {
 	/**

@@ -30,6 +30,7 @@ import org.eclipse.vtp.framework.interactions.core.support.AbstractPlatform;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class MetaDataMessageAction implements IAction {
 	/** The context to use. */
 	private final IActionContext context;

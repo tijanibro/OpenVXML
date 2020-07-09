@@ -45,6 +45,7 @@ import org.eclipse.vtp.framework.interactions.core.support.AbstractPlatform;
  * @author trip
  *
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class MetaDataRequestAction implements IAction {
 	/** The context to use. */
 	private final IActionContext context;
@@ -55,6 +56,7 @@ public class MetaDataRequestAction implements IAction {
 	/** The variable registry to use. */
 	private final IVariableRegistry variables;
 	/** The currently selected brand. */
+	@SuppressWarnings("unused")
 	private final IBrandSelection brandSelection;
 	private final IPlatformSelector platformSelector;
 

@@ -149,6 +149,7 @@ public final class HttpConnectorManager extends SingletonTracker {
 	 * @see org.eclipse.vtp.framework.kernel.util.SingletonTrackerCustomizer#
 	 * selectingService(org.osgi.framework.ServiceReference)
 	 */
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
 	public Object selectingService(ServiceReference reference) {
 		HttpService service = (HttpService) context.getService(reference);
@@ -172,6 +173,7 @@ public final class HttpConnectorManager extends SingletonTracker {
 	 * changingSelectedService(org.osgi.framework.ServiceReference,
 	 * java.lang.Object, org.osgi.framework.ServiceReference)
 	 */
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
 	public Object changingSelectedService(ServiceReference oldReference,
 			Object oldService, ServiceReference newReference) {
@@ -199,6 +201,7 @@ public final class HttpConnectorManager extends SingletonTracker {
 	 * releasedSelectedService(org.osgi.framework.ServiceReference,
 	 * java.lang.Object)
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void releasedSelectedService(ServiceReference reference,
 			Object service) {
@@ -214,6 +217,7 @@ public final class HttpConnectorManager extends SingletonTracker {
 	 * 
 	 * @author Lonnie Pryor
 	 */
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	private final class HttpConnectorInstance implements
 			IExtensionChangeHandler {
 		/** The definition extension handler. */
@@ -435,6 +439,7 @@ public final class HttpConnectorManager extends SingletonTracker {
 		 * 
 		 * @see org.osgi.service.cm.ManagedService#updated(java.util.Dictionary)
 		 */
+		@SuppressWarnings("rawtypes")
 		@Override
 		public void updated(Dictionary properties)
 				throws ConfigurationException {
@@ -479,6 +484,7 @@ public final class HttpConnectorManager extends SingletonTracker {
 		 * org.osgi.service.cm.ManagedServiceFactory#updated(java.lang.String,
 		 * java.util.Dictionary)
 		 */
+		@SuppressWarnings("rawtypes")
 		@Override
 		public void updated(String pid, Dictionary properties)
 				throws ConfigurationException {
@@ -502,6 +508,7 @@ public final class HttpConnectorManager extends SingletonTracker {
 		 * @see org.eclipse.vtp.framework.engine.DeplymentAdmin#deploy(
 		 * java.util.Dictionary)
 		 */
+		@SuppressWarnings("rawtypes")
 		@Override
 		public String deploy(Dictionary properties) {
 			String id = Guid.createGUID();
@@ -519,6 +526,7 @@ public final class HttpConnectorManager extends SingletonTracker {
 		 * @see org.eclipse.vtp.framework.engine.DeplymentAdmin#update(
 		 * java.lang.String, java.util.Dictionary)
 		 */
+		@SuppressWarnings("rawtypes")
 		@Override
 		public boolean update(String id, Dictionary properties) {
 			try {

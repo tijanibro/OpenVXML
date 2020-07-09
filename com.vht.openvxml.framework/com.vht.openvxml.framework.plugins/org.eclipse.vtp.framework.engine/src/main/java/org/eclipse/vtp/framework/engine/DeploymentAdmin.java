@@ -18,6 +18,7 @@ import java.util.Dictionary;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public interface DeploymentAdmin {
 	String deploy(Dictionary properties);
 

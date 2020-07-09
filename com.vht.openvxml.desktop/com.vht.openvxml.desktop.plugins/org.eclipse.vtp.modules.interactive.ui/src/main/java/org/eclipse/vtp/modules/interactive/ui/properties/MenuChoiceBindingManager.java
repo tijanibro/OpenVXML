@@ -83,6 +83,7 @@ public class MenuChoiceBindingManager implements ConfigurationManager,
 	 * @see org.eclipse.vtp.desktop.core.configuration.ConfigurationManager#
 	 * readConfiguration(org.w3c.dom.Element)
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void readConfiguration(Element configuration)
 			throws ConfigurationException {

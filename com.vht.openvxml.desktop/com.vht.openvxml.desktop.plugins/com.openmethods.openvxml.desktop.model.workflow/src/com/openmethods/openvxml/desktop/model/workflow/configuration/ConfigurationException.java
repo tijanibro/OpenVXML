@@ -1,5 +1,6 @@
 package com.openmethods.openvxml.desktop.model.workflow.configuration;
 
+@SuppressWarnings("serial")
 public class ConfigurationException extends Exception {
 	public static final int VERSION_NOT_SUPPORTED = 1;
 	public static final int FUTURE_VERSION = 2;

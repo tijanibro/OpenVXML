@@ -23,6 +23,7 @@ import java.util.Map;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public final class MetaDataMessageCommand extends ConversationCommand {
 	/** The name of the parameter to pass the result of the request as. */
 	private String resultName = null;

@@ -28,6 +28,7 @@ import org.w3c.dom.NodeList;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ProcessDefinition implements IProcessDefinition {
 	/** The definition name space URI. */
 	private static final String URI = //

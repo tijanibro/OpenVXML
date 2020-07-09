@@ -29,6 +29,7 @@ import org.osgi.framework.Bundle;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class FormatterRegistry implements IFormatterRegistry {
 	/** The formatters by ID. */
 	private final Map formatters;

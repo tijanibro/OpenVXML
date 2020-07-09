@@ -175,6 +175,7 @@ public class VoiceEditor extends MultiPageEditorPart implements Runnable,
 	public void resourceChanged(final IResourceChangeEvent event) {
 		if (event.getType() == IResourceChangeEvent.PRE_CLOSE) {
 			Display.getDefault().asyncExec(new Runnable() {
+				@SuppressWarnings("unused")
 				@Override
 				public void run() {
 					IWorkbenchPage[] pages = getSite().getWorkbenchWindow()

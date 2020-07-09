@@ -24,6 +24,7 @@ import java.util.Set;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public final class InputRequestCommand extends ConversationCommand {
 	/** The name of the parameter to pass the provided input as. */
 	private String dataName = null;

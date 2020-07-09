@@ -37,6 +37,7 @@ import com.openmethods.openvxml.platforms.genesys.vxml.UserData;
  * @author trip
  *
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class GenesysVoicePlatform extends VoicePlatform {
 
 	/**

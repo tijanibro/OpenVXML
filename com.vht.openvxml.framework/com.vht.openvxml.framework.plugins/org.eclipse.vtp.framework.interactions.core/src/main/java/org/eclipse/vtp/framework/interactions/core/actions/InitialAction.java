@@ -52,6 +52,7 @@ import org.eclipse.vtp.framework.interactions.core.support.AbstractPlatform;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class InitialAction extends AssignmentAction {
 	private static final Set INITAL_TYPES = Collections
 			.unmodifiableSet(new HashSet(Arrays.asList(new String[] {

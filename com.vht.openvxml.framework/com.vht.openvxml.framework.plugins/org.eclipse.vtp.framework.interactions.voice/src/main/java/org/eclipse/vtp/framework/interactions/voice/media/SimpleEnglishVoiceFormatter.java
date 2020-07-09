@@ -13,6 +13,7 @@ package org.eclipse.vtp.framework.interactions.voice.media;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -32,6 +33,7 @@ import org.eclipse.vtp.framework.interactions.core.media.IResourceManager;
 import org.eclipse.vtp.framework.interactions.core.media.LettersContent;
 import org.eclipse.vtp.framework.interactions.core.media.MoneyContent;
 import org.eclipse.vtp.framework.interactions.core.media.TextContent;
+import org.eclipse.vtp.framework.util.DateHelper;
 
 /**
  * This implementation of IFormatter provides basic support for the English
@@ -130,6 +132,13 @@ public class SimpleEnglishVoiceFormatter extends VoiceFormatter {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		return formatDate(cal, formatDefinition, formatOptions, resourceManager);
+	}
+
+	@Override
+	public List<Content> formatDate(ZonedDateTime zdt, String formatDefinition,
+			String formatOptions, IResourceManager resourceManager) {
+		return formatDate(DateHelper.toCalendar(zdt), formatDefinition,
+				formatOptions, resourceManager);
 	}
 
 	@Override
@@ -859,5 +868,4 @@ public class SimpleEnglishVoiceFormatter extends VoiceFormatter {
 		}
 		return ret;
 	}
-
 }

@@ -31,6 +31,7 @@ import org.eclipse.vtp.framework.spi.ISession;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class Execution extends Scope implements IExecution {
 	/** The exported command queue. */
 	private static final String COMMAND_QUEUE = "engine.command.queue"; //$NON-NLS-1$

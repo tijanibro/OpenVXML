@@ -38,6 +38,8 @@ public class FieldType {
 			case ARRAY:
 			case MAP:
 				return true;
+			default:
+				break;
 			}
 			return false;
 		}
@@ -46,6 +48,8 @@ public class FieldType {
 			switch (this) {
 			case ANY:
 				return false;
+			default:
+				break;
 			}
 			return true;
 		}
@@ -55,6 +59,8 @@ public class FieldType {
 			case ARRAY:
 			case MAP:
 				return false;
+			default:
+				break;
 			}
 			return true;
 		}
@@ -75,6 +81,8 @@ public class FieldType {
 			case NUMBER:
 			case DECIMAL:
 				return true;
+			default:
+				break;
 			}
 			return false;
 		}
@@ -87,6 +95,8 @@ public class FieldType {
 			case BOOLEAN:
 			case DATETIME:
 				return true;
+			default:
+				break;
 			}
 			return false;
 		}

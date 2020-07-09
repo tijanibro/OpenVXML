@@ -26,6 +26,7 @@ import org.eclipse.vtp.framework.util.Guid;
 
 import com.openmethods.openvxml.idriver.runtime.configuration.IDriverConfiguration;
 
+@SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class IDriverInitAction implements IAction {
 	/** The context to use. */
 	private final IActionContext context;

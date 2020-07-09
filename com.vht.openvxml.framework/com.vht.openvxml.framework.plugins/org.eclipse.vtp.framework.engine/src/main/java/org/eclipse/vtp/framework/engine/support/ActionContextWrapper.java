@@ -22,6 +22,7 @@ import org.eclipse.vtp.framework.core.IActionResult;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public abstract class ActionContextWrapper implements IActionContext {
 	/**
 	 * Creates a new ActionContextWrapper.

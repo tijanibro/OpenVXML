@@ -20,6 +20,7 @@ import org.eclipse.vtp.framework.core.IReporter;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public abstract class AbstractReporter implements IReporter {
 	/**
 	 * Creates a new AbstractReporter.

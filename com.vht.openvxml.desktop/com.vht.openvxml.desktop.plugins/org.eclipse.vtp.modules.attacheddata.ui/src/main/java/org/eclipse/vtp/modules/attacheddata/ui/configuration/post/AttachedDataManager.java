@@ -206,9 +206,4 @@ public class AttachedDataManager implements ConfigurationManager {
 		}
 		return copy;
 	}
-
-	private void convertConfiguration(String configVersion,
-			Element configuration) {
-
-	}
 }

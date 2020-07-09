@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class MoneyContent extends FormattableContent {
 	public static final String ELEMENT_NAME = "money-content"; //$NON-NLS-1$
 

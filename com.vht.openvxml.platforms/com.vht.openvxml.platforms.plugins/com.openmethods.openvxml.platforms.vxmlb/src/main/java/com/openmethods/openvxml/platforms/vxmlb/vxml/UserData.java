@@ -16,6 +16,7 @@ import org.xml.sax.helpers.AttributesImpl;
  * @author Trip
  * @version
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class UserData extends FormElement {
 	protected Vector filledHandlers;
 	protected Vector parameters;

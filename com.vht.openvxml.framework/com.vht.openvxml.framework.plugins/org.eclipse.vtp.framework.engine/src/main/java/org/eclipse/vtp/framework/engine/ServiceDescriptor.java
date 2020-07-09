@@ -19,6 +19,7 @@ import java.util.Map;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings({"rawtypes", "unchecked"})
 public final class ServiceDescriptor {
 	/** The constant representing the process-wide scope. */
 	public static final String SCOPE_PROCESS = "process"; //$NON-NLS-1$

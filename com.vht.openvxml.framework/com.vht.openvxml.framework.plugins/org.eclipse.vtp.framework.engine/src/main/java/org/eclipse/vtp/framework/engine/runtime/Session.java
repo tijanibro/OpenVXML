@@ -27,6 +27,7 @@ import org.eclipse.vtp.framework.spi.ISessionDescriptor;
  * 
  * @author Lonnie Pryor
  */
+@SuppressWarnings("rawtypes")
 public class Session extends Scope implements ISession {
 	/** The owner of this session. */
 	public final Process process;
