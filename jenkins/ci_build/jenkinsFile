@@ -11,7 +11,7 @@ timestamps {
     }
     echo "Branch Name: ${branch}"
     if(branch != "master")
-    buildLocation = "C:\\Builds\\OpenVXML_Builds\\OpenVXML_${branch}\\OpenVXML_${branch}_%OPENVXML_VERSION_NUMBER%.%BUILD_NUMBER%\\*"
+    buildLocation = "C:\\Builds\\OpenVXML_Builds\\BranchBuilds\\OpenVXML_${branch}\\OpenVXML_${branch}_%OPENVXML_VERSION_NUMBER%.%BUILD_NUMBER%\\*"
     
     node ('ubuntu-18-04-jdk') {
         deleteDir()
