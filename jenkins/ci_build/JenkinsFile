@@ -1,3 +1,5 @@
+library "vxml-shared-library"
+
 timestamps {
     def gitURLOpenVXML = 'git@github.com:VHT/OpenVXML.git'
     def buildLocation = "C:\\Builds\\OpenVXML_Builds\\OpenVXML_%OPENVXML_VERSION_NUMBER%.%BUILD_NUMBER%\\*"
@@ -16,17 +18,7 @@ timestamps {
     node ('ubuntu-18-04-jdk') {
         deleteDir()
         stage("Git Checkout"){
-            checkout([
-                $class: 'GitSCM',
-                branches: [[name: "*/${branch}"]],
-                doGenerateSubmoduleConfigurations: false,
-                extensions: [],
-                submoduleCfg: [],
-                userRemoteConfigs: [
-                    [credentialsId: "${GIT_CREDENTIALS}",
-                    url: "${gitURLOpenVXML}"]
-                ]
-            ])
+            checkoutSourceCode(gitURLOpenVXML,env.GIT_CREDENTIALS,branch)
         }
         stage ('Build') {
             withEnv(["JAVA_HOME=${tool 'jdk8-191-oracle'}", "PATH+JAVA_HOME=${env.JAVA_HOME}/bin"]) {
