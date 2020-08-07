@@ -1,7 +1,10 @@
+library "vxml-shared-library"
+
 timestamps {
     def gitURLOpenVXML = 'git@github.com:VHT/OpenVXML.git'
     def buildLocation = "C:\\Builds\\OpenVXML_Builds\\OpenVXML_%OPENVXML_VERSION_NUMBER%.%BUILD_NUMBER%\\*"
     def branch = env.CHANGE_TARGET
+    def manifestFile = 'OpenVXML_manifest.json'
     if(branch == null){
         echo "branch name assignment"
         branch = env.BRANCH_NAME
@@ -16,17 +19,7 @@ timestamps {
     node ('ubuntu-18-04-jdk') {
         deleteDir()
         stage("Git Checkout"){
-            checkout([
-                $class: 'GitSCM',
-                branches: [[name: "*/${branch}"]],
-                doGenerateSubmoduleConfigurations: false,
-                extensions: [],
-                submoduleCfg: [],
-                userRemoteConfigs: [
-                    [credentialsId: "${GIT_CREDENTIALS}",
-                    url: "${gitURLOpenVXML}"]
-                ]
-            ])
+            checkoutSourceCode(gitURLOpenVXML,env.GIT_CREDENTIALS,branch)
         }
         stage ('Build') {
             withEnv(["JAVA_HOME=${tool 'jdk8-191-oracle'}", "PATH+JAVA_HOME=${env.JAVA_HOME}/bin"]) {
@@ -44,6 +37,10 @@ timestamps {
             }
             stash includes: 'OpenVXML.zip', name: 'OpenVXML'
         }
+        stage ('Create manifest file') {
+            createManifest('OpenVXML', gitURLOpenVXML, env.GIT_CREDENTIALS, manifestFile)
+            stash includes: "${manifestFile}", name: 'ManifestJson'
+        }
     }
 
     node ('win-2016') {
@@ -55,6 +52,12 @@ timestamps {
                 rem Copy the OpenVXML
                 xcopy /y /i /s /e "%WORKSPACE%\\OpenVXML" "${buildLocation}"
             """ 
+        }
+        stage ('Publish Manifest Json') {
+            unstash 'ManifestJson'
+            bat """
+                xcopy /y /i /s "%WORKSPACE%\\${manifestFile}" "${buildLocation}*"
+            """
         }
     }   
 }
