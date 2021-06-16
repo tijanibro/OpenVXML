@@ -81,6 +81,7 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 	Combo destinationType;
 	Composite destinationComp;
 	StackLayout destinationLayout;
+	StackLayout transferLayout;
 	Composite destinationValueComp;
 	Text destinationValue;
 	Composite destinationExprComp;
@@ -90,6 +91,9 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 	List<Variable> variables = new ArrayList<Variable>();
 	Label transferTypeLabel;
 	Combo transferType;
+	Composite transferComp;
+	Composite transferExprComp;
+	Text transferExpr;
 
 	public AdvancedTransferGeneralPropertiesPanel(String name,
 			IDesignElement ppe) {
@@ -132,15 +136,48 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 		transferTypeLabel = new Label(comp, SWT.NONE);
 		transferTypeLabel.setText("Transfer Type: ");
 		transferTypeLabel.setLayoutData(new GridData());
+		
+		Composite dc1 = new Composite(comp, SWT.NONE);
+		dc1.setBackground(comp.getBackground());
+		GridLayout gridLayout = new GridLayout(2, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		dc1.setLayout(gridLayout);
+		GridData gd1 = new GridData(SWT.FILL, SWT.FILL, true, true);
+		dc1.setLayoutData(gd1);
 
-		transferType = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY
+		transferType = new Combo(dc1, SWT.DROP_DOWN | SWT.READ_ONLY
 				| SWT.SINGLE);
 		transferType.setText("Transfer Type: ");
 		transferType.add("Blind");
 		transferType.add("Bridge");
 		transferType.add("Consultation");
+		transferType.add("expression");
 		transferType.select(0);
 		transferType.setLayoutData(new GridData());
+		transferType.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				transferTypeChanged();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+		transferComp = new Composite(dc1, SWT.NONE);
+		transferComp.setBackground(dc1.getBackground());
+		transferComp.setLayout(transferLayout = new StackLayout());
+		transferComp.setLayoutData(new GridData(GridData.FILL_BOTH));
+		transferExprComp = new Composite(transferComp, SWT.NONE);
+		transferExprComp.setBackground(transferComp.getBackground());
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginWidth = layout.marginHeight = 0;
+		transferExprComp.setLayout(layout);
+		transferExpr = new Text(transferExprComp, SWT.SINGLE | SWT.BORDER);
+		transferExpr.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		transferLayout.topControl = transferExprComp;
+		transferComp.layout();
 
 		Label valueLabel = new Label(comp, SWT.NONE);
 		valueLabel.setText("Destination: ");
@@ -152,7 +189,7 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 
 		Composite dc2 = new Composite(comp, SWT.NONE);
 		dc2.setBackground(comp.getBackground());
-		GridLayout gridLayout = new GridLayout(2, false);
+		gridLayout = new GridLayout(2, false);
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		dc2.setLayout(gridLayout);
@@ -183,7 +220,7 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 		destinationComp.setLayoutData(new GridData(GridData.FILL_BOTH));
 		destinationValueComp = new Composite(destinationComp, SWT.NONE);
 		destinationValueComp.setBackground(destinationComp.getBackground());
-		GridLayout layout = new GridLayout(1, false);
+		layout = new GridLayout(1, false);
 		layout.marginWidth = layout.marginHeight = 0;
 		destinationValueComp.setLayout(layout);
 		destinationValue = new Text(destinationValueComp, SWT.SINGLE
@@ -233,6 +270,18 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 		}
 		destinationComp.layout();
 	}
+	
+	private void transferTypeChanged() {
+		System.out.println("Transfer listener" + transferType.getSelectionIndex());
+		switch (transferType.getSelectionIndex()){
+		case 3:
+			transferLayout.topControl = transferExprComp;
+			break;
+		default:
+			transferLayout.topControl = null;
+		}
+		transferComp.layout();
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -246,6 +295,7 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 	@Override
 	public void setConfigurationContext(Map<String, Object> values) {
 		if (!(currentBrand == null)) {
+			System.out.println("setting changes");
 			storeBindings();
 		}
 
@@ -344,18 +394,24 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 		if (transferTypePropertyItem == null) {
 			transferTypePropertyItem = new PropertyBindingItem();
 		}
+		System.out.println("in setConfigurationContext: "+transferTypePropertyItem.getValue());
 		if (transferTypePropertyItem.getValue() != null) {
 			if (transferTypePropertyItem.getValue().equals("bridge")) {
 				transferType.select(1);
 			} else if (transferTypePropertyItem.getValue().equals(
 					"consultation")) {
 				transferType.select(2);
-			} else {
+			} else if(transferTypePropertyItem.getValue().equals("blind")){
 				transferType.select(0);
+			} else {
+				transferExpr.setText(transferTypePropertyItem.getValue());
+				transferType.select(3);
+				
 			}
 		} else {
 			transferType.select(0);
 		}
+		transferTypeChanged();
 	}
 
 	/*
@@ -369,6 +425,7 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 	public void save() {
 		try {
 			getElement().setName(nameField.getText());
+			System.out.println("saving changes");
 			storeBindings();
 			getElement().commitConfigurationChanges(bindingManager);
 		} catch (Exception ex) {
@@ -529,6 +586,7 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 				transferTypePropertyItem = (PropertyBindingItem) transferTypePropertyItem
 						.clone();
 			}
+			System.out.println("in storebinding: "+transferType.getSelectionIndex());
 			switch (transferType.getSelectionIndex()) {
 			case (1):
 				transferTypePropertyItem.setValue("bridge");
@@ -536,8 +594,13 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 			case (2):
 				transferTypePropertyItem.setValue("consultation");
 				break;
+			case (3):
+				transferTypePropertyItem.setValue(transferExpr.getText());
+				System.out.println(transferTypePropertyItem.getValue());
+				break;
 			default:
 				transferTypePropertyItem.setValue("blind");
+				System.out.println("default: "+ transferTypePropertyItem.getValue());
 				break;
 			}
 			brandBinding.setBindingItem(transferTypePropertyItem);
