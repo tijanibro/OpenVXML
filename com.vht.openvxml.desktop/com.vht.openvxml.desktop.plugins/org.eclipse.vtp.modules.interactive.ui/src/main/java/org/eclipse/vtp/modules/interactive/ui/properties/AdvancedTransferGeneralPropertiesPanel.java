@@ -355,6 +355,28 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 			typeIndex = 1;
 		}
 		destinationType.select(typeIndex);
+		
+		int transferTypeIndex = 0;
+		namedBinding = interactionBinding.getNamedBinding("transfer-type");
+		if (namedBinding.getLanguageBinding(currentLanguage)
+				.getBrandBinding(currentBrand).getBindingItem() == null) {
+			languageBinding = namedBinding.getLanguageBinding("");
+		} else {
+			languageBinding = namedBinding.getLanguageBinding(currentLanguage);
+		}
+		brandBinding = languageBinding.getBrandBinding(currentBrand);
+		PropertyBindingItem transferPropertyItem = (PropertyBindingItem) brandBinding
+				.getBindingItem();
+		if (transferPropertyItem == null) {
+			transferPropertyItem = new PropertyBindingItem();
+		}
+		if ("variable".equalsIgnoreCase(transferPropertyItem.getValue())) {
+			transferTypeIndex = 2;
+		} else if ("expression".equalsIgnoreCase(transferPropertyItem.getValue())) {
+			transferTypeIndex = 3;
+		}
+		transferType.select(transferTypeIndex);
+		
 		namedBinding = interactionBinding.getNamedBinding("destination");
 		if (namedBinding.getLanguageBinding(currentLanguage)
 				.getBrandBinding(currentBrand).getBindingItem() == null) {
@@ -606,7 +628,7 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 			}
 			brandBinding.setBindingItem(transferTypePropertyItem);
 			if(transferType.getSelectionIndex() == 3){
-				namedBinding = interactionBinding.getNamedBinding("type");
+				namedBinding = interactionBinding.getNamedBinding("transfer-type");
 				languageBinding = namedBinding.getLanguageBinding(currentLanguage);
 				brandBinding = languageBinding.getBrandBinding(currentBrand);
 				type = "expression";
