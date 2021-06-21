@@ -595,7 +595,8 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 				transferTypePropertyItem.setValue("consultation");
 				break;
 			case (3):
-				transferTypePropertyItem.setValue(transferExpr.getText());
+				transferTypePropertyItem.setExpression(transferExpr.getText());
+//				transferTypePropertyItem.setValue(transferExpr.getText());
 				System.out.println(transferTypePropertyItem.getValue());
 				break;
 			default:
