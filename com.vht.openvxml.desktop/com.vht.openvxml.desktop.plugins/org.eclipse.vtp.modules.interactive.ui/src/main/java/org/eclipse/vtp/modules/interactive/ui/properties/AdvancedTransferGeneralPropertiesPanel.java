@@ -605,6 +605,21 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 				break;
 			}
 			brandBinding.setBindingItem(transferTypePropertyItem);
+			if(transferType.getSelectionIndex() == 3){
+				namedBinding = interactionBinding.getNamedBinding("type");
+				languageBinding = namedBinding.getLanguageBinding(currentLanguage);
+				brandBinding = languageBinding.getBrandBinding(currentBrand);
+				type = "expression";
+				typePropertyItem = (PropertyBindingItem) brandBinding.getBindingItem();
+				if (typePropertyItem == null) {
+					typePropertyItem = new PropertyBindingItem();
+				} else {
+					typePropertyItem = (PropertyBindingItem) typePropertyItem
+							.clone();
+				}
+				typePropertyItem.setValue(type);
+				brandBinding.setBindingItem(typePropertyItem);
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
