@@ -176,7 +176,6 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 		transferExprComp.setLayout(layout);
 		transferExpr = new Text(transferExprComp, SWT.SINGLE | SWT.BORDER);
 		transferExpr.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-//		transferLayout.topControl = transferExprComp;
 		transferComp.layout();
 
 		Label valueLabel = new Label(comp, SWT.NONE);
@@ -272,7 +271,6 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 	}
 	
 	private void transferTypeChanged() {
-		System.out.println("Transfer listener" + transferType.getSelectionIndex());
 		switch (transferType.getSelectionIndex()){
 		case 3:
 			transferLayout.topControl = transferExprComp;
@@ -295,7 +293,6 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 	@Override
 	public void setConfigurationContext(Map<String, Object> values) {
 		if (!(currentBrand == null)) {
-			System.out.println("setting changes");
 			storeBindings();
 		}
 
@@ -370,9 +367,7 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 		if (transferPropertyItem == null) {
 			transferPropertyItem = new PropertyBindingItem();
 		}
-		if ("variable".equalsIgnoreCase(transferPropertyItem.getValue())) {
-			transferTypeIndex = 2;
-		} else if ("expression".equalsIgnoreCase(transferPropertyItem.getValue())) {
+		if ("expression".equalsIgnoreCase(transferPropertyItem.getValue())) {
 			transferTypeIndex = 3;
 		}
 		transferType.select(transferTypeIndex);
@@ -416,7 +411,6 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 		if (transferTypePropertyItem == null) {
 			transferTypePropertyItem = new PropertyBindingItem();
 		}
-		System.out.println("in setConfigurationContext: "+transferTypePropertyItem.getValue());
 		if (transferTypePropertyItem.getValue() != null) {
 			if (transferTypePropertyItem.getValue().equals("bridge")) {
 				transferType.select(1);
@@ -447,7 +441,6 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 	public void save() {
 		try {
 			getElement().setName(nameField.getText());
-			System.out.println("saving changes");
 			storeBindings();
 			getElement().commitConfigurationChanges(bindingManager);
 		} catch (Exception ex) {
@@ -608,7 +601,6 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 				transferTypePropertyItem = (PropertyBindingItem) transferTypePropertyItem
 						.clone();
 			}
-			System.out.println("in storebinding: "+transferType.getSelectionIndex());
 			switch (transferType.getSelectionIndex()) {
 			case (1):
 				transferTypePropertyItem.setValue("bridge");
@@ -618,30 +610,30 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 				break;
 			case (3):
 				transferTypePropertyItem.setExpression(transferExpr.getText());
-//				transferTypePropertyItem.setValue(transferExpr.getText());
-				System.out.println(transferTypePropertyItem.getValue());
 				break;
 			default:
 				transferTypePropertyItem.setValue("blind");
-				System.out.println("default: "+ transferTypePropertyItem.getValue());
 				break;
 			}
 			brandBinding.setBindingItem(transferTypePropertyItem);
+
+			namedBinding = interactionBinding.getNamedBinding("transfer-type");
+			languageBinding = namedBinding.getLanguageBinding(currentLanguage);
+			brandBinding = languageBinding.getBrandBinding(currentBrand);
 			if(transferType.getSelectionIndex() == 3){
-				namedBinding = interactionBinding.getNamedBinding("transfer-type");
-				languageBinding = namedBinding.getLanguageBinding(currentLanguage);
-				brandBinding = languageBinding.getBrandBinding(currentBrand);
 				type = "expression";
-				typePropertyItem = (PropertyBindingItem) brandBinding.getBindingItem();
-				if (typePropertyItem == null) {
-					typePropertyItem = new PropertyBindingItem();
-				} else {
-					typePropertyItem = (PropertyBindingItem) typePropertyItem
-							.clone();
-				}
-				typePropertyItem.setValue(type);
-				brandBinding.setBindingItem(typePropertyItem);
+			}else{
+				type = "static";
 			}
+			typePropertyItem = (PropertyBindingItem) brandBinding.getBindingItem();
+			if (typePropertyItem == null) {
+				typePropertyItem = new PropertyBindingItem();
+			} else {
+				typePropertyItem = (PropertyBindingItem) typePropertyItem
+						.clone();
+			}
+			typePropertyItem.setValue(type);
+			brandBinding.setBindingItem(typePropertyItem);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
