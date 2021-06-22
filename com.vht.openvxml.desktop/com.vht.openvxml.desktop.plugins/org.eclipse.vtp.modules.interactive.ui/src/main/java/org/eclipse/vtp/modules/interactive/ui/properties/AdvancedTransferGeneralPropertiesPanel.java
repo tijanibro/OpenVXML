@@ -353,24 +353,24 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 		}
 		destinationType.select(typeIndex);
 		
-		int transferTypeIndex = 0;
-		namedBinding = interactionBinding.getNamedBinding("transfer-type");
-		if (namedBinding.getLanguageBinding(currentLanguage)
-				.getBrandBinding(currentBrand).getBindingItem() == null) {
-			languageBinding = namedBinding.getLanguageBinding("");
-		} else {
-			languageBinding = namedBinding.getLanguageBinding(currentLanguage);
-		}
-		brandBinding = languageBinding.getBrandBinding(currentBrand);
-		PropertyBindingItem transferPropertyItem = (PropertyBindingItem) brandBinding
-				.getBindingItem();
-		if (transferPropertyItem == null) {
-			transferPropertyItem = new PropertyBindingItem();
-		}
-		if ("expression".equalsIgnoreCase(transferPropertyItem.getValue())) {
-			transferTypeIndex = 3;
-		}
-		transferType.select(transferTypeIndex);
+//		int transferTypeIndex = 0;
+//		namedBinding = interactionBinding.getNamedBinding("transfer-type");
+//		if (namedBinding.getLanguageBinding(currentLanguage)
+//				.getBrandBinding(currentBrand).getBindingItem() == null) {
+//			languageBinding = namedBinding.getLanguageBinding("");
+//		} else {
+//			languageBinding = namedBinding.getLanguageBinding(currentLanguage);
+//		}
+//		brandBinding = languageBinding.getBrandBinding(currentBrand);
+//		PropertyBindingItem transferPropertyItem = (PropertyBindingItem) brandBinding
+//				.getBindingItem();
+//		if (transferPropertyItem == null) {
+//			transferPropertyItem = new PropertyBindingItem();
+//		}
+//		if ("expression".equalsIgnoreCase(transferPropertyItem.getValue())) {
+//			transferTypeIndex = 3;
+//		}
+//		transferType.select(transferTypeIndex);
 		
 		namedBinding = interactionBinding.getNamedBinding("destination");
 		if (namedBinding.getLanguageBinding(currentLanguage)
@@ -617,23 +617,23 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 			}
 			brandBinding.setBindingItem(transferTypePropertyItem);
 
-			namedBinding = interactionBinding.getNamedBinding("transfer-type");
-			languageBinding = namedBinding.getLanguageBinding(currentLanguage);
-			brandBinding = languageBinding.getBrandBinding(currentBrand);
-			if(transferType.getSelectionIndex() == 3){
-				type = "expression";
-			}else{
-				type = "static";
-			}
-			typePropertyItem = (PropertyBindingItem) brandBinding.getBindingItem();
-			if (typePropertyItem == null) {
-				typePropertyItem = new PropertyBindingItem();
-			} else {
-				typePropertyItem = (PropertyBindingItem) typePropertyItem
-						.clone();
-			}
-			typePropertyItem.setValue(type);
-			brandBinding.setBindingItem(typePropertyItem);
+//			namedBinding = interactionBinding.getNamedBinding("transfer-type");
+//			languageBinding = namedBinding.getLanguageBinding(currentLanguage);
+//			brandBinding = languageBinding.getBrandBinding(currentBrand);
+//			if(transferType.getSelectionIndex() == 3){
+//				type = "expression";
+//			}else{
+//				type = "static";
+//			}
+//			typePropertyItem = (PropertyBindingItem) brandBinding.getBindingItem();
+//			if (typePropertyItem == null) {
+//				typePropertyItem = new PropertyBindingItem();
+//			} else {
+//				typePropertyItem = (PropertyBindingItem) typePropertyItem
+//						.clone();
+//			}
+//			typePropertyItem.setValue(type);
+//			brandBinding.setBindingItem(typePropertyItem);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
