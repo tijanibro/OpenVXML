@@ -81,6 +81,7 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 	Combo destinationType;
 	Composite destinationComp;
 	StackLayout destinationLayout;
+	StackLayout transferLayout;
 	Composite destinationValueComp;
 	Text destinationValue;
 	Composite destinationExprComp;
@@ -90,6 +91,9 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 	List<Variable> variables = new ArrayList<Variable>();
 	Label transferTypeLabel;
 	Combo transferType;
+	Composite transferComp;
+	Composite transferExprComp;
+	Text transferExpr;
 
 	public AdvancedTransferGeneralPropertiesPanel(String name,
 			IDesignElement ppe) {
@@ -132,15 +136,47 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 		transferTypeLabel = new Label(comp, SWT.NONE);
 		transferTypeLabel.setText("Transfer Type: ");
 		transferTypeLabel.setLayoutData(new GridData());
+		
+		Composite dc1 = new Composite(comp, SWT.NONE);
+		dc1.setBackground(comp.getBackground());
+		GridLayout gridLayout = new GridLayout(2, false);
+		gridLayout.marginWidth = 0;
+		gridLayout.marginHeight = 0;
+		dc1.setLayout(gridLayout);
+		GridData gd1 = new GridData(SWT.FILL, SWT.FILL, true, true);
+		dc1.setLayoutData(gd1);
 
-		transferType = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY
+		transferType = new Combo(dc1, SWT.DROP_DOWN | SWT.READ_ONLY
 				| SWT.SINGLE);
 		transferType.setText("Transfer Type: ");
 		transferType.add("Blind");
 		transferType.add("Bridge");
 		transferType.add("Consultation");
+		transferType.add("expression");
 		transferType.select(0);
 		transferType.setLayoutData(new GridData());
+		transferType.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				transferTypeChanged();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+		transferComp = new Composite(dc1, SWT.NONE);
+		transferComp.setBackground(dc1.getBackground());
+		transferComp.setLayout(transferLayout = new StackLayout());
+		transferComp.setLayoutData(new GridData(GridData.FILL_BOTH));
+		transferExprComp = new Composite(transferComp, SWT.NONE);
+		transferExprComp.setBackground(transferComp.getBackground());
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginWidth = layout.marginHeight = 0;
+		transferExprComp.setLayout(layout);
+		transferExpr = new Text(transferExprComp, SWT.SINGLE | SWT.BORDER);
+		transferExpr.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		transferComp.layout();
 
 		Label valueLabel = new Label(comp, SWT.NONE);
 		valueLabel.setText("Destination: ");
@@ -152,7 +188,7 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 
 		Composite dc2 = new Composite(comp, SWT.NONE);
 		dc2.setBackground(comp.getBackground());
-		GridLayout gridLayout = new GridLayout(2, false);
+		gridLayout = new GridLayout(2, false);
 		gridLayout.marginWidth = 0;
 		gridLayout.marginHeight = 0;
 		dc2.setLayout(gridLayout);
@@ -183,7 +219,7 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 		destinationComp.setLayoutData(new GridData(GridData.FILL_BOTH));
 		destinationValueComp = new Composite(destinationComp, SWT.NONE);
 		destinationValueComp.setBackground(destinationComp.getBackground());
-		GridLayout layout = new GridLayout(1, false);
+		layout = new GridLayout(1, false);
 		layout.marginWidth = layout.marginHeight = 0;
 		destinationValueComp.setLayout(layout);
 		destinationValue = new Text(destinationValueComp, SWT.SINGLE
@@ -232,6 +268,17 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 			destinationLayout.topControl = destinationValueComp;
 		}
 		destinationComp.layout();
+	}
+	
+	private void transferTypeChanged() {
+		switch (transferType.getSelectionIndex()){
+		case 3:
+			transferLayout.topControl = transferExprComp;
+			break;
+		default:
+			transferLayout.topControl = null;
+		}
+		transferComp.layout();
 	}
 
 	/*
@@ -305,6 +352,7 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 			typeIndex = 1;
 		}
 		destinationType.select(typeIndex);
+		
 		namedBinding = interactionBinding.getNamedBinding("destination");
 		if (namedBinding.getLanguageBinding(currentLanguage)
 				.getBrandBinding(currentBrand).getBindingItem() == null) {
@@ -350,12 +398,17 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 			} else if (transferTypePropertyItem.getValue().equals(
 					"consultation")) {
 				transferType.select(2);
-			} else {
+			} else if(transferTypePropertyItem.getValue().equals("blind")){
 				transferType.select(0);
+			} else {
+				transferExpr.setText(transferTypePropertyItem.getValue());
+				transferType.select(3);
+				
 			}
 		} else {
 			transferType.select(0);
 		}
+		transferTypeChanged();
 	}
 
 	/*
@@ -531,13 +584,16 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 			}
 			switch (transferType.getSelectionIndex()) {
 			case (1):
-				transferTypePropertyItem.setValue("bridge");
+				transferTypePropertyItem.setStaticValue("bridge");
 				break;
 			case (2):
-				transferTypePropertyItem.setValue("consultation");
+				transferTypePropertyItem.setStaticValue("consultation");
+				break;
+			case (3):
+				transferTypePropertyItem.setExpression(transferExpr.getText());
 				break;
 			default:
-				transferTypePropertyItem.setValue("blind");
+				transferTypePropertyItem.setStaticValue("blind");
 				break;
 			}
 			brandBinding.setBindingItem(transferTypePropertyItem);
