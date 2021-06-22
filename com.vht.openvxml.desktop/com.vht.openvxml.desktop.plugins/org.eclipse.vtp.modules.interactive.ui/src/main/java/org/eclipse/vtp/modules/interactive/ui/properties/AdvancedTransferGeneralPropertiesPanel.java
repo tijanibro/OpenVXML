@@ -603,16 +603,16 @@ public class AdvancedTransferGeneralPropertiesPanel extends
 			}
 			switch (transferType.getSelectionIndex()) {
 			case (1):
-				transferTypePropertyItem.setValue("bridge");
+				transferTypePropertyItem.setStaticValue("bridge");
 				break;
 			case (2):
-				transferTypePropertyItem.setValue("consultation");
+				transferTypePropertyItem.setStaticValue("consultation");
 				break;
 			case (3):
 				transferTypePropertyItem.setExpression(transferExpr.getText());
 				break;
 			default:
-				transferTypePropertyItem.setValue("blind");
+				transferTypePropertyItem.setStaticValue("blind");
 				break;
 			}
 			brandBinding.setBindingItem(transferTypePropertyItem);
