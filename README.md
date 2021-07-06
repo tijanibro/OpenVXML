@@ -18,6 +18,7 @@
 > Current location is at
 > 
 >  Windows: https://archive.eclipse.org/technology/epp/downloads/release/kepler/SR2-with-Java8-patches/eclipse-rcp-kepler-SR2-Java8-win32-x86_64.zip
+>  
 >  Mac: https://archive.eclipse.org/technology/epp/downloads/release/kepler/SR2-with-Java8-patches/eclipse-rcp-kepler-SR2-Java8-macosx-cocoa.tar.gz
 
 
