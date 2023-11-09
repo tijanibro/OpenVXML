@@ -98,6 +98,7 @@ public class MediaLibrarySelection implements IMediaLibrarySelection,
 	 */
 	@Override
 	public boolean setSelectedMediaLibrary(String libraryId) {
+		context.info("-----before media libraryId: "+ libraryId);
 		context.info("Setting media library to: "
 				+ (libraryId == null ? "Default" : libraryId));
 		context.info("-----media libraryId: "+ libraryId);
