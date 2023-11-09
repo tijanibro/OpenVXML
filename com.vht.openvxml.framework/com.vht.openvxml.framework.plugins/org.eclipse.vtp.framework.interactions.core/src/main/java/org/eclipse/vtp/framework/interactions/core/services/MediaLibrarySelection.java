@@ -62,21 +62,30 @@ public class MediaLibrarySelection implements IMediaLibrarySelection,
 	public String getSelectedMediaLibrary() {
 		String interactionTypeID = interactionTypeSelection
 				.getSelectedInteractionType().getId();
+		context.info("-----get media interactionTypeID: "+ interactionTypeID);
 		String languageID = languageSelection.getSelectedLanguage();
+		context.info("-----get media languageID: "+ languageID);
 		IBrand brand = brandSelection.getSelectedBrand();
+		context.info("-----get media brand: "+ brand);
 		context.info("Brand: " + brand.getId() + "Interaction Type: "
 				+ interactionTypeID + "Language: " + languageID);
 		String mediaProviderId = mediaProviderRegistry.lookupMediaProviderID(
 				brand.getId(), interactionTypeID, languageID);
+		context.info("-----get media mediaProviderId: "+ mediaProviderId);
 		IMediaProvider mediaProvider = mediaProviderRegistry
 				.getMediaProvider(mediaProviderId);
 		IResourceManager resourceManager = mediaProvider.getResourceManager();
 		String id = (String) context.getAttribute("library.selection"); //$NON-NLS-1$
+		context.info("-----get media id: "+ id);
 		if (id == null || id.equals("")) {
+			context.info("-----get getInheritedAttribute id--");
 			id = (String) context.getInheritedAttribute("library.selection");
+			context.info("-----get getInheritedAttribute id: "+ id);
 		}
 		if (id == null || id.equals("") || !resourceManager.hasMediaLibrary(id)) {
+			context.info("-----get Default id-- ");
 			id = "Default";
+			context.info("-----get Default id: "+ id);
 		}
 		return id;
 	}
