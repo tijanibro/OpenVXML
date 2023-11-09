@@ -91,23 +91,33 @@ public class MediaLibrarySelection implements IMediaLibrarySelection,
 	public boolean setSelectedMediaLibrary(String libraryId) {
 		context.info("Setting media library to: "
 				+ (libraryId == null ? "Default" : libraryId));
+		context.info("-----media libraryId: "+ libraryId);
 		if (libraryId == null) {
+			context.info("-----media libraryId is null ");
 			context.clearAttribute("library.selection"); //$NON-NLS-1$
 			return true;
 		}
+		context.info("-----media libraryId is not null ");
 		String interactionTypeID = interactionTypeSelection
 				.getSelectedInteractionType().getId();
+		context.info("-----media interactionTypeID: "+ interactionTypeID);
 		String languageID = languageSelection.getSelectedLanguage();
+		context.info("-----media languageID: "+ languageID);
 		IBrand brand = brandSelection.getSelectedBrand();
+		context.info("-----media brand: "+ brand);
 		String mediaProviderId = mediaProviderRegistry.lookupMediaProviderID(
 				brand.getId(), interactionTypeID, languageID);
+		context.info("-----media mediaProviderId: "+ mediaProviderId);
 		IMediaProvider mediaProvider = mediaProviderRegistry
 				.getMediaProvider(mediaProviderId);
+		context.info("-----media libraryId "+ libraryId);
 		IResourceManager resourceManager = mediaProvider.getResourceManager();
 		if (resourceManager.hasMediaLibrary(libraryId)) {
+			context.info("-----media libraryId present: "+ libraryId);
 			context.setAttribute("library.selection", libraryId);
 			return true;
 		} else {
+			context.info("-----media libraryId absent: "+ libraryId);
 			context.info("Media library "
 					+ (libraryId == null ? "Default" : libraryId)
 					+ " not found.  Library not modified.");
