@@ -21,7 +21,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrariesFolder;
+import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrary;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaObject;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaObjectContainer;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProject;
@@ -53,6 +55,9 @@ public abstract class MediaProject extends MediaObject implements IMediaProject 
 		this.project = project;
 		try {
 			IFile buildPath = project.getFile(".config");
+			//-----media start
+			System.out.println(" -----media MediaProject buildPath getFullPath :"+ buildPath.getFullPath());
+			//-----media end
 			DocumentBuilderFactory buildFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder builder = buildFactory.newDocumentBuilder();

@@ -122,6 +122,8 @@ public class MediaLibrarySelection implements IMediaLibrarySelection,
 				.getMediaProvider(mediaProviderId);
 		context.info("-----media libraryId "+ libraryId);
 		IResourceManager resourceManager = mediaProvider.getResourceManager();
+		context.info("-----media resourceManager has libraryId: "+ resourceManager.hasMediaLibrary(libraryId));
+		
 		if (resourceManager.hasMediaLibrary(libraryId)) {
 			context.info("-----media libraryId present: "+ libraryId);
 			context.setAttribute("library.selection", libraryId);

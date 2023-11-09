@@ -262,6 +262,14 @@ public class ResourceGroup implements IResourceManager,
 	@Override
 	public boolean hasMediaLibrary(String libraryId) {
 		String libraryPath = "/" + libraryId + "/.library";
+		//-----media start
+		System.out.println("-----media resourceManager libraryPath: "+ libraryPath);
+		System.out.println("-----media resourceManager index: ---");  
+		for (Object item: index){
+		      System.out.println(" " + item);
+		  }
+		System.out.println("-----media resourceManager index End: ---");
+		//-----media end
 		return index.contains(libraryPath) || getResource(libraryPath) != null;
 	}
 

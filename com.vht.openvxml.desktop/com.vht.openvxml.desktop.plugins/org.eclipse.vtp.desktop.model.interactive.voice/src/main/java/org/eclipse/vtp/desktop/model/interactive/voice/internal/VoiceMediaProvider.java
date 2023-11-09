@@ -22,6 +22,7 @@ import org.eclipse.vtp.desktop.media.core.FormatterRegistration;
 import org.eclipse.vtp.desktop.media.core.FormatterRegistrationManager;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaContainer;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrariesFolder;
+import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrary;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaObject;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaResource;
 import org.eclipse.vtp.desktop.model.interactive.core.content.ContentType;
@@ -204,6 +205,16 @@ public class VoiceMediaProvider implements IMediaProvider {
 		@Override
 		public boolean hasMediaLibrary(String libraryId) {
 			IMediaLibrariesFolder libraries = project.getMediaLibrariesFolder();
+			System.out.println("-----media hasMediaLibrary libraryId: "+ libraryId);
+			//-----media start
+			try {
+				List<IMediaLibrary> mediaLibraries = libraries.getMediaLibraries();
+				
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//-----media end
 			return libraries.getMediaLibrary(libraryId) != null;
 		}
 	}
