@@ -11,6 +11,7 @@
  -------------------------------------------------------------------------*/
 package org.eclipse.vtp.desktop.model.interactive.core.internal;
 
+import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,9 +22,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrariesFolder;
-import org.eclipse.vtp.desktop.model.interactive.core.IMediaLibrary;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaObject;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaObjectContainer;
 import org.eclipse.vtp.desktop.model.interactive.core.IMediaProject;
@@ -66,7 +65,20 @@ public abstract class MediaProject extends MediaObject implements IMediaProject 
 				buildPath.refreshLocal(IResource.DEPTH_INFINITE, null);
 			}
 
+
+			
 			Document doc = builder.parse(buildPath.getContents());
+			//-----media start
+			 ByteArrayOutputStream contentsResult = new ByteArrayOutputStream();
+			 byte[] buffer = new byte[5024];
+			 for (int length; (length = buildPath.getContents().read(buffer)) != -1; ) {
+				 contentsResult.write(buffer, 0, length);
+			 }
+			// StandardCharsets.UTF_8.name() > JDK 7
+			String  fullContentsResult = contentsResult.toString("UTF-8");
+			System.out.println(" -----media MediaProject buildPath.getContents() :"+ fullContentsResult);
+			System.out.println(" -----media MediaProject buildPath.getContents() end ------ :");
+			//-----media end
 			Element root = doc.getDocumentElement();
 			loadConfig(root);
 		} catch (Exception e) {
