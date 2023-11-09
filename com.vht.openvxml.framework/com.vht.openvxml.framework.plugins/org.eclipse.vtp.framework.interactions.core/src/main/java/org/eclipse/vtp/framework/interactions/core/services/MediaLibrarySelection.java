@@ -130,6 +130,7 @@ public class MediaLibrarySelection implements IMediaLibrarySelection,
 			return true;
 		} else {
 			context.info("-----media libraryId absent: "+ libraryId);
+			context.setAttribute("library.selection", libraryId);
 			context.info("Media library "
 					+ (libraryId == null ? "Default" : libraryId)
 					+ " not found.  Library not modified.");
