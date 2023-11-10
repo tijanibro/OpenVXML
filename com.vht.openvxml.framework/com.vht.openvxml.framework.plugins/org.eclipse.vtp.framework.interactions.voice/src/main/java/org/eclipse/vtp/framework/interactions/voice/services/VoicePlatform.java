@@ -230,7 +230,12 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 	@Override
 	protected IDocument renderOutputMessage(ILinkFactory links,
 			OutputMessageCommand outputMessageCommand) {
-		context.info("-----media renderOutputMessage case -----------");
+		context.info("-----media renderOutputMessage  -----------");
+		context.info("-----media renderOutputMessage outputMessageCommand Map start-----------" );
+		String[] h = outputMessageCommand.getPropertyNames();
+		context.info("" + h);
+		context.info("-----media renderOutputMessage outputMessageCommand Map End-----------" );
+		context.info("-----media renderOutputMessage outputMessageCommand -----------" + outputMessageCommand.toString());
 		String bargeIn = outputMessageCommand.getPropertyValue("barge-in"); //$NON-NLS-1$
 		if (Boolean.TRUE.toString().equalsIgnoreCase(bargeIn)) {
 			bargeIn = Boolean.TRUE.toString();
@@ -250,6 +255,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 			switch (outputMessageCommand.getOutputType(i)) {
 			case OutputMessageCommand.OUTPUT_TYPE_FILE:
 				context.info("-----media renderOutputMessage case -----------");
+				context.info("-----media renderOutputMessage case outputValue : -----------" + outputValue);
 				outputs.addOutput(generateAudioChain(links, outputValue));
 				break;
 			case OutputMessageCommand.OUTPUT_TYPE_TEXT: {
