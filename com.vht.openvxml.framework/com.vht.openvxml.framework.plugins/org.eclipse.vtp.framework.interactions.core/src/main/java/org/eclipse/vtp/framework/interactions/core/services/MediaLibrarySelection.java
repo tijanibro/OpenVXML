@@ -135,7 +135,9 @@ public class MediaLibrarySelection implements IMediaLibrarySelection,
 					+ (libraryId == null ? "Default" : libraryId)
 					+ " not found.  Library not modified.");
 		}
-		return false;
+		//----media
+		return true;
+		//return false;
 	}
 
 	@Override
