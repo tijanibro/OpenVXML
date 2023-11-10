@@ -238,6 +238,9 @@ public class Conversation implements IConversation {
 	public Output resolveFilePath(OutputConfiguration configuration,
 			String relativePath)
 	{
+		
+		context.info("-----media conversation resolveFilePath -----------: "+ relativePath);
+		
 		context.info("Resolving file path: " + relativePath);
 		Output fileOutput = new Output(Output.TYPE_FILE);
 		if (relativePath.startsWith("http://") || relativePath.startsWith("https://") || relativePath.startsWith("dtmf:"))
@@ -247,12 +250,16 @@ public class Conversation implements IConversation {
 		}
 		String interactionTypeID = interactionTypeSelection
 				.getSelectedInteractionType().getId();
+		context.info("-----media conversation resolveFilePath interactionTypeID-----------: "+ interactionTypeID);
 		String languageID = languageSelection.getSelectedLanguage();
+		context.info("-----media conversation resolveFilePath languageID-----------: "+ languageID);
 		IBrand brand = brandSelection.getSelectedBrand();
+		context.info("-----media conversation resolveFilePath brand-----------: "+ brand);
 		String mediaProviderID = null;
 		while (brand != null && mediaProviderID == null) {
 			mediaProviderID = mediaProviderRegistry.lookupMediaProviderID(
 					brand.getId(), interactionTypeID, languageID);
+			context.info("-----media conversation resolveFilePath mediaProviderID-----------: "+ mediaProviderID);
 			if (mediaProviderID != null) {
 				IMediaProvider provider = mediaProviderRegistry
 						.getMediaProvider(mediaProviderID);
@@ -267,20 +274,38 @@ public class Conversation implements IConversation {
 			}
 			mediaProviderID = null;
 			brand = brand.getParentBrand();
+			context.info("-----media conversation resolveFilePath brand-----------: "+ brand);
 		}
 		if (mediaProviderID == null)
 		{
+			context.info("-----media conversation resolveFilePath mediaProviderID == null-----------: ");
 //			context.info("Media provider is null");
 			fileOutput.setProperty("value", relativePath);
+			context.info("-----media conversation resolveFilePath mediaProviderID == null relativePath-----------: "+ relativePath);
+//			
 			return fileOutput;
 		}
+		context.info("-----media conversation resolveFilePath mediaProviderID -----------: "+ mediaProviderID);
+
 		fileOutput.setProperty("media-provider", mediaProviderID);
+		context.info("-----media conversation resolveFilePath mediaLibrarySelection.getSelectedMediaLibrary()  -----------: "+ mediaLibrarySelection.getSelectedMediaLibrary() );
+		context.info("-----media conversation resolveFilePath relativePath  -----------: "+ relativePath );
+
+
 		String fullPath = mediaLibrarySelection.getSelectedMediaLibrary() + (relativePath.startsWith("/") ? "" : "/") + relativePath;
+		context.info("-----media conversation resolveFilePath fullPath  -----------: "+ fullPath );
+
 		if(!mediaProviderRegistry.getMediaProvider(mediaProviderID).getResourceManager().isFileResource(fullPath))
 			fullPath = "Default" + (relativePath.startsWith("/") ? "" : "/") + relativePath;
+		context.info("-----media conversation resolveFilePath fullPath 2  -----------: "+ fullPath );
+
 //		context.info("set file output value: " + mediaProviderID + "/" + fullPath);
 		fileOutput.setProperty("value", mediaProviderID + "/" + fullPath);
+		context.info("-----media conversation resolveFilePath value -----------: "+  mediaProviderID + "/" + fullPath );
+
 		fileOutput.setProperty("original-path", relativePath);
+		context.info("-----media conversation resolveFilePath original-path  -----------: "+ relativePath );
+
 		return fileOutput;
 	}
 
@@ -790,7 +815,9 @@ public class Conversation implements IConversation {
 		 * AbstractInteraction#createCommand()
 		 */
 		ConversationCommand createCommand() {
+			context.info("-----media createCommand  -----------");
 			OutputMessageCommand command = new OutputMessageCommand();
+			context.info("-----media createCommand resultParameterName -----------: "+ resultParameterName);
 			command.setResultName(resultParameterName);
 			command.setFilledResultValue(RESULT_NAME_FILLED);
 			command.setHangupResultValue(RESULT_NAME_HANGUP);
@@ -810,6 +837,7 @@ public class Conversation implements IConversation {
 				}
 				OutputConfiguration outputConfiguration = mediaConfig
 						.getOutputConfiguration(configuration.getOutputName());
+				context.info("-----media createCommand outputConfiguration getOutputName-----------: "+ configuration.getOutputName());
 				List content = resolveOutput(outputConfiguration);
 				for (Iterator i = content.iterator(); i.hasNext();) {
 					Content item = (Content) i.next();
