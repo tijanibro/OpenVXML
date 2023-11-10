@@ -230,6 +230,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 	@Override
 	protected IDocument renderOutputMessage(ILinkFactory links,
 			OutputMessageCommand outputMessageCommand) {
+		context.info("-----media renderOutputMessage case -----------");
 		String bargeIn = outputMessageCommand.getPropertyValue("barge-in"); //$NON-NLS-1$
 		if (Boolean.TRUE.toString().equalsIgnoreCase(bargeIn)) {
 			bargeIn = Boolean.TRUE.toString();
@@ -248,6 +249,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 			String outputValue = outputMessageCommand.getOutputValue(i);
 			switch (outputMessageCommand.getOutputType(i)) {
 			case OutputMessageCommand.OUTPUT_TYPE_FILE:
+				context.info("-----media renderOutputMessage case -----------");
 				outputs.addOutput(generateAudioChain(links, outputValue));
 				break;
 			case OutputMessageCommand.OUTPUT_TYPE_TEXT: {
@@ -426,6 +428,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 	@Override
 	protected IDocument renderInputRequest(ILinkFactory links,
 			InputRequestCommand inputRequestCommand) {
+		context.info("-----media renderInputRequest -----------");
 		Form form = new Form("InputRequestForm"); //$NON-NLS-1$
 		String bargeIn = inputRequestCommand.getPropertyValue("barge-in"); //$NON-NLS-1$
 		if (Boolean.TRUE.toString().equalsIgnoreCase(bargeIn)) {
@@ -551,6 +554,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 			String outputValue = inputRequestCommand.getOutputValue(i);
 			switch (inputRequestCommand.getOutputType(i)) {
 			case InputRequestCommand.OUTPUT_TYPE_FILE:
+				context.info("-----media renderInputRequest case -----------");
 				outputs.addOutput(generateAudioChain(links, outputValue));
 				break;
 			case InputRequestCommand.OUTPUT_TYPE_TEXT:
@@ -783,6 +787,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 	@Override
 	protected IDocument renderSelectionRequest(ILinkFactory links,
 			SelectionRequestCommand selectionRequestCommand) {
+		context.info("-----media renderSelectionRequest -----------");
 		String bargeIn = getNormalizedBoolean(selectionRequestCommand
 				.getPropertyValue("barge-in")); //$NON-NLS-1$
 		TimeValue timeout = resolveTimeValue("initial-timeout",
@@ -822,6 +827,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 			String outputValue = selectionRequestCommand.getOutputValue(i);
 			switch (selectionRequestCommand.getOutputType(i)) {
 			case InputRequestCommand.OUTPUT_TYPE_FILE:
+				context.info("-----media renderSelectionRequest case -----------");
 				outputs.addOutput(generateAudioChain(links, outputValue));
 				break;
 			case InputRequestCommand.OUTPUT_TYPE_TEXT:
@@ -950,6 +956,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 							.getOptionOutputValue(i, j);
 					switch (selectionRequestCommand.getOptionOutputType(i, j)) {
 					case SelectionRequestCommand.OUTPUT_TYPE_FILE:
+						context.info("-----media renderSelectionRequest 2 case -----------");
 						outputs.addOutput(generateAudioChain(links,
 								optionOutputValue));
 						break;
@@ -1045,6 +1052,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 	@Override
 	protected IDocument renderDataRequest(ILinkFactory links,
 			DataRequestCommand dataRequestCommand) {
+		context.info("-----media renderDataRequest case -----------");
 		Form form = new Form("DataRequestForm"); //$NON-NLS-1$
 		String bargeIn = getNormalizedBoolean(dataRequestCommand
 				.getPropertyValue("barge-in")); //$NON-NLS-1$
@@ -1088,6 +1096,7 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 			String outputValue = dataRequestCommand.getOutputValue(i);
 			switch (dataRequestCommand.getOutputType(i)) {
 			case DataRequestCommand.OUTPUT_TYPE_FILE:
+				context.info("-----media renderDataRequest case -----------");
 				outputs.addOutput(generateAudioChain(links, outputValue));
 				break;
 			case DataRequestCommand.OUTPUT_TYPE_TEXT:
