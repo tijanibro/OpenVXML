@@ -186,9 +186,14 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 		"org.eclipse.vtp.framework.common.services.brand-registry"); //$NON-NLS-1$
 		Element defaultBrandElement = definition.createElementNS(
 				NAMESPACE_URI_COMMON, "common:brand"); //$NON-NLS-1$
+		System.out.println(" -----media DefinitionBuilder buildServices ------ :");
+		
 		BrandConfiguration defaultBrandConfiguration = new BrandConfiguration();
 		defaultBrandConfiguration.setId(defaultBrand.getId());
+		System.out.println(" -----media DefinitionBuilder buildServices defaultBrandConfiguration defaultBrand.getId()------ :" + defaultBrand.getId());
 		defaultBrandConfiguration.setName(defaultBrand.getName());
+		System.out.println(" -----media DefinitionBuilder buildServices defaultBrandConfiguration defaultBrand.getName()------ :" + defaultBrand.getName());
+		
 		buildBrandConfigurations(defaultBrand, defaultBrandConfiguration);
 		defaultBrandConfiguration.save(defaultBrandElement);
 		brandRegistryElement.appendChild(defaultBrandElement);
@@ -273,7 +278,11 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 						"interactions:language"); //$NON-NLS-1$
 				LanguageConfiguration language = new LanguageConfiguration();
 				language.setID(lang);
+				System.out.println(" -----media DefinitionBuilder buildServices language:------ :" + lang);
+				
 				language.setInteractionType(entry.getKey());
+				System.out.println(" -----media DefinitionBuilder buildServices entry.getKey():------ :" + entry.getKey());
+				
 				language.save(languageElement);
 				languageRegistryElement.appendChild(languageElement);
 			}
@@ -283,9 +292,15 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 		for (Map.Entry<String, String> entry : formatterIDsByLanguage
 				.entrySet()) {
 			String languageID = entry.getKey();
+			System.out.println(" -----media DefinitionBuilder buildServices languageID 1:------ :" + entry.getKey());
+			
 			String formatterID = entry.getValue();
+			System.out.println(" -----media DefinitionBuilder buildServices formatterID 1:------ :" + formatterID);
+			
 			String resourceManagerID = resourceManagerIDsByLanguage
 					.get(languageID);
+			System.out.println(" -----media DefinitionBuilder buildServices resourceManagerID 1:------ :" + resourceManagerID);
+			
 			IFormatter formatter = null;
 			FormatterRegistration reg = FormatterRegistrationManager
 					.getInstance().getFormatter(formatterID);
@@ -299,8 +314,12 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 			MediaProviderConfiguration mediaProvider = new MediaProviderConfiguration(
 					ContentLoadingManager.getInstance());
 			mediaProvider.setID(resourceManagerID);
+			System.out.println(" -----media DefinitionBuilder buildServices mediaProvider setID resourceManagerID:------ :" + resourceManagerID);
+			
 			mediaProvider.setFormatterID(formatterID);
+			System.out.println(" -----media DefinitionBuilder buildServices mediaProvider formatterID:------ :" + formatterID);
 			mediaProvider.setResourceManagerID(resourceManagerID);
+			System.out.println(" -----media DefinitionBuilder buildServices mediaProvider setResourceManagerID resourceManagerID:------ :" + resourceManagerID);
 			loadSharedContent(project, mediaProvider);
 			mediaProvider.save(mediaProviderElement);
 			mediaProviderRegistryElement.appendChild(mediaProviderElement);
@@ -310,8 +329,12 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 			MediaProviderBindingConfiguration mediaProviderBinding = //
 			new MediaProviderBindingConfiguration();
 			mediaProviderBinding.setKey(languageID);
+			System.out.println(" -----media DefinitionBuilder buildServices setKey languageID:------ :" + languageID);
+			
 			mediaProviderBinding.setMediaProviderID(mediaProvider.getID());
+			System.out.println(" -----media DefinitionBuilder buildServices mediaProvider.getID():------ :" + mediaProvider.getID());
 			mediaProviderBinding.save(mediaProviderBindingElement);
+			System.out.println(" -----media DefinitionBuilder buildServices mediaProviderBindingElement:------ :" + mediaProviderBindingElement);
 			mediaProviderRegistryElement
 					.appendChild(mediaProviderBindingElement);
 		}
@@ -332,12 +355,16 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 		IProject voiceProject = processProject.getWorkspace().getRoot()
 				.getProject(mediaProvider.getResourceManagerID());
 		IFile xmlFile = voiceProject.getFile("Voice.xml");
+		System.out.println(" -----media DefinitionBuilder buildServices loadSharedContent");
+		
 		String uri = "https://eclipse.org/vtp/xml/media/voice#1.0"; //$NON-NLS-1$
 		if (!xmlFile.exists()) {
 			xmlFile = voiceProject.getFile("Author.xml");
 			uri = "https://eclipse.org/vtp/xml/media/author#1.0"; //$NON-NLS-1$
 		}
 		Document voiceDocument = builder.parse(xmlFile.getLocation().toFile());
+		System.out.println(" -----media DefinitionBuilder loadSharedContent 2 ------ :");
+		
 		NodeList list = ((Element) voiceDocument.getDocumentElement()
 				.getElementsByTagNameNS(uri, "shared-content").item(0)) //$NON-NLS-1$
 				.getChildNodes();
@@ -353,7 +380,9 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 			sharedContent.setName(element.getAttributeNS(uri, "item-name")); //$NON-NLS-1$
 			sharedContent.setContent(contentFactory.loadContent(element));
 			mediaProvider.addSharedContent(sharedContent);
+			System.out.println(" -----media DefinitionBuilder loadSharedContent sharedContent ------ : " + sharedContent.getName());
 		}
+		System.out.println(" -----media DefinitionBuilder loadSharedContent end ------ :");
 	}
 
 	/**
@@ -370,6 +399,8 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 			BrandConfiguration childConfig = new BrandConfiguration();
 			childConfig.setId(child.getId());
 			childConfig.setName(child.getName());
+			System.out.println(" -----media DefinitionBuilder buildServices defaultBrandConfiguration buildBrandConfigurations- child.getName()----- :" + child.getName());
+			
 			config.addChild(childConfig);
 			buildBrandConfigurations(child, childConfig);
 		}
