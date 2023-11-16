@@ -439,6 +439,7 @@ public class WebApplicationExporter {
 	}
 
 	private void exportExternalMedia(MediaExporter project) throws Exception {
+		System.out.println("-----media exportExternalMedia  ");
 		FilenameFilter filter = new FilenameFilter() {
 
 			@Override
@@ -472,7 +473,7 @@ public class WebApplicationExporter {
 		Element resourcesElement = pluginXmlDoc.createElement("resources");
 		resourcesElement.setAttribute("id", project.getProject().getName());
 		resourcesElement.setAttribute("name", project.getProject().getName());
-		resourcesElement.setAttribute("path", "project/Media Libraries");
+		resourcesElement.setAttribute("path", "project");
 		extensionElement.appendChild(resourcesElement);
 		pluginElement.appendChild(extensionElement);
 		pluginXmlDoc.appendChild(pluginElement);
@@ -489,6 +490,7 @@ public class WebApplicationExporter {
 	}
 
 	private void indexMedia(StringBuilder index, IFolder toIndex) {
+		System.out.println("-----media exportExternalMedia indexMedia ");
 		try {
 			for (IResource r : toIndex.members()) {
 				if (r instanceof IFolder) {
@@ -496,6 +498,7 @@ public class WebApplicationExporter {
 				} else {
 					index.append(r.getProjectRelativePath().toString());
 					index.append("\r\n");
+					System.out.println("-----media exportExternalMedia getProjectRelativePath "+ r.getProjectRelativePath().toString());
 				}
 			}
 		} catch (CoreException e) {
@@ -576,7 +579,7 @@ public class WebApplicationExporter {
 		Element resourcesElement = pluginXmlDoc.createElement("resources");
 		resourcesElement.setAttribute("id", project.getProject().getName());
 		resourcesElement.setAttribute("name", project.getProject().getName());
-		resourcesElement.setAttribute("path", "project/Media Libraries");
+		resourcesElement.setAttribute("path", "project");
 		extensionElement.appendChild(resourcesElement);
 		pluginElement.appendChild(extensionElement);
 		pluginXmlDoc.appendChild(pluginElement);
