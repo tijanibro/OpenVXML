@@ -205,16 +205,6 @@ public class VoiceMediaProvider implements IMediaProvider {
 		@Override
 		public boolean hasMediaLibrary(String libraryId) {
 			IMediaLibrariesFolder libraries = project.getMediaLibrariesFolder();
-			System.out.println("-----media hasMediaLibrary libraryId: "+ libraryId);
-			//-----media start
-			try {
-				List<IMediaLibrary> mediaLibraries = libraries.getMediaLibraries();
-				
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			//-----media end
 			return libraries.getMediaLibrary(libraryId) != null;
 		}
 	}

@@ -261,21 +261,40 @@ public class ResourceGroup implements IResourceManager,
 	 */
 	@Override
 	public boolean isFileResource(String fullFilePath) {
+		System.out.println("-----media conversation ResourceGroup isFileResource fullFilePath----------- : "+ fullFilePath);
 		if (fullFilePath.startsWith("/")) {
 			fullFilePath = fullFilePath.substring(1);
 		}
 		int slashIndex = fullFilePath.indexOf('/');
 		if (slashIndex >= 0) {
 			String prefix = fullFilePath.substring(0, slashIndex);
+			System.out.println("-----media conversation ResourceGroup isFileResource prefix----------- : "+ prefix);
+			
 			String libraryFile = "/" + prefix + "/.library";
+			System.out.println("-----media conversation ResourceGroup isFileResource libraryFile----------- : "+ libraryFile);
+			
 			if (!index.contains(libraryFile)
 					&& getResource(libraryFile) == null) {
+				System.out.println("-----media conversation ResourceGroup isFileResource !index.contains----------- : "+ libraryFile);
+				
 				fullFilePath = "Default/" + fullFilePath;
+				System.out.println("-----media conversation ResourceGroup isFileResource !index.contains fullFilePath----------- : "+ fullFilePath);
+				
 			}
 		} else {
 			fullFilePath = "Default/" + fullFilePath;
+			System.out.println("-----media conversation ResourceGroup isFileResource index contains fullFilePath----------- : "+ fullFilePath);
+			
 		}
 		fullFilePath = "/" + fullFilePath;
+		System.out.println("-----media conversation ResourceGroup isFileResource fullFilePath 1----------- : "+ fullFilePath);
+		
+		System.out.println("-----media conversation ResourceGroup isFileResource !isDirectoryResource(fullFilePath)---------- : "+ !isDirectoryResource(fullFilePath));
+		
+		System.out.println("-----media conversation ResourceGroup isFileResource (index.contains(fullFilePath)----------- : "+ (index.contains(fullFilePath));
+		
+		System.out.println("-----media conversation ResourceGroup isFileResource getResource(fullFilePath) != null----------- : "+ getResource(fullFilePath) != null);
+		
 		return !isDirectoryResource(fullFilePath)
 				&& (index.contains(fullFilePath) || getResource(fullFilePath) != null);
 	}

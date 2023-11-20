@@ -498,7 +498,6 @@ public class WebApplicationExporter {
 				} else {
 					index.append(r.getProjectRelativePath().toString());
 					index.append("\r\n");
-					System.out.println("-----media exportExternalMedia getProjectRelativePath "+ r.getProjectRelativePath().toString());
 				}
 			}
 		} catch (CoreException e) {

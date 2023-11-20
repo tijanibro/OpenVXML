@@ -40,20 +40,15 @@ public class FormatterRegistrationManager {
 		IConfigurationElement[] formatterExtensions = Platform
 				.getExtensionRegistry().getConfigurationElementsFor(
 						formatterTypeExtensionId);
-		System.out.println(" -----media FormatterRegistrationManager 1:------ :");
 		
 		for (IConfigurationElement formatterExtension : formatterExtensions) {
 			FormatterRegistration ftr = new FormatterRegistration();
 			ftr.id = formatterExtension.getAttribute("id");
-			System.out.println(" -----media FormatterRegistrationManager ftr.id:------ :" + ftr.id);
 			
 			ftr.name = formatterExtension.getAttribute("name");
-			System.out.println(" -----media FormatterRegistrationManager ftr.name:------ :" + ftr.name);
 			ftr.vendor = formatterExtension.getAttribute("vendor-name");
-			System.out.println(" -----media FormatterRegistrationManager ftr.vendor:------ :" + ftr.vendor);
 			ftr.interactionType = formatterExtension
 					.getAttribute("interaction-type");
-			System.out.println(" -----media FormatterRegistrationManager ftr.interactionType:------ :" + ftr.interactionType);
 			
 			String className = formatterExtension.getAttribute("class");
 			Bundle contributor = Platform.getBundle(formatterExtension
@@ -69,7 +64,6 @@ public class FormatterRegistrationManager {
 					.get(ftr.interactionType);
 			if (formatters == null) {
 				formatters = new ArrayList<FormatterRegistration>();
-				System.out.println(" -----media FormatterRegistrationManager formatters == null------ :");
 				
 				formattersByInteractionType
 						.put(ftr.interactionType, formatters);

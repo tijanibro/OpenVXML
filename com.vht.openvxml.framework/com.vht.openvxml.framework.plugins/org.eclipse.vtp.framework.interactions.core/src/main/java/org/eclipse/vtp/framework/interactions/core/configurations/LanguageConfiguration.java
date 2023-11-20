@@ -91,10 +91,6 @@ public class LanguageConfiguration implements IConfiguration,
 	@Override
 	public void save(Element configurationElement) {
 		configurationElement.setAttribute(NAME_ID, id);
-		System.out.println(" -----media DefinitionBuilder buildServices languageConfiguration NAME_ID:------ :" + id);
-		
 		configurationElement.setAttribute("interaction-type", interactionType);
-		System.out.println(" -----media DefinitionBuilder buildServices languageConfiguration interactionType:------ :" + interactionType);
-		
 	}
 }
