@@ -292,8 +292,10 @@ public class ResourceGroup implements IResourceManager,
 		System.out.println("-----media conversation ResourceGroup isFileResource !isDirectoryResource(fullFilePath)---------- : "+ !isDirectoryResource(fullFilePath));
 		
 		System.out.println("-----media conversation ResourceGroup isFileResource (index.contains(fullFilePath)----------- : "+ (index.contains(fullFilePath)));
+		Boolean s = (getResource(fullFilePath) != null);
+		System.out.println("-----media conversation ResourceGroup isFileResource getResource(fullFilePath) != null----------- : "+ s);
 		
-		System.out.println("-----media conversation ResourceGroup isFileResource getResource(fullFilePath) != null----------- : "+ getResource(fullFilePath) != null);
+		System.out.println("-----media conversation ResourceGroup isFileResource index ----------- : "+ index.toArray()[0]);
 		
 		return !isDirectoryResource(fullFilePath)
 				&& (index.contains(fullFilePath) || getResource(fullFilePath) != null);
