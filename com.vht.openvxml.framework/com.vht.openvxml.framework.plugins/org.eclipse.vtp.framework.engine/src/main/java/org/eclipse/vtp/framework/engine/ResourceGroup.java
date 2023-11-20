@@ -20,6 +20,7 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -295,8 +296,20 @@ public class ResourceGroup implements IResourceManager,
 		Boolean s = (getResource(fullFilePath) != null);
 		System.out.println("-----media conversation ResourceGroup isFileResource getResource(fullFilePath) != null----------- : "+ s);
 		
-		System.out.println("-----media conversation ResourceGroup isFileResource index ----------- : "+ index.toArray()[0]);
+		Iterator<String> iterator = index.iterator();
+		String firstIndex = iterator.next();
+		System.out.println("-----media conversation ResourceGroup isFileResource index firstIndex ----------- : "+ firstIndex);
 		
+		if (firstIndex.contains("Media Libraries")) {
+			fullFilePath = "Media Libraries" + fullFilePath;
+		}
+		System.out.println("-----media conversation ResourceGroup isFileResource fullFilePath 2 ----------- : "+ fullFilePath);
+		System.out.println("-----media conversation ResourceGroup isFileResource !isDirectoryResource(fullFilePath)---------- : "+ !isDirectoryResource(fullFilePath));
+		
+		System.out.println("-----media conversation ResourceGroup isFileResource (index.contains(fullFilePath)----------- : "+ (index.contains(fullFilePath)));
+		s = (getResource(fullFilePath) != null);
+			System.out.println("-----media conversation ResourceGroup isFileResource getResource(fullFilePath) != null----------- : "+ s);
+			
 		return !isDirectoryResource(fullFilePath)
 				&& (index.contains(fullFilePath) || getResource(fullFilePath) != null);
 	}
@@ -307,9 +320,20 @@ public class ResourceGroup implements IResourceManager,
 		//-----media start
 		System.out.println("-----media resourceManager libraryPath: "+ libraryPath);
 		System.out.println("-----media resourceManager index: ---");  
-		for (Object item: index){
-		      System.out.println(" " + item);
-		  }
+		Iterator<String> iterator = index.iterator();
+		String firstIndex = iterator.next();
+		if (firstIndex.contains("Media Libraries")) {
+			libraryPath = "Media Libraries" + libraryPath;
+		}
+		// -----media start
+		System.out.println("-----media resourceManager libraryPath: "
+				+ libraryPath);
+		System.out.println("-----media resourceManager index: ---");
+		for (Object item : index) {
+			System.out.println(" " + item);
+		}
+		System.out.println("-----media resourceManager index End: ---");
+		// -----media end
 		System.out.println("-----media resourceManager index End: ---");
 		//-----media end
 		System.out.println("-----media resourceManager index getResource: ---");
