@@ -296,11 +296,11 @@ public class ResourceGroup implements IResourceManager,
 		Boolean s = (getResource(fullFilePath) != null);
 		System.out.println("-----media conversation ResourceGroup isFileResource getResource(fullFilePath) != null----------- : "+ s);
 		
-		Iterator<String> iterator = index.iterator();
-		String firstIndex = iterator.next();
-		System.out.println("-----media conversation ResourceGroup isFileResource index firstIndex ----------- : "+ firstIndex);
+		String joinedIndex = String.join(",", index);
 		
-		if (firstIndex.contains("Media Libraries")) {
+		System.out.println("-----media conversation ResourceGroup isFileResource index firstIndex ----------- : "+ joinedIndex);
+		
+		if (joinedIndex.contains("Media Libraries")) {
 			fullFilePath = "Media Libraries" + fullFilePath;
 		}
 		System.out.println("-----media conversation ResourceGroup isFileResource fullFilePath 2 ----------- : "+ fullFilePath);
@@ -320,19 +320,14 @@ public class ResourceGroup implements IResourceManager,
 		//-----media start
 		System.out.println("-----media resourceManager libraryPath: "+ libraryPath);
 		System.out.println("-----media resourceManager index: ---");  
-		Iterator<String> iterator = index.iterator();
-		String firstIndex = iterator.next();
-		if (firstIndex.contains("Media Libraries")) {
+		
+		String joinedIndex = String.join(",", index);
+		if (joinedIndex.contains("Media Libraries")) {
 			libraryPath = "Media Libraries" + libraryPath;
 		}
 		// -----media start
-		System.out.println("-----media resourceManager libraryPath: "
+		System.out.println("-----media resourceManager libraryPath 3: "
 				+ libraryPath);
-		System.out.println("-----media resourceManager index: ---");
-		for (Object item : index) {
-			System.out.println(" " + item);
-		}
-		System.out.println("-----media resourceManager index End: ---");
 		// -----media end
 		System.out.println("-----media resourceManager index End: ---");
 		//-----media end
