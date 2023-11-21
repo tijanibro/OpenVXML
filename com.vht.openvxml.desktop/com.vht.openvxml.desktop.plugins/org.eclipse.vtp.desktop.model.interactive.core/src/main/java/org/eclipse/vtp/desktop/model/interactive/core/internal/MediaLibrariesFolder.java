@@ -53,20 +53,10 @@ public class MediaLibrariesFolder extends MediaObject implements
 	@Override
 	public List<IMediaLibrary> getMediaLibraries() throws CoreException {
 		List<IMediaLibrary> ret = new ArrayList<IMediaLibrary>();
-		//-----media start
-		String path = folder.getFullPath().toString();
-		System.out.println("-----media getMediaLibraries path "+ path);
 		
-		//-----media end
 		IResource[] res = folder.members();
 
 		for (IResource re : res) {
-			
-			//-----media start
-			String path2 = re.getFullPath().toString();
-			System.out.println("-----media getMediaLibraries path "+ path2);
-			
-			//-----media end
 			
 			if (re.getName().startsWith(".")) {
 				continue;

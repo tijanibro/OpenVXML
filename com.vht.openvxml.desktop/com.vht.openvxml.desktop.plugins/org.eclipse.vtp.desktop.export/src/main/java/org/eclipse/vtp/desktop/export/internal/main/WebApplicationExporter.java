@@ -439,7 +439,6 @@ public class WebApplicationExporter {
 	}
 
 	private void exportExternalMedia(MediaExporter project) throws Exception {
-		System.out.println("-----media exportExternalMedia  ");
 		FilenameFilter filter = new FilenameFilter() {
 
 			@Override
@@ -490,7 +489,6 @@ public class WebApplicationExporter {
 	}
 
 	private void indexMedia(StringBuilder index, IFolder toIndex) {
-		System.out.println("-----media exportExternalMedia indexMedia ");
 		try {
 			for (IResource r : toIndex.members()) {
 				if (r instanceof IFolder) {

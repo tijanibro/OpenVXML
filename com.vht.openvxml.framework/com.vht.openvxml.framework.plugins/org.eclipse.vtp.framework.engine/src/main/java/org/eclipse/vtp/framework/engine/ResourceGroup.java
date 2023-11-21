@@ -60,7 +60,6 @@ public class ResourceGroup implements IResourceManager,
 	 *            The base path to publish.
 	 */
 	public ResourceGroup(Bundle bundle, String path) {
-		System.out.println("-----media ResourceGroup path: ---" + path);
 		ExternalServerManager.getInstance().addListener(this);
 		this.bundle = bundle;
 		if (!path.startsWith("/")) {
@@ -68,26 +67,18 @@ public class ResourceGroup implements IResourceManager,
 		}
 		this.path = path;
 		URL indexURL = bundle.getResource("files.index");
-		System.out.println("-----media ResourceGroup indexURL: ---" + indexURL.toString());
-		System.out.println("-----media ResourceGroup indexURL getPath: ---" + indexURL.getPath());
-		System.out.println("-----media ResourceGroup indexURL getFile: ---" + indexURL.getFile());
 		if (indexURL != null) {
-			System.out.println("-----media ResourceGroup indexURL !=null: ---");
 			if(!bundleList.containsKey(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"))){
-				System.out.println("-----media ResourceGroup bundleList !contains key: ---" + ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"));
 				bundleList.put(ResourceGroup.this.bundle.getHeaders().get("Bundle-Name"), true);
 			}
 			try {
 				BufferedReader br = new BufferedReader(new InputStreamReader(
 						indexURL.openConnection().getInputStream()));
 				String line = br.readLine();
-				System.out.println("-----media ResourceGroup line: ---");
 				while (line != null) {
 					index.add(line);
-					System.out.println("-----media ResourceGroup line : ---" + line);
 					line = br.readLine();
 				}
-				System.out.println("-----media ResourceGroup line end: ---");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -104,11 +95,9 @@ public class ResourceGroup implements IResourceManager,
 								.getInstance().getLocations();
 						if (locations.size() > 0) {
 							boolean connected = false;
-							System.out.println("-----media ResourceGroup location start: ---");
 							
 							for (ExternalServer server : locations) {
 								String location = server.getLocation();
-								System.out.println("-----media ResourceGroup location: ---" + location);
 								
 								if (!location.endsWith("/")) {
 									location = location + "/";
@@ -117,7 +106,6 @@ public class ResourceGroup implements IResourceManager,
 										+ ResourceGroup.this.bundle
 												.getHeaders()
 												.get("Bundle-Name") + "/";
-								System.out.println("-----media ResourceGroup location 2: ---" + location);
 								
 								if (logging == ExternalServerManager.Logging.ALWAYS) {
 									System.out
@@ -148,7 +136,6 @@ public class ResourceGroup implements IResourceManager,
 															responseBody
 																	.getBytes())));
 									String line = br.readLine();
-									System.out.println("-----media ResourceGroup localIndex line start: ---");
 									while (line != null) {
 										if (logging == ExternalServerManager.Logging.ALWAYS) {
 											System.out
@@ -157,11 +144,9 @@ public class ResourceGroup implements IResourceManager,
 															.get("Bundle-Name")
 															+ " " + line);
 										}
-										System.out.println("-----media ResourceGroup localIndex line: ---" + line);
 										localIndex.add(line);
 										line = br.readLine();
 									}
-									System.out.println("-----media ResourceGroup localIndex line end ---" );
 									br.close();
 									index = localIndex;
 									connected = true;
@@ -262,54 +247,28 @@ public class ResourceGroup implements IResourceManager,
 	 */
 	@Override
 	public boolean isFileResource(String fullFilePath) {
-		System.out.println("-----media conversation ResourceGroup isFileResource fullFilePath----------- : "+ fullFilePath);
 		if (fullFilePath.startsWith("/")) {
 			fullFilePath = fullFilePath.substring(1);
 		}
 		int slashIndex = fullFilePath.indexOf('/');
 		if (slashIndex >= 0) {
 			String prefix = fullFilePath.substring(0, slashIndex);
-			System.out.println("-----media conversation ResourceGroup isFileResource prefix----------- : "+ prefix);
 			
 			String libraryFile = "/" + prefix + "/.library";
-			System.out.println("-----media conversation ResourceGroup isFileResource libraryFile----------- : "+ libraryFile);
 			
 			if (!index.contains(libraryFile)
 					&& getResource(libraryFile) == null) {
-				System.out.println("-----media conversation ResourceGroup isFileResource !index.contains----------- : "+ libraryFile);
-				
 				fullFilePath = "Default/" + fullFilePath;
-				System.out.println("-----media conversation ResourceGroup isFileResource !index.contains fullFilePath----------- : "+ fullFilePath);
-				
 			}
 		} else {
 			fullFilePath = "Default/" + fullFilePath;
-			System.out.println("-----media conversation ResourceGroup isFileResource index contains fullFilePath----------- : "+ fullFilePath);
-			
 		}
 		fullFilePath = "/" + fullFilePath;
-		System.out.println("-----media conversation ResourceGroup isFileResource fullFilePath 1----------- : "+ fullFilePath);
-		
-		System.out.println("-----media conversation ResourceGroup isFileResource !isDirectoryResource(fullFilePath)---------- : "+ !isDirectoryResource(fullFilePath));
-		
-		System.out.println("-----media conversation ResourceGroup isFileResource (index.contains(fullFilePath)----------- : "+ (index.contains(fullFilePath)));
-		Boolean s = (getResource(fullFilePath) != null);
-		System.out.println("-----media conversation ResourceGroup isFileResource getResource(fullFilePath) != null----------- : "+ s);
 		
 		String joinedIndex = String.join(",", index);
-		
-		System.out.println("-----media conversation ResourceGroup isFileResource index firstIndex ----------- : "+ joinedIndex);
-		
 		if (joinedIndex.contains("Media Libraries")) {
 			fullFilePath = "Media Libraries" + fullFilePath;
 		}
-		System.out.println("-----media conversation ResourceGroup isFileResource fullFilePath 2 ----------- : "+ fullFilePath);
-		System.out.println("-----media conversation ResourceGroup isFileResource !isDirectoryResource(fullFilePath)---------- : "+ !isDirectoryResource(fullFilePath));
-		
-		System.out.println("-----media conversation ResourceGroup isFileResource (index.contains(fullFilePath)----------- : "+ (index.contains(fullFilePath)));
-		s = (getResource(fullFilePath) != null);
-			System.out.println("-----media conversation ResourceGroup isFileResource getResource(fullFilePath) != null----------- : "+ s);
-			
 		return !isDirectoryResource(fullFilePath)
 				&& (index.contains(fullFilePath) || getResource(fullFilePath) != null);
 	}
@@ -317,24 +276,10 @@ public class ResourceGroup implements IResourceManager,
 	@Override
 	public boolean hasMediaLibrary(String libraryId) {
 		String libraryPath = "/" + libraryId + "/.library";
-		//-----media start
-		System.out.println("-----media resourceManager libraryPath: "+ libraryPath);
-		System.out.println("-----media resourceManager index: ---");  
-		
 		String joinedIndex = String.join(",", index);
 		if (joinedIndex.contains("Media Libraries")) {
 			libraryPath = "Media Libraries" + libraryPath;
 		}
-		// -----media start
-		System.out.println("-----media resourceManager libraryPath 3: "
-				+ libraryPath);
-		// -----media end
-		System.out.println("-----media resourceManager index End: ---");
-		//-----media end
-		System.out.println("-----media resourceManager index getResource: ---");
-		getResource(libraryPath);
-		System.out.println("-----media resourceManager index getResource End: ---");
-		System.out.println("-----media resourceManager index index.contains(libraryPath): ---" + index.contains(libraryPath));
 		return index.contains(libraryPath) || getResource(libraryPath) != null;
 	}
 

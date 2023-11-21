@@ -164,8 +164,6 @@ public class MediaProviderRegistry implements IMediaProviderRegistry {
 			this.contentTypes = Collections.unmodifiableList(contentTypes);
 			this.formatter = formatters.getFormatter(configuration
 					.getFormatterID());
-			context.info("-----media getResourceManagerID "+ configuration
-					.getResourceManagerID());
 			this.resourceManager = resources.getResourceManager(configuration
 					.getResourceManagerID());
 			SharedContentConfiguration[] contentConfigurations = configuration

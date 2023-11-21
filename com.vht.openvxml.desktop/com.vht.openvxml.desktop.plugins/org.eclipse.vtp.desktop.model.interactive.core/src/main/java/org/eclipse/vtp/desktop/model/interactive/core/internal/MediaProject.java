@@ -54,9 +54,7 @@ public abstract class MediaProject extends MediaObject implements IMediaProject 
 		this.project = project;
 		try {
 			IFile buildPath = project.getFile(".config");
-			//-----media start
-			System.out.println(" -----media MediaProject buildPath getFullPath :"+ buildPath.getFullPath());
-			//-----media end
+			
 			DocumentBuilderFactory buildFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder builder = buildFactory.newDocumentBuilder();
@@ -64,21 +62,8 @@ public abstract class MediaProject extends MediaObject implements IMediaProject 
 			if (!buildPath.isSynchronized(IResource.DEPTH_INFINITE)) {
 				buildPath.refreshLocal(IResource.DEPTH_INFINITE, null);
 			}
-
-
 			
 			Document doc = builder.parse(buildPath.getContents());
-			//-----media start
-			 ByteArrayOutputStream contentsResult = new ByteArrayOutputStream();
-			 byte[] buffer = new byte[5024];
-			 for (int length; (length = buildPath.getContents().read(buffer)) != -1; ) {
-				 contentsResult.write(buffer, 0, length);
-			 }
-			// StandardCharsets.UTF_8.name() > JDK 7
-			String  fullContentsResult = contentsResult.toString("UTF-8");
-			System.out.println(" -----media MediaProject buildPath.getContents() :"+ fullContentsResult);
-			System.out.println(" -----media MediaProject buildPath.getContents() end ------ :");
-			//-----media end
 			Element root = doc.getDocumentElement();
 			loadConfig(root);
 		} catch (Exception e) {
@@ -120,10 +105,7 @@ public abstract class MediaProject extends MediaObject implements IMediaProject 
 	@Override
 	public IMediaLibrariesFolder getMediaLibrariesFolder() {
 		IFolder f = project.getFolder("Default");
-		System.out.println("-----media getMediaLibrariesFolder");
 		if (!f.exists()) {
-			System.out.println("-----media getMediaLibrariesFolder folder missing");
-			
 			throw new RuntimeException("Media Libraries filder is missing");
 		}
 

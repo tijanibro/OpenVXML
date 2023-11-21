@@ -23,6 +23,7 @@ public class ExternalServerManager {
 	private ExternalServerManager() {
 		try {
 			InitialContext jndiContext = new InitialContext();
+			
 			String mediaServerCountString = (String) jndiContext
 					.lookup("java:comp/env/media-server-count");
 			if (mediaServerCountString != null) {
