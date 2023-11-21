@@ -338,7 +338,6 @@ public final class HttpConnectorManager extends SingletonTracker {
 		public void addExtension(IExtensionTracker tracker, IExtension extension) {
 			Bundle contributor = OSGiUtils.findBundle(
 					extension.getContributor(), context.getBundles());
-			
 			if (contributor == null) {
 				return;
 			}

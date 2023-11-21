@@ -95,10 +95,8 @@ public class ResourceGroup implements IResourceManager,
 								.getInstance().getLocations();
 						if (locations.size() > 0) {
 							boolean connected = false;
-							
 							for (ExternalServer server : locations) {
 								String location = server.getLocation();
-								
 								if (!location.endsWith("/")) {
 									location = location + "/";
 								}
@@ -106,7 +104,6 @@ public class ResourceGroup implements IResourceManager,
 										+ ResourceGroup.this.bundle
 												.getHeaders()
 												.get("Bundle-Name") + "/";
-								
 								if (logging == ExternalServerManager.Logging.ALWAYS) {
 									System.out
 											.println("Attempting to load index from: "
@@ -198,14 +195,11 @@ public class ResourceGroup implements IResourceManager,
 	 * @return The requested resource.
 	 */
 	public URL getResource(String fullResourcePath) {
-		System.out.println("resolving resource 1: fullResourcePath: "+ fullResourcePath);
-		System.out.println("resolving resource 1: path: "+ path);
 		if (!fullResourcePath.startsWith("/")) {
 			fullResourcePath = "/" + fullResourcePath;
 		}
-		System.out.println("resolving resource 1: " + path + fullResourcePath);
+		System.out.println("resolving resource : " + path + fullResourcePath);
 		URL ret = bundle.getEntry(path + fullResourcePath);
-		System.out.println("resolving resource 1: URL : ");
 		return ret;
 	}
 
@@ -253,9 +247,7 @@ public class ResourceGroup implements IResourceManager,
 		int slashIndex = fullFilePath.indexOf('/');
 		if (slashIndex >= 0) {
 			String prefix = fullFilePath.substring(0, slashIndex);
-			
 			String libraryFile = "/" + prefix + "/.library";
-			
 			if (!index.contains(libraryFile)
 					&& getResource(libraryFile) == null) {
 				fullFilePath = "Default/" + fullFilePath;
@@ -264,7 +256,6 @@ public class ResourceGroup implements IResourceManager,
 			fullFilePath = "Default/" + fullFilePath;
 		}
 		fullFilePath = "/" + fullFilePath;
-		
 		String joinedIndex = String.join(",", index);
 		if (joinedIndex.contains("Media Libraries")) {
 			fullFilePath = "Media Libraries" + fullFilePath;

@@ -230,7 +230,6 @@ public class VoicePlatform extends AbstractPlatform implements VXMLConstants {
 	@Override
 	protected IDocument renderOutputMessage(ILinkFactory links,
 			OutputMessageCommand outputMessageCommand) {
-		String[] h = outputMessageCommand.getPropertyNames();
 		String bargeIn = outputMessageCommand.getPropertyValue("barge-in"); //$NON-NLS-1$
 		if (Boolean.TRUE.toString().equalsIgnoreCase(bargeIn)) {
 			bargeIn = Boolean.TRUE.toString();

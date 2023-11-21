@@ -54,7 +54,6 @@ public abstract class MediaProject extends MediaObject implements IMediaProject 
 		this.project = project;
 		try {
 			IFile buildPath = project.getFile(".config");
-			
 			DocumentBuilderFactory buildFactory = DocumentBuilderFactory
 					.newInstance();
 			DocumentBuilder builder = buildFactory.newDocumentBuilder();
@@ -62,7 +61,7 @@ public abstract class MediaProject extends MediaObject implements IMediaProject 
 			if (!buildPath.isSynchronized(IResource.DEPTH_INFINITE)) {
 				buildPath.refreshLocal(IResource.DEPTH_INFINITE, null);
 			}
-			
+
 			Document doc = builder.parse(buildPath.getContents());
 			Element root = doc.getDocumentElement();
 			loadConfig(root);

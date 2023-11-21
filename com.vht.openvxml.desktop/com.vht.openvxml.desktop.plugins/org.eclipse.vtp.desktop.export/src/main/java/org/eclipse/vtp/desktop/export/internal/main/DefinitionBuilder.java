@@ -186,11 +186,9 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 		"org.eclipse.vtp.framework.common.services.brand-registry"); //$NON-NLS-1$
 		Element defaultBrandElement = definition.createElementNS(
 				NAMESPACE_URI_COMMON, "common:brand"); //$NON-NLS-1$
-		
 		BrandConfiguration defaultBrandConfiguration = new BrandConfiguration();
 		defaultBrandConfiguration.setId(defaultBrand.getId());
 		defaultBrandConfiguration.setName(defaultBrand.getName());
-		
 		buildBrandConfigurations(defaultBrand, defaultBrandConfiguration);
 		defaultBrandConfiguration.save(defaultBrandElement);
 		brandRegistryElement.appendChild(defaultBrandElement);
@@ -275,9 +273,7 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 						"interactions:language"); //$NON-NLS-1$
 				LanguageConfiguration language = new LanguageConfiguration();
 				language.setID(lang);
-				
 				language.setInteractionType(entry.getKey());
-				
 				language.save(languageElement);
 				languageRegistryElement.appendChild(languageElement);
 			}
@@ -287,12 +283,9 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 		for (Map.Entry<String, String> entry : formatterIDsByLanguage
 				.entrySet()) {
 			String languageID = entry.getKey();
-			
 			String formatterID = entry.getValue();
-			
 			String resourceManagerID = resourceManagerIDsByLanguage
 					.get(languageID);
-			
 			IFormatter formatter = null;
 			FormatterRegistration reg = FormatterRegistrationManager
 					.getInstance().getFormatter(formatterID);
@@ -306,7 +299,6 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 			MediaProviderConfiguration mediaProvider = new MediaProviderConfiguration(
 					ContentLoadingManager.getInstance());
 			mediaProvider.setID(resourceManagerID);
-			
 			mediaProvider.setFormatterID(formatterID);
 			mediaProvider.setResourceManagerID(resourceManagerID);
 			loadSharedContent(project, mediaProvider);
@@ -318,7 +310,6 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 			MediaProviderBindingConfiguration mediaProviderBinding = //
 			new MediaProviderBindingConfiguration();
 			mediaProviderBinding.setKey(languageID);
-			
 			mediaProviderBinding.setMediaProviderID(mediaProvider.getID());
 			mediaProviderBinding.save(mediaProviderBindingElement);
 			mediaProviderRegistryElement
@@ -341,14 +332,12 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 		IProject voiceProject = processProject.getWorkspace().getRoot()
 				.getProject(mediaProvider.getResourceManagerID());
 		IFile xmlFile = voiceProject.getFile("Voice.xml");
-		
 		String uri = "https://eclipse.org/vtp/xml/media/voice#1.0"; //$NON-NLS-1$
 		if (!xmlFile.exists()) {
 			xmlFile = voiceProject.getFile("Author.xml");
 			uri = "https://eclipse.org/vtp/xml/media/author#1.0"; //$NON-NLS-1$
 		}
 		Document voiceDocument = builder.parse(xmlFile.getLocation().toFile());
-		
 		NodeList list = ((Element) voiceDocument.getDocumentElement()
 				.getElementsByTagNameNS(uri, "shared-content").item(0)) //$NON-NLS-1$
 				.getChildNodes();
@@ -381,7 +370,6 @@ public class DefinitionBuilder implements IDefinitionBuilder {
 			BrandConfiguration childConfig = new BrandConfiguration();
 			childConfig.setId(child.getId());
 			childConfig.setName(child.getName());
-			
 			config.addChild(childConfig);
 			buildBrandConfigurations(child, childConfig);
 		}

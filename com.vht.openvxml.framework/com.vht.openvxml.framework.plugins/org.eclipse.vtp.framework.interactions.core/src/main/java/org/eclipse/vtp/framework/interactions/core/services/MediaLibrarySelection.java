@@ -113,7 +113,6 @@ public class MediaLibrarySelection implements IMediaLibrarySelection,
 		IMediaProvider mediaProvider = mediaProviderRegistry
 				.getMediaProvider(mediaProviderId);
 		IResourceManager resourceManager = mediaProvider.getResourceManager();
-		
 		if (resourceManager.hasMediaLibrary(libraryId)) {
 			context.setAttribute("library.selection", libraryId);
 			return true;
@@ -123,9 +122,8 @@ public class MediaLibrarySelection implements IMediaLibrarySelection,
 					+ (libraryId == null ? "Default" : libraryId)
 					+ " not found.  Library not modified.");
 		}
-		//----media
-		return true;
-		//return false;
+		return false;
+		//return true;
 	}
 
 	@Override

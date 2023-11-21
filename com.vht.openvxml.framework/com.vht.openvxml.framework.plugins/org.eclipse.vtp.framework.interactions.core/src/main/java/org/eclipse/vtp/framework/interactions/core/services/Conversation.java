@@ -272,21 +272,15 @@ public class Conversation implements IConversation {
 		{
 //			context.info("Media provider is null");
 			fileOutput.setProperty("value", relativePath);
-			
 			return fileOutput;
 		}
 		fileOutput.setProperty("media-provider", mediaProviderID);
-
 		String fullPath = mediaLibrarySelection.getSelectedMediaLibrary() + (relativePath.startsWith("/") ? "" : "/") + relativePath;
-		
 		if(!mediaProviderRegistry.getMediaProvider(mediaProviderID).getResourceManager().isFileResource(fullPath))
 			fullPath = "Default" + (relativePath.startsWith("/") ? "" : "/") + relativePath;
-		
 //		context.info("set file output value: " + mediaProviderID + "/" + fullPath);
 		fileOutput.setProperty("value", mediaProviderID + "/" + fullPath);
-		
 		fileOutput.setProperty("original-path", relativePath);
-		
 		return fileOutput;
 	}
 
@@ -796,9 +790,7 @@ public class Conversation implements IConversation {
 		 * AbstractInteraction#createCommand()
 		 */
 		ConversationCommand createCommand() {
-			context.info("-----media createCommand  -----------");
 			OutputMessageCommand command = new OutputMessageCommand();
-			context.info("-----media createCommand resultParameterName -----------: "+ resultParameterName);
 			command.setResultName(resultParameterName);
 			command.setFilledResultValue(RESULT_NAME_FILLED);
 			command.setHangupResultValue(RESULT_NAME_HANGUP);
@@ -818,7 +810,6 @@ public class Conversation implements IConversation {
 				}
 				OutputConfiguration outputConfiguration = mediaConfig
 						.getOutputConfiguration(configuration.getOutputName());
-				context.info("-----media createCommand outputConfiguration getOutputName-----------: "+ configuration.getOutputName());
 				List content = resolveOutput(outputConfiguration);
 				for (Iterator i = content.iterator(); i.hasNext();) {
 					Content item = (Content) i.next();
